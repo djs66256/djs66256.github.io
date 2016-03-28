@@ -1,0 +1,161 @@
+---
+layout: post
+title: 2013学年总结之iOS篇
+date: 2014-08-03
+categories: ios
+---
+
+  
+这里并不是高深的ios的研究或者教程，相信这些东西查阅官方资料才是最靠谱的，仅仅只是对一些基本技能的总结和概括
+
+<!--more-->
+  
+## Core Graph
+
+ios绘图基本方法，遗憾的是该api是c的，不过api简单易懂，非常容易使用。除了在draw方法里面使用外，还可以使用`UIGraphicsBeginImageContext`生成一个图片的上下文，通过代码来获取一些图片，而不再需要UI提供图片。
+
+基本使用方式，注意记得保存和恢复上下文即可:
+
+```
+CGContextSaveGState(ctx);
+[color set];
+CGContextDraw...
+CGContextRestoreGState(ctx);
+```
+
+有一个非常有意思的贝塞尔曲线，具体算法我还没怎么搞明白，不过只要有这个，可以说，我们可以画出任意的图形了！
+
+说到绘图，这里不仅仅能绘制和填充简单的线条、图片外，还能绘制PDF，但是在手机设备上必须放到异步绘制，可以有两种做法：
+
+	1. 异步绘制到ImageContext上，以图片的形式展现
+	2. 使用CATiledLayer，这个属于Core Animation部分了
+
+## Core Animation
+
+以CA开头的类很多，虽然看名字这个是一个动画的框架，但是不仅仅如此，所有的图层都属于该框架。
+
+说到动画，不得不说不总结下几类动画的实现方式：
+
+	1. 基于UIView的动画，所有方法定义在UIView(UIViewAnimation)，这个是最简单，最常用的方法。
+	2. 基于CALayer的动画，基于UIView的动画还是有不少局限，只能实现比较简单的移动旋转等，当我们需要一些复杂的动画或者无限循环的动画时，就需要基于CALayer的动画
+	3. 基于定时器的自定义动画，值得注意的是，这里的定时器最好是使用CADisplayLink，这个才是真正基于帧的定时器
+	
+core animation是基于keyPath实现的，写法上有些怪异，但是仅仅比基于UIView的动画稍多一点工作量，但绝对物超所值。
+
+```
+[UIView animateWithDuration:2 animations:^{
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
+    anim.fromValue = [NSValue valueWithCGPoint:position1];
+    anim.toValue = [NSValue valueWithCGPoint:position2];
+    anim.duration = 3;
+    anim.cumulative = YES;
+    anim.repeatCount = HUGE_VAL;
+    [view.layer addAnimation:anim forKey:@"ps"];
+}];
+```
+
+还有一个比较有意思的图层：`CAShapeLayer`；使用这个能够完成你意想不到的一些效果，专门为动画而生的图层！
+
+## Core Text
+
+苹果超级强大的文字绘制框架。core text绘制使用的是`AttributeString`，遗憾的是这个类在ios6以后才比较实用，很多属性是后面才加进来的，不过这以没什么关系。
+
+首先我们来划分一下core text：
+
+	1. 绘制内容，即AttributeString
+	2. 布局系统，core text除了内容外大部分都是布局系统
+	3. 绘制系统，这个需要到最后一步才会真正的绘制到画布上，即`CTFrameDraw`
+	
+这里最有趣最值得研究的是布局系统，我们可以设置文字绘制的位置范围，还可以通过kCTRunDelegateAttributeName来实现图文混排，还能计算文字绘制完毕后所占用的大小，api比较多，但是实现起来确实非常简单。
+
+```
+CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(attributeStr);
+CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), pathref, NULL);
+CTFrameDraw(frame, ctx);
+```
+
+## Core Image
+
+CIImage的使用也是非常的简单，只是系统提供了很多的滤镜，要一个个的了解过来还是需要很多的时间。平时如果不需要有图片编辑功能，我们还真用不到。这个是在GPU的内存空间中转换的，如果你从用户内存空间拷贝到GPU内存，再做渲染，再拷回用户内存，这样的开销其实也很大。网上也有基于此的开源项目GPUImage。
+
+```
+CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];
+[filter setValue:image forKey:kCIInputImageKey];
+[filter setValue:@0.8f forKey:kCIInputIntensityKey];  
+CIImage *result = [filter valueForKey:kCIOutputImageKey];
+```
+
+## Core Data
+
+又是一个非常庞大而复杂的框架，如果要真正理解这个框架还真要费很大力气，毕竟官方教程就快上1k页了。除此之外还要了解一些keyPath、predicate表达式等等。但是学会使用确实非常简单。core data毕竟不是SQL，它还需要支持xml等格式，所以一些复杂的搜索逻辑或者优化分表什么的就不行了，如果你不需要如此复杂的功能，并且也不准备维护SQL语句，使用core data当然是没得选了。
+
+说到数据库，core data是根据对象为单位的，而我们自己使用的时候却没有这个限制，在这个问题上，我更倾向于根据对象来操作，这样不仅能统一接口，还能避免很多错误和后期维护工作，我们大可不必担心那么点的性能损耗。
+
+## Image IO
+
+又是一个很有意思的接口，当我们从网络下载大图片的时候，是等我们下完再展现还是，下多少展现多少，这个接口正好适合你！它能够拼装不完整的图片，除此之外还能创建缩略图等等。
+
+## 多线程
+
+说到多线程，我们可以总结下ios里面的几种实现方式：
+
+	1. Unix接口，pthread，这个我觉得除非是移植代码，应该没人使用吧
+	2. NSThread，相当于pthread的OC版，但是不仅仅如此
+	3. RunLoop，这个应该不算是多线程的实现方式，类似于轮询或者多路复用的结果，但从结果上来看是异步的
+	   RunLoop一般与NSThread配合使用，需要一个事件源(NSPort)，这部分还是挺有意思的
+	4. GCD，可以说是系统级的线程池，除了单纯的多线程外，还能提供监听句柄(如file，socket)的状态变更（一种多路复用？）
+	   但是GCD一旦触发，便不能取消，这也是值得注意的地方，而且Block的使用也存在一些自身的问题，使用不当可能造成线程的疯狂创建而崩溃。
+	
+在这方面还需要再多研究研究
+
+## Runtime
+
+在Objc Runtime中对我们比较有用的两条是：
+	
+	1. objc_setAssociatedObject和objc_getAssociatedObject，可以给一个已存在的对象（比如我们无法修改的系统类和第三方库类），动态增加成员
+	2. method_exchangeImplementations，置换方法，比如置换系统方法，增加我们自定义的功能逻辑。这个方法虽然有些时候很方便，但是也会带来不必要的一些麻烦，而且改变的是全局的方法，所以也有一定的风险。
+	
+## NSPredicate
+
+苹果有一个非常强大的匹配语言，就是谓词表达式，他甚至可以说是正则表达式的超集，缺点就是只能返回bool值。
+
+它也是基于keyPath，不仅仅能匹配普通的正则表达式，还能够过滤数组等集合。
+
+比如：
+
+```
+// 正则表达式
+SELF MATCHES ...
+// 对象是否是以下几个对象之中
+@"SELF IN %@", @[@"a", @"b", @"c"]
+```
+
+代码显得非常简洁易懂，所以在大部分时候我们都可以使用这个来代替复杂的编码
+
+## Block
+
+block是一种实现闭包的方式，但是并不完美，特别是内存泄露问题，使用不当非常容易造成内存泄露。
+
+block主要分为：
+
+	1. 栈上的Block
+	2. 数据区的Block
+	3. 堆上的Block
+	
+如果你对这3种情况不是很了解的话，最好不要使用太多的block。
+
+一般来说，block使用场景为明确知道结束点的逻辑中，比如GCD，alertView，http请求等等，这些具有明确结束点，而且回调内容也不可能很复杂，所以非常适合block的发挥，但比如不同的controller间，如果采用block，可能就会导致循环引用，因为block在没有被释放或者被执行过之前，block内所持有的对象就不会被释放。
+
+block的使用需要特别小心，我们在页面编程中尽量不要选择block来回调。
+
+## NSFormatter
+
+`NSDateFormatter`是我们使用最多的格式化类，但是注意，创建这个比较损耗资源，所以尽量不要在循环中创建，有人甚至直接做一个单例来使用。
+
+另外一个不常用但非常强大的格式化类是`NSNumberFormatter`
+
+另外，我们可以自定义一些formatter，比如时间格式化为“今天”，“一周前”，“几个月前”等等之类的，还是比较符合理解和规范的。
+
+## NSScanner
+
+遍历字符串的一种方法，是实现词法分析等功能的基础。这个也能解析一些数字，不仅仅是10进制。
