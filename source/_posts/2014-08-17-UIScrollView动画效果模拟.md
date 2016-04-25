@@ -3,6 +3,7 @@ layout: post
 title: UIScrollView动画效果模拟
 date: 2014-08-03
 categories: ios
+keywords: scrollView
 ---
 
 当年苹果手机发布的时候，大家都惊叹于流畅的滑动效果，也就是UIScrollView的效果。现在由于工作中有个需要，能够模拟系统的滑动效果，因此开始了研究。目前代码托管在[github](https://github.com/djs66256/DDScrollView)上。

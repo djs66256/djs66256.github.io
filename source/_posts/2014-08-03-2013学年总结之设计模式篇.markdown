@@ -2,7 +2,8 @@
 layout: post
 title: 2013学年总结之设计模式篇
 date: 2014-08-03
-categories: 设计模式
+categories: 文章 设计模式
+keywords: 设计模式,工厂方法,生成器,单例
 ---
 
 总结一下了解的设计模式

@@ -2,7 +2,8 @@
 layout: post
 title: 2013学年总结之工具篇
 date: 2014-08-03
-categories: 工具
+categories: 文章
+keywords: git,svn,markdown,vim,vimdiff,dash
 ---
 
 ####git/svn & markdown & vim & dash/zeal

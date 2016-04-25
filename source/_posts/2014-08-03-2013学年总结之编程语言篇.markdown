@@ -2,7 +2,8 @@
 layout: post
 title: 2013学年总结之语言篇
 date: 2014-08-03
-categories: language
+categories: 文章
+keywords: 编程语言,总结
 ---
 
 本篇为总结之前了解的一些语言与特性，当然，我并不是语言专家，大部分都是走马观花，难免有纰漏之处。

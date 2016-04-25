@@ -265,7 +265,11 @@ multitask :push do
     puts "\n## Committing: #{message}"
     system "git commit -m \"#{message}\""
     puts "\n## Pushing generated #{deploy_dir} website"
+    puts "\n## Push to github"
     Bundler.with_clean_env { system "git push origin #{deploy_branch}" }
+    # and push to coding
+    puts "\n## Push to coding"
+    Bundler.with_clean_env { system "git push coding #{deploy_branch}" }
     puts "\n## Github Pages deploy complete"
   end
 end

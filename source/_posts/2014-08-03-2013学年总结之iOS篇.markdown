@@ -2,7 +2,8 @@
 layout: post
 title: 2013学年总结之iOS篇
 date: 2014-08-03
-categories: ios
+categories: iOS
+keywords: core graph,core animation,core image,image io,runtime,block
 ---
 
   
@@ -16,7 +17,7 @@ ios绘图基本方法，遗憾的是该api是c的，不过api简单易懂，非�
 
 基本使用方式，注意记得保存和恢复上下文即可:
 
-```
+```objc
 CGContextSaveGState(ctx);
 [color set];
 CGContextDraw...
@@ -42,7 +43,7 @@ CGContextRestoreGState(ctx);
 	
 core animation是基于keyPath实现的，写法上有些怪异，但是仅仅比基于UIView的动画稍多一点工作量，但绝对物超所值。
 
-```
+```objc
 [UIView animateWithDuration:2 animations:^{
     CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
     anim.fromValue = [NSValue valueWithCGPoint:position1];
@@ -68,7 +69,7 @@ core animation是基于keyPath实现的，写法上有些怪异，但是仅仅�
 	
 这里最有趣最值得研究的是布局系统，我们可以设置文字绘制的位置范围，还可以通过kCTRunDelegateAttributeName来实现图文混排，还能计算文字绘制完毕后所占用的大小，api比较多，但是实现起来确实非常简单。
 
-```
+```objc
 CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(attributeStr);
 CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), pathref, NULL);
 CTFrameDraw(frame, ctx);
@@ -78,7 +79,7 @@ CTFrameDraw(frame, ctx);
 
 CIImage的使用也是非常的简单，只是系统提供了很多的滤镜，要一个个的了解过来还是需要很多的时间。平时如果不需要有图片编辑功能，我们还真用不到。这个是在GPU的内存空间中转换的，如果你从用户内存空间拷贝到GPU内存，再做渲染，再拷回用户内存，这样的开销其实也很大。网上也有基于此的开源项目GPUImage。
 
-```
+```objc
 CIFilter *filter = [CIFilter filterWithName:@"CISepiaTone"];
 [filter setValue:image forKey:kCIInputImageKey];
 [filter setValue:@0.8f forKey:kCIInputIntensityKey];  
