@@ -3,8 +3,8 @@
 # ----------------------- #
 
 url: http://djs66256.github.io
-title: 苍耳的技术博客
-subtitle: 无悔
+title: 苍耳的博客
+subtitle: 无悔的人生
 author: 苍耳
 simple_search: https://www.baidu.com/search
 description: 
@@ -62,6 +62,10 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 #   3rd Party Settings    #
 # ----------------------- #
+
+# 简书
+jianshu_user: 711179b62eca
+
 
 # Github repositories
 github_user: djs66256

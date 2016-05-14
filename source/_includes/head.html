@@ -9,7 +9,9 @@
 	<title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
 	<meta name="author" content="{{ site.author }}">
     {% if page.keywords %}
-    <meta name="keywords" content="{{ page.keywords }}">
+    <meta name="keywords" content="苍耳,{{ page.keywords }}">
+    {% else %}
+    <meta name="keywords" content="苍耳,技术,iOS,objective-c,objc,swift,产品,运营">
     {% endif %}
 
 	{% capture description %}{% if page.description %}{{ page.description }}{% else %}{{ content | raw_content }}{% endif %}{% endcapture %}

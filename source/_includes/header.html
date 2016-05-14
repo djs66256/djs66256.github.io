@@ -5,6 +5,9 @@
 <nav id="main-nav">{% include navigation.html %}</nav>
 <nav id="sub-nav">
 	<div class="social">
+        {% if site.jianshu_user %}
+            <a class="jianshu" href="http://www.jianshu.com/users/{{ site.jianshu_user }}" style="background-color:#e78170;color:#fff;text-align:center;font-size:16px;text-indent:0;" title="简书">简</a>
+        {% endif %}
 		{% if site.email %}
 			<a class="email" href="mailto:{{ site.email }}" title="Email">Email</a>
 		{% endif %}
