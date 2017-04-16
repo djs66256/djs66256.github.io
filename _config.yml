@@ -70,6 +70,8 @@ plugin:
 
 feed:
 type: atom
+path: atom.xml
+limit: 100
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
