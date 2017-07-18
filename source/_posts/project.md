@@ -12,6 +12,10 @@ tags:
 
 # AVPlayer
 - [ZFPlayer](https://github.com/renzifeng/ZFPlayer.git)
+- [StreamingKit](https://github.com/tumtumtum/StreamingKit)
+- [LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit.git) 视频流
+- [TTAVPlayer](https://github.com/tangdiforx/TTAVPlayer)
+- [CTVideoPlayerView](https://github.com/casatwy/CTVideoPlayerView)
 
 # Cache
 - [YYCache](https://github.com/ibireme/YYCache.git)
@@ -25,6 +29,8 @@ tags:
 # Component
 - [HubFramework](https://github.com/spotify/HubFramework.git)
 - [BeeHive](https://github.com/alibaba/BeeHive.git) alibaba
+- [IGListKit](https://github.com/Instagram/IGListKit)
+- [componentkit](https://github.com/facebook/componentkit)
 
 # Crash Report
 - [KSCrash](https://github.com/kstenerud/KSCrash.git)
@@ -45,6 +51,7 @@ tags:
 - [YOLOKit](https://github.com/mxcl/YOLOKit.git)
 - [BlocksKit](https://github.com/zwaldowski/BlocksKit.git)
 - [Bolts-ObjC](https://github.com/BoltsFramework/Bolts-ObjC.git) Bolts is a collection of low-level libraries designed to make developing mobile apps easier.
+- [QMUI_iOS](https://github.com/QMUI/QMUI_iOS)
 
 # Data
 - [GPUImage](https://github.com/BradLarson/GPUImage.git)
@@ -54,8 +61,12 @@ tags:
 - [RestKit](https://github.com/RestKit/RestKit.git)
 - [JSONKit](https://github.com/johnezang/JSONKit.git)
 - [Mantle](https://github.com/Mantle/Mantle.git)
+- [Doppelganger](https://github.com/Wondermall/Doppelganger) Array diffs as collection view wants it
+- [OrderedDictionary](https://github.com/nicklockwood/OrderedDictionary)
+- [FastCoding](https://github.com/nicklockwood/FastCoding)
 
 ### KVO
+- [RZDataBinding](https://github.com/Raizlabs/RZDataBinding)
 
 ##### [KVOController](https://github.com/facebook/KVOController.git)
 
@@ -77,6 +88,9 @@ hook dealloc来负责移除监听。
 - [ensembles](https://github.com/drewmccormack/ensembles.git) A synchronization framework for Core Data.
 - [MagicalRecord](https://github.com/magicalpanda/MagicalRecord.git) Super Awesome Easy Fetching for Core Data
 - [fmdb](https://github.com/ccgus/fmdb.git)
+- [sequelpro](https://github.com/sequelpro/sequelpro)
+- [GYDataCenter](https://github.com/Zepo/GYDataCenter)
+- [wcdb](https://github.com/Tencent/wcdb)
 
 # Notes
 - [iOS-Source-Code-Analyze](https://github.com/Draveness/iOS-Source-Code-Analyze.git) 笔记
@@ -85,6 +99,10 @@ hook dealloc来负责移除监听。
 - [iOSInterviewQuestions](https://github.com/ChenYilong/iOSInterviewQuestions.git) iOS面试题集锦
 - [iOSBlogCN](https://github.com/tangqiaoboy/iOSBlogCN.git)
 - [TomatoRead](https://github.com/everettjf/TomatoRead.git)
+- [idev-recipes](https://github.com/boctor/idev-recipes)
+- [IosHackStudy](https://github.com/pandazheng/IosHackStudy) IOS安全学习资料汇总
+- [The-Art-Of-Programming-By-July](https://github.com/julycoding/The-Art-Of-Programming-By-July)
+- [Apple-OfficialTranslation-SourceAnnotation](https://github.com/CustomPBWaters/Apple-OfficialTranslation-SourceAnnotation)
 
 # Network
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking.git)
@@ -94,6 +112,11 @@ hook dealloc来负责移除监听。
 - [DFImageManager](https://github.com/kean/DFImageManager.git) Image loading, processing, caching and preheating
 - [Nuke](https://github.com/kean/Nuke.git) swift of [DFImageManager](#DFImageManager)
 - [OHHTTPStubs](https://github.com/AliSoftware/OHHTTPStubs.git)
+- [RTNetworking](https://github.com/casatwy/RTNetworking)
+- [CocoaSPDY](https://github.com/twitter/CocoaSPDY)
+- [RealReachability](https://github.com/dustturtle/RealReachability)
+- [XMNetworking](https://github.com/kangzubin/XMNetworking)
+- [fastsocket](https://github.com/fastos/fastsocket)
 
 # In-App Purchase
 - [CargoBay](https://github.com/mattt/CargoBay.git)
@@ -103,6 +126,9 @@ hook dealloc来负责移除监听。
 - [MAZeroingWeakRef](https://github.com/mikeash/MAZeroingWeakRef.git)
 - [Aspects](https://github.com/steipete/Aspects.git)
 - [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge.git)
+- [DLIntrospection](https://github.com/garnett/DLIntrospection)
+- [fishhook](https://github.com/facebook/fishhook)
+- [JSPatch](https://github.com/bang590/JSPatch)
 
 # Socket
 - [CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket.git)
@@ -123,6 +149,9 @@ hook dealloc来负责移除监听。
 - [DateTools](https://github.com/MatthewYork/DateTools.git)
 ----
 
+# Router
+- [routable-ios](https://github.com/clayallsopp/routable-ios)
+
 # UI
 
 # animation
@@ -133,6 +162,7 @@ hook dealloc来负责移除监听。
 - [RBBAnimation](https://github.com/robb/RBBAnimation.git)
 - [Canvas](https://github.com/CanvasPod/Canvas.git)Animate in Xcode without code
 - [YapAnimator](https://github.com/yapstudios/YapAnimator)
+- [CRAnimation](https://github.com/CRAnimation/CRAnimation)
 
 ## ActionSheet & Menu
 - [JGActionSheet](https://github.com/JonasGessner/JGActionSheet.git)
@@ -167,6 +197,10 @@ hook dealloc来负责移除监听。
 - [MDCSwipeToChoose](https://github.com/modocache/MDCSwipeToChoose.git)
 - [RPSlidingMenu](https://github.com/RobotsAndPencils/RPSlidingMenu.git)
 - [BRFlabbyTable](https://github.com/brocoo/BRFlabbyTable.git)
+- [SVGKit](https://github.com/SVGKit/SVGKit)
+- [lottie-ios](https://github.com/airbnb/lottie-ios)
+- [KMCGeigerCounter](https://github.com/kconner/KMCGeigerCounter)
+- [POP-MCAnimate](https://github.com/matthewcheok/POP-MCAnimate)
 
 #### Button
 - [DownloadButton](https://github.com/PavelKatunin/DownloadButton.git)
@@ -190,19 +224,28 @@ hook dealloc来负责移除监听。
 - [CHTCollectionViewWaterfallLayout](https://github.com/chiahsien/CHTCollectionViewWaterfallLayout.git) 瀑布流
 - [RACollectionViewReorderableTripletLayout](https://github.com/ra1028/RACollectionViewReorderableTripletLayout.git)
 - [MJParallaxCollectionView](https://github.com/mayuur/MJParallaxCollectionView.git)
+- [DZNEmptyDataSet](https://github.com/dzenbot/DZNEmptyDataSet)
+- [CCFoldCell](https://github.com/bref-Chan/CCFoldCell)
 
 ## Color
 - [Chameleon](https://github.com/ViccAlexander/Chameleon.git)
 - [color](https://github.com/thisandagain/color.git)
 - [Colours](https://github.com/bennyguitar/Colours.git)
 
-## Controller
+## UIController
 - [FDFullscreenPopGesture](https://github.com/forkingdog/FDFullscreenPopGesture.git) 全屏手势返回
 - [PKRevealController](https://github.com/pkluz/PKRevealController.git)
 - [ECSlidingViewController](https://github.com/ECSlidingViewController/ECSlidingViewController.git) Android风格侧滑抽屉
 - [SWRevealViewController](https://github.com/John-Lluch/SWRevealViewController.git)
 - [BTSimpleSideMenu](https://github.com/balram3429/BTSimpleSideMenu.git)
 - [RESideMenu](https://github.com/romaonthego/RESideMenu.git)
+- [CYLTabBarController](https://github.com/ChenYilong/CYLTabBarController)
+- [JZNavigationExtension](https://github.com/JazysYu/JZNavigationExtension)
+- [TLYShyNavBar](https://github.com/telly/TLYShyNavBar)
+- [RTRootNavigationController](https://github.com/rickytan/RTRootNavigationController)
+- [AXWebViewController](https://github.com/devedbox/AXWebViewController)
+- [VCTransitionsLibrary](https://github.com/ColinEberhardt/VCTransitionsLibrary)
+- [PYSearch](https://github.com/iphone5solo/PYSearch)
 
 ## Chart
 - [iOS-Echarts](https://github.com/Pluto-Y/iOS-Echarts.git)
@@ -219,10 +262,13 @@ hook dealloc来负责移除监听。
 - [ChatSecure-iOS](https://github.com/ChatSecure/ChatSecure-iOS.git)
 - [Messenger](https://github.com/relatedcode/Messenger.git)
 - [JBChartView](https://github.com/Jawbone/JBChartView.git)
+- [FishChat](https://github.com/yulingtianxia/FishChat)
+- [LLWeChat](https://github.com/gyjzh/LLWeChat)
 
 ## ImagePicker
 - [TZImagePickerController](https://github.com/banchichen/TZImagePickerController.git)
 - [PYPhotoBrowser](https://github.com/iphone5solo/PYPhotoBrowser.git)
+- [ZLPhotoBrowser](https://github.com/longitachi/ZLPhotoBrowser)
 - [MWPhotoBrowser](https://github.com/mwaterfall/MWPhotoBrowser.git)
 - [RSKImageCropper](https://github.com/ruslanskorb/RSKImageCropper.git)
 - [UzysAssetsPickerController](https://github.com/uzysjung/UzysAssetsPickerController.git)
@@ -234,13 +280,21 @@ hook dealloc来负责移除监听。
 - [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage.git) gif
 - [YLGIFImage](https://github.com/liyong03/YLGIFImage.git) gif
 
-#### Layout
+## Layout
 - [iCarousel](https://github.com/nicklockwood/iCarousel.git)
 - [MyLinearLayout](https://github.com/youngsoft/MyLinearLayout.git)
 - [OAStackView](https://github.com/oarrabi/OAStackView.git)
 - [SDAutoLayout](https://github.com/gsdios/SDAutoLayout.git)
 - [PureLayout](https://github.com/PureLayout/PureLayout.git)
 - **[Masonry](https://github.com/SnapKit/Masonry.git)**
+- [FDStackView](https://github.com/forkingdog/FDStackView)
+- [FlexBoxLayout](https://github.com/LPD-iOS/FlexBoxLayout)
+- [yoga](https://github.com/facebook/yoga)
+
+### Layout-DSL
+- [VKCssProtocol](https://github.com/Awhisper/VKCssProtocol)
+- [Tangram-iOS](https://github.com/alibaba/Tangram-iOS)
+- [JASONETTE-iOS](https://github.com/Jasonette/JASONETTE-iOS)
 
 ## Keyboard
 - [IHKeyboardAvoiding](https://github.com/IdleHandsApps/IHKeyboardAvoiding.git) 输入始终可见
@@ -291,6 +345,8 @@ hook dealloc来负责移除监听。
 
 ## ScrollView
 - [SDCycleScrollView](https://github.com/gsdios/SDCycleScrollView.git)
+- [LazyScrollView](https://github.com/alibaba/LazyScrollView) An iOS ScrollView to resolve the problem of reusability in views.
+- [CustomScrollView](https://github.com/ole/CustomScrollView)
 
 ## TextView
 - [SlackTextViewController](https://github.com/slackhq/SlackTextViewController.git) 自增长的textView和联想功能
@@ -312,6 +368,10 @@ hook dealloc来负责移除监听。
 - [FXForms](https://github.com/nicklockwood/FXForms.git) 类似设置页面解决方案
 - [SWTableViewCell](https://github.com/CEWendel/SWTableViewCell.git)
 
+## Label
+- [UICountingLabel](https://github.com/dataxpress/UICountingLabel)
+- [KILabel](https://github.com/Krelborn/KILabel)
+
 ## Other
 - [timeLineiOS](https://github.com/romaHerman/timeLineiOS.git) 时间线
 - [DGCuteHelper](https://github.com/Desgard/DGCuteHelper.git) 粘性效果
@@ -319,8 +379,10 @@ hook dealloc来负责移除监听。
 - [StackBluriOS](https://github.com/tomsoft1/StackBluriOS.git) 近似高斯模糊算法
 - [FXBlurView](https://github.com/nicklockwood/FXBlurView.git)
 - **[AsyncDisplayKit](https://github.com/facebook/AsyncDisplayKit.git)**
+- [Texture](https://github.com/TextureGroup/Texture)
 - [KZLineDrawer](https://github.com/krzysztofzablocki/KZLineDrawer.git) 手指画图
-- [LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit.git) 视频流
+- [UberSignature](https://github.com/uber/UberSignature)
+- [XXNibBridge](https://github.com/sunnyxx/XXNibBridge)
 
 ----
 
@@ -329,6 +391,15 @@ hook dealloc来负责移除监听。
 - [RHObjectiveBeagle](https://github.com/heardrwt/RHObjectiveBeagle.git) view debug tool
 - [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack.git)
 - [BugshotKit](https://github.com/marcoarment/BugshotKit.git)
+- [Clue](https://github.com/Geek-1001/Clue) Flexible bug report framework for iOS
+- [MLeaksFinder](https://github.com/Zepo/MLeaksFinder)
+- [GYBootingProtection](https://github.com/liuslevis/GYBootingProtection)
+- [DBDebugToolkit](https://github.com/dbukowski/DBDebugToolkit)
+- [IPAPatch](https://github.com/Naituw/IPAPatch)
+- [NetworkEye](https://github.com/coderyi/NetworkEye)
+- [FBRetainCycleDetector](https://github.com/facebook/FBRetainCycleDetector)
+- [iOS-Hierarchy-Viewer](https://github.com/glock45/iOS-Hierarchy-Viewer)
+- [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)
 
 # Test
 - [ocmock](https://github.com/erikdoe/ocmock.git)
@@ -355,3 +426,6 @@ hook dealloc来负责移除监听。
 - [CocoaHTTPServer](https://github.com/robbiehanson/CocoaHTTPServer.git)
 - [radiant-player-mac](https://github.com/radiant-player/radiant-player-mac.git) 音乐播放器for mac
 - [ARAnalytics](https://github.com/orta/ARAnalytics.git)  It currently supports on iOS: Mixpanel, Localytics, Flurry, GoogleAnalytics, KISSmetrics, Crittercism, Crashlytics, Fabric, Bugsnag, Countly, Helpshift, Tapstream, NewRelic, Amplitude, HockeyApp, HockeyAppLib, ParseAnalytics, HeapAnalytics, Chartbeat, UMengAnalytics, Librato, Segmentio, Swrve, YandexMobileMetrica, Adjust, AppsFlyer, Branch, Snowplow, Sentry, Intercom, Keen, Adobe and MobileAppTracker/Tune.
+- [libextobjc](https://github.com/jspahrsummers/libextobjc)
+- [Onboard](https://github.com/mamaral/Onboard)
+- [electrino](https://github.com/pojala/electrino)
