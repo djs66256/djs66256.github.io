@@ -2,7 +2,7 @@
 title: 开源项目列表
 date: 2012-07-17 01:57:37
 categories:
-- project
+- 开源项目汇总
 tags:
 ---
 
