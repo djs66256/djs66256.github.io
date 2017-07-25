@@ -404,6 +404,11 @@ hook dealloc来负责移除监听。
 # Test
 - [ocmock](https://github.com/erikdoe/ocmock.git)
 - [KIF](https://github.com/kif-framework/KIF.git)
+- [OCMockito](https://github.com/jonreid/OCMockito)
+- [expecta](https://github.com/specta/expecta)
+- [OCHamcrest](https://github.com/hamcrest/OCHamcrest)
+- [specta](https://github.com/specta/specta)
+- [cedar](https://github.com/pivotal/cedar)
 
 # Other
 - [FlatUIKit](https://github.com/Grouper/FlatUIKit.git)
