@@ -157,11 +157,26 @@ hook dealloc来负责移除监听。
 # animation
 
 - [Keyframes](https://github.com/facebookincubator/Keyframes.git) 使用AE做动画
+- [lottie-ios](https://github.com/airbnb/lottie-ios)
 - [AHEasing](https://github.com/warrenm/AHEasing.git) timeFunction
 - **[popping](https://github.com/schneiderandre/popping.git)**
+
+依靠CADisplayLink来达到高帧率的动画效果。但是太依赖CPU，所以性能不一定比CA优秀。一般情况下感觉不太需要他来做动画。
+
 - [RBBAnimation](https://github.com/robb/RBBAnimation.git)
 - [Canvas](https://github.com/CanvasPod/Canvas.git)Animate in Xcode without code
 - [YapAnimator](https://github.com/yapstudios/YapAnimator)
+
+和popping原理类似，使用CADisplayLink，实时去修改视图属性。
+```swift
+YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
+	return self.square.frame
+}, eachFrame: { [unowned self] (animator) in
+	self.square.frame = animator.current.value
+})
+```
+看似比popping简单点，但是popping是模仿CoreAnimation做的，所以没有可比性。建议使用popping。
+
 - [CRAnimation](https://github.com/CRAnimation/CRAnimation)
 
 ## ActionSheet & Menu
@@ -198,7 +213,6 @@ hook dealloc来负责移除监听。
 - [RPSlidingMenu](https://github.com/RobotsAndPencils/RPSlidingMenu.git)
 - [BRFlabbyTable](https://github.com/brocoo/BRFlabbyTable.git)
 - [SVGKit](https://github.com/SVGKit/SVGKit)
-- [lottie-ios](https://github.com/airbnb/lottie-ios)
 - [KMCGeigerCounter](https://github.com/kconner/KMCGeigerCounter)
 - [POP-MCAnimate](https://github.com/matthewcheok/POP-MCAnimate)
 
