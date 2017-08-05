@@ -66,17 +66,21 @@ tags:
 - [FastCoding](https://github.com/nicklockwood/FastCoding)
 
 ### KVO
-- [RZDataBinding](https://github.com/Raizlabs/RZDataBinding)
+- **[RZDataBinding](https://github.com/Raizlabs/RZDataBinding)**
 
-##### [KVOController](https://github.com/facebook/KVOController.git)
+对象绑定思想也是使用associate object，同时也hook了dealloc。但是很多地方使用了assign而不是weak。不推荐使用
+
+他提出一个事务的概念，将众多变更一次性提交，但好像没什么太大的意义。
+
+- **[KVOController](https://github.com/facebook/KVOController.git)**
 
 FB出品，使用associate object管理内存和负责移除KVO，非常良好的实现方式，推荐使用这个。
 
-##### [HTBKVObservation](https://github.com/thehtb/HTBKVObservation)
+- **[HTBKVObservation](https://github.com/thehtb/HTBKVObservation)**
 
 hook dealloc来负责移除，需要自己来保证observation的生命周期，使用上不如FB的方便。
 
-##### [MAKVONotificationCenter](https://github.com/mikeash/MAKVONotificationCenter)
+- **[MAKVONotificationCenter](https://github.com/mikeash/MAKVONotificationCenter)**
 
 hook dealloc来负责移除监听。
 
@@ -151,6 +155,13 @@ hook dealloc来负责移除监听。
 
 # Router
 - [routable-ios](https://github.com/clayallsopp/routable-ios)
+
+# Hybrid
+
+- [Framework7](https://github.com/nolimits4web/Framework7)
+- [ReactNative]
+- [ng-cordova](https://github.com/ionic-team/ng-cordova)
+- [code-push](https://github.com/Microsoft/code-push)
 
 # UI
 
