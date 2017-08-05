@@ -154,7 +154,19 @@ hook dealloc来负责移除监听。
 ----
 
 # Router
-- [routable-ios](https://github.com/clayallsopp/routable-ios)
+
+- **[routable-ios](https://github.com/clayallsopp/routable-ios)**
+- **[HHRouter](https://github.com/lightory/HHRouter)**
+这两个都是类似的实现，比较简单。
+
+- **[JLRoutes](https://github.com/joeldev/JLRoutes)**
+脱离UIKit，非常好用的一个实现，据说性较低，没有实际验证过。
+
+- **[MGJRouter](https://github.com/meili/MGJRouter)**
+蘑菇街的实现，算法经过优化的JLRoutes，实际没有验证过。
+
+- **[CTMediator](https://github.com/casatwy/CTMediator)**
+使用中间人来解决路由系统，使用target-action方式注册行为，
 
 # Hybrid
 
