@@ -2,7 +2,7 @@
 title: 开源项目列表
 date: 2012-07-17 01:57:37
 categories:
-- 开源项目汇总
+- 开源项目
 tags:
 ---
 
@@ -188,7 +188,7 @@ hook dealloc来负责移除监听。
 
 - [RBBAnimation](https://github.com/robb/RBBAnimation.git)
 - [Canvas](https://github.com/CanvasPod/Canvas.git)Animate in Xcode without code
-- [YapAnimator](https://github.com/yapstudios/YapAnimator)
+- **[YapAnimator](https://github.com/yapstudios/YapAnimator)**
 
 和popping原理类似，使用CADisplayLink，实时去修改视图属性。
 ```swift
