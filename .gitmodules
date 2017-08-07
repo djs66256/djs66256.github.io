@@ -1,3 +1,4 @@
 [submodule "themes/yilia"]
 	path = themes/yilia
 	url = https://github.com/djs66256/hexo-theme-yilia
+	branch = my_config
