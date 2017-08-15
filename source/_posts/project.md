@@ -172,8 +172,17 @@ hook dealloc来负责移除监听。
 
 - [Framework7](https://github.com/nolimits4web/Framework7)
 - [ReactNative]
-- [ng-cordova](https://github.com/ionic-team/ng-cordova)
+- [weex](https://github.com/apache/incubator-weex)
+- [PhoneGap]
+- [cordova](https://github.com/ionic-team/ng-cordova)
 - [code-push](https://github.com/Microsoft/code-push)
+- [BeeFramework](https://github.com/gavinkwoe/BeeFramework)
+- [VasSonic](https://github.com/Tencent/VasSonic)
+- [ionicframework](https://ionicframework.com)
+- [mobileangularui](http://mobileangularui.com/)
+- [telerik](http://www.telerik.com/)
+- [apicloud]
+- [appcan]
 
 # UI
 
@@ -327,6 +336,7 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [FDStackView](https://github.com/forkingdog/FDStackView)
 - [FlexBoxLayout](https://github.com/LPD-iOS/FlexBoxLayout)
 - [yoga](https://github.com/facebook/yoga)
+- [layout](https://github.com/schibsted/layout)
 
 ### Layout-DSL
 - [VKCssProtocol](https://github.com/Awhisper/VKCssProtocol)
