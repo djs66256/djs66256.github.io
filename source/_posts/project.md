@@ -170,7 +170,9 @@ hook dealloc来负责移除监听。
 
 # Hybrid
 
-- [Framework7](https://github.com/nolimits4web/Framework7)
+- **[Framework7](https://github.com/nolimits4web/Framework7)**
+一款模仿ios和android原生特性的h5组件库，效果来看很不错，如果是写纯网页应用可以考虑使用这个。
+
 - [ReactNative]
 - [weex](https://github.com/apache/incubator-weex)
 - [PhoneGap]
