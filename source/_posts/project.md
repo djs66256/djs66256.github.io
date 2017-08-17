@@ -171,16 +171,53 @@ hook dealloc来负责移除监听。
 # Hybrid
 
 - **[Framework7](https://github.com/nolimits4web/Framework7)**
-一款模仿ios和android原生特性的h5组件库，效果来看很不错，如果是写纯网页应用可以考虑使用这个。
 
-- [ReactNative]
-- [weex](https://github.com/apache/incubator-weex)
-- [PhoneGap]
-- [cordova](https://github.com/ionic-team/ng-cordova)
-- [code-push](https://github.com/Microsoft/code-push)
+一款模仿ios和android原生特性的h5组件库，效果来看很不错，可以使用vue和react，如果是写纯网页应用可以考虑使用这个。
+
+- **[ReactNative](https://github.com/facebook/react-native)**
+
+1.4k贡献者，社区非常活跃，目前最热门的方案。拥有非常完善的debug方式以及各种工具，同时React的发展也特别的好。可以完成整个app的功能，也可以作为app的一部分嵌入使用。首推。
+
+大部分组件可以支持iOS和Android，也有很多定制化的组件，所以有些时候需要区分平台来写，也不能无缝降级h5。
+
+- **[weex](https://github.com/apache/incubator-weex)**
+
+和react-native竞争的产品，由阿里出品。框架会比react-native小一点，但功能也会少很多，排版是受阉割的flex，和官方所说的无缝降级h5有出入。一份代码能够同时在iOS和Android上运行，但为了统一也失去了很多的系统特性，感觉没有官方吹的那样厉害。
+
+- **[PhoneGap]**
+cordova的商业版
+
+- **[cordova](https://github.com/ionic-team/ng-cordova)**
+
+利用webview js和native的通信实现web端调用native方法。
+
+原理和JSWebviewBridge类似，利用的都是iframe和messageQueue，require组件是直接在<head>中插入<script>实现，不知道在组件变多的情况下是否会影响性能，考虑到lazy load的情况，可能会好一点。
+
+组件需要自己根据需要添加，组件比较全面，该有的都有。
+
+但是iOS端是基于UIWebView实现的，不知什么时候能够替换成WKWebView，来提升性能。
+
+- **[code-push](https://github.com/Microsoft/code-push)**
+
+基于cordova和react的云端服务
+
 - [BeeFramework](https://github.com/gavinkwoe/BeeFramework)
-- [VasSonic](https://github.com/Tencent/VasSonic)
-- [ionicframework](https://ionicframework.com)
+- **[VasSonic](https://github.com/Tencent/VasSonic)**
+
+腾讯的加速web载入速度的库，原理其实就是客户端增加native缓存管理，减少获取某些静态文件的请求时间。
+
+iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebView。
+
+其中获取js运行上下文用了黑科技。
+
+```
+[self.webView valueForKeyPath:@"documentView.webView.mainFrame.javaScriptContext"];
+```
+
+- **[ionicframework](https://ionicframework.com)**
+
+基于cordova的一款h5组件库，效果很不错，增加完善了很多native组件，使用的是Angular
+
 - [mobileangularui](http://mobileangularui.com/)
 - [telerik](http://www.telerik.com/)
 - [apicloud]
