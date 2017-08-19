@@ -202,6 +202,7 @@ cordova的商业版
 基于cordova和react的云端服务
 
 - [BeeFramework](https://github.com/gavinkwoe/BeeFramework)
+- [samurai-native](https://github.com/hackers-painters/samurai-native)
 - **[VasSonic](https://github.com/Tencent/VasSonic)**
 
 腾讯的加速web载入速度的库，原理其实就是客户端增加native缓存管理，减少获取某些静态文件的请求时间。
@@ -218,10 +219,9 @@ iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebVi
 
 基于cordova的一款h5组件库，效果很不错，增加完善了很多native组件，使用的是Angular
 
-- [mobileangularui](http://mobileangularui.com/)
-- [telerik](http://www.telerik.com/)
-- [apicloud]
-- [appcan]
+- **[mobileangularui](http://mobileangularui.com/)**
+
+也是一个UI组件库
 
 - **[Tangram-iOS](https://github.com/alibaba/Tangram-iOS)**
 
