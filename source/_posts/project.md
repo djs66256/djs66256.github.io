@@ -201,8 +201,14 @@ cordova的商业版
 
 基于cordova和react的云端服务
 
-- [BeeFramework](https://github.com/gavinkwoe/BeeFramework)
-- [samurai-native](https://github.com/hackers-painters/samurai-native)
+- **[BeeFramework](https://github.com/gavinkwoe/BeeFramework)**
+
+利用xml来实现布局，目前已经废弃。
+
+- **[samurai-native](https://github.com/hackers-painters/samurai-native)**
+
+利用css和html来实现布局和事件绑定，但是实现还是需要原生代码，所以不能独立的去实现一个页面的功能。
+
 - **[VasSonic](https://github.com/Tencent/VasSonic)**
 
 腾讯的加速web载入速度的库，原理其实就是客户端增加native缓存管理，减少获取某些静态文件的请求时间。
