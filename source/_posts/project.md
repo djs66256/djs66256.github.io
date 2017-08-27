@@ -18,8 +18,20 @@ tags:
 - [CTVideoPlayerView](https://github.com/casatwy/CTVideoPlayerView)
 
 # Cache
-- [YYCache](https://github.com/ibireme/YYCache.git)
-- [PINCache](https://github.com/pinterest/PINCache.git)
+- **[YYCache](https://github.com/ibireme/YYCache.git)**
+
+使用了LRU策略
+
+内存缓存使用了线性链表+NSDictionary来实现，由于LRU的特性，插入永远在开始，而删除永远在结尾，所以拥有较高的性能。但是查找还是依赖于hash表来实现。
+
+磁盘缓存使用了sqlite来保存文件缓存信息（filename, last_modify_time)，所以在读写小数据的时候（20KB）会直接在sqlite中读写，而不会生成一个独立的文件。所以在小文件和未命中的情况下效率会高很多。而读写大文件时，效率会降低一些，考虑到sqlite的缓存和执行，并不会降低太多。由于sqlite对时间创建了索引，所以在缓存过期查找上面会优秀一些。这种设计解决了小文件和未命中的效率问题，但是并不能实现高并发读写文件。
+
+- **[PINCache](https://github.com/pinterest/PINCache.git)**
+
+使用了大量的Lock来处理读写，没有太多的特别优化。
+
+磁盘缓存单纯使用了文件缓存，在初始化的时候就把整个目录及其元素的属性读到内存，来提高效率，但是使用的是数组存储，效率一般。
+
 - [SPTPersistentCache](https://github.com/spotify/SPTPersistentCache.git)
 - [Haneke](https://github.com/Haneke/Haneke.git) image cache
 - [OSCache](https://github.com/nicklockwood/OSCache.git)
