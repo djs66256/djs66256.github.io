@@ -28,11 +28,16 @@ tags:
 
 - **[PINCache](https://github.com/pinterest/PINCache.git)**
 
-使用了大量的Lock来处理读写，没有太多的特别优化。
+使用了大量的Lock来处理读写，拥有异步读写接口，没有太多的特别优化。
 
 磁盘缓存单纯使用了文件缓存，在初始化的时候就把整个目录及其元素的属性读到内存，来提高效率，但是使用的是数组存储，效率一般。
 
-- [SPTPersistentCache](https://github.com/spotify/SPTPersistentCache.git)
+- **[SPTPersistentCache](https://github.com/spotify/SPTPersistentCache.git)**
+
+利用CRC32来判断不同文件和命名文件，性能可能由于MD5。
+
+他将数据信息通过memory map的方式写到了文件头部，说是为了并发读写，但这也时每次更新updateTime需要写整个文件，这样必定会导致性能降低。个人建议还是把文件信息写到另一个文件中，方便内存缓存。
+
 - [Haneke](https://github.com/Haneke/Haneke.git) image cache
 - [OSCache](https://github.com/nicklockwood/OSCache.git)
 - [SDWebImage](https://github.com/rs/SDWebImage.git)
