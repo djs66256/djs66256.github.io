@@ -34,14 +34,25 @@ tags:
 
 - **[SPTPersistentCache](https://github.com/spotify/SPTPersistentCache.git)**
 
-利用CRC32来判断不同文件和命名文件，性能可能由于MD5。
+利用CRC32来校验文件，据说速度较快。
 
 他将数据信息通过memory map的方式写到了文件头部，说是为了并发读写，但这也时每次更新updateTime需要写整个文件，这样必定会导致性能降低。个人建议还是把文件信息写到另一个文件中，方便内存缓存。
 
 - [Haneke](https://github.com/Haneke/Haneke.git) image cache
-- [OSCache](https://github.com/nicklockwood/OSCache.git)
+- **[OSCache](https://github.com/nicklockwood/OSCache.git)**
+
+一个模范NSCache的实现，内部使用NSDictionary。
+
 - [SDWebImage](https://github.com/rs/SDWebImage.git)
-- [FastImageCache](https://github.com/path/FastImageCache.git)
+- **[FastImageCache](https://github.com/path/FastImageCache.git)**
+
+该作者认为效率问题主要出现在图片从磁盘读取到内存，再进行解压，以及渲染前的内存拷贝。解决这类问题的最好方法就是进行memory map，作者也指出了这种方式会导致一张高压缩率的图片，进行内存映射后会变得很大这一非常大的缺陷。
+
+作者将图片按照图片size，rgba等信息进行分类，分别存储于不同的image table里面，同一个table里面会依次写入多张图片信息。但是这样会导致一个table过于庞大，而作者也没有给出非常好的过期策略以及删除部分缓存的策略。
+
+作者将图片元信息metadata存储于另一个文件中，可惜的是使用了json序列化，导致每次更新必须全量更新，在数据量庞大的时候可能会产生性能问题吧。
+
+这并不适用于大量图片以及图片尺寸较多的场景。
 
 # Component
 - [HubFramework](https://github.com/spotify/HubFramework.git)
