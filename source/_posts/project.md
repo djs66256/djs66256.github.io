@@ -38,21 +38,47 @@ tags:
 
 他将数据信息通过memory map的方式写到了文件头部，说是为了并发读写，但这也时每次更新updateTime需要写整个文件，这样必定会导致性能降低。个人建议还是把文件信息写到另一个文件中，方便内存缓存。
 
-- [Haneke](https://github.com/Haneke/Haneke.git) image cache
 - **[OSCache](https://github.com/nicklockwood/OSCache.git)**
 
-一个模范NSCache的实现，内部使用NSDictionary。
+一个模仿NSCache的实现，内部使用NSDictionary。
 
-- [SDWebImage](https://github.com/rs/SDWebImage.git)
+- **[Haneke](https://github.com/Haneke/Haneke.git) image cache**
+
+他和SDWebImage非常相似，个人看来，这个的代码及其结构会比SD好一些，但是功能太有限，就像作者自己说的是一个轻量级的实现。
+
+- **[SDWebImage](https://github.com/rs/SDWebImage.git)**
+
+实现功能非常完善，是目前最好用的一个图片缓存库了。但是也有几个小问题。
+
+图片读取全部在一个子线程中进行，在高并发读取的时候会阻塞线程，同样下载和解码也会有类似的问题。
+
+图片的二次处理能力不够（比如手动加圆角，裁剪，滤镜），好在目前大部分工作CDN都会帮我们做掉。
+
+预加载图片无法和正常加载使用同一套机制，预加载和正常加载如果同时触发会加载2次。
+
+在扩展方法的时候，直接在UI组件上添加方法，这就导致了每次引入新特性的时候都需要增加一个系统类的扩展（比如UIImage），更好的方式应该是暴露一个代理对象：
+
+```objc
+[view sd_setImageUrl:url];
+// 改为这样会更好一点
+[view.sd setImageUrl:url];
+```
+
 - **[FastImageCache](https://github.com/path/FastImageCache.git)**
 
 该作者认为效率问题主要出现在图片从磁盘读取到内存，再进行解压，以及渲染前的内存拷贝。解决这类问题的最好方法就是进行memory map，作者也指出了这种方式会导致一张高压缩率的图片，进行内存映射后会变得很大这一非常大的缺陷。
+
+```c
+void *mmap(void *start, size_t length, int prot, int flags, int fd, off_t offset);
+int msync(void *addr, size_t len, int flags)
+int munmap(void *start, size_t length);
+```
 
 作者将图片按照图片size，rgba等信息进行分类，分别存储于不同的image table里面，同一个table里面会依次写入多张图片信息。但是这样会导致一个table过于庞大，而作者也没有给出非常好的过期策略以及删除部分缓存的策略。
 
 作者将图片元信息metadata存储于另一个文件中，可惜的是使用了json序列化，导致每次更新必须全量更新，在数据量庞大的时候可能会产生性能问题吧。
 
-这并不适用于大量图片以及图片尺寸较多的场景。
+这并不适用于大量图片以及图片尺寸较多的场景，但是可以用于部分频繁设置image的场景。
 
 # Component
 - [HubFramework](https://github.com/spotify/HubFramework.git)
