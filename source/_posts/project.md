@@ -149,6 +149,8 @@ hook dealloc来负责移除监听。
 - [sequelpro](https://github.com/sequelpro/sequelpro)
 - [GYDataCenter](https://github.com/Zepo/GYDataCenter)
 - [wcdb](https://github.com/Tencent/wcdb)
+- [rocksdb]
+- [leveldb]
 
 # Notes
 - [iOS-Source-Code-Analyze](https://github.com/Draveness/iOS-Source-Code-Analyze.git) 笔记
