@@ -247,7 +247,7 @@ cordova的商业版
 
 利用webview js和native的通信实现web端调用native方法。
 
-原理和JSWebviewBridge类似，利用的都是iframe和messageQueue，require组件是直接在<head>中插入<script>实现，不知道在组件变多的情况下是否会影响性能，考虑到lazy load的情况，可能会好一点。
+原理和JSWebviewBridge类似，利用的都是iframe和messageQueue，require组件是直接在head中插入script实现，不知道在组件变多的情况下是否会影响性能，考虑到lazy load的情况，可能会好一点。
 
 组件需要自己根据需要添加，组件比较全面，该有的都有。
 
