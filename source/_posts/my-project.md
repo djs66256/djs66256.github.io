@@ -43,3 +43,11 @@ tags:
 - [全局数据同步（三）终极方案](/2017/07/07/2017-07-07-全局数据同步（三）终极方案/)
 
 <br>
+
+## [ExDebug](https://github.com/djs66256/ExDebug) <a class="github-button" href="https://github.com/djs66256/ExDebug" data-icon="octicon-star" data-size="large" aria-label="Star djs66256/ExDebug on GitHub">Star</a>
+
+一个客户端debug扩展工具，你可以在pc端远程的查看log与设备状况了。
+
+相关介绍可见：
+
+- [疯狂日志系统](/2017/04/17/2017-04-18-疯狂日志系统/)
