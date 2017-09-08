@@ -142,6 +142,15 @@ hook dealloc来负责移除监听。
 - [YTKKeyValueStore](https://github.com/yuantiku/YTKKeyValueStore.git)
 - [YapDatabase](https://github.com/yapstudios/YapDatabase.git)
 - **[realm-cocoa](https://github.com/realm/realm-cocoa.git)**
+
+和sqlite一样，也是一种关系型数据库（这里讨论本地的realm）。
+
+数据保存方式为内存映射，按照realm的说法是sqlite在读取保存数据时候会产生内存拷贝而影响性能。
+
+数据按照列（column）来保存，每一列的数据格式是固定的，在查找效率上也会提升。同时列拥有不同的chunk来同步到磁盘，这样在读写的时候可以只锁定目标chunk而达到高并发读写。
+
+数据结构实现为B+树，与sqlite使用的B树不同，B+树保证了叶子节点存储的连续性。
+
 - [CoreObject](https://github.com/etoile/CoreObject.git) with version control
 - [ensembles](https://github.com/drewmccormack/ensembles.git) A synchronization framework for Core Data.
 - [MagicalRecord](https://github.com/magicalpanda/MagicalRecord.git) Super Awesome Easy Fetching for Core Data
@@ -150,7 +159,11 @@ hook dealloc来负责移除监听。
 - [GYDataCenter](https://github.com/Zepo/GYDataCenter)
 - [wcdb](https://github.com/Tencent/wcdb)
 - [rocksdb]
-- [leveldb]
+- **[leveldb]**
+
+是基于Google的big data实现的一套KV存储，原理简单的说就是每次操作（增删改），都是生成一条数据，存入文件，在一定的条件下，会对这些文件进行merge操作，来保证文件的大小。这种方案解决了高并发写的问题，但是增加了读的开销，是一种折中方案。在移动端的场景下好像没有这么高的并发写场景，应该没有必要使用。
+
+数据结构使用跳跃链表（skip list）来实现，他比B/B+数的实现简单，同时也有不错的性能。
 
 # Notes
 - [iOS-Source-Code-Analyze](https://github.com/Draveness/iOS-Source-Code-Analyze.git) 笔记
