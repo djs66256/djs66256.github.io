@@ -83,7 +83,10 @@ int munmap(void *start, size_t length);
 # Component
 - [HubFramework](https://github.com/spotify/HubFramework.git)
 - [BeeHive](https://github.com/alibaba/BeeHive.git) alibaba
-- [IGListKit](https://github.com/Instagram/IGListKit)
+- **[IGListKit](https://github.com/Instagram/IGListKit)**
+
+事件驱动的collectionView组件化封装。具体参考[IGListKit简析与DDComponent](/2017/05/23/2017-05-23-IGListKit分析/)
+
 - [componentkit](https://github.com/facebook/componentkit)
 
 # Crash Report
