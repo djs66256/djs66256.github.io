@@ -1,20 +1,20 @@
 #! /bin/sh
 
-echo '=========================='
 echo 'Begin deploy hexo blog ...'
-hexo deploy -g
-echo 'Finish deploy hexo blog.'
 echo '=========================='
+hexo deploy -g
+echo '=========================='
+echo 'Finish deploy hexo blog.'
 
 echo ''
 
 # push hexo
-echo '=========================='
 echo 'Begin push to hexo ...'
+echo '=========================='
 git add *
 git commit -m 'update'
 git pull origin hexo
 git push origin hexo
-echo 'Finish push to hexo.'
 echo '=========================='
+echo 'Finish push to hexo.'
 
