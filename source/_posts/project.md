@@ -560,8 +560,14 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 
 # Test
 - [ocmock](https://github.com/erikdoe/ocmock.git)
-- [KIF](https://github.com/kif-framework/KIF.git)
+
+使用NSProxy对象替代原本的对象，在response和forward中记录和处理、转发消息来实现，是非常好用的mock类库。
+
 - [OCMockito](https://github.com/jonreid/OCMockito)
+
+类似于ocmock，专注度不高。
+
+- [KIF](https://github.com/kif-framework/KIF.git)
 - [expecta](https://github.com/specta/expecta)
 - [OCHamcrest](https://github.com/hamcrest/OCHamcrest)
 - [specta](https://github.com/specta/specta)
