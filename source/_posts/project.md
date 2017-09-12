@@ -142,7 +142,10 @@ hook dealloc来负责移除，需要自己来保证observation的生命周期，
 hook dealloc来负责移除监听。
 
 # DB
-- [YTKKeyValueStore](https://github.com/yuantiku/YTKKeyValueStore.git)
+- **[YTKKeyValueStore](https://github.com/yuantiku/YTKKeyValueStore.git)**
+
+利用sqlite做的一个简单的KV存储。
+
 - [YapDatabase](https://github.com/yapstudios/YapDatabase.git)
 - **[realm-cocoa](https://github.com/realm/realm-cocoa.git)**
 
@@ -157,11 +160,22 @@ hook dealloc来负责移除监听。
 - [CoreObject](https://github.com/etoile/CoreObject.git) with version control
 - [ensembles](https://github.com/drewmccormack/ensembles.git) A synchronization framework for Core Data.
 - [MagicalRecord](https://github.com/magicalpanda/MagicalRecord.git) Super Awesome Easy Fetching for Core Data
-- [fmdb](https://github.com/ccgus/fmdb.git)
+- **[fmdb](https://github.com/ccgus/fmdb.git)**
+
+sqlite的轻量级封装，缺少ORM，但是也非常简单，容易debug。在少量场景的情况下推荐使用。
+
 - [sequelpro](https://github.com/sequelpro/sequelpro)
 - [GYDataCenter](https://github.com/Zepo/GYDataCenter)
-- [wcdb](https://github.com/Tencent/wcdb)
-- [rocksdb]
+- **[wcdb](https://github.com/Tencent/wcdb)**
+
+微信封装的sqlite ORM。支持多线程和数据修复，支持数据加密，用接口的方式强制格式化sql语句，功能比较强大，缺点是必须使用c++来实现其model，实现也较为复杂。如果在这方面需求量不大的情况下，没有必要迁移。
+
+其sql拼装是字符串累加，而不是从语法树生成，所以必须依赖底层sqlite的存储方式。
+
+- **[rocksdb]**
+
+基于leveldb，对齐进行了多线程以及ssd的优化。
+
 - **[leveldb]**
 
 是基于Google的big data实现的一套KV存储，原理简单的说就是每次操作（增删改），都是生成一条数据，存入文件，在一定的条件下，会对这些文件进行merge操作，来保证文件的大小。这种方案解决了高并发写的问题，但是增加了读的开销，是一种折中方案。在移动端的场景下好像没有这么高的并发写场景，应该没有必要使用。
