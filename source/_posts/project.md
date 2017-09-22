@@ -81,8 +81,11 @@ int munmap(void *start, size_t length);
 这并不适用于大量图片以及图片尺寸较多的场景，但是可以用于部分频繁设置image的场景。
 
 # Component
-- [HubFramework](https://github.com/spotify/HubFramework.git)
 - [BeeHive](https://github.com/alibaba/BeeHive.git) alibaba
+- **[HubFramework](https://github.com/spotify/HubFramework.git)**
+
+也是一款拆分CollectionView的设计，个人认为拆分的太细了，导致整个系统过于复杂，学习成本太高。
+
 - **[IGListKit](https://github.com/Instagram/IGListKit)**
 
 事件驱动的collectionView组件化封装。具体参考[IGListKit简析与DDComponent](/2017/05/23/2017-05-23-IGListKit分析/)
