@@ -146,7 +146,10 @@ hook dealloc来负责移除监听。
 
 利用sqlite做的一个简单的KV存储。
 
-- [YapDatabase](https://github.com/yapstudios/YapDatabase.git)
+- **[YapDatabase](https://github.com/yapstudios/YapDatabase.git)**
+
+利用sqlite做的一个KV存储，会保存数据元信息和对象间的关系，优化了多线程读写。
+
 - **[realm-cocoa](https://github.com/realm/realm-cocoa.git)**
 
 和sqlite一样，也是一种关系型数据库（这里讨论本地的realm）。
@@ -166,6 +169,11 @@ sqlite的轻量级封装，缺少ORM，但是也非常简单，容易debug。在
 
 - [sequelpro](https://github.com/sequelpro/sequelpro)
 - [GYDataCenter](https://github.com/Zepo/GYDataCenter)
+
+- **[sqlcipher](https://github.com/sqlcipher/sqlcipher)**
+
+SQLCipher is an SQLite extension that provides 256 bit AES encryption of database files.
+
 - **[wcdb](https://github.com/Tencent/wcdb)**
 
 微信封装的sqlite ORM。支持多线程和数据修复，支持数据加密，用接口的方式强制格式化sql语句，功能比较强大，缺点是必须使用c++来实现其model，实现也较为复杂。如果在这方面需求量不大的情况下，没有必要迁移。
