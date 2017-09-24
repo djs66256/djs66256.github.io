@@ -337,8 +337,14 @@ iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebVi
 
 # animation
 
-- [Keyframes](https://github.com/facebookincubator/Keyframes.git) 使用AE做动画
-- [lottie-ios](https://github.com/airbnb/lottie-ios)
+- **[Keyframes](https://github.com/facebookincubator/Keyframes.git)**
+
+功能类似于Lottie。
+
+- **[lottie-ios](https://github.com/airbnb/lottie-ios)**
+
+利用AE生成JSON文件来简化交互动画的编写。
+
 - [AHEasing](https://github.com/warrenm/AHEasing.git) timeFunction
 - **[popping](https://github.com/schneiderandre/popping.git)**
 
