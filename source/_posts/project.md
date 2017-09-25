@@ -104,10 +104,27 @@ int munmap(void *start, size_t length);
 # Kit
 - [AppDevKit](https://github.com/yahoo/AppDevKit.git)
 - [YYKit](https://github.com/ibireme/YYKit.git)
-- [EasyIOS](https://github.com/zhuchaowe/EasyIOS.git)
+- **[EasyIOS](https://github.com/zhuchaowe/EasyIOS.git)**
+
+没有参考价值
+
 - [YOLOKit](https://github.com/mxcl/YOLOKit.git)
-- [BlocksKit](https://github.com/zwaldowski/BlocksKit.git)
-- [Bolts-ObjC](https://github.com/BoltsFramework/Bolts-ObjC.git) Bolts is a collection of low-level libraries designed to make developing mobile apps easier.
+- **[BlocksKit](https://github.com/zwaldowski/BlocksKit.git)**
+
+可以将他的功能归为两类：
+
+1. sequence，swift中自带的概念，和reactive的概念一致，是一种流式的写法。
+2. 动态delegate，实现动态delegate的转换，从而实现了大量UI层的回调简化。
+
+功能比较多，除了sequence和UI层的事件外，还有associate object、perform以及KVO（和KVOController类似）。如果是objc开发，可以考虑使用。
+
+- **[Bolts-ObjC](https://github.com/BoltsFramework/Bolts-ObjC.git)**
+
+主要提供了两个工具：
+
+1. Task，类似于promise，以及reactive，个人觉得不如另外两者。
+2. AppLink，一种多平台兼容的跳转方案，同时兼容native和web等，应用面会比MGJRouter这种广一点，但实现上不是非常的完善和通用。
+
 - [QMUI_iOS](https://github.com/QMUI/QMUI_iOS)
 
 - [libextobjc](https://github.com/jspahrsummers/libextobjc)
