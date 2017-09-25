@@ -127,7 +127,15 @@ int munmap(void *start, size_t length);
 
 - [QMUI_iOS](https://github.com/QMUI/QMUI_iOS)
 
-- [libextobjc](https://github.com/jspahrsummers/libextobjc)
+- **[libextobjc](https://github.com/jspahrsummers/libextobjc)**
+
+非常有名的几个宏定义的出处，对宏的理解和运用都非常厉害，但是平常经常使用的也就那么几个。
+
+```objc
+@strongify()
+@weakify()
+@onExit{}
+```
 
 # Data
 - [GPUImage](https://github.com/BradLarson/GPUImage.git)
