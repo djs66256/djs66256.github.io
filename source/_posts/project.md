@@ -146,7 +146,10 @@ int munmap(void *start, size_t length);
 ```
 
 # Data
-- [GPUImage](https://github.com/BradLarson/GPUImage.git)
+- **[GPUImage](https://github.com/BradLarson/GPUImage.git)**
+
+利用OpenGL来处理图片，需要对OpenGL比较熟悉，会写GLSL，熟悉图片处理才能创建自己的filter。
+
 - [json-framework](https://github.com/stig/json-framework.git)
 - [jsonmodel](https://github.com/jsonmodel/jsonmodel.git)
 - [ReactiveViewModel](https://github.com/ReactiveCocoa/ReactiveViewModel.git)
