@@ -266,7 +266,10 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 
 - [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge.git)
 - [DLIntrospection](https://github.com/garnett/DLIntrospection)
-- [fishhook](https://github.com/facebook/fishhook)
+- **[fishhook](https://github.com/facebook/fishhook)**
+
+用来hook C方法。
+
 - **[JSPatch](https://github.com/bang590/JSPatch)**
 
 非常有名的利用js来动态hook的库。主要通过将`:`转换为`_`来实现函数签名的通用，同时格式化js代码，使`.`调用变为`.__c()`的方法调用。
