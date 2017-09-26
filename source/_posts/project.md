@@ -260,7 +260,10 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 # Objc Runtime
 - [jrswizzle](https://github.com/rentzsch/jrswizzle.git)
 - [MAZeroingWeakRef](https://github.com/mikeash/MAZeroingWeakRef.git)
-- [Aspects](https://github.com/steipete/Aspects.git)
+- **[Aspects](https://github.com/steipete/Aspects.git)**
+
+一个比较全面的hook库，一般用于测试。
+
 - [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge.git)
 - [DLIntrospection](https://github.com/garnett/DLIntrospection)
 - [fishhook](https://github.com/facebook/fishhook)
