@@ -81,7 +81,10 @@ int munmap(void *start, size_t length);
 这并不适用于大量图片以及图片尺寸较多的场景，但是可以用于部分频繁设置image的场景。
 
 # Component
-- [HubFramework](https://github.com/spotify/HubFramework.git)
+- **[HubFramework](https://github.com/spotify/HubFramework.git)**
+
+是一个UI组件化的库，感觉他分的太细了，导致很多的学习成本和使用上的局限。
+
 - [BeeHive](https://github.com/alibaba/BeeHive.git) alibaba
 - **[IGListKit](https://github.com/Instagram/IGListKit)**
 
