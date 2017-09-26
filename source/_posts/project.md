@@ -93,7 +93,9 @@ int munmap(void *start, size_t length);
 
 事件驱动的collectionView组件化封装。具体参考[IGListKit简析与DDComponent](/2017/05/23/2017-05-23-IGListKit分析/)
 
-- [componentkit](https://github.com/facebook/componentkit)
+- **[componentkit](https://github.com/facebook/componentkit)**
+
+类似于React方式，使用component来布局UI。完全颠覆了传统的架构和编码方式，学习成本高。项目复杂，由objective-C++编写，利用了大量隐式转换的特性，所以不适用于swift。
 
 # Crash Report
 - [KSCrash](https://github.com/kstenerud/KSCrash.git)
