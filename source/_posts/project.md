@@ -85,7 +85,10 @@ int munmap(void *start, size_t length);
 
 是一个UI组件化的库，感觉他分的太细了，导致很多的学习成本和使用上的局限。
 
-- [BeeHive](https://github.com/alibaba/BeeHive.git) alibaba
+- **[BeeHive](https://github.com/alibaba/BeeHive.git)** alibaba
+
+将客户端的架构和服务端service结合，从而实现整个app的组件化。本身服务端和客户端在很多方面就不一样，需要更多的情景考虑。他的实现在有些场景还是不够的灵活，但是其思想可以借鉴下。
+
 - **[IGListKit](https://github.com/Instagram/IGListKit)**
 
 事件驱动的collectionView组件化封装。具体参考[IGListKit简析与DDComponent](/2017/05/23/2017-05-23-IGListKit分析/)
