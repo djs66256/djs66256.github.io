@@ -83,7 +83,7 @@ int munmap(void *start, size_t length);
 # Component
 - **[HubFramework](https://github.com/spotify/HubFramework.git)**
 
-是一个UI组件化的库，感觉他分的太细了，导致很多的学习成本和使用上的局限。
+也是一款拆分CollectionView的设计，个人认为拆分的太细了，导致整个系统过于复杂，学习成本太高。
 
 - **[BeeHive](https://github.com/alibaba/BeeHive.git)** alibaba
 
@@ -291,12 +291,21 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 - [CoreParse](https://github.com/beelsebob/CoreParse.git)
 
 # Theme
-- [DKNightVersion](https://github.com/Draveness/DKNightVersion.git)
+- **[DKNightVersion](https://github.com/Draveness/DKNightVersion.git)**
+
+一种换肤框架实现，缺点也非常多，支持的属性也比较少，本人实现了一个更加简单完善的版本[DDSkin](https://github.com/djs66256/DDSkin)
+
 - [Tweaks](https://github.com/facebook/Tweaks.git)
 
 # Util
 - [NSDate-TimeAgo](https://github.com/kevinlawler/NSDate-TimeAgo.git)
+
+NSDate的Helper类，比较简单。
+
 - [DateTools](https://github.com/MatthewYork/DateTools.git)
+
+NSDate的Helper类，比较全面。
+
 ----
 
 # Router
@@ -651,6 +660,10 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [IPAPatch](https://github.com/Naituw/IPAPatch)
 - [NetworkEye](https://github.com/coderyi/NetworkEye)
 - [FBRetainCycleDetector](https://github.com/facebook/FBRetainCycleDetector)
+- [FBAllocationTracker](https://github.com/facebook/FBAllocationTracker)
+
+hook了`+alloc`和`-dealloc`来统计objc对象使用情况。
+
 - [iOS-Hierarchy-Viewer](https://github.com/glock45/iOS-Hierarchy-Viewer)
 - [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)
 
