@@ -656,6 +656,10 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [IPAPatch](https://github.com/Naituw/IPAPatch)
 - [NetworkEye](https://github.com/coderyi/NetworkEye)
 - [FBRetainCycleDetector](https://github.com/facebook/FBRetainCycleDetector)
+- [FBAllocationTracker](https://github.com/facebook/FBAllocationTracker)
+
+hook了`+alloc`和`-dealloc`来统计objc对象使用情况。
+
 - [iOS-Hierarchy-Viewer](https://github.com/glock45/iOS-Hierarchy-Viewer)
 - [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)
 
