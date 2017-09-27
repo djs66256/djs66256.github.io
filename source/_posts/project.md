@@ -81,16 +81,28 @@ int munmap(void *start, size_t length);
 这并不适用于大量图片以及图片尺寸较多的场景，但是可以用于部分频繁设置image的场景。
 
 # Component
+<<<<<<< HEAD
 - [BeeHive](https://github.com/alibaba/BeeHive.git) alibaba
 - **[HubFramework](https://github.com/spotify/HubFramework.git)**
 
 也是一款拆分CollectionView的设计，个人认为拆分的太细了，导致整个系统过于复杂，学习成本太高。
+=======
+- **[HubFramework](https://github.com/spotify/HubFramework.git)**
+
+是一个UI组件化的库，感觉他分的太细了，导致很多的学习成本和使用上的局限。
+
+- **[BeeHive](https://github.com/alibaba/BeeHive.git)** alibaba
+
+将客户端的架构和服务端service结合，从而实现整个app的组件化。本身服务端和客户端在很多方面就不一样，需要更多的情景考虑。他的实现在有些场景还是不够的灵活，但是其思想可以借鉴下。
+>>>>>>> 74d86e49e860a17f2a14667269aab90400674e50
 
 - **[IGListKit](https://github.com/Instagram/IGListKit)**
 
 事件驱动的collectionView组件化封装。具体参考[IGListKit简析与DDComponent](/2017/05/23/2017-05-23-IGListKit分析/)
 
-- [componentkit](https://github.com/facebook/componentkit)
+- **[componentkit](https://github.com/facebook/componentkit)**
+
+类似于React方式，使用component来布局UI。完全颠覆了传统的架构和编码方式，学习成本高。项目复杂，由objective-C++编写，利用了大量隐式转换的特性，所以不适用于swift。
 
 # Crash Report
 - [KSCrash](https://github.com/kstenerud/KSCrash.git)
@@ -107,14 +119,44 @@ int munmap(void *start, size_t length);
 # Kit
 - [AppDevKit](https://github.com/yahoo/AppDevKit.git)
 - [YYKit](https://github.com/ibireme/YYKit.git)
-- [EasyIOS](https://github.com/zhuchaowe/EasyIOS.git)
+- **[EasyIOS](https://github.com/zhuchaowe/EasyIOS.git)**
+
+没有参考价值
+
 - [YOLOKit](https://github.com/mxcl/YOLOKit.git)
-- [BlocksKit](https://github.com/zwaldowski/BlocksKit.git)
-- [Bolts-ObjC](https://github.com/BoltsFramework/Bolts-ObjC.git) Bolts is a collection of low-level libraries designed to make developing mobile apps easier.
+- **[BlocksKit](https://github.com/zwaldowski/BlocksKit.git)**
+
+可以将他的功能归为两类：
+
+1. sequence，swift中自带的概念，和reactive的概念一致，是一种流式的写法。
+2. 动态delegate，实现动态delegate的转换，从而实现了大量UI层的回调简化。
+
+功能比较多，除了sequence和UI层的事件外，还有associate object、perform以及KVO（和KVOController类似）。如果是objc开发，可以考虑使用。
+
+- **[Bolts-ObjC](https://github.com/BoltsFramework/Bolts-ObjC.git)**
+
+主要提供了两个工具：
+
+1. Task，类似于promise，以及reactive，个人觉得不如另外两者。
+2. AppLink，一种多平台兼容的跳转方案，同时兼容native和web等，应用面会比MGJRouter这种广一点，但实现上不是非常的完善和通用。
+
 - [QMUI_iOS](https://github.com/QMUI/QMUI_iOS)
 
+- **[libextobjc](https://github.com/jspahrsummers/libextobjc)**
+
+非常有名的几个宏定义的出处，对宏的理解和运用都非常厉害，但是平常经常使用的也就那么几个。
+
+```objc
+@strongify()
+@weakify()
+@onExit{}
+```
+
 # Data
-- [GPUImage](https://github.com/BradLarson/GPUImage.git)
+- **[GPUImage](https://github.com/BradLarson/GPUImage.git)**
+
+利用OpenGL来处理图片，需要对OpenGL比较熟悉，会写GLSL，熟悉图片处理才能创建自己的filter。
+
 - [json-framework](https://github.com/stig/json-framework.git)
 - [jsonmodel](https://github.com/jsonmodel/jsonmodel.git)
 - [ReactiveViewModel](https://github.com/ReactiveCocoa/ReactiveViewModel.git)
@@ -149,7 +191,10 @@ hook dealloc来负责移除监听。
 
 利用sqlite做的一个简单的KV存储。
 
-- [YapDatabase](https://github.com/yapstudios/YapDatabase.git)
+- **[YapDatabase](https://github.com/yapstudios/YapDatabase.git)**
+
+利用sqlite做的一个KV存储，会保存数据元信息和对象间的关系，优化了多线程读写。
+
 - **[realm-cocoa](https://github.com/realm/realm-cocoa.git)**
 
 和sqlite一样，也是一种关系型数据库（这里讨论本地的realm）。
@@ -169,6 +214,11 @@ sqlite的轻量级封装，缺少ORM，但是也非常简单，容易debug。在
 
 - [sequelpro](https://github.com/sequelpro/sequelpro)
 - [GYDataCenter](https://github.com/Zepo/GYDataCenter)
+
+- **[sqlcipher](https://github.com/sqlcipher/sqlcipher)**
+
+SQLCipher is an SQLite extension that provides 256 bit AES encryption of database files.
+
 - **[wcdb](https://github.com/Tencent/wcdb)**
 
 微信封装的sqlite ORM。支持多线程和数据修复，支持数据加密，用接口的方式强制格式化sql语句，功能比较强大，缺点是必须使用c++来实现其model，实现也较为复杂。如果在这方面需求量不大的情况下，没有必要迁移。
@@ -217,11 +267,21 @@ sqlite的轻量级封装，缺少ORM，但是也非常简单，容易debug。在
 # Objc Runtime
 - [jrswizzle](https://github.com/rentzsch/jrswizzle.git)
 - [MAZeroingWeakRef](https://github.com/mikeash/MAZeroingWeakRef.git)
-- [Aspects](https://github.com/steipete/Aspects.git)
+- **[Aspects](https://github.com/steipete/Aspects.git)**
+
+一个比较全面的hook库，一般用于测试。
+
 - [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge.git)
 - [DLIntrospection](https://github.com/garnett/DLIntrospection)
-- [fishhook](https://github.com/facebook/fishhook)
-- [JSPatch](https://github.com/bang590/JSPatch)
+- **[fishhook](https://github.com/facebook/fishhook)**
+
+用来hook C方法。
+
+- **[JSPatch](https://github.com/bang590/JSPatch)**
+
+非常有名的利用js来动态hook的库。主要通过将`:`转换为`_`来实现函数签名的通用，同时格式化js代码，使`.`调用变为`.__c()`的方法调用。
+
+和其他（react-native等）的思想不同，不会收集oc的方法签名，然后转到js中生成函数，使用的是修改js代码的方式，但会让debug变得困难，个人更倾向于react-native这种方式。
 
 # Socket
 - [CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket.git)
@@ -234,12 +294,21 @@ sqlite的轻量级封装，缺少ORM，但是也非常简单，容易debug。在
 - [CoreParse](https://github.com/beelsebob/CoreParse.git)
 
 # Theme
-- [DKNightVersion](https://github.com/Draveness/DKNightVersion.git)
+- **[DKNightVersion](https://github.com/Draveness/DKNightVersion.git)**
+
+一种换肤框架实现，缺点也非常多，支持的属性也比较少，本人实现了一个更加简单完善的版本[DDSkin](https://github.com/djs66256/DDSkin)
+
 - [Tweaks](https://github.com/facebook/Tweaks.git)
 
 # Util
 - [NSDate-TimeAgo](https://github.com/kevinlawler/NSDate-TimeAgo.git)
+
+NSDate的Helper类，比较简单。
+
 - [DateTools](https://github.com/MatthewYork/DateTools.git)
+
+NSDate的Helper类，比较全面。
+
 ----
 
 # Router
@@ -332,8 +401,14 @@ iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebVi
 
 # animation
 
-- [Keyframes](https://github.com/facebookincubator/Keyframes.git) 使用AE做动画
-- [lottie-ios](https://github.com/airbnb/lottie-ios)
+- **[Keyframes](https://github.com/facebookincubator/Keyframes.git)**
+
+功能类似于Lottie。
+
+- **[lottie-ios](https://github.com/airbnb/lottie-ios)**
+
+利用AE生成JSON文件来简化交互动画的编写。
+
 - [AHEasing](https://github.com/warrenm/AHEasing.git) timeFunction
 - **[popping](https://github.com/schneiderandre/popping.git)**
 
@@ -635,6 +710,5 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [CocoaHTTPServer](https://github.com/robbiehanson/CocoaHTTPServer.git)
 - [radiant-player-mac](https://github.com/radiant-player/radiant-player-mac.git) 音乐播放器for mac
 - [ARAnalytics](https://github.com/orta/ARAnalytics.git)  It currently supports on iOS: Mixpanel, Localytics, Flurry, GoogleAnalytics, KISSmetrics, Crittercism, Crashlytics, Fabric, Bugsnag, Countly, Helpshift, Tapstream, NewRelic, Amplitude, HockeyApp, HockeyAppLib, ParseAnalytics, HeapAnalytics, Chartbeat, UMengAnalytics, Librato, Segmentio, Swrve, YandexMobileMetrica, Adjust, AppsFlyer, Branch, Snowplow, Sentry, Intercom, Keen, Adobe and MobileAppTracker/Tune.
-- [libextobjc](https://github.com/jspahrsummers/libextobjc)
 - [Onboard](https://github.com/mamaral/Onboard)
 - [electrino](https://github.com/pojala/electrino)

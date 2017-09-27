@@ -8,7 +8,7 @@ tags:
 
 ### Jailbroken
 
-```c
+```
 + (BOOL)isJailBroken
 {
 	static const char * __jb_apps[] =
@@ -49,3 +49,10 @@ tags:
   return NO;
 }
 ```
+
+## Color darkness or lightness
+
+[https://www.w3.org/WAI/ER/WD-AERT/#color-contrast](https://www.w3.org/WAI/ER/WD-AERT/#color-contrast)
+
+`((Red value X 299) + (Green value X 587) + (Blue value X 114)) / 1000`
+Note: This algorithm is taken from a formula for converting RGB values to YIQ values. This brightness value gives a perceived brightness for a color.
