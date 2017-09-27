@@ -81,20 +81,13 @@ int munmap(void *start, size_t length);
 这并不适用于大量图片以及图片尺寸较多的场景，但是可以用于部分频繁设置image的场景。
 
 # Component
-<<<<<<< HEAD
-- [BeeHive](https://github.com/alibaba/BeeHive.git) alibaba
 - **[HubFramework](https://github.com/spotify/HubFramework.git)**
 
 也是一款拆分CollectionView的设计，个人认为拆分的太细了，导致整个系统过于复杂，学习成本太高。
-=======
-- **[HubFramework](https://github.com/spotify/HubFramework.git)**
-
-是一个UI组件化的库，感觉他分的太细了，导致很多的学习成本和使用上的局限。
 
 - **[BeeHive](https://github.com/alibaba/BeeHive.git)** alibaba
 
 将客户端的架构和服务端service结合，从而实现整个app的组件化。本身服务端和客户端在很多方面就不一样，需要更多的情景考虑。他的实现在有些场景还是不够的灵活，但是其思想可以借鉴下。
->>>>>>> 74d86e49e860a17f2a14667269aab90400674e50
 
 - **[IGListKit](https://github.com/Instagram/IGListKit)**
 
