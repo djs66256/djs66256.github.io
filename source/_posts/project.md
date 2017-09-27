@@ -287,7 +287,10 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 - [CoreParse](https://github.com/beelsebob/CoreParse.git)
 
 # Theme
-- [DKNightVersion](https://github.com/Draveness/DKNightVersion.git)
+- **[DKNightVersion](https://github.com/Draveness/DKNightVersion.git)**
+
+一种换肤框架实现，缺点也非常多，支持的属性也比较少，本人实现了一个更加简单完善的版本[DDSkin](https://github.com/djs66256/DDSkin)
+
 - [Tweaks](https://github.com/facebook/Tweaks.git)
 
 # Util
