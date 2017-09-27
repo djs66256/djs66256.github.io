@@ -292,7 +292,13 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 
 # Util
 - [NSDate-TimeAgo](https://github.com/kevinlawler/NSDate-TimeAgo.git)
+
+NSDate的Helper类，比较简单。
+
 - [DateTools](https://github.com/MatthewYork/DateTools.git)
+
+NSDate的Helper类，比较全面。
+
 ----
 
 # Router
