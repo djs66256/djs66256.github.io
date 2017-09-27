@@ -134,6 +134,10 @@ int munmap(void *start, size_t length);
 
 - [QMUI_iOS](https://github.com/QMUI/QMUI_iOS)
 
+一套非常完善的UI组件库，设计也比较精美，出自腾讯团队。本人认为他也有几个的缺点，那就是利用了大量的Runtime特性，导致很多系统方法都被hook了，这可能会带来某些隐患。由于很多方法都是在系统类上加的，所以api并不是很美观，总是有`qmui_`这样的前缀。同时hook了UI层的东西，所以如果使用原生的组件也势必会带上一些QMUI的东西。
+
+NavigationBar交互动画的修正采用的是在`controller.view`上加上一个只设置了背景的`navigationBar`，同时隐藏原生的`navigationBar`来实现。相比于另一种使用`navigationController`再套一层每个`controller`，从而让每个`controller`的`navigationBar`相互独立，本人认为QMUI的方式更加优秀，影响面更加小，毕竟不会影响到整个controller的栈结构。
+
 # Util
 - [YOLOKit](https://github.com/mxcl/YOLOKit.git)
 
