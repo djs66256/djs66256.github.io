@@ -116,7 +116,6 @@ int munmap(void *start, size_t length);
 
 没有参考价值
 
-- [YOLOKit](https://github.com/mxcl/YOLOKit.git)
 - **[BlocksKit](https://github.com/zwaldowski/BlocksKit.git)**
 
 可以将他的功能归为两类：
@@ -134,6 +133,11 @@ int munmap(void *start, size_t length);
 2. AppLink，一种多平台兼容的跳转方案，同时兼容native和web等，应用面会比MGJRouter这种广一点，但实现上不是非常的完善和通用。
 
 - [QMUI_iOS](https://github.com/QMUI/QMUI_iOS)
+
+# Util
+- [YOLOKit](https://github.com/mxcl/YOLOKit.git)
+
+一个类似于reactive中sequence的工具类，建议直接使用Reactive。
 
 - **[libextobjc](https://github.com/jspahrsummers/libextobjc)**
 
