@@ -99,7 +99,6 @@ int munmap(void *start, size_t length);
 
 # Crash Report
 - [KSCrash](https://github.com/kstenerud/KSCrash.git)
-- [FBMemoryProfiler](https://github.com/facebook/FBMemoryProfiler.git)
 
 # Encrypt
 - [MIHCrypto](https://github.com/hohl/MIHCrypto.git) OpenSSL
@@ -641,8 +640,14 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 ## Other
 - [timeLineiOS](https://github.com/romaHerman/timeLineiOS.git) 时间线
 - [DGCuteHelper](https://github.com/Desgard/DGCuteHelper.git) 粘性效果
-- [MotionBlur](https://github.com/fastred/MotionBlur.git)
-- [StackBluriOS](https://github.com/tomsoft1/StackBluriOS.git) 近似高斯模糊算法
+- **[MotionBlur](https://github.com/fastred/MotionBlur.git)**
+
+快速移动时候的模糊效果。利用了CoreImage的自定义Filter，利用了`Core Image Kernel Language`，有点像OpenGL的`GLSL`。
+
+- **[StackBluriOS](https://github.com/tomsoft1/StackBluriOS.git)**
+
+近似高斯模糊算法
+
 - [FXBlurView](https://github.com/nicklockwood/FXBlurView.git)
 - **[AsyncDisplayKit](https://github.com/facebook/AsyncDisplayKit.git)**
 - [Texture](https://github.com/TextureGroup/Texture)
@@ -663,6 +668,8 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [DBDebugToolkit](https://github.com/dbukowski/DBDebugToolkit)
 - [IPAPatch](https://github.com/Naituw/IPAPatch)
 - [NetworkEye](https://github.com/coderyi/NetworkEye)
+
+- [FBMemoryProfiler](https://github.com/facebook/FBMemoryProfiler.git)
 - [FBRetainCycleDetector](https://github.com/facebook/FBRetainCycleDetector)
 - [FBAllocationTracker](https://github.com/facebook/FBAllocationTracker)
 
