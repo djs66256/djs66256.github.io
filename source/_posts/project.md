@@ -648,7 +648,10 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 
 近似高斯模糊算法
 
-- [FXBlurView](https://github.com/nicklockwood/FXBlurView.git)
+- **[FXBlurView](https://github.com/nicklockwood/FXBlurView.git)**
+
+利用vImage进行模糊。
+
 - **[AsyncDisplayKit](https://github.com/facebook/AsyncDisplayKit.git)**
 - [Texture](https://github.com/TextureGroup/Texture)
 - [KZLineDrawer](https://github.com/krzysztofzablocki/KZLineDrawer.git) 手指画图
