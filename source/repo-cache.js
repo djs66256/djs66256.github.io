@@ -1,6 +1,7 @@
 const fs = require('fs')
 const Path = require('path')
 const mkdirp = require('mkdirp')
+const config = require('./config')
 
 class RepoCacheOptions {
   constructor({path}) {
@@ -61,7 +62,7 @@ class RepoCacheOptions {
 }
 
 class RepoCache {
-  constructor({path = Path.resovle(__dirname, '.repos/cache'), name='default'}) {
+  constructor({path = Path.resovle(config.dataPath, 'cache'), name='default'}) {
     this.path = path
     this.name = name
     this.options = new RepoCacheOptions({path})

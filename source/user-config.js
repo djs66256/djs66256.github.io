@@ -1,10 +1,11 @@
 const fs = require('fs')
 const Path = require('path')
 const mkdirp = require('mkdirp')
+const config = require('./config')
 
 class UserConfig {
 
-  constructor({path = Path.resolve(__dirname, '.repos'), name = 'users.json'}={}) {
+  constructor({path = config.dataPath, name = config.usersDataName}={}) {
     this.userContainer = null
     this.userContainerPath = Path.resolve(path, name)
     mkdirp(path)

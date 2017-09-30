@@ -1,5 +1,6 @@
 const Path = require('path')
 
+const config = require('./config')
 const { User } = require('./user')
 const { RepoCache } = require('./repo-cache')
 
@@ -7,7 +8,7 @@ class CachedUser extends User {
   constructor(params) {
     super(params)
     this.repoCache = new RepoCache({
-      path: Path.resolve(__dirname, '.repos', params.name), 
+      path: Path.resolve(config.dataPath, params.name), 
       name: params.name
     })
     this.repos = []

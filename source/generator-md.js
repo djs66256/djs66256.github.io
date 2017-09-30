@@ -2,9 +2,10 @@ const Path = require('path')
 const mkdirp = require('mkdirp')
 const fs = require('fs')
 const { Generator } = require('./generator')
+const config = require('./config')
 
 class MdGenerator extends Generator {
-  constructor({ user, destinationPath = __dirname, projectFilePath }) {
+  constructor({ user, destinationPath = config.destinationPath, projectFilePath }) {
     super()
     this.user = user
     this.projectFilePath = projectFilePath

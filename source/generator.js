@@ -5,12 +5,13 @@ class Generator {
 }
 
 const Path = require('path')
+const config = require('./config')
 
 Generator.build = function ({ user }) {
   const { MdGenerator } = require('./generator-md')
 
-  let projectFilePath = Path.resolve(__dirname, '_posts', 'project.md')
-  let params = { user, destinationPath: __dirname, projectFilePath }
+  let projectFilePath = Path.resolve(config.projectPath, config.projectName)
+  let params = { user, destinationPath: config.destinationPath, projectFilePath }
   return new MdGenerator(params)
 }
 
