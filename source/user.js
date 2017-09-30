@@ -1,4 +1,6 @@
+const { UserConfig } = require('./user-config')
 
+let userConfigs = new UserConfig()
 
 let _userConstructors = {}
 
@@ -14,6 +16,7 @@ class User {
     _userConstructors[type] = cls
   }
   static build({type, name}) {
+    userConfigs.setUserConfigWithName(name, {})
     if (!type || type === 'cache') {
       return new _userConstructors['cache']({type, name})
     }
@@ -40,7 +43,7 @@ class CompositeUser extends User {
   }
 }
 
-module.exports = {User}
+module.exports = { User, userConfigs }
 
 User.register('github', require('./user-github'))
 User.register('cache', require('./user-cache'))

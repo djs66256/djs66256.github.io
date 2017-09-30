@@ -35,9 +35,9 @@ function request(urlStr, callback) {
         // resolve(JSON.parse(buffer))
         callback && callback(res, JSON.parse(buffer))
       })
-      res.on('error', err => {
-        callback && callback(res, null, err)
-      })
+    })
+    request.on('aborted', err => {
+      callback && callback(res, null, err)
     })
     request.end()
 }
