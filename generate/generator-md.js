@@ -44,7 +44,7 @@ class MdGenerator extends Generator {
       let offset = 0
 
       repos.forEach(repo => {
-        let repoStr = `- [${repo.name}](${repo.html}) **${repo.starCount} Stars** *${repo.language}* \n${repo.desc || ''}\n\n`
+        let repoStr = `- [${repo.name}](${repo.html}) **${repo.starCount} Stars** **${repo.language}** \n${repo.desc || ''}\n\n`
         offset += fs.writeSync(file, repoStr, offset)
       })
 
