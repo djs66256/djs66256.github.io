@@ -1,13 +1,8 @@
-// const fetchRepos = require('./fetchRepos')
 
 const { User, userConfigs } = require('./user')
 const { Generator } = require('./generator')
 
 let username = 'djs66256'
-// let projectFilePath = '_posts/project.md'
-// let destinationPath = `${username}.md`
-
-// fetchRepos.generateUnpackStarsByUser(username, projectFilePath, destinationPath)
 
 let user = null
 if (userConfigs.getUserConfigWithName(username)) {
