@@ -16,6 +16,7 @@ tags:
 - [LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit.git) 视频流
 - [TTAVPlayer](https://github.com/tangdiforx/TTAVPlayer)
 - [CTVideoPlayerView](https://github.com/casatwy/CTVideoPlayerView)
+- [EZAudio](https://github.com/syedhali/EZAudio)
 
 # Cache
 - **[YYCache](https://github.com/ibireme/YYCache.git)**
@@ -166,6 +167,7 @@ NavigationBar交互动画的修正采用的是在`controller.view`上加上一�
 - [Doppelganger](https://github.com/Wondermall/Doppelganger) Array diffs as collection view wants it
 - [OrderedDictionary](https://github.com/nicklockwood/OrderedDictionary)
 - [FastCoding](https://github.com/nicklockwood/FastCoding)
+- [AutoCoding](https://github.com/nicklockwood/AutoCoding)
 
 ### KVO
 - **[RZDataBinding](https://github.com/Raizlabs/RZDataBinding)**
@@ -246,6 +248,8 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 - [IosHackStudy](https://github.com/pandazheng/IosHackStudy) IOS安全学习资料汇总
 - [The-Art-Of-Programming-By-July](https://github.com/julycoding/The-Art-Of-Programming-By-July)
 - [Apple-OfficialTranslation-SourceAnnotation](https://github.com/CustomPBWaters/Apple-OfficialTranslation-SourceAnnotation)
+- [Halfrost-Field](https://github.com/halfrost/Halfrost-Field)
+- [idev-recipes](https://github.com/boctor/idev-recipes)
 
 # Network
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking.git)
@@ -282,6 +286,8 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 非常有名的利用js来动态hook的库。主要通过将`:`转换为`_`来实现函数签名的通用，同时格式化js代码，使`.`调用变为`.__c()`的方法调用。
 
 和其他（react-native等）的思想不同，不会收集oc的方法签名，然后转到js中生成函数，使用的是修改js代码的方式，但会让debug变得困难，个人更倾向于react-native这种方式。
+
+- [MonkeyDev](https://github.com/AloneMonkey/MonkeyDev)
 
 # Socket
 - [CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket.git)
@@ -505,9 +511,7 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [BTSimpleSideMenu](https://github.com/balram3429/BTSimpleSideMenu.git)
 - [RESideMenu](https://github.com/romaonthego/RESideMenu.git)
 - [CYLTabBarController](https://github.com/ChenYilong/CYLTabBarController)
-- [JZNavigationExtension](https://github.com/JazysYu/JZNavigationExtension)
 - [TLYShyNavBar](https://github.com/telly/TLYShyNavBar)
-- [RTRootNavigationController](https://github.com/rickytan/RTRootNavigationController)
 - [AXWebViewController](https://github.com/devedbox/AXWebViewController)
 - [VCTransitionsLibrary](https://github.com/ColinEberhardt/VCTransitionsLibrary)
 - [PYSearch](https://github.com/iphone5solo/PYSearch)
@@ -569,8 +573,22 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 ## Map
 - [FBAnnotationClustering](https://github.com/infinum/FBAnnotationClustering.git)
 
-## Navigation
+## NavigationBar
 - [BMYScrollableNavigationBar](https://github.com/beamly/BMYScrollableNavigationBar.git)
+
+修改NavigationBar的frame来达到和滚动行为同步，没有参考价值。
+
+- [KMNavigationBarTransition](https://github.com/MoZhouqi/KMNavigationBarTransition)
+
+将真正的NavigationBar的背景等转移到fake bar上，fake bar加在controller.view上，来达到这种效果。微信的实现
+
+- [RTRootNavigationController](https://github.com/rickytan/RTRootNavigationController)
+
+使用UINavigationController包裹一层，从而达到每个controller的NavigationBar是独立的。云音乐的实现。
+
+- [JZNavigationExtension](https://github.com/JazysYu/JZNavigationExtension)
+
+和KMNavigationBarTransition类似，只是并不是直接使用UINavigationBar来做fake bar，而是采用截屏+addLayer来做。
 
 ## News
 - [TTNews](https://github.com/577528249/TTNews.git)
@@ -597,6 +615,7 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [ASProgressPopUpView](https://github.com/alskipp/ASProgressPopUpView.git)
 - [ASValueTrackingSlider](https://github.com/alskipp/ASValueTrackingSlider.git)
 - [MBProgressHUD](https://github.com/jdg/MBProgressHUD.git)
+- [YLProgressBar](https://github.com/yannickl/YLProgressBar)
 
 #### Push
 - [Knuff](https://github.com/KnuffApp/Knuff.git) 工具：The debug application for Apple Push Notification Service (APNs).
@@ -671,7 +690,7 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [DBDebugToolkit](https://github.com/dbukowski/DBDebugToolkit)
 - [IPAPatch](https://github.com/Naituw/IPAPatch)
 - [NetworkEye](https://github.com/coderyi/NetworkEye)
-
+- [FBSimulatorControl](https://github.com/facebook/FBSimulatorControl)
 - [FBMemoryProfiler](https://github.com/facebook/FBMemoryProfiler.git)
 - [FBRetainCycleDetector](https://github.com/facebook/FBRetainCycleDetector)
 - [FBAllocationTracker](https://github.com/facebook/FBAllocationTracker)
@@ -697,14 +716,26 @@ hook了`+alloc`和`-dealloc`来统计objc对象使用情况。
 - **[expecta](https://github.com/specta/expecta)**
 - **[specta](https://github.com/specta/specta)**
 - **[cedar](https://github.com/pivotal/cedar)**
+- **[Kiwi](https://github.com/kiwi-bdd/Kiwi)**
 
-以上3几种都是BDD方式的封装。
+以上几种都是BDD方式的封装。
 
 - **[OCHamcrest](https://github.com/hamcrest/OCHamcrest)**
 
 可以认为是一些语法糖
 
+- **[Nocilla](https://github.com/luisobo/Nocilla)**
+
+hook http请求
+
+# React
+
+- [react-native-maps](https://github.com/airbnb/react-native-maps)
+
 # Other
+- [CYLTabBarController](https://github.com/ChenYilong/CYLTabBarController)
+- [detect.location](https://github.com/KrauseFx/detect.location)
+- [WeChatTweak-macOS](https://github.com/Sunnyyoung/WeChatTweak-macOS)
 - [FlatUIKit](https://github.com/Grouper/FlatUIKit.git)
 - [JLPermissions](https://github.com/jlaws/JLPermissions.git) 应用权限
 - [ZXingObjC](https://github.com/TheLevelUp/ZXingObjC.git) 二维码
