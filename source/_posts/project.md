@@ -691,8 +691,19 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [IPAPatch](https://github.com/Naituw/IPAPatch)
 - [NetworkEye](https://github.com/coderyi/NetworkEye)
 - [FBSimulatorControl](https://github.com/facebook/FBSimulatorControl)
+
+- **[LifetimeTracker](https://github.com/krzysztofzablocki/LifetimeTracker)** **621 Stars** **Swift** Find retain cycles / memory leaks sooner.
+
+利用了associate object来监测对象生命周期，局限性太大。
+
 - [FBMemoryProfiler](https://github.com/facebook/FBMemoryProfiler.git)
+
+利用`FBRetainCycleDetector`和`FBAllocationTracker`做的一款工具，增加UI界面。
+
 - [FBRetainCycleDetector](https://github.com/facebook/FBRetainCycleDetector)
+
+利用objc的特性，利用Object、block等的属性布局收集强引用信息。
+
 - [FBAllocationTracker](https://github.com/facebook/FBAllocationTracker)
 
 hook了`+alloc`和`-dealloc`来统计objc对象使用情况。
