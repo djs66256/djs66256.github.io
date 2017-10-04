@@ -160,26 +160,36 @@ NavigationBar交互动画的修正采用的是在`controller.view`上加上一�
 ```
 
 # Data
-- **[GPUImage](https://github.com/BradLarson/GPUImage.git)**
+- **[json-framework](https://github.com/stig/json-framework.git)**
 
-利用OpenGL来处理图片，需要对OpenGL比较熟悉，会写GLSL，熟悉图片处理才能创建自己的filter。
+原来的SBJson，建议使用系统方法。
 
-- [json-framework](https://github.com/stig/json-framework.git)
-
-原来的SBJson
-
-- [jsonmodel](https://github.com/jsonmodel/jsonmodel.git)
+- **[jsonmodel](https://github.com/jsonmodel/jsonmodel.git)**
 
 JSON转model，缺点是必须继承于JSONModel基类。
 
-- [ReactiveViewModel](https://github.com/ReactiveCocoa/ReactiveViewModel.git)
+- **[ReactiveViewModel](https://github.com/ReactiveCocoa/ReactiveViewModel.git)**
+
+增加了active事件，没什么用。
+
 - [RestKit](https://github.com/RestKit/RestKit.git)
-- [JSONKit](https://github.com/johnezang/JSONKit.git)
+- **[JSONKit](https://github.com/johnezang/JSONKit.git)**
+
+建议使用系统方法。
+
 - [Mantle](https://github.com/Mantle/Mantle.git)
 - [Doppelganger](https://github.com/Wondermall/Doppelganger) Array diffs as collection view wants it
-- [OrderedDictionary](https://github.com/nicklockwood/OrderedDictionary)
+- **[OrderedDictionary](https://github.com/nicklockwood/OrderedDictionary)**
+
+有序字典，意义是？
+
 - [FastCoding](https://github.com/nicklockwood/FastCoding)
+
+自动NSCoding，还不是特别通用。
+
 - [AutoCoding](https://github.com/nicklockwood/AutoCoding)
+
+利用获取property来自动NSCoding。
 
 ### KVO
 - **[RZDataBinding](https://github.com/Raizlabs/RZDataBinding)**
@@ -416,6 +426,13 @@ iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebVi
 同时编辑JSON文件也是非常麻烦的事情，没有很好的工具可以支持。不太推荐使用，除非支持更灵活的布局和编辑。
 
 # UI
+
+# Image
+
+- **[GPUImage](https://github.com/BradLarson/GPUImage.git)**
+
+利用OpenGL来处理图片，需要对OpenGL比较熟悉，会写GLSL，熟悉图片处理才能创建自己的filter。
+
 
 # animation
 
