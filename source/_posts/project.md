@@ -111,7 +111,13 @@ int munmap(void *start, size_t length);
 
 # Kit
 - [AppDevKit](https://github.com/yahoo/AppDevKit.git)
+
+一些扩展，用处不大。
+
 - [YYKit](https://github.com/ibireme/YYKit.git)
+
+包含了很多util方法，以及cache，image，text，json2model方面的类库。
+
 - **[EasyIOS](https://github.com/zhuchaowe/EasyIOS.git)**
 
 没有参考价值
@@ -694,7 +700,7 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 
 - **[LifetimeTracker](https://github.com/krzysztofzablocki/LifetimeTracker)** **621 Stars** **Swift** Find retain cycles / memory leaks sooner.
 
-利用了associate object来监测对象生命周期，局限性太大。
+利用了associate object来监测对象生命周期，局限性太大。不过可能会持续更新
 
 - [FBMemoryProfiler](https://github.com/facebook/FBMemoryProfiler.git)
 
