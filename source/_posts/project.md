@@ -178,16 +178,19 @@ JSON转model，缺点是必须继承于JSONModel基类。
 建议使用系统方法。
 
 - [Mantle](https://github.com/Mantle/Mantle.git)
-- [Doppelganger](https://github.com/Wondermall/Doppelganger) Array diffs as collection view wants it
+- **[Doppelganger](https://github.com/Wondermall/Doppelganger)** Array diffs as collection view wants it
+
+一个diff工具，用于CollectionView的reload。
+
 - **[OrderedDictionary](https://github.com/nicklockwood/OrderedDictionary)**
 
 有序字典，意义是？
 
-- [FastCoding](https://github.com/nicklockwood/FastCoding)
+- **[FastCoding](https://github.com/nicklockwood/FastCoding)**
 
 自动NSCoding，还不是特别通用。
 
-- [AutoCoding](https://github.com/nicklockwood/AutoCoding)
+- **[AutoCoding](https://github.com/nicklockwood/AutoCoding)**
 
 利用获取property来自动NSCoding。
 
