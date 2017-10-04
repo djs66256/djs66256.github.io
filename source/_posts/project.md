@@ -110,11 +110,11 @@ int munmap(void *start, size_t length);
 - [macdown](https://github.com/MacDownApp/macdown.git)
 
 # Kit
-- [AppDevKit](https://github.com/yahoo/AppDevKit.git)
+- **[AppDevKit](https://github.com/yahoo/AppDevKit.git)**
 
 一些扩展，用处不大。
 
-- [YYKit](https://github.com/ibireme/YYKit.git)
+- **[YYKit](https://github.com/ibireme/YYKit.git)**
 
 包含了很多util方法，以及cache，image，text，json2model方面的类库。
 
@@ -145,7 +145,7 @@ int munmap(void *start, size_t length);
 NavigationBar交互动画的修正采用的是在`controller.view`上加上一个只设置了背景的`navigationBar`，同时隐藏原生的`navigationBar`来实现。相比于另一种使用`navigationController`再套一层每个`controller`，从而让每个`controller`的`navigationBar`相互独立，本人认为QMUI的方式更加优秀，影响面更加小，毕竟不会影响到整个controller的栈结构。
 
 # Util
-- [YOLOKit](https://github.com/mxcl/YOLOKit.git)
+- **[YOLOKit](https://github.com/mxcl/YOLOKit.git)**
 
 一个类似于reactive中sequence的工具类，建议直接使用Reactive。
 
@@ -165,7 +165,13 @@ NavigationBar交互动画的修正采用的是在`controller.view`上加上一�
 利用OpenGL来处理图片，需要对OpenGL比较熟悉，会写GLSL，熟悉图片处理才能创建自己的filter。
 
 - [json-framework](https://github.com/stig/json-framework.git)
+
+原来的SBJson
+
 - [jsonmodel](https://github.com/jsonmodel/jsonmodel.git)
+
+JSON转model，缺点是必须继承于JSONModel基类。
+
 - [ReactiveViewModel](https://github.com/ReactiveCocoa/ReactiveViewModel.git)
 - [RestKit](https://github.com/RestKit/RestKit.git)
 - [JSONKit](https://github.com/johnezang/JSONKit.git)
