@@ -43,7 +43,7 @@ tags:
 
 一个模仿NSCache的实现，内部使用NSDictionary。
 
-- **[Haneke](https://github.com/Haneke/Haneke.git) image cache**
+- **[Haneke](https://github.com/Haneke/Haneke.git)** image cache
 
 他和SDWebImage非常相似，个人看来，这个的代码及其结构会比SD好一些，但是功能太有限，就像作者自己说的是一个轻量级的实现。
 
@@ -138,7 +138,7 @@ int munmap(void *start, size_t length);
 1, Task，类似于promise，以及reactive，个人觉得不如另外两者。
 2, AppLink，一种多平台兼容的跳转方案，同时兼容native和web等，应用面会比MGJRouter这种广一点，但实现上不是非常的完善和通用。
 
-- [QMUI_iOS](https://github.com/QMUI/QMUI_iOS)
+- **[QMUI_iOS](https://github.com/QMUI/QMUI_iOS)**
 
 一套非常完善的UI组件库，设计也比较精美，出自腾讯团队。本人认为他也有几个的缺点，那就是利用了大量的Runtime特性，导致很多系统方法都被hook了，这可能会带来某些隐患。由于很多方法都是在系统类上加的，所以api并不是很美观，总是有`qmui_`这样的前缀。同时hook了UI层的东西，所以如果使用原生的组件也势必会带上一些QMUI的东西。
 
@@ -750,7 +750,7 @@ hook了`+alloc`和`-dealloc`来统计objc对象使用情况。
 - [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)
 
 # Test
-- **[ocmock](https://github.com/erikdoe/ocmock.git)**
+- **[ocmock](https://github.com/erikdoe/ocmock)**
 
 使用NSProxy对象替代原本的对象，在response和forward中记录和处理、转发消息来实现，是非常好用的mock类库。由于完全依赖oc的动态特性，所以对swift类无效。
 
@@ -776,6 +776,14 @@ hook了`+alloc`和`-dealloc`来统计objc对象使用情况。
 - **[Nocilla](https://github.com/luisobo/Nocilla)**
 
 hook http请求
+
+- **[Nimble](https://github.com/Quick/Nimble)** **2403 Stars** **Swift** A Matcher Framework for Swift and Objective-C
+
+知名度比较高的测试断言库。
+
+- **[Quick](https://github.com/Quick/Quick)** **6876 Stars** **Swift** The Swift (and Objective-C) testing framework.
+
+知名度比较高的BDD。
 
 # React
 
