@@ -172,12 +172,18 @@ JSON转model，缺点是必须继承于JSONModel基类。
 
 增加了active事件，没什么用。
 
-- [RestKit](https://github.com/RestKit/RestKit.git)
+- **[RestKit](https://github.com/RestKit/RestKit.git)**
+
+包括了网络请求，json转model，以及到core data，如果有这些方面的需求可以尝试下。
+
 - **[JSONKit](https://github.com/johnezang/JSONKit.git)**
 
 建议使用系统方法。
 
-- [Mantle](https://github.com/Mantle/Mantle.git)
+- **[Mantle](https://github.com/Mantle/Mantle.git)**
+
+JSON转model，但是要继承于基类。
+
 - **[Doppelganger](https://github.com/Wondermall/Doppelganger)** Array diffs as collection view wants it
 
 一个diff工具，用于CollectionView的reload。
