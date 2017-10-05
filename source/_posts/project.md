@@ -469,13 +469,22 @@ iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebVi
 
 利用AE生成JSON文件来简化交互动画的编写。
 
-- [AHEasing](https://github.com/warrenm/AHEasing.git) timeFunction
+- **[AHEasing](https://github.com/warrenm/AHEasing.git)**
+
+多种时间函数实现。
+
 - **[popping](https://github.com/schneiderandre/popping.git)**
 
 依靠CADisplayLink来达到高帧率的动画效果。但是太依赖CPU，所以性能不一定比CA优秀。一般情况下感觉不太需要他来做动画。
 
 - [RBBAnimation](https://github.com/robb/RBBAnimation.git)
-- [Canvas](https://github.com/CanvasPod/Canvas.git)Animate in Xcode without code
+
+一种动画的封装，意义不大。
+
+- **[Canvas](https://github.com/CanvasPod/Canvas.git)** Animate in Xcode without code
+
+将动画集成到了View中，感觉没什么必要。
+
 - **[YapAnimator](https://github.com/yapstudios/YapAnimator)**
 
 和popping原理类似，使用CADisplayLink，实时去修改视图属性。
@@ -489,6 +498,8 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 看似比popping简单点，但是popping是模仿CoreAnimation做的，所以没有可比性。建议使用popping。
 
 - [CRAnimation](https://github.com/CRAnimation/CRAnimation)
+
+一系列的动画效果。
 
 ## ActionSheet & Menu
 - [JGActionSheet](https://github.com/JonasGessner/JGActionSheet.git)
