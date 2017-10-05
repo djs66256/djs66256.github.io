@@ -4,5 +4,5 @@ module.exports = {
   projectName: 'project.md',
   dataPath: path.resolve(__dirname, '.repos'),
   usersDataName: 'users.json',
-  destinationPath: __dirname
+  destinationPath: path.resolve(__dirname, 'markdown')
 }
