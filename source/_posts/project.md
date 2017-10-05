@@ -102,7 +102,7 @@ int munmap(void *start, size_t length);
 - [KSCrash](https://github.com/kstenerud/KSCrash.git)
 
 # Encrypt
-- [MIHCrypto](https://github.com/hohl/MIHCrypto.git) OpenSSL
+- [MIHCrypto](https://github.com/hohl/MIHCrypto)
 
 # Markdown
 - [CocoaMarkdown](https://github.com/indragiek/CocoaMarkdown.git)
@@ -187,6 +187,10 @@ JSON转model，但是要继承于基类。
 - **[Doppelganger](https://github.com/Wondermall/Doppelganger)** Array diffs as collection view wants it
 
 一个diff工具，用于CollectionView的reload。
+
+- [Diff.swift](https://github.com/wokalski/Diff.swift) **794 Stars** **Swift** The fastest Diff and patch library in Swift. Includes UICollectionView/UITableView utils.
+
+也是一个CollectionView reload的diff工具。
 
 - **[OrderedDictionary](https://github.com/nicklockwood/OrderedDictionary)**
 
