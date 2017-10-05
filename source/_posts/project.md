@@ -188,7 +188,7 @@ JSON转model，但是要继承于基类。
 
 一个diff工具，用于CollectionView的reload。
 
-- [Diff.swift](https://github.com/wokalski/Diff.swift) **794 Stars** **Swift** The fastest Diff and patch library in Swift. Includes UICollectionView/UITableView utils.
+- **[Diff.swift](https://github.com/wokalski/Diff.swift)** **794 Stars** **Swift** The fastest Diff and patch library in Swift. Includes UICollectionView/UITableView utils.
 
 也是一个CollectionView reload的diff工具。
 
@@ -262,11 +262,11 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 
 其sql拼装是字符串累加，而不是从语法树生成，所以必须依赖底层sqlite的存储方式。
 
-- **[rocksdb]**
+- **[rocksdb](https://github.com/facebook/rocksdb)** **8645 Stars** **C++** A library that provides an embeddable, persistent key-value store for fast storage.
 
 基于leveldb，对齐进行了多线程以及ssd的优化。
 
-- **[leveldb]**
+- **[leveldb](https://github.com/google/leveldb)** **10957 Stars** **C++** LevelDB is a fast key-value storage library written at Google that provides an ordered mapping from string keys to string values.
 
 是基于Google的big data实现的一套KV存储，原理简单的说就是每次操作（增删改），都是生成一条数据，存入文件，在一定的条件下，会对这些文件进行merge操作，来保证文件的大小。这种方案解决了高并发写的问题，但是增加了读的开销，是一种折中方案。在移动端的场景下好像没有这么高的并发写场景，应该没有必要使用。
 
@@ -304,14 +304,22 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 - [CargoBay](https://github.com/mattt/CargoBay.git)
 
 # Objc Runtime
-- [jrswizzle](https://github.com/rentzsch/jrswizzle.git)
-- [MAZeroingWeakRef](https://github.com/mikeash/MAZeroingWeakRef.git)
+- **[jrswizzle](https://github.com/rentzsch/jrswizzle.git)**
+
+Method swizzling
+
+- **[MAZeroingWeakRef](https://github.com/mikeash/MAZeroingWeakRef.git)**
+
+MRC时代的weak实现，可以作为参考。
+
 - **[Aspects](https://github.com/steipete/Aspects.git)**
 
 一个比较全面的hook库，一般用于测试。
 
-- [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge.git)
-- [DLIntrospection](https://github.com/garnett/DLIntrospection)
+- **[DLIntrospection](https://github.com/garnett/DLIntrospection)**
+
+runtime方法的objc封装。
+
 - **[fishhook](https://github.com/facebook/fishhook)**
 
 用来hook C方法。
@@ -322,10 +330,10 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 
 和其他（react-native等）的思想不同，不会收集oc的方法签名，然后转到js中生成函数，使用的是修改js代码的方式，但会让debug变得困难，个人更倾向于react-native这种方式。
 
-- [MonkeyDev](https://github.com/AloneMonkey/MonkeyDev)
 
 # Socket
 - [CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket.git)
+
 ## Web Socket
 - [SocketRocket](https://github.com/facebook/SocketRocket.git)
 - [AZSocketIO](https://github.com/lukabernardi/AZSocketIO.git) socket.io
@@ -385,6 +393,10 @@ NSDate的Helper类，比较全面。
 
 - **[PhoneGap]**
 cordova的商业版
+
+- **[WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge.git)**
+
+webView中js与native交互的库。一种简单的实现，如果需要更复杂的实现可以使用cordova。
 
 - **[cordova](https://github.com/ionic-team/ng-cordova)**
 
@@ -531,14 +543,37 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [FFCalendar](https://github.com/fggeraissate/FFCalendar.git)
 
 ## CollectionView
-- [LxGridView](https://github.com/DeveloperLx/LxGridView.git)
-- [MGBoxKit](https://github.com/sobri909/MGBoxKit.git) Simple, quick iOS tables, grids, and more
-- [CSStickyHeaderFlowLayout](https://github.com/CSStickyHeaderFlowLayout/CSStickyHeaderFlowLayout.git) 粘性header footer
-- [CHTCollectionViewWaterfallLayout](https://github.com/chiahsien/CHTCollectionViewWaterfallLayout.git) 瀑布流
-- [RACollectionViewReorderableTripletLayout](https://github.com/ra1028/RACollectionViewReorderableTripletLayout.git)
-- [MJParallaxCollectionView](https://github.com/mayuur/MJParallaxCollectionView.git)
-- [DZNEmptyDataSet](https://github.com/dzenbot/DZNEmptyDataSet)
-- [CCFoldCell](https://github.com/bref-Chan/CCFoldCell)
+- **[LxGridView](https://github.com/DeveloperLx/LxGridView.git)**
+
+一个模仿iOS删除app界面，一个demo。
+
+- **[MGBoxKit](https://github.com/sobri909/MGBoxKit.git)**
+
+相当于flexbox的一个子实现，建议直接使用flex库，比如yoga。
+
+- **[CSStickyHeaderFlowLayout](https://github.com/CSStickyHeaderFlowLayout/CSStickyHeaderFlowLayout.git)**
+
+粘性header footer，实现不好，比较卡。
+
+- **[CHTCollectionViewWaterfallLayout](https://github.com/chiahsien/CHTCollectionViewWaterfallLayout.git)**
+
+一种瀑布流实现。
+
+- **[RACollectionViewReorderableTripletLayout](https://github.com/ra1028/RACollectionViewReorderableTripletLayout.git)**
+
+一个排序CollectionViewLayout实现，实现比较好可以作为参考。
+
+- **[MJParallaxCollectionView](https://github.com/mayuur/MJParallaxCollectionView.git)**
+
+图片列表，没什么参考意义。
+
+- **[DZNEmptyDataSet](https://github.com/dzenbot/DZNEmptyDataSet)**
+
+swizzle了reload方法来检测是否为空列表，从而来显示空状态。由于使用了黑科技，可能会对其他内容会有未知影响。
+
+- **[CCFoldCell](https://github.com/bref-Chan/CCFoldCell)** 
+
+折叠动画
 
 ## Color
 - [Chameleon](https://github.com/ViccAlexander/Chameleon.git)
@@ -794,6 +829,7 @@ hook http请求
 - [react-native-maps](https://github.com/airbnb/react-native-maps)
 
 # Other
+- [MonkeyDev](https://github.com/AloneMonkey/MonkeyDev)
 - [CYLTabBarController](https://github.com/ChenYilong/CYLTabBarController)
 - [detect.location](https://github.com/KrauseFx/detect.location)
 - [WeChatTweak-macOS](https://github.com/Sunnyyoung/WeChatTweak-macOS)
