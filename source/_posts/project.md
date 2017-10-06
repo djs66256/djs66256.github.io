@@ -898,8 +898,16 @@ UIColor扩展。
 - [KILabel](https://github.com/Krelborn/KILabel)
 
 ## Other
-- [timeLineiOS](https://github.com/romaHerman/timeLineiOS.git) 时间线
-- [DGCuteHelper](https://github.com/Desgard/DGCuteHelper.git) 粘性效果
+- **[timeLineiOS](https://github.com/romaHerman/timeLineiOS.git)**
+
+时间线
+![](https://github.com/romaHerman/timeLineiOS/raw/master/output_ppeLRI.gif)
+
+- **[DGCuteHelper](https://github.com/Desgard/DGCuteHelper.git)**
+
+粘性效果
+![](https://github.com/Desgard/DGCuteHelper/raw/master/Image/screenshot.gif)
+
 - **[MotionBlur](https://github.com/fastred/MotionBlur.git)**
 
 快速移动时候的模糊效果。利用了CoreImage的自定义Filter，利用了`Core Image Kernel Language`，有点像OpenGL的`GLSL`。
@@ -913,10 +921,22 @@ UIColor扩展。
 利用vImage进行模糊。
 
 - **[AsyncDisplayKit](https://github.com/facebook/AsyncDisplayKit.git)**
-- [Texture](https://github.com/TextureGroup/Texture)
-- [KZLineDrawer](https://github.com/krzysztofzablocki/KZLineDrawer.git) 手指画图
-- [UberSignature](https://github.com/uber/UberSignature)
-- [XXNibBridge](https://github.com/sunnyxx/XXNibBridge)
+- **[Texture](https://github.com/TextureGroup/Texture)**
+
+就是AsyncDisplayKit
+
+- **[KZLineDrawer](https://github.com/krzysztofzablocki/KZLineDrawer.git)**
+
+利用cocos2d来手指画图，达到流畅的效果。
+
+- **[UberSignature](https://github.com/uber/UberSignature)**
+
+一种签名实现。
+![](https://github.com/uber/UberSignature/raw/master/sign.gif)
+
+- **[XXNibBridge](https://github.com/sunnyxx/XXNibBridge)**
+
+一种在nib中动态load另一个nib中的内容的实现。
 
 ----
 
