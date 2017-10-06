@@ -612,19 +612,57 @@ web svg在iOS端的实现，挺有意思。
 基于POP的动画扩展。
 
 #### Button
+
 - [DownloadButton](https://github.com/PavelKatunin/DownloadButton.git)
-- [IGLDropDownMenu](https://github.com/bestwnh/IGLDropDownMenu.git) 可展开按钮集合
+
+![](https://cloud.githubusercontent.com/assets/1636737/7921348/7fadc250-08ad-11e5-9f01-9f7e1f173a97.gif)
+![](https://cloud.githubusercontent.com/assets/1636737/7920830/2c4470da-08aa-11e5-99be-e7e9a04479f8.png)
+
+- [IGLDropDownMenu](https://github.com/bestwnh/IGLDropDownMenu.git)
+
+可展开按钮集合
+![](https://raw.githubusercontent.com/bestwnh/IGLDropDownMenu/master/Screens/IGLDropDownMenuDemo.gif)
+
 - [VBFPopFlatButton](https://github.com/victorBaro/VBFPopFlatButton.git)
+
+有动效。
+![](https://raw.githubusercontent.com/iBaro/VBFPopFlatButton/master/examples.jpg)
+
 - [AYVibrantButton](https://github.com/a1anyip/AYVibrantButton.git)
+
+![](https://github.com/a1anyip/AYVibrantButton/raw/master/Readme/screenshot.png?raw=true)
+
 - [BFPaperButton](https://github.com/bfeher/BFPaperButton.git)
+
+![](https://raw.githubusercontent.com/bfeher/BFPaperButton/master/BFPaperButtonDemoGif2.gif)
+
 - [FRDLivelyButton](https://github.com/sebastienwindal/FRDLivelyButton.git)
 
+![](https://github.com/sebastienwindal/FRDLivelyButton/raw/master/images/screenshot.gif)
+
 #### Calendar & DatePicker
+
 - [FSCalendar](https://github.com/WenchaoD/FSCalendar.git)
+
+![](https://cloud.githubusercontent.com/assets/5186464/10262249/4fabae40-69f2-11e5-97ab-afbacd0a3da2.jpg)
+![](https://cloud.githubusercontent.com/assets/5186464/10927681/d2448cb6-82dc-11e5-9d11-f664a06698a7.jpg)
+
 - [THCalendarDatePicker](https://github.com/hons82/THCalendarDatePicker.git)
+
+![](https://github.com/hons82/THCalendarDatePicker/raw/master/Screenshots/Screenshot1.png?raw=true)
+
 - [SACalendar](https://github.com/nopshusang/SACalendar.git)
+
+![](https://raw.githubusercontent.com/nopshusang/SACalendar/master/Screenshots/demo.png)
+
 - [MGConferenceDatePicker](https://github.com/matteogobbi/MGConferenceDatePicker.git)
+
+![](https://camo.githubusercontent.com/2d05d142773041b048ad777201f90d6ac32832bc/687474703a2f2f6935372e74696e797069632e636f6d2f32696c6e3565762e706e67)
+
 - [FFCalendar](https://github.com/fggeraissate/FFCalendar.git)
+
+![](https://raw.githubusercontent.com/fggeraissate/FFCalendar/master/FFCalendar/FFCalendars/Util/Images/YearlyCalendar.png)
+![](https://raw.githubusercontent.com/fggeraissate/FFCalendar/master/FFCalendar/FFCalendars/Util/Images/MonthlyCalendar.png)
 
 ## CollectionView
 - **[LxGridView](https://github.com/DeveloperLx/LxGridView.git)**
