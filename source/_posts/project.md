@@ -514,68 +514,102 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 - [AwesomeMenu](https://github.com/levey/AwesomeMenu.git) path style menu
 
 ## Animation 各种动画
-- [CBStoreHouseRefreshControl](https://github.com/coolbeet/CBStoreHouseRefreshControl.git)
+- **[CBStoreHouseRefreshControl](https://github.com/coolbeet/CBStoreHouseRefreshControl.git)**
 
 ![](https://s3.amazonaws.com/suyu.test/CBStoreHouseRefreshControl1.gif)
 
-- [ZLSwipeableView](https://github.com/zhxnlai/ZLSwipeableView.git)
+- **[ZLSwipeableView](https://github.com/zhxnlai/ZLSwipeableView.git)**
 
 ![swipe](https://github.com/zhxnlai/ZLSwipeableView/raw/master/Previews/swipe.gif)
 
-- [YLLongTapShare](https://github.com/liyong03/YLLongTapShare.git)
+- **[YLLongTapShare](https://github.com/liyong03/YLLongTapShare.git)**
 
 ![](https://github.com/liyong03/YLLongTapShare/raw/master/joy.gif)
 
-- [VBFJellyView](https://github.com/victorBaro/VBFJellyView.git)
+- **[VBFJellyView](https://github.com/victorBaro/VBFJellyView.git)**
 
 ![](https://camo.githubusercontent.com/b0f5afe69dc6620e2f81f447345a67418d107933/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3338313133332f73637265656e73686f74732f313639343335382f7662666a656c6c79766965772e676966)
 
-- [TinderSimpleSwipeCards](https://github.com/cwRichardKim/TinderSimpleSwipeCards.git)
+- **[TinderSimpleSwipeCards](https://github.com/cwRichardKim/TinderSimpleSwipeCards.git)**
 
 ![](https://camo.githubusercontent.com/cd6977c1efbd029aa0271a5b9266397c2b910da2/687474703a2f2f696d6775722e636f6d2f7758506e664e322e676966)
 
-- [CrossNavigation](https://github.com/artemstepanenko/CrossNavigation.git) 
+- **[CrossNavigation](https://github.com/artemstepanenko/CrossNavigation.git)**
 
 不同方向的转场动画
 ![](https://github.com/artemstepanenko/CrossNavigation/raw/master/README%20Graphics/demo_storyboard.gif)
 
-- [FastAnimationWithPOP](https://github.com/WilliamZang/FastAnimationWithPOP.git)
+- **[FastAnimationWithPOP](https://github.com/WilliamZang/FastAnimationWithPOP.git)**
 
 ![](https://raw.githubusercontent.com/WilliamZang/FastAnimationWithPOP/master/Docs/demo.gif)
 
-- [CXCardView](https://github.com/ChrisXu1221/CXCardView.git)
+- **[CXCardView](https://github.com/ChrisXu1221/CXCardView.git)**
 
 ![](https://github.com/ChrisXu/CXCardView/raw/master/demo2.gif)
 
-- [ICGTransitionAnimation](https://github.com/itsmeichigo/ICGTransitionAnimation.git)
+- **[ICGTransitionAnimation](https://github.com/itsmeichigo/ICGTransitionAnimation.git)**
 
 ![](https://raw.githubusercontent.com/itsmeichigo/ICGTransitionAnimation/master/Demo.gif)
 
-- [ZFDragableModalTransition](https://github.com/zoonooz/ZFDragableModalTransition.git)
+- **[ZFDragableModalTransition](https://github.com/zoonooz/ZFDragableModalTransition.git)**
 
 ![](https://raw.githubusercontent.com/zoonooz/ZFDragableModalTransition/master/Screenshot/ss.gif)
 
-- [ESConveyorBelt](https://github.com/escoz/ESConveyorBelt.git) 
+- **[ESConveyorBelt](https://github.com/escoz/ESConveyorBelt.git)**
 
 开机启动画面方案，有点像ppt的动画方案
 ![](https://raw.githubusercontent.com/escoz/ESConveyorBelt/master/ESConveyorBelt.gif)
 
-- [EAIntroView](https://github.com/ealeksandrov/EAIntroView.git)
+- **[EAIntroView](https://github.com/ealeksandrov/EAIntroView.git)**
 
 启动引导页方案，样式比较固定
 ![](https://raw.githubusercontent.com/ealeksandrov/EAIntroView/master/Screenshot01.png)
 
-- [URBMediaFocusViewController](https://github.com/u10int/URBMediaFocusViewController.git)
-- [RQShineLabel](https://github.com/zipme/RQShineLabel.git)
-- [AMWaveTransition](https://github.com/andreamazz/AMWaveTransition.git)
-- [SCSiriWaveformView](https://github.com/stefanceriu/SCSiriWaveformView.git)
-- [AnimatedTransitionGallery](https://github.com/shu223/AnimatedTransitionGallery.git)
-- [MDCSwipeToChoose](https://github.com/modocache/MDCSwipeToChoose.git)
-- [RPSlidingMenu](https://github.com/RobotsAndPencils/RPSlidingMenu.git)
-- [BRFlabbyTable](https://github.com/brocoo/BRFlabbyTable.git)
-- [SVGKit](https://github.com/SVGKit/SVGKit)
-- [KMCGeigerCounter](https://github.com/kconner/KMCGeigerCounter)
-- [POP-MCAnimate](https://github.com/matthewcheok/POP-MCAnimate)
+- **[URBMediaFocusViewController](https://github.com/u10int/URBMediaFocusViewController.git)**
+
+一个图片全屏展示的方案，问题多多。
+
+- **[RQShineLabel](https://github.com/zipme/RQShineLabel.git)**
+
+![](https://raw.githubusercontent.com/zipme/RQShineLabel/master/Screenshots/rqshinelabel.gif)
+
+- **[AMWaveTransition](https://github.com/andreamazz/AMWaveTransition.git)**
+
+![](https://raw.githubusercontent.com/andreamazz/AMWaveTransition/master/assets/screenshot.gif)
+
+- **[SCSiriWaveformView](https://github.com/stefanceriu/SCSiriWaveformView.git)**
+
+![](https://camo.githubusercontent.com/3c2fdd91d129aa57622d9acb8a6fec4a20a1d050/68747470733a2f2f64726976652e676f6f676c652e636f6d2f75633f6578706f72743d646f776e6c6f61642669643d3042794c436b554f39306c746f53566c6f4c58524b5343314462456b)
+
+- **[AnimatedTransitionGallery](https://github.com/shu223/AnimatedTransitionGallery.git)**
+
+大量页面切换的动效。
+![](https://github.com/shu223/AnimatedTransitionGallery/raw/master/gif/gallery.gif)
+
+- **[MDCSwipeToChoose](https://github.com/modocache/MDCSwipeToChoose.git)**
+
+![](https://camo.githubusercontent.com/07a54fcf8ab7a955c22e58168178a91f800eecb8/687474703a2f2f636c2e6c792f696d6167652f304d316a314a3045307333472f4d44435377697065546f43686f6f73652d76302e322e302e676966)
+
+- **[RPSlidingMenu](https://github.com/RobotsAndPencils/RPSlidingMenu.git)**
+
+![](https://camo.githubusercontent.com/79db989540f237a3e0b43a7df8f0645910c33804/687474703a2f2f662e636c2e6c792f6974656d732f3150306c315830443062326b314333543243326f2f323031342d30332d313425323031315f33395f33362e676966)
+
+- **[BRFlabbyTable](https://github.com/brocoo/BRFlabbyTable.git)**
+
+![](https://camo.githubusercontent.com/be91b8bb8106725590a370646997ba1a83d7d387/687474703a2f2f692e696d6775722e636f6d2f466c3930724c6d2e706e67)
+![](https://camo.githubusercontent.com/aaacbd03c84ecf1148933955a0c94dbaae78a411/687474703a2f2f692e696d6775722e636f6d2f304b6855684d4e2e706e67)
+
+- **[SVGKit](https://github.com/SVGKit/SVGKit)**
+
+web svg在iOS端的实现，挺有意思。
+
+- **[KMCGeigerCounter](https://github.com/kconner/KMCGeigerCounter)**
+
+一个点击音效。
+
+- **[POP-MCAnimate](https://github.com/matthewcheok/POP-MCAnimate)**
+
+基于POP的动画扩展。
 
 #### Button
 - [DownloadButton](https://github.com/PavelKatunin/DownloadButton.git)
