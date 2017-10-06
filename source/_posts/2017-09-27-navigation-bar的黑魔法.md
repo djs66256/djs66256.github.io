@@ -1,8 +1,9 @@
 ---
 title: navigation-bar的黑魔法
 date: 2017-09-27 01:31:39
-tags:
+categories:
 - iOS
+tags:
 - navigationBar
 ---
 
