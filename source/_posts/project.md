@@ -43,7 +43,7 @@ tags:
 
 一个模仿NSCache的实现，内部使用NSDictionary。
 
-- **[Haneke](https://github.com/Haneke/Haneke.git)** image cache
+- **[Haneke](https://github.com/Haneke/Haneke.git)**
 
 他和SDWebImage非常相似，个人看来，这个的代码及其结构会比SD好一些，但是功能太有限，就像作者自己说的是一个轻量级的实现。
 
@@ -477,7 +477,7 @@ iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebVi
 
 依靠CADisplayLink来达到高帧率的动画效果。但是太依赖CPU，所以性能不一定比CA优秀。一般情况下感觉不太需要他来做动画。
 
-- [RBBAnimation](https://github.com/robb/RBBAnimation.git)
+- **[RBBAnimation](https://github.com/robb/RBBAnimation.git)**
 
 一种动画的封装，意义不大。
 
@@ -497,21 +497,52 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 ```
 看似比popping简单点，但是popping是模仿CoreAnimation做的，所以没有可比性。建议使用popping。
 
-- [CRAnimation](https://github.com/CRAnimation/CRAnimation)
+- **[CRAnimation](https://github.com/CRAnimation/CRAnimation)**
 
 一系列的动画效果。
 
 ## ActionSheet & Menu
-- [JGActionSheet](https://github.com/JonasGessner/JGActionSheet.git)
-- [JTSActionSheet](https://github.com/jaredsinclair/JTSActionSheet.git)
-- [AHKActionSheet](https://github.com/fastred/AHKActionSheet.git)
-- [AMPopTip](https://github.com/andreamazz/AMPopTip.git) 类似menu control
-- [MMPopLabel](https://github.com/mgcm/MMPopLabel.git) 类似menu control
-- [FTPopOverMenu](https://github.com/liufengting/FTPopOverMenu.git)
-- [CMPopTipView](https://github.com/chrismiles/CMPopTipView.git)
-- [CRToast](https://github.com/cruffenach/CRToast.git)
-- [GHContextMenu](https://github.com/GnosisHub/GHContextMenu.git) path style menu
-- [AwesomeMenu](https://github.com/levey/AwesomeMenu.git) path style menu
+- **[JGActionSheet](https://github.com/JonasGessner/JGActionSheet.git)**
+
+![](https://github.com/JonasGessner/JGActionSheet/raw/master/JGActionSheet%20Tests/Screenshots/1.png)
+![](https://github.com/JonasGessner/JGActionSheet/raw/master/JGActionSheet%20Tests/Screenshots/2.png)
+
+- **[JTSActionSheet](https://github.com/jaredsinclair/JTSActionSheet.git)**
+
+![](https://raw.githubusercontent.com/jaredsinclair/JTSActionSheet/master/jtsactionsheet.png)
+
+- **[AHKActionSheet](https://github.com/fastred/AHKActionSheet.git)**
+
+![](https://raw.githubusercontent.com/fastred/AHKActionSheet/master/example.gif)
+
+- **[AMPopTip](https://github.com/andreamazz/AMPopTip.git)**
+
+![](https://raw.githubusercontent.com/andreamazz/AMPopTip/master/assets/screenshot.gif)
+
+- **[MMPopLabel](https://github.com/mgcm/MMPopLabel.git)**
+
+![](https://raw.githubusercontent.com/mgcm/MMPopLabel/master/Assets/MMPopLabel-1.png)
+
+- **[FTPopOverMenu](https://github.com/liufengting/FTPopOverMenu.git)**
+
+![](https://raw.githubusercontent.com/liufengting/FTResourceRepo/master/Resource/FTPopOverMenu/screenshots.gif)
+
+- **[CMPopTipView](https://github.com/chrismiles/CMPopTipView.git)**
+
+![](https://camo.githubusercontent.com/d953577314aafa7c65d1eb3b15f7fd73c9946d1e/687474703a2f2f6661726d352e7374617469632e666c69636b722e636f6d2f343030352f353139313634313033305f326239336134613535392e6a7067)
+
+- **[CRToast](https://github.com/cruffenach/CRToast.git)**
+
+![](https://github.com/cruffenach/CRToast/raw/master/screenshots/demo.gif)
+
+- **[GHContextMenu](https://github.com/GnosisHub/GHContextMenu.git)**
+
+path style menu
+![](https://github.com/GnosisHub/GHContextMenu/raw/master/cmocv.gif)
+
+- **[AwesomeMenu](https://github.com/levey/AwesomeMenu.git)**
+
+path style menu
 
 ## Animation 各种动画
 - **[CBStoreHouseRefreshControl](https://github.com/coolbeet/CBStoreHouseRefreshControl.git)**
