@@ -1,5 +1,5 @@
 ---
-title: 开源项目列表
+title: 开源项目列表-iOS & mac
 date: 2012-07-17 01:57:37
 categories:
 - 开源项目
@@ -829,8 +829,11 @@ UIColor扩展。
 和KMNavigationBarTransition类似，只是并不是直接使用UINavigationBar来做fake bar，而是采用截屏+addLayer来做。
 
 ## News
-- [TTNews](https://github.com/577528249/TTNews.git)
-- [bilibili-mac-client](https://github.com/typcn/bilibili-mac-client.git)
+- **[TTNews](https://github.com/577528249/TTNews.git)**
+
+一个demo性质的东西。
+
+- **[bilibili-mac-client](https://github.com/typcn/bilibili-mac-client.git)**
 
 ## Password
 - [SmileTouchID](https://github.com/liu044100/SmileTouchID.git) Touch ID
@@ -918,36 +921,74 @@ UIColor扩展。
 ----
 
 # Debug
-- [FLEX](https://github.com/Flipboard/FLEX.git) Debug Tool
-- [RHObjectiveBeagle](https://github.com/heardrwt/RHObjectiveBeagle.git) view debug tool
-- [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack.git)
-- [BugshotKit](https://github.com/marcoarment/BugshotKit.git)
-- [Clue](https://github.com/Geek-1001/Clue) Flexible bug report framework for iOS
-- [MLeaksFinder](https://github.com/Zepo/MLeaksFinder)
-- [GYBootingProtection](https://github.com/liuslevis/GYBootingProtection)
-- [DBDebugToolkit](https://github.com/dbukowski/DBDebugToolkit)
-- [IPAPatch](https://github.com/Naituw/IPAPatch)
-- [NetworkEye](https://github.com/coderyi/NetworkEye)
-- [FBSimulatorControl](https://github.com/facebook/FBSimulatorControl)
+- **[FLEX](https://github.com/Flipboard/FLEX.git)**
+
+一款非常完善的内置debug工具。包含视图查看、log、查看沙盒数据等等功能。
+
+- **[RHObjectiveBeagle](https://github.com/heardrwt/RHObjectiveBeagle.git)**
+
+已被删除
+
+- **[CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack.git)**
+
+非常有名的log工具
+
+- **[BugshotKit](https://github.com/marcoarment/BugshotKit.git)**
+
+bug反馈，截屏功能。
+
+- **[Clue](https://github.com/Geek-1001/Clue)** Flexible bug report framework for iOS
+
+在一个bug反馈前，收集用户信息，包括录制视频。
+
+- **[MLeaksFinder](https://github.com/Zepo/MLeaksFinder)**
+
+依赖`FBRetainCycleDetector`来做的内存泄露分析。
+
+- **[GYBootingProtection](https://github.com/liuslevis/GYBootingProtection)**
+
+开机启动自修复，判定开机崩溃，进入修复流程。微信就有这样的功能。
+
+- **[DBDebugToolkit](https://github.com/dbukowski/DBDebugToolkit)**
+
+一个比较完善的debug工具集。
+
+- **[IPAPatch](https://github.com/Naituw/IPAPatch)**
+
+不需要越狱注入其他app的工具。
+
+- **[NetworkEye](https://github.com/coderyi/NetworkEye)**
+
+利用NSURLProtocol来观察网络请求状况，是一个内置的查看工具。
+
+- **[FBSimulatorControl](https://github.com/facebook/FBSimulatorControl)**
+
+多模拟器选择。
 
 - **[LifetimeTracker](https://github.com/krzysztofzablocki/LifetimeTracker)** **621 Stars** **Swift** Find retain cycles / memory leaks sooner.
 
 利用了associate object来监测对象生命周期，局限性太大。不过可能会持续更新
 
-- [FBMemoryProfiler](https://github.com/facebook/FBMemoryProfiler.git)
+- **[FBMemoryProfiler](https://github.com/facebook/FBMemoryProfiler.git)**
 
 利用`FBRetainCycleDetector`和`FBAllocationTracker`做的一款工具，增加UI界面。
 
-- [FBRetainCycleDetector](https://github.com/facebook/FBRetainCycleDetector)
+- **[FBRetainCycleDetector](https://github.com/facebook/FBRetainCycleDetector)**
 
 利用objc的特性，利用Object、block等的属性布局收集强引用信息。
 
-- [FBAllocationTracker](https://github.com/facebook/FBAllocationTracker)
+- **[FBAllocationTracker](https://github.com/facebook/FBAllocationTracker)**
 
 hook了`+alloc`和`-dealloc`来统计objc对象使用情况。
 
 - [iOS-Hierarchy-Viewer](https://github.com/glock45/iOS-Hierarchy-Viewer)
-- [libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)
+
+iOS视图结构查看器，需要通过http查看，还包括core data查看。
+![](https://camo.githubusercontent.com/8e3e960a51e023472a06691ef0157a75c38d809d/687474703a2f2f692e737461636b2e696d6775722e636f6d2f796e7176472e706e67)
+
+- **[libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)**
+
+和设备通信的类库。
 
 # Test
 - **[ocmock](https://github.com/erikdoe/ocmock)**
