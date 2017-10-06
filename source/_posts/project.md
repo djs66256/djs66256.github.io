@@ -729,9 +729,17 @@ swizzle了reload方法来检测是否为空列表，从而来显示空状态。�
 折叠动画
 
 ## Color
-- [Chameleon](https://github.com/ViccAlexander/Chameleon.git)
-- [color](https://github.com/thisandagain/color.git)
-- [Colours](https://github.com/bennyguitar/Colours.git)
+- **[Chameleon](https://github.com/ViccAlexander/Chameleon.git)**
+
+扁平化颜色集合。
+
+- **[color](https://github.com/thisandagain/color.git)**
+
+UIColor扩展。
+
+- **[Colours](https://github.com/bennyguitar/Colours.git)**
+
+一种比较漂亮的颜色集合，以及一些颜色转换方法。
 
 ## UIController
 - [FDFullscreenPopGesture](https://github.com/forkingdog/FDFullscreenPopGesture.git) 全屏手势返回
