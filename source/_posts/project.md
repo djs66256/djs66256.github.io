@@ -515,17 +515,56 @@ YapAnimator(initialValue: square.frame, willBegin: { [unowned self] in
 
 ## Animation 各种动画
 - [CBStoreHouseRefreshControl](https://github.com/coolbeet/CBStoreHouseRefreshControl.git)
+
+![](https://s3.amazonaws.com/suyu.test/CBStoreHouseRefreshControl1.gif)
+
 - [ZLSwipeableView](https://github.com/zhxnlai/ZLSwipeableView.git)
+
+![swipe](https://github.com/zhxnlai/ZLSwipeableView/raw/master/Previews/swipe.gif)
+
 - [YLLongTapShare](https://github.com/liyong03/YLLongTapShare.git)
+
+![](https://github.com/liyong03/YLLongTapShare/raw/master/joy.gif)
+
 - [VBFJellyView](https://github.com/victorBaro/VBFJellyView.git)
+
+![](https://camo.githubusercontent.com/b0f5afe69dc6620e2f81f447345a67418d107933/68747470733a2f2f6431337961637572716a676172612e636c6f756466726f6e742e6e65742f75736572732f3338313133332f73637265656e73686f74732f313639343335382f7662666a656c6c79766965772e676966)
+
 - [TinderSimpleSwipeCards](https://github.com/cwRichardKim/TinderSimpleSwipeCards.git)
-- [CrossNavigation](https://github.com/artemstepanenko/CrossNavigation.git) 不同方向的转场动画
+
+![](https://camo.githubusercontent.com/cd6977c1efbd029aa0271a5b9266397c2b910da2/687474703a2f2f696d6775722e636f6d2f7758506e664e322e676966)
+
+- [CrossNavigation](https://github.com/artemstepanenko/CrossNavigation.git) 
+
+不同方向的转场动画
+![](https://github.com/artemstepanenko/CrossNavigation/raw/master/README%20Graphics/demo_storyboard.gif)
+
 - [FastAnimationWithPOP](https://github.com/WilliamZang/FastAnimationWithPOP.git)
+
+![](https://raw.githubusercontent.com/WilliamZang/FastAnimationWithPOP/master/Docs/demo.gif)
+
 - [CXCardView](https://github.com/ChrisXu1221/CXCardView.git)
+
+![](https://github.com/ChrisXu/CXCardView/raw/master/demo2.gif)
+
 - [ICGTransitionAnimation](https://github.com/itsmeichigo/ICGTransitionAnimation.git)
+
+![](https://raw.githubusercontent.com/itsmeichigo/ICGTransitionAnimation/master/Demo.gif)
+
 - [ZFDragableModalTransition](https://github.com/zoonooz/ZFDragableModalTransition.git)
-- [ESConveyorBelt](https://github.com/escoz/ESConveyorBelt.git) 开机启动画面方案
-- [EAIntroView](https://github.com/ealeksandrov/EAIntroView.git) 启动引导页方案
+
+![](https://raw.githubusercontent.com/zoonooz/ZFDragableModalTransition/master/Screenshot/ss.gif)
+
+- [ESConveyorBelt](https://github.com/escoz/ESConveyorBelt.git) 
+
+开机启动画面方案，有点像ppt的动画方案
+![](https://raw.githubusercontent.com/escoz/ESConveyorBelt/master/ESConveyorBelt.gif)
+
+- [EAIntroView](https://github.com/ealeksandrov/EAIntroView.git)
+
+启动引导页方案，样式比较固定
+![](https://raw.githubusercontent.com/ealeksandrov/EAIntroView/master/Screenshot01.png)
+
 - [URBMediaFocusViewController](https://github.com/u10int/URBMediaFocusViewController.git)
 - [RQShineLabel](https://github.com/zipme/RQShineLabel.git)
 - [AMWaveTransition](https://github.com/andreamazz/AMWaveTransition.git)
