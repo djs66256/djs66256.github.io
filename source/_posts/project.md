@@ -892,15 +892,27 @@ UIColor扩展。
 - [DTCoreText](https://github.com/Cocoanetics/DTCoreText.git)
 
 ## TableView
-- [UITableView-FDTemplateLayoutCell](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell.git)
-- [MGSwipeTableCell](https://github.com/MortimerGoro/MGSwipeTableCell.git) 左右滑动删除实现
+- **[UITableView-FDTemplateLayoutCell](https://github.com/forkingdog/UITableView-FDTemplateLayoutCell.git)**
+
+利用[view sizeFittingSize:UILayoutFittingCompressedSize]来计算最小高度。
+
+- **[MGSwipeTableCell](https://github.com/MortimerGoro/MGSwipeTableCell.git)**
+
+左右滑动删除实现，需要继承于其cell。
+![](https://raw.githubusercontent.com/MortimerGoro/MGSwipeTableCell/master/readme-assets/border.gif)
+
 - [SWRevealTableViewCell](https://github.com/John-Lluch/SWRevealTableViewCell.git)
 - [FXForms](https://github.com/nicklockwood/FXForms.git) 类似设置页面解决方案
 - [SWTableViewCell](https://github.com/CEWendel/SWTableViewCell.git)
 
 ## Label
-- [UICountingLabel](https://github.com/dataxpress/UICountingLabel)
-- [KILabel](https://github.com/Krelborn/KILabel)
+- **[UICountingLabel](https://github.com/dataxpress/UICountingLabel)**
+
+![](https://github.com/dataxpress/UICountingLabel/raw/master/demo.gif)
+
+- **[KILabel](https://github.com/Krelborn/KILabel)**
+
+一个比较好用的扩展UILabel富文本支持，但是也有一些bug没有修复。
 
 ## Other
 - **[timeLineiOS](https://github.com/romaHerman/timeLineiOS.git)**
