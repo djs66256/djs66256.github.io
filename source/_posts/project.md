@@ -857,8 +857,17 @@ Touch ID和key chain共同实现验证的功能。
 - **[onepassword-app-extension](https://github.com/AgileBits/onepassword-app-extension.git)**
 
 ## PDF
-- [GreatReader](https://github.com/semweb/GreatReader.git)
-- [Reader](https://github.com/vfr/Reader.git)
+- **[GreatReader](https://github.com/semweb/GreatReader.git)**
+
+一个功能完善的PDF阅读器，但是有些小问题。
+
+- **[Reader](https://github.com/vfr/Reader.git)**
+
+一个比较完善的PDF组件，包含图片、链接。利用了CATiledLayer来分块绘制，优化性能。
+
+- **[UXReader-iOS](https://github.com/vfr/UXReader-iOS.git)**
+
+同Reader，但是是基于PDFium的实现。
 
 ## Progress
 - [MRProgress](https://github.com/mrackwitz/MRProgress.git)
