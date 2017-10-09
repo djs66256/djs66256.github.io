@@ -902,8 +902,18 @@ UIColor扩展。
 ![](https://raw.githubusercontent.com/MortimerGoro/MGSwipeTableCell/master/readme-assets/border.gif)
 
 - [SWRevealTableViewCell](https://github.com/John-Lluch/SWRevealTableViewCell.git)
-- [FXForms](https://github.com/nicklockwood/FXForms.git) 类似设置页面解决方案
+
+左右滑动删除实现，需要继承于其cell。
+![](https://cloud.githubusercontent.com/assets/1282248/3996276/e64e2efa-2933-11e4-8d4f-1072d6de9b6f.gif)
+
 - [SWTableViewCell](https://github.com/CEWendel/SWTableViewCell.git)
+
+左右滑动删除实现，需要继承于其cell。
+![](https://camo.githubusercontent.com/c138fcd3df24ae1d91f8bf6feb51a1cf111606a4/687474703a2f2f692e696d6775722e636f6d2f6e6a4b436a4b382e676966)
+
+- [FXForms](https://github.com/nicklockwood/FXForms.git) 
+
+利用model直接布局tableView的方案，比如登录、注册这种页面，难以定制化。
 
 ## Label
 - **[UICountingLabel](https://github.com/dataxpress/UICountingLabel)**
