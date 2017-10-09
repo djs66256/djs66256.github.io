@@ -841,10 +841,20 @@ UIColor扩展。
 - **[bilibili-mac-client](https://github.com/typcn/bilibili-mac-client.git)**
 
 ## Password
-- [SmileTouchID](https://github.com/liu044100/SmileTouchID.git) Touch ID
-- [VENTouchLock](https://github.com/venmo/VENTouchLock.git) Touch ID
-- [LTHPasscodeViewController](https://github.com/rolandleth/LTHPasscodeViewController.git) 密码及界面
-- [onepassword-app-extension](https://github.com/AgileBits/onepassword-app-extension.git)
+- **[SmileTouchID](https://github.com/liu044100/SmileTouchID.git)**
+
+一个登录界面实现。
+
+- **[VENTouchLock](https://github.com/venmo/VENTouchLock.git)**
+
+Touch ID和key chain共同实现验证的功能。
+
+- **[LTHPasscodeViewController](https://github.com/rolandleth/LTHPasscodeViewController.git)**
+
+密码及界面
+![](https://camo.githubusercontent.com/a7d667b8a1e095e61cc138d58b0ac75beb208ee8/68747470733a2f2f726f6c616e646c6574682e636f6d2f696d616765732f696f73372d7374796c652d70617373636f64652f73637265656e73686f742e706e67)
+
+- **[onepassword-app-extension](https://github.com/AgileBits/onepassword-app-extension.git)**
 
 ## PDF
 - [GreatReader](https://github.com/semweb/GreatReader.git)
@@ -901,17 +911,17 @@ UIColor扩展。
 左右滑动删除实现，需要继承于其cell。
 ![](https://raw.githubusercontent.com/MortimerGoro/MGSwipeTableCell/master/readme-assets/border.gif)
 
-- [SWRevealTableViewCell](https://github.com/John-Lluch/SWRevealTableViewCell.git)
+- **[SWRevealTableViewCell](https://github.com/John-Lluch/SWRevealTableViewCell.git)**
 
 左右滑动删除实现，需要继承于其cell。
 ![](https://cloud.githubusercontent.com/assets/1282248/3996276/e64e2efa-2933-11e4-8d4f-1072d6de9b6f.gif)
 
-- [SWTableViewCell](https://github.com/CEWendel/SWTableViewCell.git)
+- **[SWTableViewCell](https://github.com/CEWendel/SWTableViewCell.git)**
 
 左右滑动删除实现，需要继承于其cell。
 ![](https://camo.githubusercontent.com/c138fcd3df24ae1d91f8bf6feb51a1cf111606a4/687474703a2f2f692e696d6775722e636f6d2f6e6a4b436a4b382e676966)
 
-- [FXForms](https://github.com/nicklockwood/FXForms.git) 
+- **[FXForms](https://github.com/nicklockwood/FXForms.git)**
 
 利用model直接布局tableView的方案，比如登录、注册这种页面，难以定制化。
 
