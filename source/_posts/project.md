@@ -748,16 +748,45 @@ UIColor扩展。
 
 全屏手势返回。通过KVC获取target，然后设置为第三方gesture的target，从而实现gesture替换的效果。
 
-- [PKRevealController](https://github.com/pkluz/PKRevealController.git)
-- [ECSlidingViewController](https://github.com/ECSlidingViewController/ECSlidingViewController.git) Android风格侧滑抽屉
-- [SWRevealViewController](https://github.com/John-Lluch/SWRevealViewController.git)
-- [BTSimpleSideMenu](https://github.com/balram3429/BTSimpleSideMenu.git)
-- [RESideMenu](https://github.com/romaonthego/RESideMenu.git)
-- [CYLTabBarController](https://github.com/ChenYilong/CYLTabBarController)
-- [TLYShyNavBar](https://github.com/telly/TLYShyNavBar)
-- [AXWebViewController](https://github.com/devedbox/AXWebViewController)
-- [VCTransitionsLibrary](https://github.com/ColinEberhardt/VCTransitionsLibrary)
-- [PYSearch](https://github.com/iphone5solo/PYSearch)
+- **[PKRevealController](https://github.com/pkluz/PKRevealController.git)**
+
+- **[ECSlidingViewController](https://github.com/ECSlidingViewController/ECSlidingViewController.git)**
+
+Android风格侧滑抽屉
+![](https://camo.githubusercontent.com/1570836e1f24c4567dde8dbe7466830897ce5bd1/687474703a2f2f692e696d6775722e636f6d2f574248595a55662e706e67)
+
+- **[SWRevealViewController](https://github.com/John-Lluch/SWRevealViewController.git)**
+
+![](https://camo.githubusercontent.com/087f15627e48f65697027176502bf942c69fd887/68747470733a2f2f7261772e6769746875622e636f6d2f4a6f686e2d4c6c7563682f535752657665616c56696577436f6e74726f6c6c65722f6d61737465722f52657665616c436f6e74726f6c6c657250726f6a656374335f622e706e67)
+
+- **[BTSimpleSideMenu](https://github.com/balram3429/BTSimpleSideMenu.git)**
+
+![](https://raw.githubusercontent.com/balram3429/btSimpleSideMenu/master/btSimpleSideMenuDemo/raw/btSimpleSideMenu.png)
+
+- **[RESideMenu](https://github.com/romaonthego/RESideMenu.git)**
+
+![](https://raw.githubusercontent.com/romaonthego/RESideMenu/master/Demo.gif?2)
+
+- **[CYLTabBarController](https://github.com/ChenYilong/CYLTabBarController)**
+
+利用KVC修改系统tabbar，由于是私有api，可能不安全，不是特别建议。
+![](https://camo.githubusercontent.com/bfa193ecd59323f8512b1c73ed35783b1a5feaad/68747470733a2f2f7777312e73696e61696d672e636e2f6c617267652f303036744e6252776c7931666739687536716e776267333038763067637463632e676966)
+
+- **[TLYShyNavBar](https://github.com/telly/TLYShyNavBar)**
+
+![](https://github.com/telly/TLYShyNavBar/raw/master/resources/battle-tested-demo.gif)
+
+- **[AXWebViewController](https://github.com/devedbox/AXWebViewController)**
+
+![](https://camo.githubusercontent.com/42bbb3315ca1ed1edc42dd3cc7f451c3e78e2bad/687474703a2f2f7777332e73696e61696d672e636e2f6c617267652f6432323937626432677731663577706e69657a7170673230396f3068343471722e676966)
+
+- **[VCTransitionsLibrary](https://github.com/ColinEberhardt/VCTransitionsLibrary)**
+
+多种页面切换动画。
+
+- **[PYSearch](https://github.com/iphone5solo/PYSearch)**
+
+![](https://github.com/iphone5solo/learngit/raw/master/imagesForPYSearch/PYSearchDemo.gif)
 
 ## Chart
 - [iOS-Echarts](https://github.com/Pluto-Y/iOS-Echarts.git)
@@ -870,20 +899,56 @@ Touch ID和key chain共同实现验证的功能。
 同Reader，但是是基于PDFium的实现。
 
 ## Progress
-- [MRProgress](https://github.com/mrackwitz/MRProgress.git)
-- [JGProgressHUD](https://github.com/JonasGessner/JGProgressHUD.git)
-- [SVProgressHUD](https://github.com/SVProgressHUD/SVProgressHUD.git)
-- [NJKWebViewProgress](https://github.com/ninjinkun/NJKWebViewProgress.git)
-- [M13ProgressSuite](https://github.com/Marxon13/M13ProgressSuite.git)
-- [UAProgressView](https://github.com/UrbanApps/UAProgressView.git)
-- [MRCircularProgressView](https://github.com/martinezdelariva/MRCircularProgressView.git)
-- [ASProgressPopUpView](https://github.com/alskipp/ASProgressPopUpView.git)
-- [ASValueTrackingSlider](https://github.com/alskipp/ASValueTrackingSlider.git)
-- [MBProgressHUD](https://github.com/jdg/MBProgressHUD.git)
-- [YLProgressBar](https://github.com/yannickl/YLProgressBar)
+- **[MBProgressHUD](https://github.com/jdg/MBProgressHUD.git)**
+
+非常有名的loading。
+
+- **[SVProgressHUD](https://github.com/SVProgressHUD/SVProgressHUD.git)**
+
+非常有名的loading。
+
+SV与MB，MB功能更加多一些，SV设计上更好一点，各有优势。
+
+- **[MRProgress](https://github.com/mrackwitz/MRProgress.git)**
+
+多种样式loading。
+
+- **[JGProgressHUD](https://github.com/JonasGessner/JGProgressHUD.git)**
+
+![](https://github.com/JonasGessner/JGProgressHUD/raw/master/Examples/Screenshots/demo2.gif)
+
+- **[NJKWebViewProgress](https://github.com/ninjinkun/NJKWebViewProgress.git)**
+
+![](https://camo.githubusercontent.com/082fc708cc461dc53832b7d14d5affdf475dd57b/68747470733a2f2f7261772e6769746875622e636f6d2f6e696e6a696e6b756e2f4e4a4b5765625669657750726f67726573732f6d61737465722f44656d6f4170702f53637265656e73686f742f73637265656e73686f74312e706e67)
+
+- **[M13ProgressSuite](https://github.com/Marxon13/M13ProgressSuite.git)**
+
+非常丰富的多样式loading以及progress。
+
+- **[UAProgressView](https://github.com/UrbanApps/UAProgressView.git)**
+
+![](https://raw.githubusercontent.com/UrbanApps/UAProgressView/assets/UAProgressView.gif)
+
+- **[MRCircularProgressView](https://github.com/martinezdelariva/MRCircularProgressView.git)**
+
+![](https://camo.githubusercontent.com/e664b47382d41a876b05fdb3744b2be7dd3bfe53/68747470733a2f2f7261772e6769746875622e636f6d2f6d617274696e657a64656c61726976612f4d5243697263756c617250726f6772657373566965772f6d61737465722f766964656f2e676966)
+
+- **[ASProgressPopUpView](https://github.com/alskipp/ASProgressPopUpView.git)**
+
+![screenshot](http://alskipp.github.io/ASProgressPopUpView/img/screenshot1.gif)
+
+- **[ASValueTrackingSlider](https://github.com/alskipp/ASValueTrackingSlider.git)**
+
+![screenshot](http://alskipp.github.io/ASValueTrackingSlider/img/screenshot1.gif)
+
+- **[YLProgressBar](https://github.com/yannickl/YLProgressBar)**
+
+![](https://github.com/YannickL/YLProgressBar/raw/master/web/YLProgressBar.gif)
 
 #### Push
-- [Knuff](https://github.com/KnuffApp/Knuff.git) 工具：The debug application for Apple Push Notification Service (APNs).
+- **[Knuff](https://github.com/KnuffApp/Knuff.git) **
+
+工具：The debug application for Apple Push Notification Service (APNs).
 
 ## Refresh
 - [MJRefresh](https://github.com/CoderMJLee/MJRefresh.git)
