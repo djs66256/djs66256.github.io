@@ -275,18 +275,38 @@ SQLCipher is an SQLite extension that provides 256 bit AES encryption of databas
 数据结构使用跳跃链表（skip list）来实现，他比B/B+数的实现简单，同时也有不错的性能。
 
 # Notes
-- [iOS-Source-Code-Analyze](https://github.com/Draveness/iOS-Source-Code-Analyze.git) 笔记
-- [trip-to-iOS](https://github.com/Aufree/trip-to-iOS.git)
-- [ParseSourceCodeStudy](https://github.com/ChenYilong/ParseSourceCodeStudy.git)
-- [iOSInterviewQuestions](https://github.com/ChenYilong/iOSInterviewQuestions.git) iOS面试题集锦
+- **[iOS-Source-Code-Analyze](https://github.com/Draveness/iOS-Source-Code-Analyze.git)**
+
+源码分析笔记，有些地方过于详细了。
+
+- **[trip-to-iOS](https://github.com/Aufree/trip-to-iOS.git)**
+
+一些资源以及博客等整理，比较老了，偏向新手。
+
+- **[ParseSourceCodeStudy](https://github.com/ChenYilong/ParseSourceCodeStudy.git)**
+
+Parse的一些列分析文章。
+
+- [iOSInterviewQuestions](https://github.com/ChenYilong/iOSInterviewQuestions.git)
+
+iOS面试题集锦
+
 - [iOSBlogCN](https://github.com/tangqiaoboy/iOSBlogCN.git)
+
+iOS博客集合。
+
 - [TomatoRead](https://github.com/everettjf/TomatoRead.git)
+
+iOS博客集合。
+
 - [idev-recipes](https://github.com/boctor/idev-recipes)
-- [IosHackStudy](https://github.com/pandazheng/IosHackStudy) IOS安全学习资料汇总
+- [IosHackStudy](https://github.com/pandazheng/IosHackStudy)
+
+IOS安全学习资料汇总
+
 - [The-Art-Of-Programming-By-July](https://github.com/julycoding/The-Art-Of-Programming-By-July)
 - [Apple-OfficialTranslation-SourceAnnotation](https://github.com/CustomPBWaters/Apple-OfficialTranslation-SourceAnnotation)
 - [Halfrost-Field](https://github.com/halfrost/Halfrost-Field)
-- [idev-recipes](https://github.com/boctor/idev-recipes)
 
 # Network
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking.git)
