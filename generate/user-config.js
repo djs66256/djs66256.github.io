@@ -29,7 +29,7 @@ class UserConfig {
   }
 
   setUserConfigWithName(name, config) {
-    this.userContainer[name] = config
+    this.getUserConfigs()[name] = config
     try {
       fs.writeFileSync(this.userContainerPath, JSON.stringify(this.userContainer, null, 4))
     }

@@ -11,6 +11,7 @@ class User {
 
   // return: Promise
   getStarRepos() {}
+  getStarReposSync() {}
 
   static register(type, cls) {
     _userConstructors[type] = cls

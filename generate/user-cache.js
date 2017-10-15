@@ -26,6 +26,10 @@ class CachedUser extends User {
     })
   }
 
+  getStarReposSync() {
+    return this.repoCache.loadRepos() || []
+  }
+
   setStarRepos(repos) {
     return new Promise((resolve, reject) => {
       try {
