@@ -312,9 +312,15 @@ IOS安全学习资料汇总
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking.git)
 - [NSURLProtocol-WebKitSupport](https://github.com/yeatse/NSURLProtocol-WebKitSupport.git)
 - [WebViewProxy](https://github.com/marcuswestin/WebViewProxy.git)
-- [MMLanScan](https://github.com/mavris/MMLanScan.git) 网络质量检测
+- [MMLanScan](https://github.com/mavris/MMLanScan.git) 
+
+网络质量检测
+
 - [DFImageManager](https://github.com/kean/DFImageManager.git) Image loading, processing, caching and preheating
-- [Nuke](https://github.com/kean/Nuke.git) swift of [DFImageManager](#DFImageManager)
+- [Nuke](https://github.com/kean/Nuke.git) 
+
+swift of [DFImageManager](#DFImageManager)
+
 - [OHHTTPStubs](https://github.com/AliSoftware/OHHTTPStubs.git)
 - [RTNetworking](https://github.com/casatwy/RTNetworking)
 - [CocoaSPDY](https://github.com/twitter/CocoaSPDY)
@@ -810,7 +816,10 @@ Android风格侧滑抽屉
 
 ## Chart
 - [iOS-Echarts](https://github.com/Pluto-Y/iOS-Echarts.git)
-- [YKLineChartView](https://github.com/chenyk0317/YKLineChartView.git) 分时k线图
+- [YKLineChartView](https://github.com/chenyk0317/YKLineChartView.git) 
+
+分时k线图
+
 - [ANDLineChartView](https://github.com/anaglik/ANDLineChartView.git)
 - [BEMSimpleLineGraph](https://github.com/Boris-Em/BEMSimpleLineGraph.git)
 - [PNChart](https://github.com/kevinzhow/PNChart.git)
@@ -818,7 +827,10 @@ Android风格侧滑抽屉
 
 ## Chat
 - [ChatKit-OC](https://github.com/leancloud/ChatKit-OC.git)
-- [iosMath](https://github.com/kostub/iosMath.git) 数学公式
+- [iosMath](https://github.com/kostub/iosMath.git) 
+
+数学公式
+
 - [Atlas-iOS](https://github.com/layerhq/Atlas-iOS.git)
 - [ChatSecure-iOS](https://github.com/ChatSecure/ChatSecure-iOS.git)
 - [Messenger](https://github.com/relatedcode/Messenger.git)
@@ -835,7 +847,9 @@ Android风格侧滑抽屉
 - [UzysAssetsPickerController](https://github.com/uzysjung/UzysAssetsPickerController.git)
 - [BCamera](https://github.com/danielebogo/DBCamera.git) camera with AVFoundation
 - [PhotoZoom](https://github.com/brennanMKE/PhotoZoom.git)
-- [TKImageView](https://github.com/3tinkers/TKImageView.git) 图片裁剪
+- [TKImageView](https://github.com/3tinkers/TKImageView.git) 
+
+图片裁剪
 
 ## ImageView
 - [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage.git) gif
@@ -1187,24 +1201,48 @@ hook http请求
 - [detect.location](https://github.com/KrauseFx/detect.location)
 - [WeChatTweak-macOS](https://github.com/Sunnyyoung/WeChatTweak-macOS)
 - [FlatUIKit](https://github.com/Grouper/FlatUIKit.git)
-- [JLPermissions](https://github.com/jlaws/JLPermissions.git) 应用权限
-- [ZXingObjC](https://github.com/TheLevelUp/ZXingObjC.git) 二维码
+- [JLPermissions](https://github.com/jlaws/JLPermissions.git) 
+
+应用权限
+
+- [ZXingObjC](https://github.com/TheLevelUp/ZXingObjC.git) 
+
+二维码
+
 - [SAMKeychain](https://github.com/soffes/SAMKeychain.git)
 - [SimulateIDFA](https://github.com/youmi/SimulateIDFA.git)
-- [ohana-ios](https://github.com/uber/ohana-ios.git) 通讯录
+- [ohana-ios](https://github.com/uber/ohana-ios.git) 
+
+通讯录
+
 - [class-dump](https://github.com/nygard/class-dump.git)
-- [DarkLightning](https://github.com/jensmeder/DarkLightning.git) 雷电口传输数据
-- [peertalk](https://github.com/rsms/peertalk.git) USB数据传输
-- [MMWormhole](https://github.com/mutualmobile/MMWormhole.git) app和extension的数据传输
+- [DarkLightning](https://github.com/jensmeder/DarkLightning.git) 
+
+雷电口传输数据
+
+- [peertalk](https://github.com/rsms/peertalk.git) 
+
+USB数据传输
+
+- [MMWormhole](https://github.com/mutualmobile/MMWormhole.git) 
+
+app和extension的数据传输
+
 - [MALoggingViewController](https://github.com/mamaral/MALoggingViewController.git)
 - [ios-simulator-app-installer](https://github.com/stepanhruda/ios-simulator-app-installer.git)
 - [KZPlayground](https://github.com/krzysztofzablocki/KZPlayground.git) Playground for Objective-C
 - [PunchClock](https://github.com/panicinc/PunchClock.git) An in/out tracking app for iOS 7+ that uses iBeacon and Geofencing.
-- [PonyDebugger](https://github.com/square/PonyDebugger.git) 使用Chrome来debug view
+- [PonyDebugger](https://github.com/square/PonyDebugger.git) 
+
+使用Chrome来debug view
+
 - [MLPNeuralNet](https://github.com/nikolaypavlov/MLPNeuralNet.git) 神经网络
 - [GCDWebServer](https://github.com/swisspol/GCDWebServer.git)
 - [CocoaHTTPServer](https://github.com/robbiehanson/CocoaHTTPServer.git)
-- [radiant-player-mac](https://github.com/radiant-player/radiant-player-mac.git) 音乐播放器for mac
+- [radiant-player-mac](https://github.com/radiant-player/radiant-player-mac.git) 
+
+音乐播放器for mac
+
 - [ARAnalytics](https://github.com/orta/ARAnalytics.git)  It currently supports on iOS: Mixpanel, Localytics, Flurry, GoogleAnalytics, KISSmetrics, Crittercism, Crashlytics, Fabric, Bugsnag, Countly, Helpshift, Tapstream, NewRelic, Amplitude, HockeyApp, HockeyAppLib, ParseAnalytics, HeapAnalytics, Chartbeat, UMengAnalytics, Librato, Segmentio, Swrve, YandexMobileMetrica, Adjust, AppsFlyer, Branch, Snowplow, Sentry, Intercom, Keen, Adobe and MobileAppTracker/Tune.
 - [Onboard](https://github.com/mamaral/Onboard)
 - [electrino](https://github.com/pojala/electrino)
