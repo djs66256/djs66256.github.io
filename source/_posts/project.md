@@ -12,11 +12,28 @@ tags:
 
 # AVPlayer
 - [ZFPlayer](https://github.com/renzifeng/ZFPlayer.git) **3566 Stars** **Objective-C**
+
+功能比较完善的一个视频播放及界面，但是实现较为一般。
+
 - [StreamingKit](https://github.com/tumtumtum/StreamingKit.git) **1641 Stars** **Objective-C**
+
+基于流来构建音频播放，是一个思路，但可能不能满足特殊情景。
+
 - [LFLiveKit](https://github.com/LaiFengiOS/LFLiveKit.git) **2677 Stars** **Objective-C**
+
+利用GPUImage做滤镜的一个直播录制系统，功能比较完善，可以作为参考。
+
 - [TTAVPlayer](https://github.com/tangdiforx/TTAVPlayer.git) **84 Stars** **Objective-C**
+
+比较简单的基于AVPlayerLayer的一个实现。
+
 - [CTVideoPlayerView](https://github.com/casatwy/CTVideoPlayerView.git) **499 Stars** **Objective-C**
+
+没太大参考意义。
+
 - [EZAudio](https://github.com/syedhali/EZAudio.git) **4070 Stars** **Objective-C**
+
+音频的波形分析和展示，利用了accelerate，比较全面。
 
 # Cache
 - **[YYCache](https://github.com/ibireme/YYCache.git)** **1490 Stars** **Objective-C**
