@@ -319,6 +319,7 @@ iOS博客集合。
 - [idev-recipes](https://github.com/boctor/idev-recipes.git) **3003 Stars** **Objective-C**
 - [IosHackStudy](https://github.com/pandazheng/IosHackStudy)
 
+
 IOS安全学习资料汇总
 
 - [The-Art-Of-Programming-By-July](https://github.com/julycoding/The-Art-Of-Programming-By-July.git) **11813 Stars** **C**
@@ -503,6 +504,20 @@ iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebVi
 
 利用OpenGL来处理图片，需要对OpenGL比较熟悉，会写GLSL，熟悉图片处理才能创建自己的filter。
 
+架构是流式结构，filter也是流的一部分，既是input也是output
+
+当存在多个filter的时候，优化工作也比较难以进行。比如scale和rotate可以合并为transform。
+
+由于是顺序结构的方案，所以就不能采用多线程多render buffer来优化cpu部分的性能，如下。
+
+```
+CPU: filter1 |  idle   | filter2 |   idle   |
+GPU:  idle   | filter1 |   idle  |  filter2 |
+
+优化：
+CPU: filter1 | filter2 |  idle   |
+GPU:  idle   | filter1 | filter2 |
+```
 
 # animation
 
