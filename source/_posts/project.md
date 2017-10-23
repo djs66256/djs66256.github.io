@@ -502,7 +502,7 @@ iOS版依赖于NSURLProtocol，是基于UIWebView实现的，不能支持WKWebVi
 
 - **[GPUImage](https://github.com/BradLarson/GPUImage.git)** **16408 Stars** **Objective-C**
 
-利用OpenGL来处理图片，需要对OpenGL比较熟悉，会写GLSL，熟悉图片处理才能创建自己的filter。
+是目前最好用的一个GPU计算的框架。利用OpenGL来处理图片，需要对OpenGL比较熟悉，会写GLSL，熟悉图片处理才能创建自己的filter。
 
 架构是流式结构，filter也是流的一部分，既是input也是output
 
