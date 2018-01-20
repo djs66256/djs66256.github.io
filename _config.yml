@@ -76,8 +76,11 @@ limit: 100
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git
+- type: git
   repo: https://github.com/djs66256/djs66256.github.io
+  branch: master
+- type: git
+  repo: https://git.coding.net/daniel233/daniel233.git
   branch: master
 
 jsonContent:
