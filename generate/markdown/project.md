@@ -308,6 +308,8 @@ IOS安全学习资料汇总
 - [Apple-OfficialTranslation-SourceAnnotation](https://github.com/CustomPBWaters/Apple-OfficialTranslation-SourceAnnotation)
 - [Halfrost-Field](https://github.com/halfrost/Halfrost-Field.git) **592 Stars** **Objective-C**
 
+- [free-programming-books-zh_CN](https://github.com/justjavac/free-programming-books-zh_CN) **22228 Stars** **JavaScript** :books: 免费的计算机编程类中文书籍，欢迎投稿
+
 # Network
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking.git) **30057 Stars** **Objective-C**
 - [NSURLProtocol-WebKitSupport](https://github.com/yeatse/NSURLProtocol-WebKitSupport.git)
@@ -672,6 +674,10 @@ web svg在iOS端的实现，挺有意思。
 
 #### Button
 
+- [RFKeyboardToolbar](https://github.com/ruddfawcett/RFKeyboardToolbar) **405 Stars** **Objective-C** [iOS] Add customized buttons and toolbars to your UITextInputs.
+
+![](https://camo.githubusercontent.com/fd8e4d179764bd8e9da3a46f460fdf939442d4e9/687474703a2f2f692e696d6775722e636f6d2f4e45416f6362572e706e67)
+
 - **[DownloadButton](https://github.com/PavelKatunin/DownloadButton.git)** **1239 Stars** **Objective-C**
 
 ![](https://cloud.githubusercontent.com/assets/1636737/7921348/7fadc250-08ad-11e5-9f01-9f7e1f173a97.gif)
@@ -813,6 +819,10 @@ Android风格侧滑抽屉
 - **[PYSearch](https://github.com/iphone5solo/PYSearch.git)** **2452 Stars** **Objective-C**
 
 ![](https://github.com/iphone5solo/learngit/raw/master/imagesForPYSearch/PYSearchDemo.gif)
+
+- **[MMDrawerController](https://github.com/mutualmobile/MMDrawerController)** **6419 Stars** **Objective-C**  A lightweight, easy to use, Side Drawer Navigation Controller
+
+![](https://camo.githubusercontent.com/5c4050ef64d7b9836b6a56b89b458ed5c8fdfb7f/687474703a2f2f6d757475616c6d6f62696c652e6769746875622e696f2f4d4d447261776572436f6e74726f6c6c65722f4578616d706c65496d616765732f6578616d706c65322e706e67)
 
 ## Chart
 - [iOS-Echarts](https://github.com/Pluto-Y/iOS-Echarts.git) **1306 Stars** **Objective-C**
@@ -1247,5 +1257,6 @@ app和extension的数据传输
 - [Onboard](https://github.com/mamaral/Onboard.git) **5774 Stars** **Objective-C**
 - [electrino](https://github.com/pojala/electrino.git) **2601 Stars** **Objective-C**
 
+- [objective-c-style-guide](https://github.com/github/objective-c-style-guide) **1661 Stars** **null** Style guide & coding conventions for Objective-C projects
 
-
+- [xctool](https://github.com/facebook/xctool) **6475 Stars** **Objective-C** An extension for Apple's xcodebuild that makes it easier to test iOS and macOS apps.

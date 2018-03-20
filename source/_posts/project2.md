@@ -17,3 +17,6 @@ tags:
 - [grpc](https://github.com/grpc/grpc) **13827 Stars** **C++** The C based gRPC (C++, Python, Ruby, Objective-C, PHP, C#)
 
 利用protobuf实现的rpc通信，简单且通用。
+
+
+- [folly](https://github.com/facebook/folly) **9279 Stars** **C++** An open-source C++ library developed and used at Facebook.
