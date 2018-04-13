@@ -26,3 +26,5 @@ Valgrind: A Framework for Heavyweight Dynamic Binary Instrumentation
 http://valgrind.org/docs/valgrind2007.pdf
 
 [WatchdogLite: Hardware-Accelerated Compiler-Based Pointer Checking](https://www.cs.rutgers.edu/~santosh.nagarakatte/papers/cgo2014-final.pdf)
+https://github.com/google/sanitizers/wiki/ThreadSanitizerAlgorithm
+[llvm-compiler-rt](http://compiler-rt.llvm.org/)
