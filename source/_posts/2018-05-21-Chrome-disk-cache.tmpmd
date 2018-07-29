@@ -1,0 +1,39 @@
+t---
+title: Chrome disk cache
+date: 2018-05-21 23:46:48
+categories:
+- iOS
+tags:
+- Disk Cache
+---
+
+
+<!--more-->
+<!--
+1. The cache should not grow unbounded so there must be an algorithm for deciding when to remove old entries.
+容量控制，超过时能够移除
+2. While it is not critical to lose some data from the cache, having to discard the whole cache should be minimized. The current design should be able to gracefully handle application crashes, no matter what is going on at that time, only discarding the resources that were open at that time. However, if the whole computer crashes while we are updating the cache, everything on the cache probably will be discarded.
+安全性，应用crash可以弃用缓存。
+3. Access to previously stored data should be reasonably efficient, and it should be possible to use synchronous or asynchronous operations.
+效率，同步与异步
+4. We should be able to avoid conflicts that prevent us from storing two given resources simultaneously. In other words, the design should avoid cache trashing.
+避免同时缓存同一个资源的冲突
+5. It should be possible to remove a given entry from the cache, and keep working with a given entry while at the same time making it inaccessible to other requests (as if it was never stored).
+缓存失效，需要同步所有使用者
+6. The cache should not be using explicit multithread synchronization because it will always be called from the same thread. However, callbacks should avoid reentrancy problems so they must be issued through the thread's message loop.
+-->
+<!--
+重要性，易失性
+大小
+多线程
+crash，损坏，恢复
+backup
+流量等 监控
+碎片化整理
+transaction & rollback
+-->
+
+#
+
+[very-simple-backend](http://dev.chromium.org/developers/design-documents/network-stack/disk-cache/very-simple-backend)
+[disk-cache](http://dev.chromium.org/developers/design-documents/network-stack/disk-cache)
