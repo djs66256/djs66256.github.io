@@ -79,7 +79,7 @@ disqus_shortname: djs66256
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
 - type: git
-  repo: https://github.com/djs66256/djs66256.github.io
+  repo: git@github.com:djs66256/djs66256.github.io.git
   branch: master
 - type: git
   repo: https://git.coding.net/daniel233/daniel233.git
