@@ -1,8 +1,13 @@
 #! /bin/sh
 
+if ![-d .deploy_git]; then
+  git clone git@github.com:djs66256/djs66256.github.io.git .deploy_git
+fi
+
 echo 'Begin deploy hexo blog ...'
 echo '=========================='
-hexo deploy -g
+./node_modules/.bin/hexo generate
+./node_modules/.bin/hexo deploy
 echo '=========================='
 echo 'Finish deploy hexo blog.'
 
