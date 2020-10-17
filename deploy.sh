@@ -1,8 +1,12 @@
 #! /bin/sh
 
-if ![-d .deploy_git]; then
+if ![-d ".deploy_git"]
+then
   git clone git@github.com:djs66256/djs66256.github.io.git .deploy_git
 fi
+
+echo 'Use node v13'
+nvm use 13
 
 echo 'Begin deploy hexo blog ...'
 echo '=========================='
