@@ -1,6 +1,6 @@
 #! /bin/sh
 
-if ![-d ".deploy_git"]
+if ![ -d ".deploy_git" ]
 then
   git clone git@github.com:djs66256/djs66256.github.io.git .deploy_git
 fi
