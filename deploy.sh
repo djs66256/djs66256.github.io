@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 if ![ -d ".deploy_git" ]
 then
@@ -6,6 +6,7 @@ then
 fi
 
 echo 'Use node v13'
+source ~/.bashrc
 nvm use 13
 
 echo 'Begin deploy hexo blog ...'
