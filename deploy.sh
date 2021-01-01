@@ -8,11 +8,11 @@ fi
 echo 'Use node v13'
 source ~/.bashrc
 nvm use 13
+node --version
 
 echo 'Begin deploy hexo blog ...'
 echo '=========================='
-./node_modules/.bin/hexo generate
-./node_modules/.bin/hexo deploy
+hexo deploy
 echo '=========================='
 echo 'Finish deploy hexo blog.'
 
