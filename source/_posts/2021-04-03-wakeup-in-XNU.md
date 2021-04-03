@@ -298,3 +298,9 @@ BOOL GetSystemWakeup(NSInteger *interrupt_wakeup, NSInteger *timer_wakeup) {
 `wakeup`由于是XNU内核统计数据，所以在问题定位排查方面特别困难，所以从另一个角度去解决这个问题反而是一种更好的方式。
 
 同时从XNU中对CPU功耗的控制粒度可以看出，苹果在极致的优化方面做的很好，在自身的软件生态中要求也比价高。电量问题在短时间内应该不会有技术上的突破，所以我们自身也需要多思考如何减少电池损耗。
+
+#### 附录
+
+[armv8](/references/arm/DDI0487G_a_armv8_arm.pdf)
+
+[armv8 program guide](/references/arm/DEN0024A_v8_architecture_PG.pdf)
