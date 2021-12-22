@@ -185,6 +185,82 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2019-06-01-从响应链收集手动埋点" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/01/2019-06-01-%E4%BB%8E%E5%93%8D%E5%BA%94%E9%93%BE%E6%94%B6%E9%9B%86%E6%89%8B%E5%8A%A8%E5%9F%8B%E7%82%B9/">从响应链收集手动埋点</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/01/2019-06-01-%E4%BB%8E%E5%93%8D%E5%BA%94%E9%93%BE%E6%94%B6%E9%9B%86%E6%89%8B%E5%8A%A8%E5%9F%8B%E7%82%B9/" class="archive-article-date">
+  	<time datetime="2019-06-01T09:49:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>手动埋点一直以来都是一个比较麻烦的行为，埋点不属于业务逻辑，而我们必须插入业务逻辑中，有可能就导致了我们不得不修改设计以满足埋点的需求。</p>
+<p>同时数据方很多时候会要求带上额外的数据，而这些额外的数据甚至和当前模块毫无关系，也就是破坏了我们的独立性和解耦原则。比如在事件点击中加入当前页面的pageId，当前cell的index等等。</p>
+        
+          <a class="article-more-a" href="/2019/06/01/2019-06-01-%E4%BB%8E%E5%93%8D%E5%BA%94%E9%93%BE%E6%94%B6%E9%9B%86%E6%89%8B%E5%8A%A8%E5%9F%8B%E7%82%B9/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/01/2019-06-01-%E4%BB%8E%E5%93%8D%E5%BA%94%E9%93%BE%E6%94%B6%E9%9B%86%E6%89%8B%E5%8A%A8%E5%9F%8B%E7%82%B9/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-2019-05-30-流程状态机架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -860,89 +936,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/09/16/2018-09-16-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3%E7%AE%80%E4%BB%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-2018-04-12-资源竞争与死锁检测" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/12/2018-04-12-%E8%B5%84%E6%BA%90%E7%AB%9E%E4%BA%89%E4%B8%8E%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B/">资源竞争与死锁检测</a>
-    </h1>
-  
-
-        
-        <a href="/2018/04/12/2018-04-12-%E8%B5%84%E6%BA%90%E7%AB%9E%E4%BA%89%E4%B8%8E%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B/" class="archive-article-date">
-  	<time datetime="2018-04-12T14:52:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>多线程编程一直是一个非常难的话题，而资源竞争和死锁问题则是比较常见的多线程问题，这里我们来看看如何检测这些问题。</p>
-        
-          <a class="article-more-a" href="/2018/04/12/2018-04-12-%E8%B5%84%E6%BA%90%E7%AB%9E%E4%BA%89%E4%B8%8E%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">data-race</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">dead-lock</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">muti-thread</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/04/12/2018-04-12-%E8%B5%84%E6%BA%90%E7%AB%9E%E4%BA%89%E4%B8%8E%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B/">展开全文 >></a>
         </p>
       
 
@@ -1670,6 +1663,10 @@ var _hmt = _hmt || [];
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">micro-frontend</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">文章</a>
               </li>
             
             <div class="clearfix"></div>
