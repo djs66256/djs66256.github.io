@@ -7,8 +7,8 @@
 
 echo 'Begin deploy hexo blog ...'
 echo '=========================='
-hexo generate -f
-hexo deploy
+npm run generate
+npm run deploy
 echo '=========================='
 echo 'Finish deploy hexo blog.'
 
