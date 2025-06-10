@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 managedapp 框架如何帮助你的 app 适应受管理环境。我们将介绍如何接收配置数据、如何安全地管理 app 密钥，以及如何根据组织提供的设置来定制 app 的行为。我们还将通过一些真实示例来说明如何为企业和教育环境打造更灵活、更易于管理的 app。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9876/9876_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:34:34.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:34:34.594Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.103Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_203/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:34:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,62 +228,82 @@ var _hmt = _hmt || [];
       
         <p>了解 managedapp 框架如何帮助你的 app 适应受管理环境。我们将介绍如何接收配置数据、如何安全地管理 app 密钥，以及如何根据组织提供的设置来定制 app 的行为。我们还将通过一些真实示例来说明如何为企业和教育环境打造更灵活、更易于管理的 app。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9876/9876_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/203/">视频地址</a></p>
-<h1 id="使用-ManagedApp-框架优化企业应用管理体验"><a href="#使用-ManagedApp-框架优化企业应用管理体验" class="headerlink" title="使用 ManagedApp 框架优化企业应用管理体验"></a>使用 ManagedApp 框架优化企业应用管理体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在企业和教育环境中，苹果设备的应用部署与管理面临诸多挑战。传统设置流程复杂，用户体验不佳，技术支持成本高昂。苹果推出的 ManagedApp 框架为开发者提供了全新的解决方案，让应用能自动完成配置和安全认证，显著提升管理效率和用户体验。</p>
-<h2 id="ManagedApp-框架核心功能"><a href="#ManagedApp-框架核心功能" class="headerlink" title="ManagedApp 框架核心功能"></a>ManagedApp 框架核心功能</h2><h3 id="自动化配置管理"><a href="#自动化配置管理" class="headerlink" title="自动化配置管理"></a>自动化配置管理</h3><p>ManagedApp 框架允许管理员通过 MDM 服务器预先配置应用，支持四种数据类型：</p>
-<ol>
-<li>应用专属配置（任意支持的数据类型）</li>
-<li>密码</li>
-<li>证书</li>
-<li>身份凭证（包括PKCS#12文件、SCEP身份和ACME身份）</li>
-</ol>
-<p>所有数据都安全存储，仅提供给指定的应用或扩展程序。当应用启动时，它可以立即获取这些配置数据并应用，无需用户手动设置。</p>
-<h3 id="简化开发和部署流程"><a href="#简化开发和部署流程" class="headerlink" title="简化开发和部署流程"></a>简化开发和部署流程</h3><p>开发者只需完成三个关键步骤：</p>
-<ol>
-<li>编写配置解码器</li>
-<li>实现配置应用和密钥使用的代码</li>
-<li>发布应用配置规范</li>
-</ol>
-<p>框架将配置规范的定义权完全交给开发者，使他们能够根据应用特性设计最合适的配置方案。</p>
-<h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><p>ManagedApp 框架特别适用于以下场景：</p>
-<ul>
-<li><strong>许可证管理</strong>：提供更安全的加密身份凭证替代传统许可证令牌</li>
-<li><strong>VPN扩展</strong>：支持硬件绑定认证密钥，确保只有授权设备能连接网络</li>
-<li><strong>身份提供商</strong>：结合扩展单点登录(SSO)，支持多种认证材料类型</li>
-</ul>
-<h2 id="开发实践指南"><a href="#开发实践指南" class="headerlink" title="开发实践指南"></a>开发实践指南</h2><h3 id="配置处理示例"><a href="#配置处理示例" class="headerlink" title="配置处理示例"></a>配置处理示例</h3><p>以”地标”教学应用为例，开发者可以：</p>
-<ol>
-<li>定义可配置项（如教师预设的地标集合）</li>
-<li>创建Decodable配置结构体</li>
-<li>使用<code>ManagedAppConfigurationProvider</code>的异步序列接收配置</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> identity <span class="operator">=</span> <span class="keyword">try?</span> <span class="keyword">await</span> <span class="type">ManagedAppIdentitiesProvider</span>.shared.identity(for: <span class="string">&quot;landmarks-asset-downloader&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="最佳实践建议"><a href="#最佳实践建议" class="headerlink" title="最佳实践建议"></a>最佳实践建议</h3><ol>
-<li>保持配置数据量在KB级，大文件通过配置中的URL下载</li>
-<li>每次使用时获取最新密钥，避免持久化存储</li>
-<li>提供细粒度配置选项而非单一”管理模式”开关</li>
-<li>确保解码器能处理旧配置并忽略未知新键值</li>
-<li>考虑添加演示模式或提交功能演示视频</li>
-<li>提供从旧配置方式到新框架的迁移路径</li>
-</ol>
-<h2 id="文档规范"><a href="#文档规范" class="headerlink" title="文档规范"></a>文档规范</h2><p>开发者需要发布配置规范文档，内容应包括：</p>
-<ul>
-<li>配置格式示例（属性列表形式）</li>
-<li>有效值范围</li>
-<li>可能的解码错误代码</li>
-<li>支持的密钥标识符及其用途说明</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>ManagedApp 框架为企业和教育环境的应用部署提供了革命性的简化方案。通过自动化配置和安全认证流程，开发者可以显著提升用户体验，降低技术支持成本，同时保持高度的安全性和灵活性。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/258">Apple 设备管理和身份管理方面的新动向</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://support.apple.com/guide/apple-school-manager/">Apple School Manager User Guide</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/ManagedApp">ManagedApp</a></li>
-<li><a target="_blank" rel="noopener" href="https://support.apple.com/guide/deployment/welcome/">Support - Apple Platform Deployment</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="ManagedApp框架：打造无缝的企业级应用体验"><a href="#ManagedApp框架：打造无缝的企业级应用体验" class="headerlink" title="ManagedApp框架：打造无缝的企业级应用体验"></a>ManagedApp框架：打造无缝的企业级应用体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在当今企业IT环境中，Apple设备的普及率持续攀升，从办公室到教室，从零售店到创意工作室，这些设备正成为生产力工具的重要组成部分。然而，企业级应用的管理和部署过程往往充满挑战——复杂的初始配置、安全凭证分发、组织定制化需求等因素都可能导致用户体验下降。为应对这些挑战，Apple推出了ManagedApp框架，旨在为企业与教育机构提供更安全、更易用的应用管理解决方案。</p>
+<h2 id="ManagedApp框架概述"><a href="#ManagedApp框架概述" class="headerlink" title="ManagedApp框架概述"></a>ManagedApp框架概述</h2><h3 id="框架定位与优势"><a href="#框架定位与优势" class="headerlink" title="框架定位与优势"></a>框架定位与优势</h3><p>ManagedApp框架是一个专为受管理环境设计的自动化配置系统，它允许管理员预先配置应用及其扩展，无需用户手动设置即可直接使用。该框架的核心价值在于：</p>
+<ol>
+<li><strong>消除复杂设置流程</strong>：应用从首次启动即可直接使用，提升用户采纳率</li>
+<li><strong>降低支持成本</strong>：减少因配置错误导致的技术支持请求</li>
+<li><strong>安全分发凭证</strong>：保护组织敏感数据免受泄露风险</li>
+<li><strong>灵活定制</strong>：允许开发者定义自己的配置规范</li>
+</ol>
+<h3 id="技术基础与兼容性"><a href="#技术基础与兼容性" class="headerlink" title="技术基础与兼容性"></a>技术基础与兼容性</h3><p>该框架要求iOS 18.4、iPadOS 18.4和VisionOS 2.4及以上版本，并需要MDM服务器使用声明式设备管理来管理应用。它支持：</p>
+<ul>
+<li>所有MDM注册类型</li>
+<li>绝大多数应用扩展类型</li>
+<li>从应用安装或接管时开始工作</li>
+<li>运行时配置更新通知</li>
 </ul>
+<h2 id="核心功能解析"><a href="#核心功能解析" class="headerlink" title="核心功能解析"></a>核心功能解析</h2><h3 id="数据类型支持"><a href="#数据类型支持" class="headerlink" title="数据类型支持"></a>数据类型支持</h3><p>ManagedApp框架提供四类关键数据：</p>
+<ol>
+<li><strong>应用特定配置</strong>：开发者自定义的任意数据结构（设置、选项、小型资源文件）</li>
+<li><strong>密码</strong>：安全存储的字符串凭证</li>
+<li><strong>证书</strong>：用于安全通信的加密材料</li>
+<li><strong>身份凭证</strong>：包括PKCS #12文件、SCEP身份或ACME身份（支持硬件绑定密钥）</li>
+</ol>
+<h3 id="系统架构与流程"><a href="#系统架构与流程" class="headerlink" title="系统架构与流程"></a>系统架构与流程</h3><p>系统工作流程分为三个主要阶段：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 管理员通过MDM服务器发送管理命令和配置数据</span><br><span class="line">2. 设备安全存储配置和机密数据</span><br><span class="line">3. 应用启动时请求数据并立即应用配置</span><br></pre></td></tr></table></figure></p>
+<p>当配置更新时，框架会主动通知正在运行的应用，确保变更及时生效。</p>
+<h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><h3 id="许可管理优化"><a href="#许可管理优化" class="headerlink" title="许可管理优化"></a>许可管理优化</h3><p>传统许可令牌方案存在安全风险，ManagedApp框架提供了更安全的解决方案：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用硬件绑定密钥替代传统令牌</span></span><br><span class="line"><span class="keyword">let</span> provider <span class="operator">=</span> <span class="type">ManagedAppIdentitiesProvider</span>()</span><br><span class="line"><span class="keyword">let</span> identity <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> provider.identity(for: <span class="string">&quot;license_auth&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>优势对比：</p>
+<ul>
+<li>传统令牌：存储在文件系统，可能被提取</li>
+<li>框架方案：私钥设备生成永不移动，支持硬件绑定</li>
+</ul>
+<h3 id="VPN扩展安全"><a href="#VPN扩展安全" class="headerlink" title="VPN扩展安全"></a>VPN扩展安全</h3><p>框架为VPN扩展提供了企业级安全认证能力：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取VPN专用身份凭证</span></span><br><span class="line"><span class="keyword">let</span> vpnIdentity <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> <span class="type">ManagedAppIdentitiesProvider</span>()</span><br><span class="line">    .identity(for: <span class="string">&quot;org_vpn_auth&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>该方案支持硬件绑定密钥和受管理设备证明，解决了VPN管理员最关心的认证安全问题。</p>
+<h3 id="身份提供商集成"><a href="#身份提供商集成" class="headerlink" title="身份提供商集成"></a>身份提供商集成</h3><p>与可扩展单点登录(SSO)结合时，框架支持多种认证材料：</p>
+<ul>
+<li>硬件绑定身份</li>
+<li>临时密码</li>
+<li>组织绑定令牌</li>
+<li>注册期间可用配置</li>
+</ul>
+<h2 id="实现指南"><a href="#实现指南" class="headerlink" title="实现指南"></a>实现指南</h2><h3 id="配置接收与处理"><a href="#配置接收与处理" class="headerlink" title="配置接收与处理"></a>配置接收与处理</h3><p>以教学用Landmarks应用为例，展示配置处理流程：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">LandmarksManagedConfig</span>: <span class="title class_ inherited__">Decodable</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> managedCollection: <span class="type">String</span>?</span><br><span class="line">    <span class="keyword">let</span> assetURL: <span class="type">URL</span>?</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">enum</span> <span class="title class_">CodingKeys</span>: <span class="title class_ inherited__">String</span>, <span class="title class_ inherited__">CodingKey</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> managedCollection <span class="operator">=</span> <span class="string">&quot;managed_collection&quot;</span></span><br><span class="line">        <span class="keyword">case</span> assetURL <span class="operator">=</span> <span class="string">&quot;asset_url&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Task</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">await</span> config <span class="keyword">in</span> <span class="type">ManagedAppConfigurationProvider</span>().configurations(</span><br><span class="line">        of: <span class="type">LandmarksManagedConfig</span>.<span class="keyword">self</span></span><br><span class="line">    ) &#123;</span><br><span class="line">        modelData.managedCollection <span class="operator">=</span> config<span class="operator">?</span>.managedCollection</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关键实现要点：</p>
+<ul>
+<li>定义符合Decodable的配置结构体</li>
+<li>使用Swift并发接收异步配置更新</li>
+<li>自动响应配置变更</li>
+</ul>
+<h3 id="身份凭证使用"><a href="#身份凭证使用" class="headerlink" title="身份凭证使用"></a>身份凭证使用</h3><p>实现mTLS连接时的身份获取：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> identityProvider <span class="operator">=</span> <span class="type">ManagedAppIdentitiesProvider</span>()</span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> identity <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> identityProvider.identity(for: <span class="string">&quot;asset_server_auth&quot;</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 处理无凭证情况</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用SecIdentity建立安全连接</span></span><br><span class="line"><span class="keyword">let</span> credential <span class="operator">=</span> <span class="type">URLCredential</span>(identity: identity, certificates: <span class="literal">nil</span>, persistence: .forSession)</span><br></pre></td></tr></table></figure>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="开发建议"><a href="#开发建议" class="headerlink" title="开发建议"></a>开发建议</h3><ol>
+<li><strong>数据规模控制</strong>：配置数据保持KB级，大资源通过URL引用</li>
+<li><strong>安全编程</strong>：机密数据用后即弃，每次重新获取</li>
+<li><strong>配置设计</strong>：避免”万能开关”，提供细致控制项</li>
+<li><strong>兼容性考虑</strong>：解码器应忽略未知键，支持渐进升级</li>
+</ol>
+<h3 id="迁移与审核"><a href="#迁移与审核" class="headerlink" title="迁移与审核"></a>迁移与审核</h3><p>对于使用旧版managed app configuration的应用：</p>
+<ul>
+<li>过渡期可双方案并行</li>
+<li>优先采用ManagedApp框架</li>
+<li>逐步淘汰旧实现</li>
+</ul>
+<p>App Store审核注意事项：</p>
+<ul>
+<li>提供演示模式或功能视频</li>
+<li>在审核备注中说明管理配置方法</li>
+<li>确保核心功能可被验证</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>ManagedApp框架代表了企业应用管理的重要进化，它赋予开发者构建”零配置”体验的能力，同时满足组织级安全要求。通过灵活的配置机制和安全的凭证分发，该框架有望显著提升管理效率和使用体验。开发者应评估现有企业应用的配置方案，考虑迁移到ManagedApp框架以获取其安全与管理优势。</p>
+<p>随着企业移动生态的持续发展，ManagedApp框架将帮助开发者创造更无缝、更安全的管理应用体验，最终实现用户满意度和IT管理效率的双赢。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/258">Apple 设备管理和身份管理方面的新动向</a></p>
+<h1 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h1><p><a target="_blank" rel="noopener" href="https://support.apple.com/guide/apple-school-manager/">Apple School Manager用户指南</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/ManagedApp">ManagedApp框架文档</a><br><a target="_blank" rel="noopener" href="https://support.apple.com/guide/deployment/welcome/">Apple平台部署支持</a></p>
 
       
 
@@ -394,18 +414,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_258/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_102/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Apple 设备管理和身份管理方面的新动向
+          Platforms State of the Union
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_334/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">watchOS 26 的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_112/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Platforms State of the Union (ASL)</div>
       <i class="icon-circle-right"></i>
     </a>
   

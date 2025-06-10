@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何利用 apple 智能背后的设备端大语言模型！这个简介讲座涵盖了丰富的主题，从用于生成 swift 数据结构并结合流式传输实现灵敏响应体验的引导式生成功能，到用于整合数据源和会话以进行上下文管理的工具调用机制，应有尽有。这个讲座不设任何先决条件。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9965/9965_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:42:32.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:42:32.472Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.356Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_286/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:42:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,41 +228,50 @@ var _hmt = _hmt || [];
       
         <p>了解如何利用 apple 智能背后的设备端大语言模型！这个简介讲座涵盖了丰富的主题，从用于生成 swift 数据结构并结合流式传输实现灵敏响应体验的引导式生成功能，到用于整合数据源和会话以进行上下文管理的工具调用机制，应有尽有。这个讲座不设任何先决条件。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9965/9965_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/286/">视频地址</a></p>
-<h1 id="探索-Apple-的-Foundation-Models-框架：设备端大语言模型开发指南"><a href="#探索-Apple-的-Foundation-Models-框架：设备端大语言模型开发指南" class="headerlink" title="探索 Apple 的 Foundation Models 框架：设备端大语言模型开发指南"></a>探索 Apple 的 Foundation Models 框架：设备端大语言模型开发指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Apple 最新推出的 Foundation Models 框架为开发者提供了访问设备端大语言模型的能力。这个强大的 Swift API 框架支持 macOS、iOS、iPadOS 和 visionOS 平台，让开发者可以轻松构建个性化搜索建议、行程生成等智能功能，同时确保数据隐私和设备端处理。</p>
-<h2 id="框架概览"><a href="#框架概览" class="headerlink" title="框架概览"></a>框架概览</h2><p>Foundation Models 框架的核心是一个 30 亿参数的设备端大语言模型，虽然规模不及服务器级大模型，但针对内容生成、文本摘要和用户输入分析等任务进行了优化。所有计算都在设备端完成，不会增加应用体积。</p>
-<h3 id="模型测试体验"><a href="#模型测试体验" class="headerlink" title="模型测试体验"></a>模型测试体验</h3><p>在 Xcode 中，开发者可以通过 Playground 快速测试模型效果：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> FoundationModels</span><br><span class="line"><span class="keyword">import</span> Playgrounds</span><br><span class="line"></span><br><span class="line">#<span class="type">Playground</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> session <span class="operator">=</span> <span class="type">LanguageModelSession</span>()</span><br><span class="line">    <span class="keyword">let</span> response <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> session.respond(to: <span class="string">&quot;为日本之旅起个好名字？只需回复标题&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h2><h3 id="1-引导式生成"><a href="#1-引导式生成" class="headerlink" title="1. 引导式生成"></a>1. 引导式生成</h3><p>框架通过 <code>@Generable</code> 和 <code>@Guide</code> 宏提供结构化输出功能：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Generable</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">搜索建议</span> &#123;</span><br><span class="line">    <span class="meta">@Guide</span>(description: <span class="string">&quot;建议搜索词列表&quot;</span>, .count(<span class="number">4</span>))</span><br><span class="line">    <span class="keyword">var</span> 搜索词: [<span class="type">String</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种方式确保了输出结构与 Swift 类型系统兼容，简化了提示词设计并提高了准确率。</p>
-<h3 id="2-快照流式传输"><a href="#2-快照流式传输" class="headerlink" title="2. 快照流式传输"></a>2. 快照流式传输</h3><p>不同于传统的令牌增量流，框架采用快照流技术：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> stream <span class="operator">=</span> session.streamResponse(</span><br><span class="line">    to: <span class="string">&quot;制定富士山三日行程&quot;</span>,</span><br><span class="line">    generating: 行程.<span class="keyword">self</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="keyword">try</span> <span class="keyword">await</span> partial <span class="keyword">in</span> stream &#123;</span><br><span class="line">    <span class="built_in">print</span>(partial)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>每个快照代表部分生成响应，属性逐步填充，与 SwiftUI 完美契合。</p>
-<h3 id="3-工具调用"><a href="#3-工具调用" class="headerlink" title="3. 工具调用"></a>3. 工具调用</h3><p>模型可以自主执行应用定义的代码：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">Tool</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> description: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">call</span>(<span class="keyword">_</span> <span class="params">parameters</span>: <span class="type">Generable</span>) <span class="keyword">async</span> <span class="keyword">throws</span> -&gt; <span class="type">Generable</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种机制扩展了模型能力，使其可以整合实时信息、提供事实依据或执行系统操作。</p>
-<h3 id="4-状态化会话"><a href="#4-状态化会话" class="headerlink" title="4. 状态化会话"></a>4. 状态化会话</h3><p>会话对象支持多轮对话上下文保持、自定义指导语和专业化适配器：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> session <span class="operator">=</span> <span class="type">LanguageModelSession</span>(</span><br><span class="line">    guidance: <span class="string">&quot;你是一个专业的旅行助手&quot;</span>,</span><br><span class="line">    tools: [mapTool, weatherTool]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h2 id="开发者体验"><a href="#开发者体验" class="headerlink" title="开发者体验"></a>开发者体验</h2><p>框架提供了一系列开发工具支持：</p>
-<ul>
-<li>Xcode Playground 即时测试</li>
-<li>Instruments 性能分析模板</li>
-<li>Feedback Assistant 反馈通道</li>
-<li>适配器训练工具包</li>
-</ul>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Foundation Models 框架为 Apple 开发者开启了一个设备端智能的新时代。通过简洁的 Swift API 和强大的功能组合，开发者可以轻松构建创新的 AI 体验。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/360">探索 Apple 平台上的机器学习和 AI 框架</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/248">探索设备端基础模型的提示设计和安全</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/301">深入了解 Foundation Models 框架</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/259">跟着视频学编程：使用 Foundation Models 框架将设备端 AI 引入你的 App</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/generative-ai">人机界面指南：生成式 AI</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="探索-Foundation-Models-框架：设备端大语言模型的力量"><a href="#探索-Foundation-Models-框架：设备端大语言模型的力量" class="headerlink" title="探索 Foundation Models 框架：设备端大语言模型的力量"></a>探索 Foundation Models 框架：设备端大语言模型的力量</h1><p>在2025年WWDC大会上，Apple推出了全新的Foundation Models框架，为开发者提供了访问设备端大语言模型的强大工具。本文将深入解析这个创新框架的关键功能和特性。</p>
+<h2 id="框架概述"><a href="#框架概述" class="headerlink" title="框架概述"></a>框架概述</h2><p>Foundation Models框架通过简洁强大的Swift API，让开发者能够在macOS、iOS、iPadOS和visionOS平台上访问驱动Apple智能的设备端大语言模型。该框架特别适用于内容生成、文本摘要和用户输入分析等任务。</p>
+<p>所有数据处理都在设备端完成，确保了用户隐私安全，并支持离线运行。由于直接内置在操作系统中，该框架不会增加应用体积，为开发者提供了轻量级的AI解决方案。</p>
+<h2 id="核心功能解析"><a href="#核心功能解析" class="headerlink" title="核心功能解析"></a>核心功能解析</h2><h3 id="模型能力与限制"><a href="#模型能力与限制" class="headerlink" title="模型能力与限制"></a>模型能力与限制</h3><p>Foundation Models框架搭载的设备端模型是一个拥有30亿参数的大语言模型，每个参数量化到2比特。虽然比操作系统内其他模型规模大几个数量级，但它仍是专为设备优化的模型：</p>
+<ul>
+<li>擅长摘要生成、信息提取、分类等任务</li>
+<li>不适用于需要世界知识或复杂推理的任务</li>
+<li>需要将复杂任务分解为更小单元处理</li>
 </ul>
+<p>开发者可以通过Xcode Playground快速测试模型响应：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> FoundationModels</span><br><span class="line"><span class="keyword">import</span> Playgrounds</span><br><span class="line"></span><br><span class="line">#<span class="type">Playground</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> session <span class="operator">=</span> <span class="type">LanguageModelSession</span>()</span><br><span class="line">    <span class="keyword">let</span> response <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> session.respond(to: <span class="string">&quot;What&#x27;s a good name for a trip to Japan? Respond only with a title&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="引导式生成技术"><a href="#引导式生成技术" class="headerlink" title="引导式生成技术"></a>引导式生成技术</h3><p>传统大语言模型输出非结构化内容，难以直接映射到应用界面。Foundation Models的引导式生成技术解决了这一问题：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Generable</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SearchSuggestions</span> &#123;</span><br><span class="line">    <span class="meta">@Guide</span>(description: <span class="string">&quot;建议搜索词列表&quot;</span>, .count(<span class="number">4</span>))</span><br><span class="line">    <span class="keyword">var</span> searchTerms: [<span class="type">String</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> response <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> session.respond(</span><br><span class="line">    to: <span class="string">&quot;为一个关于游览著名地标的应用生成建议搜索词列表。&quot;</span>,</span><br><span class="line">    generating: <span class="type">SearchSuggestions</span>.<span class="keyword">self</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>@Generable宏允许开发者定义期望的Swift数据结构，@Guide则通过自然语言描述属性。这种方法不仅简化了提示词设计，还通过约束解码技术保证了输出结构正确性。</p>
+<h3 id="快照流式传输"><a href="#快照流式传输" class="headerlink" title="快照流式传输"></a>快照流式传输</h3><p>不同于传统的增量流式传输，Foundation Models采用快照流式传输技术，特别适合结构化输出场景：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> stream <span class="operator">=</span> session.streamResponse(</span><br><span class="line">    to: <span class="string">&quot;制定3天富士山旅行计划。&quot;</span>,</span><br><span class="line">    generating: <span class="type">Itinerary</span>.<span class="keyword">self</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> <span class="keyword">try</span> <span class="keyword">await</span> partial <span class="keyword">in</span> stream &#123;</span><br><span class="line">    <span class="built_in">print</span>(partial)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每个快照都表示部分生成的响应，所有属性都是可选的，随着模型生成更多内容而逐步填充。这种方法与SwiftUI等声明式框架完美配合，实现流畅的用户体验。</p>
+<h2 id="高级功能"><a href="#高级功能" class="headerlink" title="高级功能"></a>高级功能</h2><h3 id="工具调用机制"><a href="#工具调用机制" class="headerlink" title="工具调用机制"></a>工具调用机制</h3><p>工具调用让模型能够执行开发者在应用中定义的代码，扩展了模型能力：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">WeatherTool</span>: <span class="title class_ inherited__">Tool</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> name <span class="operator">=</span> <span class="string">&quot;weather_tool&quot;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> description <span class="operator">=</span> <span class="string">&quot;获取指定城市的当前温度&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Parameters</span>: <span class="title class_ inherited__">Generable</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> city: <span class="type">String</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">call</span>(<span class="keyword">_</span> <span class="params">parameters</span>: <span class="type">Parameters</span>) <span class="keyword">async</span> <span class="keyword">throws</span> -&gt; <span class="type">ToolOutput</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> temperature <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> getTemperature(for: parameters.city)</span><br><span class="line">        <span class="keyword">return</span> <span class="type">ToolOutput</span>(.generated(<span class="type">Weather</span>(temperature: temperature)))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>定义工具后，只需将其传入会话初始化方法，模型就能自主决定何时调用这些工具。</p>
+<h3 id="有状态会话管理"><a href="#有状态会话管理" class="headerlink" title="有状态会话管理"></a>有状态会话管理</h3><p>Foundation Models框架围绕有状态会话构建，支持多轮对话上下文跟踪：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> session <span class="operator">=</span> <span class="type">LanguageModelSession</span>(</span><br><span class="line">    model: .default,</span><br><span class="line">    instructions: <span class="string">&quot;你是一个专业旅行规划助手，回答应简洁专业。&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>会话对象的transcript属性记录所有交互历史，isResponding属性则指示模型是否正在生成响应，帮助开发者管理交互流程。</p>
+<h2 id="开发者工具与体验"><a href="#开发者工具与体验" class="headerlink" title="开发者工具与体验"></a>开发者工具与体验</h2><p>Apple为Foundation Models框架提供了完善的开发支持：</p>
+<ul>
+<li>Xcode Playground宏快速迭代提示词</li>
+<li>Instruments应用分析模板优化模型请求延迟</li>
+<li>Feedback Assistant反馈渠道帮助改进模型和API</li>
+<li>适配器训练工具包支持高度专业化用例</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#<span class="type">Playground</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> session <span class="operator">=</span> <span class="type">LanguageModelSession</span>()</span><br><span class="line">    <span class="keyword">for</span> landmark <span class="keyword">in</span> <span class="type">ModelData</span>.shared.landmarks &#123;</span><br><span class="line">        <span class="keyword">let</span> response <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> session.respond(to: <span class="string">&quot;What&#x27;s a good name for a trip to <span class="subst">\(landmark.name)</span>? Respond only with a title&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结与展望"><a href="#总结与展望" class="headerlink" title="总结与展望"></a>总结与展望</h2><p>Foundation Models框架代表了设备端AI技术的重大突破，通过Swift友好的API将大语言模型能力带给Apple平台开发者。其核心创新包括：</p>
+<ol>
+<li>引导式生成确保结构化输出</li>
+<li>快照流式传输优化用户体验</li>
+<li>工具调用扩展模型能力</li>
+<li>有状态会话支持复杂交互</li>
+</ol>
+<p>随着开发者社区开始采用这一框架，预计将涌现大量创新应用场景，从个性化辅助到实时内容生成。Apple也承诺将持续优化模型性能，并通过开发者反馈改进框架功能。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/360">探索 Apple 平台上的机器学习和 AI 框架</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/248">探索设备端基础模型的提示设计和安全</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/301">深入了解 Foundation Models 框架</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/259">跟着视频学编程：使用 Foundation Models 框架将设备端 AI 引入你的 App</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/generative-ai">人机界面指南：生成式 AI</a></p>
 
       
 
@@ -373,18 +382,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_272/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_289/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          使用 Vision 框架读取文档
+          探索 visionOS 上的空间配件输入
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_276/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">BNNS Graph 的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_284/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用全新设计系统构建 UIKit App</div>
       <i class="icon-circle-right"></i>
     </a>
   

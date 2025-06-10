@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何在 xcode 中录制、运行和维护 xcuiautomation 测试。利用测试计划配置，在数十个语言、设备类型和系统条件下重播 xctest ui 测试。使用 xcode 测试报告来查看测试结果，并下载运行情况的截图和视频。我们还将介绍有关通过辅助功能为 app 做好自动化准备以及编写稳定、高质量自动化代码的最佳做法。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10029/10029_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:29:52.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:29:52.007Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.828Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="swift">
 <meta property="article:tag" content="wwdc2025">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_344/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:29:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,67 +231,93 @@ var _hmt = _hmt || [];
       
         <p>了解如何在 xcode 中录制、运行和维护 xcuiautomation 测试。利用测试计划配置，在数十个语言、设备类型和系统条件下重播 xctest ui 测试。使用 xcode 测试报告来查看测试结果，并下载运行情况的截图和视频。我们还将介绍有关通过辅助功能为 app 做好自动化准备以及编写稳定、高质量自动化代码的最佳做法。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10029/10029_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/344/">视频地址</a></p>
-<h1 id="使用-Xcode-实现-UI-自动化测试：从录制到回放全攻略"><a href="#使用-Xcode-实现-UI-自动化测试：从录制到回放全攻略" class="headerlink" title="使用 Xcode 实现 UI 自动化测试：从录制到回放全攻略"></a>使用 Xcode 实现 UI 自动化测试：从录制到回放全攻略</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在 App 开发中，确保用户界面在不同设备和语言环境下都能正常工作至关重要。Xcode 提供了一套强大的 UI 自动化测试工具，让你可以轻松录制交互行为，在多配置环境下回放测试，并查看详细的测试报告。本文将带你全面了解 Xcode 的 UI 自动化功能。</p>
-<h2 id="UI-自动化测试概述"><a href="#UI-自动化测试概述" class="headerlink" title="UI 自动化测试概述"></a>UI 自动化测试概述</h2><p>Xcode 的 UI 自动化测试基于 XCTest 框架中的 XCUIAutomation 模块，它能模拟真实用户与 App 的交互。完整的测试套件通常包含：</p>
-<ul>
-<li>单元测试：验证应用逻辑</li>
-<li>UI 测试：验证用户体验和核心工作流</li>
-</ul>
-<p>UI 自动化工作流分为三个阶段：</p>
-<ol>
-<li>录制：将用户交互转换为代码</li>
-<li>回放：在多设备/语言环境下执行</li>
-<li>审查：查看测试结果和视频记录</li>
-</ol>
-<h2 id="为自动化测试准备应用"><a href="#为自动化测试准备应用" class="headerlink" title="为自动化测试准备应用"></a>为自动化测试准备应用</h2><h3 id="添加辅助功能标识符"><a href="#添加辅助功能标识符" class="headerlink" title="添加辅助功能标识符"></a>添加辅助功能标识符</h3><p>辅助功能是自动化测试的基础，通过为 UI 元素添加标识符可以提高测试的稳定性：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SwiftUI 示例</span></span><br><span class="line"><span class="type">Image</span>(landmark.backgroundImageName)</span><br><span class="line">  .accessibilityIdentifier(<span class="string">&quot;LandmarkImage-<span class="subst">\(landmark.id)</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// UIKit 示例</span></span><br><span class="line">button.accessibilityIdentifier <span class="operator">=</span> <span class="string">&quot;LandmarkButton-<span class="subst">\(landmark.id)</span>&quot;</span></span><br></pre></td></tr></table></figure>
-<p>优秀标识符应具备：</p>
-<ul>
-<li>全应用唯一性</li>
-<li>描述性（说明所属元素）</li>
-<li>静态性（不随内容变化）</li>
-</ul>
-<h3 id="使用辅助功能检查器"><a href="#使用辅助功能检查器" class="headerlink" title="使用辅助功能检查器"></a>使用辅助功能检查器</h3><p>通过 Xcode &gt; Open Developer Tool 启动辅助功能检查器，检查元素的可访问性属性。</p>
-<h2 id="录制交互行为"><a href="#录制交互行为" class="headerlink" title="录制交互行为"></a>录制交互行为</h2><p>Xcode 提供一键录制功能：</p>
-<ol>
-<li>点击录制按钮</li>
-<li>在模拟器中操作应用</li>
-<li>停止录制生成代码</li>
-</ol>
-<p>录制后生成的代码中，每个 UI 元素都有多种定位方式可选，建议优先使用辅助功能标识符而非本地化字符串。</p>
-<h2 id="多配置回放"><a href="#多配置回放" class="headerlink" title="多配置回放"></a>多配置回放</h2><p>测试计划(Test Plan)让你可以：</p>
-<ul>
-<li>包含/排除特定测试</li>
-<li>设置系统参数（语言/地区/设备方向）</li>
-<li>管理超时、重复、并行等属性</li>
-</ul>
-<p>配置建议：</p>
-<ul>
-<li>添加多语言环境测试</li>
-<li>设置视频/截图捕获规则</li>
-<li>通过 Xcode Cloud 在云端运行测试</li>
-</ul>
-<h2 id="查看测试结果"><a href="#查看测试结果" class="headerlink" title="查看测试结果"></a>查看测试结果</h2><p>测试报告提供强大功能：</p>
-<ul>
-<li>视频播放时显示交互标记点</li>
-<li>失败时刻显示所有 UI 元素状态</li>
-<li>提供代码修复建议</li>
-<li>支持视频下载</li>
-</ul>
-<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 优先使用辅助功能标识符</span></span><br><span class="line"><span class="type">XCUIApplication</span>().staticTexts[<span class="string">&quot;Collection-1&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 保持查询简洁</span></span><br><span class="line"><span class="type">XCUIApplication</span>().staticTexts[<span class="string">&quot;Collection-1&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 动态内容使用通用查询</span></span><br><span class="line"><span class="type">XCUIApplication</span>().staticTexts.firstMatch</span><br></pre></td></tr></table></figure>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Xcode 的 UI 自动化测试功能强大且易于使用，从录制交互到多环境回放，再到详细的结果分析，为开发者提供了完整的测试解决方案。通过遵循本文介绍的实践方法，你可以构建更稳定、高效的自动化测试套件。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10179">了解 Swift Testing</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10175">使用 Xcode 测试报告更快修复故障</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10036">在 SwiftUI 和 UIKit 中创建易于访问的 App</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/organizing-tests-to-improve-feedback">通过测试计划组织测试改进代码评估</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Accessibility/performing-accessibility-testing-for-your-app">为应用执行辅助功能测试</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用-Xcode-实现-UI-自动化：从录制到审查的完整指南"><a href="#使用-Xcode-实现-UI-自动化：从录制到审查的完整指南" class="headerlink" title="使用 Xcode 实现 UI 自动化：从录制到审查的完整指南"></a>使用 Xcode 实现 UI 自动化：从录制到审查的完整指南</h1><p>UI 自动化是确保应用质量的重要手段，Xcode 提供了一套完整的工具链，帮助开发者轻松实现应用交互的自动化测试。本文将从 UI 自动化的基本原理出发，详细介绍如何在 Xcode 中录制、运行和维护 XCUIAutomation 测试，并通过测试计划在多配置环境下回放测试，最后查看测试报告和视频录像。</p>
+<h2 id="UI-自动化基础"><a href="#UI-自动化基础" class="headerlink" title="UI 自动化基础"></a>UI 自动化基础</h2><p>Xcode 提供了两个主要的测试框架：Swift Testing 和 XCTest。当导入 XCTest 时，系统会自动包含 XCUIAutomation 框架，这个框架能够模拟用户操作来自动化运行应用。这两个框架共同构成了完整的应用测试套件。</p>
+<p>完整的应用测试通常包含两种类型：</p>
+<ul>
+<li>单元测试：验证应用逻辑和模型，可在没有用户界面的框架和 Swift 包上运行</li>
+<li>UI 自动化测试：验证用户体验、与 Apple 硬件的集成以及常见工作流程的行为</li>
 </ul>
+<p>UI 自动化测试的优势在于它能直观展示应用的外观表现、行为方式以及与操作系统的集成效果。具体应用场景包括：</p>
+<ul>
+<li>模拟用户操作（点击、滑动和按压）</li>
+<li>测试辅助技术（如 VoiceOver、语音控制和动态类型）下的用户体验</li>
+<li>验证应用在所有支持语言和地区的表现</li>
+<li>测试与 Apple 硬件功能的集成</li>
+<li>评估应用的启动性能</li>
+</ul>
+<p>UI 自动化支持所有 Apple 平台：iOS、iPadOS、macOS、watchOS、tvOS 和 visionOS。同一套自动化脚本甚至可以在多个平台上运行，实现”一次编写，多平台测试”的效果。</p>
+<h2 id="为自动化做准备"><a href="#为自动化做准备" class="headerlink" title="为自动化做准备"></a>为自动化做准备</h2><p>虽然 UI 自动化可以开箱即用，但为了获得更好的测试质量，建议进行以下准备工作：</p>
+<h3 id="添加辅助功能标识符"><a href="#添加辅助功能标识符" class="headerlink" title="添加辅助功能标识符"></a>添加辅助功能标识符</h3><p>辅助功能标识符（accessibilityIdentifier）是自动化中唯一识别应用元素的最佳方式。优秀的标识符应具备以下特点：</p>
+<ul>
+<li>在整个应用中具有唯一性</li>
+<li>描述性强，能详细说明所属元素</li>
+<li>保持静态，不随内容变化而改变</li>
+</ul>
+<p>在 SwiftUI 中，可以为任何 UI 元素添加 accessibilityIdentifier 修饰符：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LandmarkRow</span>(landmark: landmark)</span><br><span class="line">    .accessibilityIdentifier(<span class="string">&quot;landmark_<span class="subst">\(landmark.id)</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>在 UIKit 中，可以直接设置 accessibilityIdentifier 属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">button.accessibilityIdentifier <span class="operator">=</span> <span class="string">&quot;addButton&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="审查辅助功能"><a href="#审查辅助功能" class="headerlink" title="审查辅助功能"></a>审查辅助功能</h3><p>Xcode 自带的”辅助功能检查器”可以帮助查找、诊断和修复辅助功能问题。该工具可从 Xcode 顶层菜单的”Open Developer Tool”启动，也能通过 Spotlight 打开。检查器会列出应用视图的辅助功能值，其中”Basic”部分的属性对 UI 自动化特别有用。</p>
+<h3 id="添加-UI-测试目标"><a href="#添加-UI-测试目标" class="headerlink" title="添加 UI 测试目标"></a>添加 UI 测试目标</h3><p>在 Xcode 的项目设置视图中，点击目标列表下方的”+”按钮，选择”UI Testing Bundle”添加新目标。完成后，新的 UI 测试文件夹和模板将添加到项目中，为自动化测试提供基础结构。</p>
+<h2 id="录制交互操作"><a href="#录制交互操作" class="headerlink" title="录制交互操作"></a>录制交互操作</h2><p>录制 UI 测试的基本流程如下：</p>
+<ol>
+<li>打开 UI 测试源文件，使用侧边栏的按钮开始 UI 录制</li>
+<li>Xcode 会自动构建并在模拟器中重新启动应用</li>
+<li>与应用交互时，操作会被实时记录为代码</li>
+<li>停止录制后检查代码，添加验证逻辑</li>
+<li>运行测试验证录制是否正确</li>
+</ol>
+<p>在录制过程中，Xcode 会为每个操作提供多个 UI 元素定位选项。选择推荐方案：</p>
+<ul>
+<li>对于包含本地化字符串的视图，优先选用辅助功能标识符</li>
+<li>对于深度嵌套的视图，选择尽可能简洁的查询</li>
+<li>对于动态内容，使用通用查询或现有的辅助功能标识符</li>
+</ul>
+<p>录制完成后，可以添加验证代码检查预期行为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> app <span class="operator">=</span> <span class="type">XCUIApplication</span>()</span><br><span class="line"><span class="keyword">let</span> element <span class="operator">=</span> app.buttons[<span class="string">&quot;Max的澳洲冒险&quot;</span>]</span><br><span class="line"><span class="type">XCTAssert</span>(element.waitForExistence(timeout: <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="在多配置环境下回放"><a href="#在多配置环境下回放" class="headerlink" title="在多配置环境下回放"></a>在多配置环境下回放</h2><p>测试计划是管理多环境测试的强大工具，允许您：</p>
+<ul>
+<li>包含或排除单个测试</li>
+<li>设置测试运行的系统配置</li>
+<li>管理超时、重复、并行化等属性</li>
+<li>关联特定构建设置</li>
+</ul>
+<p>在测试计划的”Configurations”标签页中，可以：</p>
+<ul>
+<li>设置多语言配置运行应用</li>
+<li>控制是否在运行期间捕获视频或截图</li>
+<li>选择保留哪些运行的媒体（失败或全部）</li>
+</ul>
+<p>Xcode Cloud 是运行多配置测试的理想平台，它支持：</p>
+<ul>
+<li>在云端构建应用和运行测试</li>
+<li>使用相同的测试计划在多种设备上运行</li>
+<li>查看完整的运行历史和结果</li>
+</ul>
+<h2 id="审查视频与结果"><a href="#审查视频与结果" class="headerlink" title="审查视频与结果"></a>审查视频与结果</h2><p>Xcode 测试报告提供了丰富的工具来分析和诊断测试结果。主要功能包括：</p>
+<ul>
+<li>查看失败测试的视频录像和错误描述</li>
+<li>切换不同配置的测试视频</li>
+<li>下载视频和截图用于进一步分析</li>
+<li>在失败时刻查看存在的 UI 元素</li>
+<li>获取代码建议来定位元素</li>
+</ul>
+<p>通过右键点击测试报告中的元素，可以获得如何在自动化代码中定位该元素的建议，这对于快速修复测试失败非常有帮助。</p>
+<h2 id="最佳实践与总结"><a href="#最佳实践与总结" class="headerlink" title="最佳实践与总结"></a>最佳实践与总结</h2><p>为了构建稳定高效的 UI 自动化测试，建议遵循以下最佳实践：</p>
+<ol>
+<li>优先使用辅助功能标识符定位元素</li>
+<li>为关键工作流程添加验证逻辑</li>
+<li>在多语言和设备配置下运行测试</li>
+<li>利用测试计划管理复杂的测试场景</li>
+<li>定期审查测试视频和报告，持续优化测试</li>
+</ol>
+<p>UI 自动化、辅助功能、本地化、Xcode Cloud 和测试报告的协同工作，共同提升了应用质量，让全球用户都能获得更好的体验。将这些技术整合为统一的工作流程，将显著提高开发效率和产品质量。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10179">了解 Swift Testing</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10175">使用 Xcode 测试报告更快修复故障</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10036">在 SwiftUI 和 UIKit 中创建易于访问的 App</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10278">在 Xcode Cloud 中创建实用的工作流程</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10035">对你的 App 进行辅助功能审核</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/110361">为 Xcode Cloud 创建快速而可靠的测试</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10119">SwiftUI 辅助功能：超越基础功能</a>  </p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/organizing-tests-to-improve-feedback">Improving code assessment by organizing tests into test plans</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Accessibility/performing-accessibility-testing-for-your-app">Performing accessibility testing for your app</a></p>
 
       
 
@@ -414,18 +440,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_280/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_325/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          跟着视频学编程：使用 SwiftUI 和 AttributedString 精心打造富文本体验
+          探索 Apple 托管的 Background Assets
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_311/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">安全地混合使用 C、C ++ 和 Swift</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_356/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">了解全新设计系统</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索 apple 图标资料库 sf symbols 的最新更新。了解全新动画系统 draw，让符号模仿手写笔画自然的流畅性；还有用来表示强度或进度的 variable draw。探索为符号增添立体感和视觉吸引力的 gradients，以及在相关符号间增强连贯性的魔术替换增强功能。此外，了解如何预览并将这些功能整合到自己的 app 中。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9994/9994_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:32:12.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:32:12.661Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.827Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_337/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:32:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,72 +231,76 @@ var _hmt = _hmt || [];
       
         <p>探索 apple 图标资料库 sf symbols 的最新更新。了解全新动画系统 draw，让符号模仿手写笔画自然的流畅性；还有用来表示强度或进度的 variable draw。探索为符号增添立体感和视觉吸引力的 gradients，以及在相关符号间增强连贯性的魔术替换增强功能。此外，了解如何预览并将这些功能整合到自己的 app 中。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9994/9994_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/337/">视频地址</a></p>
-<h1 id="SF-Symbols-7-全新功能解析：从动态绘制到渐变渲染"><a href="#SF-Symbols-7-全新功能解析：从动态绘制到渐变渲染" class="headerlink" title="SF Symbols 7 全新功能解析：从动态绘制到渐变渲染"></a>SF Symbols 7 全新功能解析：从动态绘制到渐变渲染</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>苹果设计团队的成员 Kelsey 在 WWDC 上揭晓了 SF Symbols 7 的一系列创新功能。作为苹果生态系统中的核心图标资源库，SF Symbols 7 带来了革命性的动态绘制系统、增强的魔术替换、渐变渲染效果等多项改进。本文将带您深入了解这些新特性及其应用场景。</p>
-<h2 id="绘制-Draw-系统：让图标”活”起来"><a href="#绘制-Draw-系统：让图标”活”起来" class="headerlink" title="绘制(Draw)系统：让图标”活”起来"></a>绘制(Draw)系统：让图标”活”起来</h2><p>SF Symbols 7 最引人注目的创新是全新的 Draw 系统，它能让图标沿预设路径呈现生动的绘制动画：</p>
-<h3 id="核心动画预设"><a href="#核心动画预设" class="headerlink" title="核心动画预设"></a>核心动画预设</h3><ul>
-<li><strong>绘制出现(Draw On)</strong>：图标在屏幕上动态绘制成形</li>
-<li><strong>绘制消失(Draw Off)</strong>：图标以绘制方式淡出</li>
-<li><strong>三种播放模式</strong>：<ul>
-<li>按图层(By Layer)：路径错开起始时间</li>
-<li>整体符号(Whole Symbol)：所有图层同步绘制</li>
-<li>逐层(Individually)：前一层完成后再开始下一层</li>
-</ul>
-</li>
-</ul>
-<h3 id="可变绘制渲染"><a href="#可变绘制渲染" class="headerlink" title="可变绘制渲染"></a>可变绘制渲染</h3><p>这是 Draw 系统的进阶功能，通过显示特定进度的路径绘制来表示强度或进度，适用于：</p>
-<ul>
-<li>下载进度显示</li>
-<li>温度指示器</li>
-<li>课程完成度追踪</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SwiftUI 中使用 Draw 动画的示例代码</span></span><br><span class="line"><span class="type">Image</span>(systemName: <span class="string">&quot;arrow.right&quot;</span>)</span><br><span class="line">    .symbolEffect(.appear, isActive: isActive)</span><br></pre></td></tr></table></figure>
-<h2 id="魔术替换-Magic-Replace-增强"><a href="#魔术替换-Magic-Replace-增强" class="headerlink" title="魔术替换(Magic Replace)增强"></a>魔术替换(Magic Replace)增强</h2><p>SF Symbols 7 优化了关联符号间的转场效果：</p>
-<ol>
-<li>系统识别匹配的外框容器，转场时只替换差异图层</li>
-<li>支持 Draw 的符号自动应用 Draw Off 和 Draw On 动画</li>
-<li>结合外框匹配技术，实现更流畅的视觉过渡</li>
-</ol>
-<h2 id="渐变效果-Gradients-深度解析"><a href="#渐变效果-Gradients-深度解析" class="headerlink" title="渐变效果(Gradients)深度解析"></a>渐变效果(Gradients)深度解析</h2><p>渐变渲染为符号增添了立体感和视觉吸引力：</p>
-<ul>
-<li>使用单一源色生成平滑线性渐变</li>
-<li>支持系统色和自定义色</li>
-<li>适用于所有渲染模式</li>
-<li>在大尺寸显示时效果尤为突出</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 SwiftUI 中启用渐变效果</span></span><br><span class="line"><span class="type">Image</span>(systemName: <span class="string">&quot;cloud.fill&quot;</span>)</span><br><span class="line">    .symbolRenderingMode(.multicolor)</span><br><span class="line">    .foregroundStyle(.blue.gradient)</span><br></pre></td></tr></table></figure>
-<h2 id="自定义符号标注指南"><a href="#自定义符号标注指南" class="headerlink" title="自定义符号标注指南"></a>自定义符号标注指南</h2><p>要充分利用这些新功能，需要正确标注自定义符号：</p>
-<h3 id="绘制标注要点"><a href="#绘制标注要点" class="headerlink" title="绘制标注要点"></a>绘制标注要点</h3><ol>
-<li>每条路径至少需要两个引导点（起点和终点）</li>
-<li>复杂路径需要额外引导点填补间隙</li>
-<li>锐角转折处需要特殊拐角点</li>
-<li>多路径符号每条路径都适用相同规则</li>
-</ol>
-<h3 id="实用技巧"><a href="#实用技巧" class="headerlink" title="实用技巧"></a>实用技巧</h3><ul>
-<li>使用自适应端帽改善绘制效果</li>
-<li>对于中心对称符号，从中心双向绘制</li>
-<li>通过引导点上下文菜单调整绘制方向</li>
-<li>使用引导点编号检查标注顺序</li>
-</ul>
-<h2 id="API-更新速览"><a href="#API-更新速览" class="headerlink" title="API 更新速览"></a>API 更新速览</h2><p>SF Symbols 7 提供了新的 API 支持：</p>
-<ol>
-<li>新增 <code>symbolEffect</code> 修饰符调用动画预设</li>
-<li>可变绘制通过 <code>variableValue</code> 参数控制</li>
-<li>渐变渲染在 SwiftUI 中通过视图修饰符设置</li>
-</ol>
-<h2 id="结论与下一步行动"><a href="#结论与下一步行动" class="headerlink" title="结论与下一步行动"></a>结论与下一步行动</h2><p>SF Symbols 7 通过 Draw 系统、魔术替换增强、渐变效果等功能，为开发者提供了更丰富的视觉表达工具。建议您：</p>
-<ol>
-<li>立即下载 SF Symbols 7 测试版体验新功能</li>
-<li>检查现有自定义符号的标注兼容性</li>
-<li>参考框架文档了解具体实现细节</li>
-</ol>
-<p>这些创新功能将帮助您打造更具表现力和交互性的应用界面。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10188">SF Symbols 6 的新功能</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/sf-symbols/">苹果官方 SF Symbols 文档</a></p>
 <blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="SF-Symbols-7-新功能详解：Draw动画、渐变与魔术替换增强"><a href="#SF-Symbols-7-新功能详解：Draw动画、渐变与魔术替换增强" class="headerlink" title="SF Symbols 7 新功能详解：Draw动画、渐变与魔术替换增强"></a>SF Symbols 7 新功能详解：Draw动画、渐变与魔术替换增强</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Apple 设计团队的 Kelsey 在 WWDC 上分享了 SF Symbols 7 的最新更新。作为苹果生态系统中的重要设计资源，SF Symbols 持续进化，本次更新带来了全新的动画系统、渐变效果以及魔术替换功能的增强。这些改进将使开发者能够为应用界面创造更加生动和富有表现力的视觉体验。</p>
+<h2 id="符号设计与构建基础"><a href="#符号设计与构建基础" class="headerlink" title="符号设计与构建基础"></a>符号设计与构建基础</h2><p>在深入了解新功能之前，理解符号的基本设计原理至关重要。每个 SF Symbol 都是从单个矢量点开始精心设计的连续路径：</p>
+<ul>
+<li>符号由矢量点和曲线构建，而非简单的可见轮廓</li>
+<li>通过精确控制比例、负空间和视觉比重来确保清晰度</li>
+<li>某些形状由两条方向相反的路径创建，这对动画实现有重要影响</li>
+</ul>
+<p>以箭头符号为例，其尖端形状由两条路径精心构建，这种设计方法为后续的 Draw 动画功能奠定了基础。</p>
+<h2 id="Draw：手写风格的动画系统"><a href="#Draw：手写风格的动画系统" class="headerlink" title="Draw：手写风格的动画系统"></a>Draw：手写风格的动画系统</h2><h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><p>Draw 是 SF Symbols 7 引入的全新动画系统，其灵感来源于手写笔画的自然流畅性：</p>
+<ul>
+<li><strong>Draw On</strong>：符号在屏幕上绘制显现的动画预设</li>
+<li><strong>Draw Off</strong>：符号从屏幕绘制消失的动画预设</li>
+<li>利用符号的图层结构，可在关键时刻增强用户体验</li>
+</ul>
+<h3 id="播放选项"><a href="#播放选项" class="headerlink" title="播放选项"></a>播放选项</h3><p>Draw 动画提供三种播放方式：</p>
+<ol>
+<li><strong>By Layer（按图层）</strong>：默认选项，每个路径错开开始绘制</li>
+<li><strong>Whole Symbol（整体符号）</strong>：所有图层同时绘制，适合快速即时效果</li>
+<li><strong>Individually（逐个）</strong>：新版选项，等前一个图层完成再绘制下一个，适合突出个体动作</li>
+</ol>
+<h3 id="灵活应用"><a href="#灵活应用" class="headerlink" title="灵活应用"></a>灵活应用</h3><p>Draw 功能展现出强大的适应性：</p>
+<ul>
+<li>风向符号从左到右绘制表现运动</li>
+<li>阿拉伯字符从右到左绘制符合书写方向</li>
+<li>对称符号从中心向外绘制</li>
+<li>复杂符号如箭头，其尖端会随路径移动，强化含义表达</li>
+</ul>
+<h2 id="渐变效果与视觉深度"><a href="#渐变效果与视觉深度" class="headerlink" title="渐变效果与视觉深度"></a>渐变效果与视觉深度</h2><p>SF Symbols 7 新增了渐变功能：</p>
+<ul>
+<li>通过单一源色生成平滑线性渐变</li>
+<li>兼容所有渲染模式和系统/自定义颜色</li>
+<li>在大尺寸显示时效果尤为突出</li>
+<li>为符号增添深度和维度感</li>
+</ul>
+<p>渐变效果特别适用于需要强调符号立体感的场景，为界面元素带来更强的视觉吸引力。</p>
+<h2 id="魔术替换功能增强"><a href="#魔术替换功能增强" class="headerlink" title="魔术替换功能增强"></a>魔术替换功能增强</h2><p>魔术替换（Magic Replace）功能获得显著改进：</p>
+<ul>
+<li>现在能识别并匹配符号的外框（enclosures）</li>
+<li>共享外框的符号间可实现无缝过渡</li>
+<li>结合 Draw Off 和 Draw On 动画效果</li>
+<li>可在动画检查器中预览魔术替换预设</li>
+</ul>
+<h2 id="自定义符号标注指南"><a href="#自定义符号标注指南" class="headerlink" title="自定义符号标注指南"></a>自定义符号标注指南</h2><p>要为自定义符号添加 Draw 功能支持，需要正确标注符号：</p>
+<h3 id="引导点系统"><a href="#引导点系统" class="headerlink" title="引导点系统"></a>引导点系统</h3><p>Draw 动画依赖路径上的引导点（guide points）：</p>
+<ul>
+<li><strong>基本引导点</strong>：开放圆（起点）和实心圆（终点）</li>
+<li><strong>角落点</strong>：菱形标示，用于处理锐角转折</li>
+<li><strong>附着点</strong>：用于箭头等非绘制元素与路径关联</li>
+</ul>
+<h3 id="标注流程"><a href="#标注流程" class="headerlink" title="标注流程"></a>标注流程</h3><ol>
+<li>从常规字重开始标注（作为基础）</li>
+<li>系统自动将引导点插值到其他字重模板</li>
+<li>开启引导点编号检查顺序一致性</li>
+<li>可通过右键菜单调整引导点</li>
+</ol>
+<p>完成后，可通过设置中的变量渲染开关让符号支持 Variable Draw。</p>
+<h2 id="API集成与使用"><a href="#API集成与使用" class="headerlink" title="API集成与使用"></a>API集成与使用</h2><p>开发者可通过以下API使用新功能：</p>
+<h3 id="SwiftUI示例"><a href="#SwiftUI示例" class="headerlink" title="SwiftUI示例"></a>SwiftUI示例</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 应用Draw动画</span></span><br><span class="line"><span class="type">Image</span>(systemName: <span class="string">&quot;arrow.right&quot;</span>)</span><br><span class="line">    .symbolEffect(.draw)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 应用渐变渲染</span></span><br><span class="line"><span class="type">Image</span>(systemName: <span class="string">&quot;cloud&quot;</span>)</span><br><span class="line">    .symbolRenderingMode(.gradient)</span><br></pre></td></tr></table></figure>
+<h3 id="UIKit-AppKit"><a href="#UIKit-AppKit" class="headerlink" title="UIKit/AppKit"></a>UIKit/AppKit</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 配置Draw动画</span></span><br><span class="line"><span class="keyword">let</span> config <span class="operator">=</span> <span class="type">UIImage</span>.<span class="type">SymbolConfiguration</span>(preset: .drawOn)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置渐变渲染</span></span><br><span class="line"><span class="keyword">let</span> gradientConfig <span class="operator">=</span> <span class="type">UIImage</span>.<span class="type">SymbolConfiguration</span>(renderingMode: .gradient)</span><br></pre></td></tr></table></figure>
+<h2 id="总结与下一步建议"><a href="#总结与下一步建议" class="headerlink" title="总结与下一步建议"></a>总结与下一步建议</h2><p>SF Symbols 7 通过 Draw 动画系统、渐变效果和魔术替换增强，为开发者提供了更丰富的视觉表达工具。建议开发者：</p>
+<ol>
+<li>下载 SF Symbols 7 测试版预览新功能</li>
+<li>检查自定义符号的标注兼容性</li>
+<li>查阅框架文档了解详细集成方法</li>
+</ol>
+<p>这些创新功能将为应用界面带来前所未有的生动表现力和一致性。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10188">SF Symbols 6 的新功能</a></p>
 
       
 
@@ -419,18 +423,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_278/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_328/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          小组件的新功能
+          App Store Connect 的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_361/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">使用 Icon Composer 构建图标</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_325/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">探索 Apple 托管的 Background Assets</div>
       <i class="icon-circle-right"></i>
     </a>
   

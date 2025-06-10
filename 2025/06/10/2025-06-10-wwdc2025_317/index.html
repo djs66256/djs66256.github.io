@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索 visionos 26 中精彩的新功能。了解增强版视体 api，以及如何综合利用 swiftui、realitykit、arkit 的强大功能。探索如何利用更快的手部跟踪和空间配件输入，构建更加引人入胜的 app 和游戏。抢先预览同播共享、compositor services、沉浸式媒体、空间网页、企业 api 等方面的更新。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10062/10062_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:52:54.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:52:54.179Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.851Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_317/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:52:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,63 +226,46 @@ var _hmt = _hmt || [];
       
         <p>探索 visionos 26 中精彩的新功能。了解增强版视体 api，以及如何综合利用 swiftui、realitykit、arkit 的强大功能。探索如何利用更快的手部跟踪和空间配件输入，构建更加引人入胜的 app 和游戏。抢先预览同播共享、compositor services、沉浸式媒体、空间网页、企业 api 等方面的更新。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10062/10062_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/317/">视频地址</a></p>
-<h1 id="visionOS-26-新特性全解析：从空间计算到企业应用"><a href="#visionOS-26-新特性全解析：从空间计算到企业应用" class="headerlink" title="visionOS 26 新特性全解析：从空间计算到企业应用"></a>visionOS 26 新特性全解析：从空间计算到企业应用</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Apple Vision Pro 自发布以来，开发者们已经在这个平台上创造了无数惊艳的作品。今年，visionOS 26 带来了更多突破性功能。本文将全面介绍 visionOS 26 的新特性，包括增强的空间计算 API、系统优化、游戏开发工具、共享体验以及企业级功能。</p>
-<h2 id="空间计算功能升级"><a href="#空间计算功能升级" class="headerlink" title="空间计算功能升级"></a>空间计算功能升级</h2><p>SwiftUI 依然是构建 Apple Vision Pro 应用的理想选择。visionOS 26 新增了多项空间计算功能：</p>
-<ol>
-<li><p><strong>深度对齐</strong>：通过 <code>depthAlignment</code> 修饰符实现 3D 元素的智能布局</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">VStackLayout</span>().depthAlignment(.front) &#123;</span><br><span class="line">    <span class="type">ResizableLandmarkModel</span>()</span><br><span class="line">    <span class="type">LandmarkNameCard</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>3D 旋转支持</strong>：使用 <code>rotation3DLayout</code> 让物体在空间中自然转动</p>
-</li>
-<li><p><strong>动态边界限制</strong>：应用内容能与现实环境无缝融合</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.preferredWindowClippingMargins(.all, <span class="number">400</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>对象操控 API</strong>：只需添加 <code>manipulable()</code> 修饰符，用户就能像摆弄真实物体一样旋转 3D 模型</p>
-</li>
-</ol>
-<h2 id="系统功能增强"><a href="#系统功能增强" class="headerlink" title="系统功能增强"></a>系统功能增强</h2><p>visionOS 26 在系统层面也带来了多项革新：</p>
-<ul>
-<li><strong>Apple 智能功能</strong>：设备端大语言模型通过 Foundation Models 框架开放访问</li>
-<li><strong>图乐园增强</strong>：新增油画/矢量画风格，支持 ChatGPT 生成图像</li>
-<li><strong>语音转文本</strong>：全新 SpeechAnalyzer API 提供更快速精准的转录服务</li>
-<li><strong>空间持久化</strong>：窗口和内容现在会记住位置，重启后自动恢复</li>
-<li><strong>小组件进化</strong>：新增细节层级控制 <code>levelOfDetail</code> 和材质调节 <code>widgetTexture</code> API</li>
-</ul>
-<h2 id="游戏开发新工具"><a href="#游戏开发新工具" class="headerlink" title="游戏开发新工具"></a>游戏开发新工具</h2><p>游戏开发者将获得多项强大工具：</p>
-<ul>
-<li><strong>3倍速手部追踪</strong>：提升竞技类游戏响应速度</li>
-<li><strong>PS VR2 控制器支持</strong>：六自由度追踪+触觉反馈</li>
-<li><strong>内存限制提升</strong>：可移植更高端的 iPad 游戏</li>
-<li><strong>Metal 渲染增强</strong>：新增悬停效果与动态渲染质量调控</li>
-</ul>
-<p>此外，macOS 空间渲染功能允许开发者借助 Mac 的算力在 Vision Pro 上呈现高品质内容，TabletopKit 则简化了多人游戏的网络同步实现。</p>
-<h2 id="共享与媒体体验"><a href="#共享与媒体体验" class="headerlink" title="共享与媒体体验"></a>共享与媒体体验</h2><p>visionOS 26 在共享体验方面也有重大突破：</p>
-<ul>
-<li><strong>就近窗口共享</strong>：同处一室的多人协同功能</li>
-<li><strong>空间自画像优化</strong>：提升毛发质感与表情真实度</li>
-<li><strong>180°/360°视频支持</strong>：新增 Apple Projected Media Profile (APMP) 标准</li>
-<li><strong>Safari 空间浏览</strong>：3D 模型直嵌网页，支持拖拽至现实空间</li>
-</ul>
-<h2 id="企业级功能"><a href="#企业级功能" class="headerlink" title="企业级功能"></a>企业级功能</h2><p>针对企业场景，visionOS 26 新增了多项专属功能：</p>
-<ul>
-<li><strong>主摄像头访问</strong>：ARKit 新增 CameraRegionProvider 稳定拍摄区域</li>
-<li><strong>内容保护</strong>：Protected Content API 防止敏感信息截屏</li>
-<li><strong>窗口跟随模式</strong>：应用界面实时追踪用户移动</li>
-<li><strong>快速设备移交</strong>：通过 Apple 商务管理实现安全的多用户切换</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>visionOS 26 带来了全方位的功能升级，从开发者工具到用户体验，再到企业级应用场景，都有了显著的提升。这些新功能将为开发者创造更丰富、更具沉浸感的应用程序提供强大支持。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/318">与附近用户共享 visionOS 体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/403">了解 Apple 沉浸视频技术</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/289">探索 visionOS 上的空间配件输入</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/287">RealityKit 的新功能</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/TabletopKit">TabletopKit 开发文档</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="visionOS-26-新特性全面解析：构建下一代空间体验"><a href="#visionOS-26-新特性全面解析：构建下一代空间体验" class="headerlink" title="visionOS 26 新特性全面解析：构建下一代空间体验"></a>visionOS 26 新特性全面解析：构建下一代空间体验</h1><p>visionOS 26 为开发者带来了丰富的创新功能，从增强的容积 API 到游戏开发支持，再到共享体验和企业级功能，全方位提升了空间计算的可能性。本文将深入解析这些新特性，帮助开发者充分掌握 visionOS 26 的强大能力。</p>
+<h2 id="容积功能：SwiftUI-与-RealityKit-的深度整合"><a href="#容积功能：SwiftUI-与-RealityKit-的深度整合" class="headerlink" title="容积功能：SwiftUI 与 RealityKit 的深度整合"></a>容积功能：SwiftUI 与 RealityKit 的深度整合</h2><p>SwiftUI 在 visionOS 26 中获得了全面的容积功能升级，为开发者提供了构建沉浸式 3D 界面的强大工具。深度对齐（DepthAlignment）和布局感知旋转（rotation3DLayout）等新特性，让 3D 内容布局变得更加直观和高效。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">LandmarkProfile</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">       <span class="type">VStackLayout</span>().depthAlignment(.front) &#123;</span><br><span class="line">            <span class="type">ResizableLandmarkModel</span>()</span><br><span class="line">            <span class="type">LandmarkNameCard</span>()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>空间容器功能得到显著增强，包括瞬时内容展示和动态边界限制支持。新的对象操纵 API 允许用户像操作真实物体一样与虚拟内容交互，为应用增添了自然的物理感。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">RockView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">RockLayout</span> &#123;</span><br><span class="line">            <span class="type">ForEach</span>(rocks) &#123; rock <span class="keyword">in</span></span><br><span class="line">                <span class="type">Model3D</span>(named: rock.name, bundle: realityKitContentBundle) &#123; model <span class="keyword">in</span></span><br><span class="line">                    model.model<span class="operator">?</span></span><br><span class="line">                        .resizable()</span><br><span class="line">                        .scaledToFit3D()</span><br><span class="line">                &#125;</span><br><span class="line">                .manipulable()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="系统功能：智能化与持久化"><a href="#系统功能：智能化与持久化" class="headerlink" title="系统功能：智能化与持久化"></a>系统功能：智能化与持久化</h2><p>visionOS 26 引入了多项系统级创新：</p>
+<ul>
+<li><strong>Foundation Models 框架</strong>：提供设备端大语言模型访问能力</li>
+<li><strong>SpeechAnalyzer</strong>：完全设备端运行的语音转文本 API</li>
+<li><strong>空间持久化</strong>：窗口和场景位置记忆功能</li>
+<li><strong>小组件增强</strong>：自动添加深度效果和自适应细节呈现</li>
 </ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Window</span>(<span class="string">&quot;Inspector&quot;</span>, id: <span class="string">&quot;Inspector&quot;</span>) &#123;</span><br><span class="line">    <span class="type">InspectorView</span>()</span><br><span class="line">&#125;</span><br><span class="line">.defaultLaunchBehavior(.suppressed)</span><br><span class="line">.restorationBehavior(.disabled)</span><br></pre></td></tr></table></figure>
+<h2 id="游戏开发与空间配件支持"><a href="#游戏开发与空间配件支持" class="headerlink" title="游戏开发与空间配件支持"></a>游戏开发与空间配件支持</h2><p>游戏开发者将受益于多项性能提升和新功能：</p>
+<ul>
+<li>手部追踪速度提升高达 3 倍</li>
+<li>PlayStation VR2 Sense 控制器和 Logitech Muse 手写笔支持</li>
+<li>提高的内存限制和增强的 Metal 渲染引擎</li>
+<li>macOS 空间渲染能力，将 Mac 性能与 Vision Pro 显示完美结合</li>
+</ul>
+<h2 id="共享体验与沉浸式媒体"><a href="#共享体验与沉浸式媒体" class="headerlink" title="共享体验与沉浸式媒体"></a>共享体验与沉浸式媒体</h2><p>visionOS 26 大大增强了共享体验：</p>
+<ul>
+<li>同播共享和空间自影像优化</li>
+<li>Nearby Window Sharing 实现房间级共享</li>
+<li>共享世界锚点确保内容精准定位</li>
+<li>沉浸式媒体生态系统支持各种专业媒体格式</li>
+</ul>
+<h2 id="空间网页与企业功能"><a href="#空间网页与企业功能" class="headerlink" title="空间网页与企业功能"></a>空间网页与企业功能</h2><p>Safari 新增的空间网页功能允许将传统网页转换为空间体验，而企业 API 则针对商业场景提供了：</p>
+<ul>
+<li>主摄像头访问扩展</li>
+<li>敏感数据保护机制</li>
+<li>Window Follow 模式</li>
+<li>设备共享和协作支持</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>visionOS 26 为开发者提供了前所未有的工具和能力，从基础的容积功能到高级的共享体验，再到专业的企业应用场景。这些创新不仅提升了现有应用的沉浸感，更为全新类别的空间体验开辟了道路。开发者可以充分利用这些新特性，在 Apple Vision Pro 平台上创造更加惊艳的内容。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/318">与附近用户共享 visionOS 体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/403">了解 Apple 沉浸视频技术</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/297">了解 Apple Projected Media Profile</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/286">了解 Foundation Models 框架</a>  </p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/TabletopKit">TabletopKit</a></p>
 
       
 
@@ -385,18 +368,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_228/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_314/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          借助 Wi-Fi Aware 增强设备连接性能
+          开始使用量子安全加密技术
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_243/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">UIKit 的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_319/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">在你的 App 中录制电影效果视频</div>
       <i class="icon-circle-right"></i>
     </a>
   

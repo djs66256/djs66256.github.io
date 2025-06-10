@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何构建 app intents，以使操作在 mac 上的“快捷指令”和“聚焦”中可用，并能够与这两个 app 中的新功能实现完美搭配。我们将介绍你的操作如何与“快捷指令”app 中提供的新 apple 智能操作相结合并产生令人惊叹的效果。我们将深入探讨全新“使用模型”操作的工作方式，以及它如何与 app 的实体进行交互。我们还将讨论如何使用 app intents api 让你的操作在“聚焦">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9969/9969_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:43:06.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:43:06.600Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.356Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_260/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:43:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,70 +228,55 @@ var _hmt = _hmt || [];
       
         <p>了解如何构建 app intents，以使操作在 mac 上的“快捷指令”和“聚焦”中可用，并能够与这两个 app 中的新功能实现完美搭配。我们将介绍你的操作如何与“快捷指令”app 中提供的新 apple 智能操作相结合并产生令人惊叹的效果。我们将深入探讨全新“使用模型”操作的工作方式，以及它如何与 app 的实体进行交互。我们还将讨论如何使用 app intents api 让你的操作在“聚焦”中可用。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9969/9969_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/260/">视频地址</a></p>
-<h1 id="通过-App-Intents-扩展应用能力：深度集成”快捷指令”与”聚焦”"><a href="#通过-App-Intents-扩展应用能力：深度集成”快捷指令”与”聚焦”" class="headerlink" title="通过 App Intents 扩展应用能力：深度集成”快捷指令”与”聚焦”"></a>通过 App Intents 扩展应用能力：深度集成”快捷指令”与”聚焦”</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>作为开发者，我们一直在寻找提升应用交互性和实用性的方法。App Intents 框架提供了一个绝佳机会，让您的应用功能能够无缝集成到 macOS 的”快捷指令”和”聚焦”中。这不仅增加了应用的曝光度，也为用户提供了更高效的使用体验。</p>
-<h2 id="全新”使用模型”操作解析"><a href="#全新”使用模型”操作解析" class="headerlink" title="全新”使用模型”操作解析"></a>全新”使用模型”操作解析</h2><p>今年”快捷指令”引入了多项革命性的智能操作，其中最引人注目的是”使用模型”操作。这个功能允许用户：</p>
-<ul>
-<li>选择设备端模型进行离线处理</li>
-<li>使用 Private Cloud Compute 处理复杂请求</li>
-<li>接入 ChatGPT 获取广泛知识</li>
-</ul>
-<p><strong>实际应用场景示例</strong>：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例代码：模型筛选相关笔记</span></span><br><span class="line"><span class="keyword">let</span> relevantNotes <span class="operator">=</span> notes.filter &#123; note <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> answer <span class="operator">=</span> model.query(<span class="string">&quot;此笔记是否与&#x27;快捷指令&#x27;App功能开发相关?&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> answer <span class="operator">==</span> <span class="string">&quot;是&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="模型输出的三种衔接方式"><a href="#模型输出的三种衔接方式" class="headerlink" title="模型输出的三种衔接方式"></a>模型输出的三种衔接方式</h3><ol>
-<li><strong>富文本支持</strong>：使用 AttributedString 类型保留文本格式</li>
-<li><strong>结构化数据</strong>：字典格式处理多段数据</li>
-<li><strong>应用实体</strong>：通过 JSON 表示传递实体信息</li>
-</ol>
-<h2 id="“聚焦”搜索的深度集成"><a href="#“聚焦”搜索的深度集成" class="headerlink" title="“聚焦”搜索的深度集成"></a>“聚焦”搜索的深度集成</h2><h3 id="优化”聚焦”显示的三个关键点"><a href="#优化”聚焦”显示的三个关键点" class="headerlink" title="优化”聚焦”显示的三个关键点"></a>优化”聚焦”显示的三个关键点</h3><ol>
-<li>确保参数摘要完整</li>
-<li>检查 discoverability 设置</li>
-<li>确认意图具有 perform 方法</li>
-</ol>
-<p><strong>性能优化建议</strong>：</p>
-<ul>
-<li>对频繁访问的数据实现 SuggestedEntities</li>
-<li>小型数据集使用 allEntities</li>
-<li>通过 NSUserActivity 标记当前内容</li>
-</ul>
-<h2 id="Mac-自动化新机遇"><a href="#Mac-自动化新机遇" class="headerlink" title="Mac 自动化新机遇"></a>Mac 自动化新机遇</h2><p>Mac 版自动化现在支持：</p>
-<ul>
-<li>文件夹/外接硬盘触发</li>
-<li>传统时间/蓝牙触发</li>
-</ul>
-<p><strong>示例应用</strong>：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文件夹自动化示例</span></span><br><span class="line">folderObserver.startMonitoring &#123; newFiles <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> newFiles.contains(where: &#123; <span class="variable">$0</span>.isInvoice &#125;) &#123;</span><br><span class="line">        runInvoiceProcessingShortcut()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="实现建议与最佳实践"><a href="#实现建议与最佳实践" class="headerlink" title="实现建议与最佳实践"></a>实现建议与最佳实践</h2><ol>
-<li><p><strong>实体公开</strong>：</p>
-<ul>
-<li>提供高效的查找操作</li>
-<li>暴露关键推理属性</li>
-</ul>
-</li>
-<li><p><strong>文本处理</strong>：</p>
-<ul>
-<li>全面支持 AttributedString</li>
-<li>保留模型输出的富文本格式</li>
-</ul>
-</li>
-<li><p><strong>聚焦优化</strong>：</p>
-<ul>
-<li>提供智能建议</li>
-<li>支持深度搜索</li>
-</ul>
-</li>
-</ol>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>通过 App Intents 框架，您不仅能让应用功能在更多场景中可用，还能为用户创造更智能、更高效的体验。现在是时候重新审视您的应用架构，思考如何更好地与系统集成。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10193">为聚焦设计快捷指令</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10102">使用 App 快捷指令突出你的 App</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents">App Intents 官方文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/app-shortcuts">App Shortcuts 开发指南</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SiriKit/donating-shortcuts">Shortcuts 捐赠指南</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/app-shortcuts">人机界面指南：App Shortcuts</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用-App-Intents-为快捷指令和聚焦搜索赋能开发"><a href="#使用-App-Intents-为快捷指令和聚焦搜索赋能开发" class="headerlink" title="使用 App Intents 为快捷指令和聚焦搜索赋能开发"></a>使用 App Intents 为快捷指令和聚焦搜索赋能开发</h1><p>在 WWDC 2023 的技术演讲中，苹果详细介绍了如何通过 App Intents 框架将应用功能深度整合到快捷指令和聚焦搜索中。以下是本次演讲的核心内容和技术要点。</p>
+<h2 id="App-Intents-框架概述"><a href="#App-Intents-框架概述" class="headerlink" title="App Intents 框架概述"></a>App Intents 框架概述</h2><p>App Intents 框架为开发者提供了强大的工具，使其应用功能能够获得更高的平台可见性。通过该框架，用户可以在快捷指令和聚焦搜索等多种场景中直接使用应用的核心功能，极大地提升了应用的可用性和自动化潜力。</p>
+<h2 id="快捷指令中的智能操作"><a href="#快捷指令中的智能操作" class="headerlink" title="快捷指令中的智能操作"></a>快捷指令中的智能操作</h2><p>今年快捷指令 App 引入了多项革命性的智能操作，其中”使用模型”功能尤为突出。这项操作让用户能够在自己的快捷指令中调用 Apple 智能模型，将原本复杂的任务变得简单高效。</p>
+<h3 id="模型选项与使用场景"><a href="#模型选项与使用场景" class="headerlink" title="模型选项与使用场景"></a>模型选项与使用场景</h3><p>开发者可以选择三种不同的模型处理方式：</p>
+<ol>
+<li>服务器端模型：处理复杂请求，同时保护用户隐私</li>
+<li>设备端模型：处理无需联网的简单请求</li>
+<li>ChatGPT：利用其广泛知识和技能</li>
+</ol>
+<p>典型的使用场景包括：</p>
+<ul>
+<li>筛选特定行程相关的日历事件</li>
+<li>生成网页内容摘要</li>
+<li>查询最新趋势信息</li>
 </ul>
+<h3 id="模型输出处理技术"><a href="#模型输出处理技术" class="headerlink" title="模型输出处理技术"></a>模型输出处理技术</h3><p>模型输出的处理是确保应用与模型无缝衔接的关键，开发者需要注意以下技术要点：</p>
+<h4 id="文本处理"><a href="#文本处理" class="headerlink" title="文本处理"></a>文本处理</h4><p>AttributedString 类型是处理富文本内容的最佳选择，它能够完美保留模型输出的各种格式样式，包括粗体、斜体、列表和表格等。</p>
+<h4 id="字典输出"><a href="#字典输出" class="headerlink" title="字典输出"></a>字典输出</h4><p>字典输出适用于结构化数据的传递，能将非结构化数据转换为应用可直接使用的格式。</p>
+<h4 id="应用实体处理"><a href="#应用实体处理" class="headerlink" title="应用实体处理"></a>应用实体处理</h4><p>当应用实体传入模型时，系统会将其转换为 JSON 格式传递。开发者需要确保：</p>
+<ul>
+<li>关键信息在实体定义中公开</li>
+<li>所有属性都会转为字符串包含在 JSON 中</li>
+<li>包含类型名称和显示信息</li>
+</ul>
+<h2 id="聚焦搜索集成优化"><a href="#聚焦搜索集成优化" class="headerlink" title="聚焦搜索集成优化"></a>聚焦搜索集成优化</h2><p>今年，Mac 上的聚焦搜索获得了重大升级，用户可以直接在其中运行应用提供的各种操作。</p>
+<h3 id="聚焦搜索显示条件"><a href="#聚焦搜索显示条件" class="headerlink" title="聚焦搜索显示条件"></a>聚焦搜索显示条件</h3><p>要使意图显示在聚焦搜索中，开发者需要：</p>
+<ol>
+<li>确保参数摘要包含所有必要无默认值参数</li>
+<li>意图未被设置为隐藏状态</li>
+<li>提供有效的 perform 方法</li>
+</ol>
+<h3 id="用户体验优化要点"><a href="#用户体验优化要点" class="headerlink" title="用户体验优化要点"></a>用户体验优化要点</h3><ol>
+<li><strong>建议提供</strong>：通过 SuggestedEntities 或 allEntities 提供参数建议</li>
+<li><strong>搜索体验</strong>：实现 EntityStringQuery 或 IndexedEntity 支持深度搜索</li>
+<li><strong>运行方式</strong>：合理区分后台意图和前台意图</li>
+</ol>
+<h2 id="Mac-自动化新功能"><a href="#Mac-自动化新功能" class="headerlink" title="Mac 自动化新功能"></a>Mac 自动化新功能</h2><p>Mac 今年新增了个人自动化功能，包括针对文件夹和外接硬盘的自动化触发机制。所有在 macOS 可用的意图都能用于这些自动化场景，为用户提供更丰富的自动化可能。</p>
+<h2 id="开发建议"><a href="#开发建议" class="headerlink" title="开发建议"></a>开发建议</h2><p>根据演讲内容，开发者应采取以下关键步骤：</p>
+<ol>
+<li>将应用内容作为适合快捷指令的实体公开</li>
+<li>使用 AttributedString 支持富文本输入</li>
+<li>优化 Mac 聚焦搜索中的意图呈现效果</li>
+</ol>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>开发者可参考以下资源深入了解相关内容：</p>
+<h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10193">为聚焦设计快捷指令</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10102">使用 App 快捷指令突出你的 App</a></p>
+<h3 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents">App Intents</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/app-shortcuts">App Shortcuts</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SiriKit/donating-shortcuts">Donating Shortcuts</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/app-shortcuts">Human Interface Guidelines: App Shortcuts</a></p>
 
       
 
@@ -402,18 +387,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_315/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_262/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          开始使用适用于 Apple 芯片的 MLX
+          实现 Metal 4 机器学习与图形应用程序的完美融合
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_244/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">了解 App Intents</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_259/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">跟着视频学编程：使用 Foundation Models 框架将设备端 AI 引入你的 App</div>
       <i class="icon-circle-right"></i>
     </a>
   

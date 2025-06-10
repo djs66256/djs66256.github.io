@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解“钱包”中的最新功能和改进。我们将介绍如何以惊艳的全新设计更新你的登机牌，并探索适用于多场次活动门票的新功能。我们还将讨论有助于你将凭证无缝添加到“钱包”中的 api 更新。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9874/9874_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:26:19.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:26:19.006Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.343Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -221,7 +221,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_202/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:26:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -230,58 +230,60 @@ var _hmt = _hmt || [];
       
         <p>了解“钱包”中的最新功能和改进。我们将介绍如何以惊艳的全新设计更新你的登机牌，并探索适用于多场次活动门票的新功能。我们还将讨论有助于你将凭证无缝添加到“钱包”中的 api 更新。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9874/9874_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/202/">视频地址</a></p>
-<h1 id="钱包应用全新升级：多场次活动与智能登机牌解析"><a href="#钱包应用全新升级：多场次活动与智能登机牌解析" class="headerlink" title="钱包应用全新升级：多场次活动与智能登机牌解析"></a>钱包应用全新升级：多场次活动与智能登机牌解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>苹果钱包应用在最新版本中带来了多项创新功能，从支持多场次活动的门票到全面升级的登机牌体验，以及更加便捷的通行证添加API。这些改进将显著提升用户使用体验，同时为开发者提供了更强大的工具。本文将深入解析这些新特性，帮助您快速掌握并应用到实际开发中。</p>
-<h2 id="多场次活动门票功能"><a href="#多场次活动门票功能" class="headerlink" title="多场次活动门票功能"></a>多场次活动门票功能</h2><h3 id="功能概述"><a href="#功能概述" class="headerlink" title="功能概述"></a>功能概述</h3><p>今年的钱包应用推出了”后续活动”功能，允许用户通过一张门票访问多个活动场次。这一功能基于iOS 18引入的海报活动门票语义体系实现，为用户提供了更加连贯的活动体验。</p>
-<h3 id="技术实现细节"><a href="#技术实现细节" class="headerlink" title="技术实现细节"></a>技术实现细节</h3><p>在pass.json配置文件中，”后续活动”信息定义在新的”upcomingPassInformation”数组中：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;upcomingPassInformation&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;event&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;identifier&quot;</span><span class="punctuation">:</span> <span class="string">&quot;unique_event_id&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Event Name&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;date&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2024-07-15&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>每个后续活动对象包含以下关键字段：</p>
-<ul>
-<li>类型(type)必须为”event”</li>
-<li>唯一标识符(identifier)</li>
-<li>活动名称(name)</li>
-<li>活动日期(date)</li>
-</ul>
-<h3 id="活动详情页配置"><a href="#活动详情页配置" class="headerlink" title="活动详情页配置"></a>活动详情页配置</h3><p>活动详情页继承了海报活动门票的设计理念，支持以下配置项：</p>
-<ol>
-<li><strong>头图展示</strong>：默认使用通行证背景图，也可通过”headerImage”指定自定义图片</li>
-<li><strong>场馆信息</strong>：通过语义字段”venueName”、”venuePlaceID”和”venueLocation”添加</li>
-<li><strong>活动指南</strong>：可配置常用操作按钮、天气卡片、场馆地图等</li>
-</ol>
-<p>值得注意的是，后续活动与通行证结构相同但不会复用通行证属性。开发者需要在后续活动对象中重复定义所有需要的属性。</p>
-<h2 id="登机牌全面升级"><a href="#登机牌全面升级" class="headerlink" title="登机牌全面升级"></a>登机牌全面升级</h2><h3 id="核心改进"><a href="#核心改进" class="headerlink" title="核心改进"></a>核心改进</h3><p>新版登机牌带来了多项重大改进：</p>
-<ol>
-<li><strong>航班追踪系统</strong>：自动订阅航班状态变更</li>
-<li><strong>深度系统集成</strong>：与地图导航和”查找”行李追踪无缝对接</li>
-<li><strong>航空公司服务专区</strong>：集中展示乘机全流程可操作事项</li>
-<li><strong>徽章系统</strong>：突出显示票务等级、行李限额等重要信息</li>
-<li><strong>智能时间管理</strong>：基于语义字段自动计算并维持值机时长</li>
-</ol>
-<h3 id="配置建议"><a href="#配置建议" class="headerlink" title="配置建议"></a>配置建议</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;semantics&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;airlineCode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AA&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;flightNumber&quot;</span><span class="punctuation">:</span> <span class="string">&quot;123&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;originalDepartureDate&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2024-07-15T08:00:00&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;serviceURLs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;lounge&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://example.com/lounge&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;upgrade&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://example.com/upgrade&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-<p>重要配置提示：</p>
-<ul>
-<li>使用airlineCode+flightNumber+originalDepartureDate语义组合启动航班追踪</li>
-<li>代码共享航班优先提供市场方航班号</li>
-<li>仅当航班正式改期时才更新originalDepartureDate</li>
-<li>在pass.json顶层定义服务URL</li>
-</ul>
-<h2 id="自动添加通行证API"><a href="#自动添加通行证API" class="headerlink" title="自动添加通行证API"></a>自动添加通行证API</h2><h3 id="新版PKPassLibrary-API"><a href="#新版PKPassLibrary-API" class="headerlink" title="新版PKPassLibrary API"></a>新版PKPassLibrary API</h3><p>全新PKPassLibrary API简化了通行证添加流程，主要包含三个步骤：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 请求权限</span></span><br><span class="line"><span class="type">PKPassLibrary</span>.requestAuthorization()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 检查状态</span></span><br><span class="line"><span class="keyword">let</span> status <span class="operator">=</span> <span class="type">PKPassLibrary</span>.authorizationStatus</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 添加通行证</span></span><br><span class="line"><span class="type">PKPassLibrary</span>.addPasses([pass1, pass2])</span><br></pre></td></tr></table></figure>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
-<li>权限请求仅生效一次，后续调用直接返回当前状态</li>
-<li>用户可在系统设置中随时修改授权状态</li>
-<li>开发者应保持对旧版系统的兼容性</li>
-</ul>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>苹果钱包应用的最新升级带来了更加灵活的活动门票管理、更智能的登机牌体验以及更便捷的API集成方式。这些改进不仅提升了用户体验，也为开发者提供了更多可能性。建议开发者尽快熟悉这些新特性，为用户提供更加无缝的钱包应用体验。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/201">Apple Pay 的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10108">「钱包」和 Apple Pay 的新功能</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/wallet">Human Interface Guidelines: Wallet</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/PassKit">PassKit (Apple Pay and Wallet)</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="钱包新功能：全面升级的活动票证与登机牌体验"><a href="#钱包新功能：全面升级的活动票证与登机牌体验" class="headerlink" title="钱包新功能：全面升级的活动票证与登机牌体验"></a>钱包新功能：全面升级的活动票证与登机牌体验</h1><p>苹果钱包应用在WWDC24上迎来多项重要更新，包括增强型活动票证、全新设计的登机牌以及更便捷的凭证添加API。这些改进将为用户带来更丰富的使用体验，同时为开发者提供更强大的工具。</p>
+<h2 id="活动票证的后续活动功能"><a href="#活动票证的后续活动功能" class="headerlink" title="活动票证的后续活动功能"></a>活动票证的后续活动功能</h2><p>今年钱包应用对活动票证进行了重大升级，引入了”后续活动”特性。这一功能允许用户通过单张票证访问多场关联活动，解决了以往需要多张独立票证的痛点。</p>
+<h3 id="技术实现细节"><a href="#技术实现细节" class="headerlink" title="技术实现细节"></a>技术实现细节</h3><p>后续活动功能通过pass.json文件中的新数组<code>upcomingPassInformation</code>实现配置。开发者需要在数组中为每场活动定义对象，包含类型(<code>event</code>)、唯一标识符、显示名称和日期等必要字段。该功能充分利用了iOS 18引入的海报活动票证语义机制。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;upcomingPassInformation&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;type&quot;</span>: <span class="string">&quot;event&quot;</span>,</span><br><span class="line">        <span class="string">&quot;identifier&quot;</span>: <span class="string">&quot;unique_id_123&quot;</span>,</span><br><span class="line">        <span class="string">&quot;displayName&quot;</span>: <span class="string">&quot;Summer Concert Series - Night 2&quot;</span>,</span><br><span class="line">        <span class="string">&quot;date&quot;</span>: <span class="string">&quot;2024-07-15T20:00:00&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>每个后续活动对象支持完整的票证语义结构，包括：</p>
+<ul>
+<li><code>semantics</code>对象：描述活动的语义信息</li>
+<li><code>additionalInfoFields</code>/<code>backFields</code>：未被语义覆盖的自定义属性</li>
+<li><code>URLs</code>对象：分组所有活动相关操作</li>
+<li><code>images</code>对象：配置活动关联图像</li>
 </ul>
+<p>值得注意的是，后续活动不会自动复用主票证的属性。开发者需要为每个活动单独配置相关内容，包括自定义横幅图像(<code>headerImage</code>)、场地信息(<code>venueName</code>、<code>venuePlaceID</code>、<code>venueLocation</code>)和活动指南等。</p>
+<h2 id="登机牌的全面升级"><a href="#登机牌的全面升级" class="headerlink" title="登机牌的全面升级"></a>登机牌的全面升级</h2><p>钱包中的登机牌体验今年迎来重大革新，新设计更具动态性和可配置性，并与苹果生态系统深度集成。</p>
+<h3 id="核心改进特性"><a href="#核心改进特性" class="headerlink" title="核心改进特性"></a>核心改进特性</h3><ol>
+<li><strong>实时航班追踪</strong>：与苹果航班服务自动同步，更新登机口变更、延误等信息</li>
+<li><strong>系统深度集成</strong>：地图提供机场路线指引，”查找”功能追踪行李</li>
+<li><strong>航空公司服务版块</strong>：显示旅客全程可采取的操作及相关信息摘要</li>
+<li><strong>智能徽章系统</strong>：自动显示最重要的信息，如舱位等级、行李资格等</li>
+</ol>
+<h3 id="技术配置要点"><a href="#技术配置要点" class="headerlink" title="技术配置要点"></a>技术配置要点</h3><p>升级版登机牌通过语义识别航班信息，核心语义包括：</p>
+<ul>
+<li><code>airlineCode</code>：航空公司代码</li>
+<li><code>flightNumber</code>：航班号</li>
+<li><code>originalDepartureDate</code>：原始出发日期</li>
+<li><code>currentBoardingDate</code>：当前登机时间</li>
+</ul>
+<p>徽章功能支持IATA特殊服务请求代码，通过<code>passengerServiceSSRs</code>语义实现。开发者还可使用自定义语义控制航空公司特有信息的标签。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;semantics&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;passengerServiceSSRs&quot;</span>: [<span class="string">&quot;SVAN&quot;</span>, <span class="string">&quot;WCHR&quot;</span>],</span><br><span class="line">    <span class="string">&quot;seatClass&quot;</span>: <span class="string">&quot;Business&quot;</span>,</span><br><span class="line">    <span class="string">&quot;airlineStatus&quot;</span>: <span class="string">&quot;Gold&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="自动添加凭证API"><a href="#自动添加凭证API" class="headerlink" title="自动添加凭证API"></a>自动添加凭证API</h2><p>针对频繁添加凭证的用户，今年推出了新的PKPassLibrary API，支持后台自动添加功能。</p>
+<h3 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h3><ol>
+<li><strong>请求权限</strong>：使用<code>requestAuthorization(for: .backgroundAddPasses)</code>请求后台添加权限</li>
+<li><strong>检查状态</strong>：通过<code>authorizationStatus(for:)</code>检查当前授权状态</li>
+<li><strong>添加凭证</strong>：授权后使用<code>addPasses</code>方法自动添加凭证</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Task</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> <span class="type">PKPassLibrary</span>.shared.requestAuthorization(for: .backgroundAddPasses)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="兼容性与最佳实践"><a href="#兼容性与最佳实践" class="headerlink" title="兼容性与最佳实践"></a>兼容性与最佳实践</h2><p>虽然新功能强大，开发者仍需考虑以下兼容性要点：</p>
+<ul>
+<li>升级版登机牌功能仅支持最新iOS和watchOS设备</li>
+<li>应继续在现有登机牌中添加语义和URL，确保旧系统用户也能获得良好体验</li>
+<li>后续活动功能需要iOS 18及以上版本支持</li>
+</ul>
+<p>对于活动票证，建议定期更新<code>isActive</code>属性，及时移除已取消或不相关的活动，确保列表信息的准确性。</p>
+<h2 id="开发资源"><a href="#开发资源" class="headerlink" title="开发资源"></a>开发资源</h2><p>开发者可以访问以下资源获取更多详细信息：</p>
+<ul>
+<li>人机界面指南：钱包</li>
+<li>PassKit(Apple Pay和Wallet)文档</li>
+<li>相关WWDC视频讲解</li>
+</ul>
+<p>这些钱包新功能将为用户带来更加无缝、智能的体验，同时也为开发者提供了更丰富的工具来创建出色的凭证解决方案。通过合理利用这些新特性，应用可以显著提升用户满意度和参与度。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/201">Apple Pay 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10108">“钱包”和 Apple Pay 的新功能</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/wallet">人机界面指南：钱包</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/PassKit">PassKit (Apple Pay 和 Wallet)</a></p>
 
       
 
@@ -400,18 +402,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_321/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_277/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          了解 HealthKit Medications API
+          借助 SpeechAnalyzer 将先进的语音转文本功能引入 App
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_233/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Safari 浏览器和 WebKit 的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_201/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Apple Pay 的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

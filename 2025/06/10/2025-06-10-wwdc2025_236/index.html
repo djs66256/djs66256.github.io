@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 webgpu api 如何为图形和通用计算提供安全访问 gpu 设备的权限。我们还将探讨用来编写 gpu 程序的 wgsl 着色语言。此外，我们将深入探索在台式机和移动设备上实现最优性能同时尽可能降低能耗的最佳实践。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9934/9934_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:29:23.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:29:23.131Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.358Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -220,7 +220,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_236/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:29:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -229,54 +229,76 @@ var _hmt = _hmt || [];
       
         <p>了解 webgpu api 如何为图形和通用计算提供安全访问 gpu 设备的权限。我们还将探讨用来编写 gpu 程序的 wgsl 着色语言。此外，我们将深入探索在台式机和移动设备上实现最优性能同时尽可能降低能耗的最佳实践。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9934/9934_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/236/">视频地址</a></p>
-<h1 id="WebGPU：解锁浏览器中的GPU计算潜能"><a href="#WebGPU：解锁浏览器中的GPU计算潜能" class="headerlink" title="WebGPU：解锁浏览器中的GPU计算潜能"></a>WebGPU：解锁浏览器中的GPU计算潜能</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>WebGPU作为下一代图形API，正在彻底改变网页GPU计算的方式。它不仅完美替代WebGL，更为开发者带来了前所未有的高性能通用GPU计算能力。本文将带你深入了解WebGPU的核心架构、WGSL着色语言以及苹果平台上的关键性能优化技巧。</p>
-<h2 id="WebGPU架构解析"><a href="#WebGPU架构解析" class="headerlink" title="WebGPU架构解析"></a>WebGPU架构解析</h2><p>WebGPU采用与Metal框架高度相似的API设计，主要包含以下核心组件：</p>
-<h3 id="核心资源类型"><a href="#核心资源类型" class="headerlink" title="核心资源类型"></a>核心资源类型</h3><ul>
-<li><strong>GPUDevice</strong>：API的主要入口点，类似Metal的MTLDevice</li>
-<li><strong>GPUAdapter</strong>：代表物理GPU适配器</li>
-<li><strong>GPUCanvasContext</strong>：与HTML canvas元素交互的接口</li>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="WebGPU：解锁网页GPU计算与图形新纪元"><a href="#WebGPU：解锁网页GPU计算与图形新纪元" class="headerlink" title="WebGPU：解锁网页GPU计算与图形新纪元"></a>WebGPU：解锁网页GPU计算与图形新纪元</h1><p>在WWDC技术分享中，Safari团队工程师Mike详细介绍了WebGPU这一革命性技术，它为网页开发者提供了安全访问GPU设备的全新方式，不仅能够实现高性能图形渲染，还能进行通用GPU计算。</p>
+<h2 id="WebGPU技术概览"><a href="#WebGPU技术概览" class="headerlink" title="WebGPU技术概览"></a>WebGPU技术概览</h2><p>WebGPU作为WebGL的继任者，在3D图形领域实现了全面超越，具备更高性能和更强灵活性。值得注意的是，WebGPU目前是唯一能在浏览器中直接运行通用GPU计算的解决方案。其API设计与苹果Metal框架高度相似，在Mac、iPhone、iPad和Vision Pro等支持Metal的平台上都能完美运行。</p>
+<p>WebGPU的跨平台特性使其成为网页图形处理的理想选择。开发者可以直接使用WebGPU API，也可以借助threeJS等图形库来享受WebGPU带来的性能优势。一个典型的案例是实时渲染的3D水母动画，在Safari中展现出流畅的视觉效果。</p>
+<h2 id="WebGPU-API架构解析"><a href="#WebGPU-API架构解析" class="headerlink" title="WebGPU API架构解析"></a>WebGPU API架构解析</h2><p>WebGPU的图形管线可以分为几个关键阶段：内容加载、WebKit预处理、Metal资源创建和GPU硬件执行。在这个过程中，WebGPU通过Metal生成三类核心资源：</p>
+<ul>
+<li><strong>缓冲区(buffers)</strong>：存储各类数据</li>
+<li><strong>纹理(textures)</strong>：处理图像数据</li>
+<li><strong>采样器(samplers)</strong>：控制纹理采样方式</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建WebGPU设备的典型流程</span></span><br><span class="line"><span class="keyword">const</span> adapter = <span class="keyword">await</span> navigator.<span class="property">gpu</span>.<span class="title function_">requestAdapter</span>();</span><br><span class="line"><span class="keyword">const</span> device = <span class="keyword">await</span> adapter?.<span class="title function_">requestDevice</span>();</span><br><span class="line"><span class="keyword">const</span> context = canvas.<span class="title function_">getContext</span>(<span class="string">&#x27;webgpu&#x27;</span>);</span><br><span class="line">context.<span class="title function_">configure</span>(&#123; device, format, alphaMode &#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h3><p>WebGPU支持两种主要资源类型：</p>
+<p>这些资源被组织为GPU绑定组，底层实现则通过Metal的参数缓冲区完成。WebGPU程序由代码字符串编译而来，分为三种类型：</p>
 <ol>
-<li><strong>GPUBuffer</strong>：灵活的内存块，可存储各种数据</li>
-<li><strong>GPUTexture</strong>：专为图像处理优化的内存结构</li>
+<li>计算程序(compute)</li>
+<li>顶点程序(vertex)</li>
+<li>片段程序(fragment)</li>
 </ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建缓冲区示例</span></span><br><span class="line"><span class="keyword">const</span> buffer = device.<span class="title function_">createBuffer</span>(&#123;</span><br><span class="line">  <span class="attr">size</span>: <span class="number">1024</span>,</span><br><span class="line">  <span class="attr">usage</span>: <span class="title class_">GPUBufferUsage</span>.<span class="property">VERTEX</span> | <span class="title class_">GPUBufferUsage</span>.<span class="property">COPY_DST</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建纹理示例</span></span><br><span class="line"><span class="keyword">const</span> texture = device.<span class="title function_">createTexture</span>(&#123;</span><br><span class="line">  <span class="attr">size</span>: &#123; <span class="attr">width</span>: <span class="number">512</span>, <span class="attr">height</span>: <span class="number">512</span> &#125;,</span><br><span class="line">  <span class="attr">format</span>: <span class="string">&#x27;rgba8unorm&#x27;</span>,</span><br><span class="line">  <span class="attr">usage</span>: <span class="title class_">GPUTextureUsage</span>.<span class="property">TEXTURE_BINDING</span> | <span class="title class_">GPUTextureUsage</span>.<span class="property">COPY_DST</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="WGSL着色语言"><a href="#WGSL着色语言" class="headerlink" title="WGSL着色语言"></a>WGSL着色语言</h2><p>WGSL(WebGPU Shading Language)是专为Web设计的着色语言，具有以下特点：</p>
-<h3 id="程序类型"><a href="#程序类型" class="headerlink" title="程序类型"></a>程序类型</h3><ol>
-<li><strong>顶点着色器</strong>：处理几何体位置</li>
-<li><strong>片段着色器</strong>：计算像素颜色</li>
-<li><strong>计算着色器</strong>：执行通用GPU计算</li>
+<p>WebGPU API采用扁平化设计，主要接口包括：</p>
+<ul>
+<li>GPU和GPU适配器接口</li>
+<li>GPUCanvasContext（与Canvas配合使用）</li>
+<li>GPUDevice（API主要入口）</li>
+</ul>
+<p>这些接口可以简化为五大类：</p>
+<ul>
+<li>资源类（纹理、缓冲区、采样器）</li>
+<li>编码器（操作资源）</li>
+<li>管线（指导资源使用）</li>
+<li>绑定组（资源分组关联）</li>
+<li>着色器模块（GPU计算指令）</li>
+</ul>
+<h2 id="实践WebGPU开发"><a href="#实践WebGPU开发" class="headerlink" title="实践WebGPU开发"></a>实践WebGPU开发</h2><p>创建基本的WebGPU应用需要经历几个关键步骤：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建GPUDevice并配置GPUCanvasContext</span></span><br><span class="line">const canvas <span class="operator">=</span> document.querySelector(&#x27;canvas&#x27;);</span><br><span class="line">const adapter <span class="operator">=</span> <span class="keyword">await</span> navigator.gpu.requestAdapter();</span><br><span class="line">const f16Supported <span class="operator">=</span> adapter<span class="operator">?</span>.features.has(&#x27;shader<span class="operator">-</span>f16&#x27;);</span><br><span class="line">const device <span class="operator">=</span> <span class="keyword">await</span> adapter<span class="operator">?</span>.requestDevice(</span><br><span class="line">  requiredFeatures: f16Supported <span class="operator">?</span> [&#x27;shader<span class="operator">-</span>f16&#x27;] : []</span><br><span class="line">);</span><br><span class="line">const context <span class="operator">=</span> canvas.getContext(&#x27;webgpu&#x27;);</span><br><span class="line">context.configure(&#123; device, format, alphaMode &#125;);</span><br></pre></td></tr></table></figure>
+<p>这段代码展示了如何初始化WebGPU环境。值得注意的是，WebGPU支持shader-f16等扩展功能，能够使用半精度浮点数来提升性能并降低内存占用。</p>
+<p>创建资源方面，WebGPU提供了灵活的缓冲区和纹理系统。缓冲区能够存储各种数据类型，而纹理则专门处理图像数据：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建缓冲区示例</span></span><br><span class="line">device.createBuffer(&#123;</span><br><span class="line">  size: bufferSize,</span><br><span class="line">  usage: <span class="type">GPUBufferUsage</span>.<span class="type">VERTEX</span> <span class="operator">|</span> <span class="type">GPUBufferUsage</span>.<span class="type">COPY_DST</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建纹理示例</span></span><br><span class="line">device.createTexture(&#123;</span><br><span class="line">  size: [image.width, image.height],</span><br><span class="line">  format: &#x27;rgba8unorm&#x27;,</span><br><span class="line">  usage: <span class="type">GPUTextureUsage</span>.<span class="type">TEXTURE_BINDING</span> <span class="operator">|</span> <span class="type">GPUTextureUsage</span>.<span class="type">COPY_DST</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="WGSL着色语言详解"><a href="#WGSL着色语言详解" class="headerlink" title="WGSL着色语言详解"></a>WGSL着色语言详解</h2><p>WebGPU采用WGSL(WebGPU Shading Language)作为着色语言，这种语言专为网页安全设计，支持三类程序：</p>
+<ol>
+<li><strong>顶点程序</strong>：处理几何体位置计算</li>
+<li><strong>片段程序</strong>：计算像素颜色和深度</li>
+<li><strong>计算程序</strong>：执行通用GPU计算</li>
 </ol>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 计算着色器示例</span></span><br><span class="line">@<span class="title function_ invoke__">group</span>(<span class="number">0</span>) @<span class="title function_ invoke__">binding</span>(<span class="number">0</span>) var&lt;storage, read&gt; input: array&lt;<span class="type">f32</span>&gt;;</span><br><span class="line">@<span class="title function_ invoke__">group</span>(<span class="number">0</span>) @<span class="title function_ invoke__">binding</span>(<span class="number">1</span>) var&lt;storage, read_write&gt; output: array&lt;<span class="type">f32</span>&gt;;</span><br><span class="line"></span><br><span class="line">@compute @<span class="title function_ invoke__">workgroup_size</span>(<span class="number">64</span>)</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>(@<span class="title function_ invoke__">builtin</span>(global_invocation_id) id: vec3&lt;<span class="type">u32</span>&gt;) &#123;</span><br><span class="line">  output[id.x] = input[id.x] * <span class="number">2.0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="性能优化技巧"><a href="#性能优化技巧" class="headerlink" title="性能优化技巧"></a>性能优化技巧</h2><h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><ol>
-<li><strong>使用半精度浮点(f16)</strong>：减少内存占用</li>
-<li><strong>避免频繁更新缓冲区</strong>：特别是索引/间接缓冲区</li>
-<li><strong>优先使用只读访问</strong>：除非必须写入</li>
+<p>计算着色器是WebGPU独有的强大功能，能够进行物理模拟等复杂计算，这是WebGL无法实现的。计算程序需要定义工作组尺寸(workgroup size)，并使用global_invocation_id等内置变量。</p>
+<h2 id="性能优化关键策略"><a href="#性能优化关键策略" class="headerlink" title="性能优化关键策略"></a>性能优化关键策略</h2><p>在苹果平台上优化WebGPU性能需要注意几个关键点：</p>
+<ol>
+<li><strong>内存管理</strong>：使用半精度浮点数(f16)可以显著降低内存占用。在iOS和visionOS上，数据压缩格式也能有效避免内存问题。</li>
 </ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启用f16扩展</span></span><br><span class="line"><span class="keyword">const</span> device = <span class="keyword">await</span> adapter.<span class="title function_">requestDevice</span>(&#123;</span><br><span class="line">  <span class="attr">requiredFeatures</span>: [<span class="string">&#x27;shader-f16&#x27;</span>]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h3 id="命令优化"><a href="#命令优化" class="headerlink" title="命令优化"></a>命令优化</h3><ol>
-<li><strong>使用渲染包(render bundles)</strong>：复用编码命令</li>
-<li><strong>合并通道</strong>：减少Metal对象数量</li>
-<li><strong>动态偏移绑定组</strong>：共享布局降低资源消耗</li>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启用f16示例</span></span><br><span class="line">const device <span class="operator">=</span> <span class="keyword">await</span> adapter<span class="operator">?</span>.requestDevice(</span><br><span class="line">  requiredFeatures: [&#x27;shader<span class="operator">-</span>f16&#x27;]</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p><strong>命令复用</strong>：使用渲染包(render bundles)可以避免重复验证，只需编码一次命令即可多次执行。</p>
+</li>
+<li><p><strong>资源精简</strong>：尽量减少命令缓冲区、渲染/计算通道、绑定组的数量。动态偏移技术可以帮助减少绑定组的创建。</p>
+</li>
 </ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建渲染包示例</span></span><br><span class="line"><span class="keyword">const</span> bundleEncoder = device.<span class="title function_">createRenderBundleEncoder</span>(&#123;</span><br><span class="line">  <span class="attr">colorFormats</span>: [<span class="string">&#x27;rgba8unorm&#x27;</span>]</span><br><span class="line">&#125;);</span><br><span class="line">bundleEncoder.<span class="title function_">draw</span>(<span class="number">3</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">const</span> renderBundle = bundleEncoder.<span class="title function_">finish</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 后续帧中复用</span></span><br><span class="line">passEncoder.<span class="title function_">executeBundles</span>([renderBundle]);</span><br></pre></td></tr></table></figure>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>WebGPU为网页带来了前所未有的GPU计算能力，使开发者能够创建高性能的图形和计算应用。通过合理使用WGSL语言和遵循性能优化准则，你的应用可以在所有支持WebGPU的平台上获得最佳表现。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/231">了解适用于SwiftUI的WebKit</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari浏览器和WebKit的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10632">为Apple芯片Mac优化Metal性能</a></li>
+<p>WebGPU为网页带来了前所未有的GPU计算能力，开发者现在可以在网页上实现以往需要原生应用才能完成的高性能计算和图形渲染。随着WebGPU的普及，网页应用的性能边界将被重新定义。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>开发者可以通过以下资源深入了解WebGPU：</p>
+<p>相关视频：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/231">了解适用于 SwiftUI 的 WebKit</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari 浏览器和 WebKit 的新功能</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10632">为 Apple 芯片 Mac 优化 Metal 性能</a></li>
 <li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10602">使用Metal技术驾驭Apple图形处理器</a></li>
 </ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
+<p>文档：</p>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/metalperformanceshaders">Metal Performance Shaders</a></li>
 <li><a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers.js/index">Transformers.js - Huggingface</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.w3.org/TR/webgpu/">WebGPU - W3C</a></li>
-<li><a target="_blank" rel="noopener" href="https://webgpu.github.io/webgpu-samples/">WebGPU Samples - github.io</a><blockquote>
-<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
-</blockquote>
-</li>
+<li><a target="_blank" rel="noopener" href="https://webgpu.github.io/webgpu-samples/">WebGPU Samples - github.io</a></li>
 </ul>
 
       
@@ -402,8 +424,8 @@ var _hmt = _hmt || [];
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_231/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">了解适用于 SwiftUI 的 WebKit</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_241/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">StoreKit 和 App 内购买项目的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 app store server api、app store 服务器通知以及 app store server 资源库如何帮助你直接在服务器上管理顾客购买数据，并提供卓越的 app 内购买项目体验。我们将介绍 appaccounttoken 和签名流程的最新更新、签名交易和续订信息的新字段，以及一些全新 api。然后，我们将展示如何在服务器上生成促销优惠签名，以及如何使用 send cons">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9939/9939_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:28:13.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:28:13.650Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.380Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_249/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:28:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,56 +231,53 @@ var _hmt = _hmt || [];
       
         <p>了解 app store server api、app store 服务器通知以及 app store server 资源库如何帮助你直接在服务器上管理顾客购买数据，并提供卓越的 app 内购买项目体验。我们将介绍 appaccounttoken 和签名流程的最新更新、签名交易和续订信息的新字段，以及一些全新 api。然后，我们将展示如何在服务器上生成促销优惠签名，以及如何使用 send consumption information 端点。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9939/9939_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/249/">视频地址</a></p>
-<h1 id="掌握App-Store-Server-API：优化应用内购管理新功能"><a href="#掌握App-Store-Server-API：优化应用内购管理新功能" class="headerlink" title="掌握App Store Server API：优化应用内购管理新功能"></a>掌握App Store Server API：优化应用内购管理新功能</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在移动应用生态中，<strong>App内购项目</strong>的高效管理直接影响用户体验和业务收入。苹果推出的<strong>App Store Server API</strong>、服务器通知及资源库，为开发者提供了直接在服务器端管理用户购买数据的强大工具。本文将解析最新功能更新，包括<code>appAccountToken</code>优化、签名流程改进，以及如何利用新API简化促销优惠签名生成和消费数据上报。  </p>
-<hr>
-<h2 id="核心功能更新"><a href="#核心功能更新" class="headerlink" title="核心功能更新"></a>核心功能更新</h2><h3 id="1-强化交易标识管理"><a href="#1-强化交易标识管理" class="headerlink" title="1. 强化交易标识管理"></a>1. 强化交易标识管理</h3><p><strong>JWSTransaction</strong>数据结构现包含关键改进：  </p>
-<ul>
-<li><strong>新增<code>offerPeriod</code>字段</strong>：采用ISO 8601持续时间格式，明确标识兑换优惠的有效期（如订阅优惠的适用周期）。  </li>
-<li><strong>交易元数据增强</strong>：除传统字段（如<code>transactionId</code>、产品价格和货币）外，现支持更详细的优惠信息：  <pre><code class="json">&#123;
-  <span class="attr">"offerType"</span>: <span class="string">"促销类型"</span>,
-  <span class="attr">"offerIdentifier"</span>: <span class="string">"优惠ID"</span>,
-  <span class="attr">"offerDiscountType"</span>: <span class="string">"折扣类别"</span>,
-  <span class="attr">"offerPeriod"</span>: <span class="string">"P1M"</span> <span class="comment">// 示例：1个月有效期</span>
-&#125;
-</code></pre>
-<em>适用场景</em>：准确追踪用户优惠使用状态，防止服务交付误差。  </li>
-</ul>
-<h3 id="2-简化的签名请求流程"><a href="#2-简化的签名请求流程" class="headerlink" title="2. 简化的签名请求流程"></a>2. 简化的签名请求流程</h3><p>服务器端生成请求签名时，新版API提供：  </p>
-<ul>
-<li><strong>自动化签名验证工具</strong>：通过<strong>App Store Server Library</strong>快速验证<code>JWSTransaction</code>和<code>JWSRenewalInfo</code>的完整性。  </li>
-<li><strong>字段级签名覆盖</strong>：新增订阅续订状态的签名字段，确保关键数据（如续订日期）的不可篡改性。  </li>
-</ul>
-<hr>
-<h2 id="实践应用：促销优惠与退款决策"><a href="#实践应用：促销优惠与退款决策" class="headerlink" title="实践应用：促销优惠与退款决策"></a>实践应用：促销优惠与退款决策</h2><h3 id="生成促销优惠签名"><a href="#生成促销优惠签名" class="headerlink" title="生成促销优惠签名"></a>生成促销优惠签名</h3><p>通过服务器API生成促销签名（如限时折扣）的步骤：  </p>
-<ol>
-<li><strong>调用<code>/generatePromotionSignature</code>端点</strong>，传递用户账户ID和优惠参数。  </li>
-<li><strong>返回JWS格式签名</strong>，供客户端验证优惠有效性。  </li>
-</ol>
-<p><em>优势</em>：避免客户端篡改风险，提升促销活动安全性。  </p>
-<h3 id="参与退款决策流程"><a href="#参与退款决策流程" class="headerlink" title="参与退款决策流程"></a>参与退款决策流程</h3><p>使用<strong>Send Consumption Information</strong>端点上报用户消费数据：  </p>
-<ul>
-<li><strong>关键字段</strong>：<code>consumptionStatus</code>（使用状态）、<code>refundPreference</code>（退款倾向）。  </li>
-<li><strong>影响机制</strong>：帮助App Store基于实际使用情况评估退款请求合理性。  </li>
-</ul>
-<hr>
-<h2 id="总结与下一步"><a href="#总结与下一步" class="headerlink" title="总结与下一步"></a>总结与下一步</h2><p>本次更新显著优化了<strong>交易关联准确性</strong>、<strong>签名安全效率</strong>和<strong>退款决策协同性</strong>。建议开发者：  </p>
-<ol>
-<li>集成<strong>App Store Server Library</strong>以快速适配新功能。  </li>
-<li>查阅官方文档，深入探索API细节点。  </li>
-</ol>
-<hr>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/241">StoreKit与应用内购新功能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10062">App Store Server API详解</a>  </li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/in-app-purchase/advanced-commerce-api/">高级商务API</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI">App Store Server API</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI/simplifying-your-implementation-by-using-the-app-store-server-library">简化实现指南</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="App-内购买项目的-App-Store-服务器-API-深度解析"><a href="#App-内购买项目的-App-Store-服务器-API-深度解析" class="headerlink" title="App 内购买项目的 App Store 服务器 API 深度解析"></a>App 内购买项目的 App Store 服务器 API 深度解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>每年 WWDC 都为我们带来 Apple 生态系统中各类技术的更新与改进。在 2025 年的 WWDC 上，App Store 服务器团队展示了关于 App 内购买项目 API 的一系列重要更新。这些改进将帮助开发者更高效地管理应用内购买，优化服务器端流程，并提升用户体验。</p>
+<h2 id="核心职责概述"><a href="#核心职责概述" class="headerlink" title="核心职责概述"></a>核心职责概述</h2><p>应用服务器在 App 内购买生态系统中扮演着关键角色，主要有三大核心职责：</p>
+<ol>
+<li><strong>管理 App 内购买项目</strong>：包括将交易数据与客户账户关联，确保应用能够无缝提供内容和服务。</li>
+<li><strong>签名请求</strong>：生成签名以授权服务器向 App Store 发起的请求。</li>
+<li><strong>参与退款决策流程</strong>：通过分享消费数据帮助 App Store 做出明智的退款决策。</li>
+</ol>
+<h2 id="管理-App-内购买项目"><a href="#管理-App-内购买项目" class="headerlink" title="管理 App 内购买项目"></a>管理 App 内购买项目</h2><h3 id="客户账户关联"><a href="#客户账户关联" class="headerlink" title="客户账户关联"></a>客户账户关联</h3><p>有效处理客户账户是管理 App 内购买项目的首要任务。开发者通常会在系统中为每个客户分配唯一的账户 ID，从而在其账户与 App Store 交易之间建立明确关联。这种关联对于提供正确内容或个性化用户体验至关重要。</p>
+<h3 id="数据结构解析"><a href="#数据结构解析" class="headerlink" title="数据结构解析"></a>数据结构解析</h3><p>App Store 通过三种关键数据结构提供 App 内购买数据：</p>
+<ol>
+<li><strong>AppTransaction</strong>：包含应用级别的交易信息</li>
+<li><strong>JWSTransaction</strong>：代表已签名的交易对象</li>
+<li><strong>JWSRenewalInfo</strong>：包含订阅续订相关信息</li>
+</ol>
+<p>其中，<strong>JWSTransaction</strong> 是处理单个购买的核心数据结构。当客户完成 App 内购买时，App Store 会提供已签名的交易对象，服务器端可以使用 App Store 服务器库对其进行验证和解码。</p>
+<h3 id="JWSTransaction-字段解析"><a href="#JWSTransaction-字段解析" class="headerlink" title="JWSTransaction 字段解析"></a>JWSTransaction 字段解析</h3><p>解码后的 signedTransactionInfo 包含以下重要信息：</p>
+<p><strong>基础信息</strong>：</p>
+<ul>
+<li>应用相关信息</li>
+<li>App 内产品类型</li>
 </ul>
+<p><strong>购买元数据</strong>：</p>
+<ul>
+<li>购买数量</li>
+<li>价格信息</li>
+<li>货币类型</li>
+</ul>
+<p><strong>优惠信息</strong>（如果客户兑换了优惠）：</p>
+<ul>
+<li>offerType：优惠类型</li>
+<li>offerIdentifier：优惠标识符</li>
+<li>offerDiscountType：优惠折扣类型</li>
+</ul>
+<p><strong>新增字段</strong>：</p>
+<ul>
+<li>offerPeriod：采用 ISO 8601 持续时间格式表示兑换优惠的有效期（该字段也存在于 JWSRenewalInfo 中）</li>
+</ul>
+<p><strong>交易标识符</strong>：</p>
+<ul>
+<li>transactionId：交易的唯一标识符，适用于 App 内购买、恢复或订阅续订</li>
+</ul>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="视频资源"><a href="#视频资源" class="headerlink" title="视频资源"></a>视频资源</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/241">StoreKit 和 App 内购买项目的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10062">探索适用于 App 内购买项目的 App Store Server API</a></p>
+<h3 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/in-app-purchase/advanced-commerce-api/">高级商业 API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI">App Store 服务器 API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/appstoreservernotifications">App Store 服务器通知</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI/Set-App-Account-Token">设置应用账户令牌</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI/simplifying-your-implementation-by-using-the-app-store-server-library">使用 App Store 服务器库简化实现</a><br><a target="_blank" rel="noopener" href="http://feedbackassistant.apple.com">提交反馈</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本次 WWDC 介绍的 App Store 服务器 API 更新为开发者提供了更强大的工具来管理应用内购买。通过优化交易标识符、简化签名流程以及增强退款决策参与机制，开发者将能够构建更加可靠和高效的应用内购买系统。建议开发者仔细研究相关文档和视频资源，充分利用这些新特性来提升用户体验和业务运营效率。</p>
 
       
 
@@ -403,18 +400,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_231/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_241/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          了解适用于 SwiftUI 的 WebKit
+          StoreKit 和 App 内购买项目的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_322/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">使用 iOS 和 iPadOS 上的 HealthKit 跟踪体能训练</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_252/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用“App 分析”优化盈利策略</div>
       <i class="icon-circle-right"></i>
     </a>
   

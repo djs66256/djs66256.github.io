@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何为你的 visionos app 创建高级交互。我们将探索如何设计引人入胜的自定悬停效果和动画，如何避免常见错误，如何充分利用 look to scroll 等交互方式，以及如何使用持久化效果来构建直观的媒体控制项。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10053/10053_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:45:30.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:45:30.072Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.602Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_303/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:45:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,61 +226,64 @@ var _hmt = _hmt || [];
       
         <p>了解如何为你的 visionos app 创建高级交互。我们将探索如何设计引人入胜的自定悬停效果和动画，如何避免常见错误，如何充分利用 look to scroll 等交互方式，以及如何使用持久化效果来构建直观的媒体控制项。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10053/10053_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/303/">视频地址</a></p>
-<h1 id="为-visionOS-设计自然流畅的悬停交互体验"><a href="#为-visionOS-设计自然流畅的悬停交互体验" class="headerlink" title="为 visionOS 设计自然流畅的悬停交互体验"></a>为 visionOS 设计自然流畅的悬停交互体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在 visionOS 平台中，悬停交互通过人眼注视实现了一种近乎意念控制的全新用户体验。作为设计师与开发者，理解如何设计出色的悬停交互至关重要。本文将深入探讨 visionOS 悬停交互的设计原理、实现方法及最佳实践。</p>
-<h2 id="基础设计原则"><a href="#基础设计原则" class="headerlink" title="基础设计原则"></a>基础设计原则</h2><p>visionOS 的交互基于眼动追踪和手势配合，遵循以下核心原则：</p>
-<ol>
-<li><strong>界面布局</strong>：将核心内容置于用户正前方，便于查看和操作</li>
-<li><strong>形状优化</strong>：优先采用圆形、胶囊形或圆角矩形等柔和形状，更容易吸引视线聚焦</li>
-<li><strong>尺寸规范</strong>：确保交互元素保留至少60点空间（约2.5度视角）</li>
-<li><strong>视觉反馈</strong>：所有交互元素都应应用高光效果，自定义组件需手动添加匹配形状的高光</li>
-</ol>
-<h2 id="自定义悬停效果设计"><a href="#自定义悬停效果设计" class="headerlink" title="自定义悬停效果设计"></a>自定义悬停效果设计</h2><p>visionOS 允许开发者创建三种类型的自定义悬停动画：</p>
-<ol>
-<li><strong>即时动画</strong>：注视瞬间触发，适合显示情境化信息</li>
-<li><strong>延迟动画</strong>：短时延迟后显示，平衡响应速度与稳定性</li>
-<li><strong>渐进动画</strong>：结合缓入和弹性效果，提供流畅的过渡体验</li>
-</ol>
-<p><strong>设计最佳实践</strong>：</p>
-<ul>
-<li>保留视觉锚点维持上下文</li>
-<li>确保效果源自可见元素</li>
-<li>保持效果精炼微妙</li>
-<li>避免意外动效干扰用户</li>
-<li>必须进行实机测试验证</li>
-</ul>
-<h2 id="注视滚动功能"><a href="#注视滚动功能" class="headerlink" title="注视滚动功能"></a>注视滚动功能</h2><p>注视滚动让用户仅用视线即可控制内容滚动，特别适合：</p>
-<ul>
-<li>阅读浏览类视图</li>
-<li>应用主内容区</li>
-<li>保持一致性体验的场景</li>
-</ul>
-<p><strong>实现注意事项</strong>：</p>
-<ul>
-<li>确保滚动视图边界清晰</li>
-<li>维持标准滚动速率</li>
-<li>避免在设置类列表中使用</li>
-</ul>
-<h2 id="持久化控件设计"><a href="#持久化控件设计" class="headerlink" title="持久化控件设计"></a>持久化控件设计</h2><p>智能的控件显示逻辑可显著提升体验：</p>
-<ul>
-<li>标准视频播放器自动支持注视保持功能</li>
-<li>自定义控件需手动实现持久化行为</li>
-<li>适用于各种具有延时隐藏功能的界面</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>visionOS 的悬停交互为应用带来了全新的可能性。通过：</p>
-<ol>
-<li>精心设计的自定义悬停效果</li>
-<li>自然流畅的注视滚动功能</li>
-<li>智能的持久化控件行为</li>
-</ol>
-<p>开发者可以创建更加自然、直观的沉浸式体验。建议开发者大胆尝试不同方案，并通过实机测试不断优化交互细节。</p>
-<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><ul>
-<li>2023年”空间输入设计”专题演讲</li>
-<li>2024年相关专题演讲(实现技巧)</li>
-<li><a href="developer.apple.com">visionOS开发文档</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="为-visionOS-设计悬停交互：打造自然流畅的沉浸式体验"><a href="#为-visionOS-设计悬停交互：打造自然流畅的沉浸式体验" class="headerlink" title="为 visionOS 设计悬停交互：打造自然流畅的沉浸式体验"></a>为 visionOS 设计悬停交互：打造自然流畅的沉浸式体验</h1><p>在 visionOS 生态系统中，悬停交互扮演着至关重要的角色，它让用户能够通过视线控制应用界面元素。本文将深入解析 WWDC 分享中关于 visionOS 悬停交互设计的核心要点，帮助开发者理解如何打造更加自然流畅的沉浸式体验。</p>
+<h2 id="眼动输入的基础原理"><a href="#眼动输入的基础原理" class="headerlink" title="眼动输入的基础原理"></a>眼动输入的基础原理</h2><p>visionOS 的交互基础建立在眼动追踪与手势配合之上。系统遵循几个关键设计准则：</p>
+<ul>
+<li><strong>核心内容前置</strong>：应将主要交互内容放置在用户视野正前方，便于查看和操作</li>
+<li><strong>形状优化</strong>：优先采用圆形、药丸形或圆角矩形等弧形轮廓，它们比尖锐形状更易吸引视线聚焦</li>
+<li><strong>尺寸规范</strong>：精密交互元素至少保留60点空间（约2.5度视角大小，相当于一米距离外4.4厘米物体）</li>
+<li><strong>高亮反馈</strong>：所有交互元素都应应用高亮效果，标准组件自动实现，自定义组件需手动添加</li>
 </ul>
+<p>这些基础原则确保了visionOS应用能够提供一致且易用的交互体验。</p>
+<h2 id="自定义悬停效果设计"><a href="#自定义悬停效果设计" class="headerlink" title="自定义悬停效果设计"></a>自定义悬停效果设计</h2><p>标准高亮效果在多数场景表现良好，但开发者可以创建更具特色的<strong>自定义悬停效果</strong>。系统已广泛应用这种技术：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义悬停效果示例</span></span><br><span class="line"><span class="type">Button</span>(action: &#123;&#125;) &#123;</span><br><span class="line">    <span class="type">Text</span>(<span class="string">&quot;下载&quot;</span>)</span><br><span class="line">        .hoverEffect(.highlight) <span class="comment">// 标准高亮效果</span></span><br><span class="line">        .customHoverEffect &#123; isHovering <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">if</span> isHovering &#123;</span><br><span class="line">                <span class="comment">// 显示文件大小等附加信息</span></span><br><span class="line">                showFileSizeAnimation()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自定义效果主要有三种实现方式：</p>
+<ol>
+<li><strong>即时动画</strong>：视线接触视图立即触发，适合显示情境化补充信息</li>
+<li><strong>延迟动画</strong>：短暂延迟后显示，避免干扰快速视线移动</li>
+<li><strong>渐进动画</strong>：结合缓动曲线，先缓慢淡入再用弹性动画完成</li>
+</ol>
+<p>设计自定义效果时需注意：</p>
+<ul>
+<li>保持锚定元素位置稳定</li>
+<li>效果必须源自可见元素</li>
+<li>谨慎应用避免过度分散注意力</li>
+<li>保持效果精炼适度</li>
+<li>防止意外触发</li>
+</ul>
+<h2 id="视线滚动功能的实现"><a href="#视线滚动功能的实现" class="headerlink" title="视线滚动功能的实现"></a>视线滚动功能的实现</h2><p><strong>视线滚动</strong>是一项让用户仅用眼睛就能浏览内容的创新功能，在阅读类应用中尤其实用。实现该功能时需要考虑：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启用视线滚动示例</span></span><br><span class="line"><span class="type">ScrollView</span> &#123;</span><br><span class="line">    <span class="comment">// 内容区域</span></span><br><span class="line">&#125;</span><br><span class="line">.scrollHoverBehavior(.enabled) <span class="comment">// 启用视线滚动</span></span><br></pre></td></tr></table></figure>
+<p>关键设计准则：</p>
+<ul>
+<li>适合阅读/浏览为主的视图</li>
+<li>通常只用于应用核心内容区</li>
+<li>保持应用内部一致性</li>
+<li>滚动视图应尽量充满窗口</li>
+<li>避免在视差滚动或动画联动视图中使用</li>
+</ul>
+<p>优化后的视线滚动体验应让用户感觉内容自然跟随视线移动，而非刻意操控。</p>
+<h2 id="持久化控件的最佳实践"><a href="#持久化控件的最佳实践" class="headerlink" title="持久化控件的最佳实践"></a>持久化控件的最佳实践</h2><p><strong>持久化控件</strong>设计解决了媒体播放场景中的常见痛点：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 视频控件持久化示例</span></span><br><span class="line"><span class="type">VideoPlayer</span>(player: player)</span><br><span class="line">    .persistentMediaControls(<span class="literal">true</span>) <span class="comment">// 启用持久化</span></span><br></pre></td></tr></table></figure>
+<p>该特性适用于：</p>
+<ul>
+<li>标准视频播放器（自动获得）</li>
+<li>自定义视频控件（需手动启用）</li>
+<li>FaceTime通话界面</li>
+<li>正念应用控制面板</li>
+</ul>
+<p>设计原则是：当用户注视控件时保持显示，视线回到内容时再隐藏，实现无感的智能交互。</p>
+<h2 id="总结与资源"><a href="#总结与资源" class="headerlink" title="总结与资源"></a>总结与资源</h2><p>visionOS的悬停交互设计提供了丰富的可能性，从自定义动画效果到视线滚动，再到智能持久的控件显示，开发者可以根据应用场景灵活组合这些技术。实现时需注意：</p>
+<ul>
+<li>优先使用系统提供的标准组件和行为</li>
+<li>自定义效果需在真实设备上充分测试</li>
+<li>保持交互逻辑的一致性和可预测性</li>
+</ul>
+<p>进一步学习资源：</p>
+<p>[相关视频]<br>• Meet SwiftUI for visionOS<br>• Build spatial experiences with RealityKit<br>• Design for spatial user interfaces</p>
+<p>[文档]<br>• Human Interface Guidelines for visionOS<br>• SwiftUI documentation<br>• RealityKit framework reference</p>
 
       
 
@@ -383,18 +386,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_298/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_302/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          借助 MLX 在 Apple 芯片上探索大语言模型
+          打造丝滑的多画面播放体验
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_253/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">利用拍摄控件提升你的相机体验</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_305/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">针对 visionOS 优化你的自定环境</div>
       <i class="icon-circle-right"></i>
     </a>
   

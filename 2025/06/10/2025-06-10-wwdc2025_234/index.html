@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 networkextension 框架中提供的 api，这些 api 让你的 app 能够灵活地扩展系统的核心网络功能 — 例如实现网络内容过滤器、创建和管理 vpn 配置等。在 ios、ipados 和 macos 26 中，你现在可以构建更为强大的内容过滤器，让它根据整个 url (而不仅是主机名) 来做出流量决策，同时确保隐私和安全丝毫不受影响。我们将首先简要介绍 networkext">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9924/9924_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:48:34.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:48:34.029Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.610Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_234/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:48:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,103 +231,75 @@ var _hmt = _hmt || [];
       
         <p>了解 networkextension 框架中提供的 api，这些 api 让你的 app 能够灵活地扩展系统的核心网络功能 — 例如实现网络内容过滤器、创建和管理 vpn 配置等。在 ios、ipados 和 macos 26 中，你现在可以构建更为强大的内容过滤器，让它根据整个 url (而不仅是主机名) 来做出流量决策，同时确保隐私和安全丝毫不受影响。我们将首先简要介绍 networkextension 框架的一些主要用例，包括网络中继和 vpn。然后，我们将深入探讨这一全新的 url 过滤器 api 及其关键组件，包括 private information retrieval、privacy pass 等。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9924/9924_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/234/">视频地址</a></p>
-<h1 id="深入解析-NetworkExtension：网络流量过滤与隧道技术完全指南"><a href="#深入解析-NetworkExtension：网络流量过滤与隧道技术完全指南" class="headerlink" title="深入解析 NetworkExtension：网络流量过滤与隧道技术完全指南"></a>深入解析 NetworkExtension：网络流量过滤与隧道技术完全指南</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>NetworkExtension 是苹果平台强大的网络扩展框架，它允许开发者构建能够扩展系统核心网络功能的应用。无论是在 iOS、iPadOS 还是 macOS 上，NetworkExtension 都能为你的应用提供灵活的网络控制能力。本文将全面介绍 NetworkExtension 的主要功能，重点讲解最新 URL 过滤器 API 及其实现原理。</p>
-<h2 id="NetworkExtension-功能概览"><a href="#NetworkExtension-功能概览" class="headerlink" title="NetworkExtension 功能概览"></a>NetworkExtension 功能概览</h2><p>NetworkExtension 框架支持多种网络定制和扩展方式：</p>
-<h3 id="Wi-Fi-管理与热点"><a href="#Wi-Fi-管理与热点" class="headerlink" title="Wi-Fi 管理与热点"></a>Wi-Fi 管理与热点</h3><p>在 iOS 上，开发者可以使用 Wi-Fi 管理和热点 API 来：</p>
-<ul>
-<li>配置 Wi-Fi 设置</li>
-<li>与热点进行交互</li>
-<li>利用 iOS 26 新增的 NEHotspotHelper 扩展 API</li>
-</ul>
-<h3 id="本地推送-API"><a href="#本地推送-API" class="headerlink" title="本地推送 API"></a>本地推送 API</h3><p>适用于特殊网络环境（如邮轮或医院）的应用场景，支持：</p>
-<ul>
-<li>受限网络中的短信发送</li>
-<li>VoIP 通话等功能</li>
-</ul>
-<h3 id="DNS-配置与代理"><a href="#DNS-配置与代理" class="headerlink" title="DNS 配置与代理"></a>DNS 配置与代理</h3><p>构建安全应用来保护 DNS 流量：</p>
-<ul>
-<li>安装 DNS 配置</li>
-<li>使用内置加密 DNS 协议</li>
-<li>通过自有安全通道代理 DNS 流量</li>
-</ul>
-<h3 id="透明代理（仅-Mac）"><a href="#透明代理（仅-Mac）" class="headerlink" title="透明代理（仅 Mac）"></a>透明代理（仅 Mac）</h3><ul>
-<li>将特定网站流量重定向至云端安全服务</li>
-<li>进行认证授权处理</li>
-</ul>
-<h2 id="安全远程访问解决方案"><a href="#安全远程访问解决方案" class="headerlink" title="安全远程访问解决方案"></a>安全远程访问解决方案</h2><p>NetworkExtension 提供两种主要远程访问方案：</p>
-<h3 id="网络中继"><a href="#网络中继" class="headerlink" title="网络中继"></a>网络中继</h3><p>适合隧道传输 TCP 或 UDP 流量以访问特定应用：</p>
-<ul>
-<li>使用 MASQUE 协议提供安全代理</li>
-<li>性能优化且易于集成到现代云环境</li>
-<li>平台内置支持，无需自建扩展</li>
-</ul>
-<h3 id="基于-IP-的-VPN"><a href="#基于-IP-的-VPN" class="headerlink" title="基于 IP 的 VPN"></a>基于 IP 的 VPN</h3><p>适合需要隧道传输 IP 流量的场景：</p>
-<ul>
-<li>企业网络扩展</li>
-<li>个人隐私保护</li>
-<li>网络安全政策严格的受监管机构</li>
-</ul>
-<p>创建 IP 型 VPN 隧道时，开发者可选择：</p>
-<ol>
-<li>使用 NEVPNManager API 内置协议（IKEv2 或 IPsec）</li>
-<li>使用 NEPacketTunnelProvider 实现自定义隧道协议</li>
-</ol>
-<h2 id="内容过滤技术"><a href="#内容过滤技术" class="headerlink" title="内容过滤技术"></a>内容过滤技术</h2><p>NetworkExtension 提供强大的内容过滤 API，主要用途包括：</p>
-<ul>
-<li>个人防火墙</li>
-<li>企业流量监控应用</li>
-<li>家长控制应用</li>
-</ul>
-<h3 id="传统内容过滤器"><a href="#传统内容过滤器" class="headerlink" title="传统内容过滤器"></a>传统内容过滤器</h3><p>基于流量级信息（如 HTTPS 请求的主机和端口）做决策</p>
-<h3 id="新型-URL-过滤器（iOS-26-）"><a href="#新型-URL-过滤器（iOS-26-）" class="headerlink" title="新型 URL 过滤器（iOS 26+）"></a>新型 URL 过滤器（iOS 26+）</h3><p>基于完整 URL 进行系统级 HTTP/HTTPS 请求过滤</p>
-<h2 id="URL-过滤器工作原理"><a href="#URL-过滤器工作原理" class="headerlink" title="URL 过滤器工作原理"></a>URL 过滤器工作原理</h2><p>URL 过滤器采用创新隐私保护技术，确保：</p>
-<ul>
-<li>应用无法获取 URL 内容</li>
-<li>所有后端服务器查询均匿名化</li>
-<li>整个后端链都无法访问内容与身份信息</li>
-</ul>
-<h3 id="核心技术组件"><a href="#核心技术组件" class="headerlink" title="核心技术组件"></a>核心技术组件</h3><ol>
-<li><strong>Bloom 过滤器</strong>：快速预过滤设备端数据</li>
-<li><strong>私有信息检索（PIR）</strong>：加密查询服务器数据库</li>
-<li><strong>Privacy Pass</strong>：服务器匿名认证</li>
-<li><strong>Oblivious HTTP 中继</strong>：隐私保护代理</li>
-</ol>
-<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><ol>
-<li>浏览器发起 URL 请求</li>
-<li>系统用 Bloom 过滤器检查</li>
-<li>阳性匹配时系统向 PIR 服务器发送加密查询</li>
-<li>服务器执行加密数据库查询并返回结果</li>
-<li>系统解密响应并决定是否拒绝请求</li>
-</ol>
-<h2 id="实现-URL-过滤器"><a href="#实现-URL-过滤器" class="headerlink" title="实现 URL 过滤器"></a>实现 URL 过滤器</h2><p>开发者可以通过以下步骤创建 URL 过滤器：</p>
-<h3 id="1-设置-PIR-服务器"><a href="#1-设置-PIR-服务器" class="headerlink" title="1. 设置 PIR 服务器"></a>1. 设置 PIR 服务器</h3><p>使用示例代码快速搭建服务器</p>
-<h3 id="2-构建-Bloom-过滤器"><a href="#2-构建-Bloom-过滤器" class="headerlink" title="2. 构建 Bloom 过滤器"></a>2. 构建 Bloom 过滤器</h3><p>根据数据集动态性决定交付方式：</p>
-<ul>
-<li>静态数据集：包含在应用包中</li>
-<li>动态数据集：从服务器定期更新</li>
-</ul>
-<h3 id="3-构建-URL-过滤器应用"><a href="#3-构建-URL-过滤器应用" class="headerlink" title="3. 构建 URL 过滤器应用"></a>3. 构建 URL 过滤器应用</h3><p>添加必要的权限和配置：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> NetworkExtension</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> manager <span class="operator">=</span> <span class="type">NEURLFilterManager</span>.shared</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> manager.loadFromPreferences()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> manager.setConfiguration(</span><br><span class="line">    pirServerURL: <span class="type">URL</span>(string:<span class="string">&quot;https://pir.example.com&quot;</span>)<span class="operator">!</span>,</span><br><span class="line">    pirPrivacyPassIssuerURL: <span class="type">URL</span>(string:<span class="string">&quot;https://privacypass.example.com&quot;</span>)<span class="operator">!</span>,</span><br><span class="line">    pirAuthenticationToken: <span class="string">&quot;1234&quot;</span>,</span><br><span class="line">    controlProviderBundleIdentifier: <span class="string">&quot;com.example.myURLFilter.extension&quot;</span>)</span><br><span class="line"></span><br><span class="line">manager.prefilterFetchInterval <span class="operator">=</span> <span class="number">86400</span> <span class="comment">// 每日获取一次</span></span><br><span class="line">manager.shouldFailClosed <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">manager.localizedDescription <span class="operator">=</span> <span class="string">&quot;Alice的URL过滤器&quot;</span></span><br><span class="line">manager.isEnabled <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> manager.saveToPreferences()</span><br></pre></td></tr></table></figure></p>
-<h3 id="4-企业级部署"><a href="#4-企业级部署" class="headerlink" title="4. 企业级部署"></a>4. 企业级部署</h3><p>通过 MDM 推送包含 URL 过滤器参数的配置描述文件</p>
-<h3 id="5-构建应用扩展"><a href="#5-构建应用扩展" class="headerlink" title="5. 构建应用扩展"></a>5. 构建应用扩展</h3><p>使用 Xcode 新模板实现 NEURLFilterControlProvider 协议</p>
-<h2 id="最佳实践建议"><a href="#最佳实践建议" class="headerlink" title="最佳实践建议"></a>最佳实践建议</h2><ul>
-<li>使用网络中继安全远程访问 TCP/UDP 流量</li>
-<li>用 NetworkExtension 构建 VPN 解决方案</li>
-<li>通过 URL 过滤器 API 创建内容过滤器</li>
-<li>避免使用 Packet Filter 或直接修改路由表</li>
-</ul>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/246">将隐私保护融入开发流程</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2019/714">适用于现代 Mac 的网络扩展</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/filtering-traffic-by-url">通过URL过滤流量</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/NEHotspotManager">NEHotspotManager</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension">Network Extension</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/NEURLFilterManager">NEURLFilterManager</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="利用-NetworkExtension-优化网络流量过滤与隧道技术"><a href="#利用-NetworkExtension-优化网络流量过滤与隧道技术" class="headerlink" title="利用 NetworkExtension 优化网络流量过滤与隧道技术"></a>利用 NetworkExtension 优化网络流量过滤与隧道技术</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>NetworkExtension 框架为开发者提供了一系列强大的 API，用于扩展和定制 Apple 平台的核心网络功能。在 iOS、iPadOS 和 macOS 26 中，该框架引入了全新的 URL 过滤器 API，使得开发者能够基于完整 URL 而不仅仅是主机名来进行流量过滤决策，同时确保了用户的隐私和安全。</p>
+<h2 id="NetworkExtension-框架简介"><a href="#NetworkExtension-框架简介" class="headerlink" title="NetworkExtension 框架简介"></a>NetworkExtension 框架简介</h2><p>NetworkExtension 是一个功能丰富的框架，允许开发者构建能够扩展和定制 Apple 平台网络能力的应用。该框架与整个网络堆栈紧密集成，包括 Network 框架、CFNetwork、WebKit 和 Sockets API，同时也与系统级组件如路由、流量策略和各类系统管理深度整合。</p>
+<h3 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h3><p>NetworkExtension 框架支持多种网络定制方式：</p>
+<ul>
+<li><strong>Wi-Fi 管理和热点 API</strong>（仅 iOS）：允许应用配置 Wi-Fi 设置并与 Wi-Fi 热点交互</li>
+<li><strong>本地推送 API</strong>：适用于无法访问 Apple 推送通知服务的网络环境</li>
+<li><strong>DNS 配置和代理 API</strong>：用于构建保护 DNS 流量免受攻击的安全应用</li>
+<li><strong>透明代理 API</strong>（仅 macOS）：可将特定网站流量重定向至云端安全服务</li>
+<li><strong>远程资源安全访问</strong>：通过隧道技术保护网络流量</li>
+<li><strong>内容过滤</strong>：实现对网络流量的监控和过滤</li>
 </ul>
+<h2 id="远程资源访问技术"><a href="#远程资源访问技术" class="headerlink" title="远程资源访问技术"></a>远程资源访问技术</h2><p>NetworkExtension 提供了两种主要的方法来实现安全的远程资源访问：</p>
+<h3 id="网络中继"><a href="#网络中继" class="headerlink" title="网络中继"></a>网络中继</h3><p>网络中继适合需要隧道传输 TCP 或 UDP 流量以访问特定应用的场景。MASQUE 协议提供了安全代理且性能优化，平台内置支持无需额外扩展。</p>
+<h3 id="基于-IP-的-VPN"><a href="#基于-IP-的-VPN" class="headerlink" title="基于 IP 的 VPN"></a>基于 IP 的 VPN</h3><p>IP VPN 适合企业将公司网络扩展至远程员工，或高安全要求的组织需要将所有管理设备流量通过企业网络传输。</p>
+<p>开发者可以通过以下方式创建 IP VPN 隧道：</p>
+<ul>
+<li>使用 NEVPNManager API 内置协议（IKEv2/IPsec）</li>
+<li>使用 NEPacketTunnelProvider 实现自定义隧道协议</li>
+</ul>
+<p><strong>重要注意事项</strong>：</p>
+<ul>
+<li>NetworkExtension 是构建 VPN 应用的唯一官方支持 API</li>
+<li>禁止使用 Packet Filter 或直接修改 Mac 路由表</li>
+<li>NEPacketTunnelProvider 仅应用于 IP 层流量隧道传输</li>
+</ul>
+<h2 id="内容过滤技术"><a href="#内容过滤技术" class="headerlink" title="内容过滤技术"></a>内容过滤技术</h2><p>NetworkExtension 的内容过滤 API 允许开发者检查设备流量进行监控或过滤决策。传统的内容过滤器存在以下局限：</p>
+<ul>
+<li>只能基于流量级信息（如主机和端口）做决策</li>
+<li>HTTPS 加密导致无法获取 URL 详细内容</li>
+<li>无法精准过滤特定资源</li>
+</ul>
+<h2 id="iOS-26-全新-URL-过滤器"><a href="#iOS-26-全新-URL-过滤器" class="headerlink" title="iOS 26 全新 URL 过滤器"></a>iOS 26 全新 URL 过滤器</h2><p>iOS 26 引入了全新的 URL 过滤器功能，允许基于完整 URL 进行内容过滤决策。该技术具有以下特点：</p>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li>家长控制应用屏蔽有害网站</li>
+<li>学校应用限制社交媒体/赌博等内容</li>
+<li>企业屏蔽与工作无关的内容</li>
+</ul>
+<h3 id="隐私保护设计"><a href="#隐私保护设计" class="headerlink" title="隐私保护设计"></a>隐私保护设计</h3><ul>
+<li>采用最先进加密技术</li>
+<li>URL 敏感信息不会泄露给应用</li>
+<li>后端服务器查询完全匿名化</li>
+<li>Apple 和服务器都无法获取内容与身份信息</li>
+</ul>
+<h3 id="技术实现四大支柱"><a href="#技术实现四大支柱" class="headerlink" title="技术实现四大支柱"></a>技术实现四大支柱</h3><ol>
+<li><strong>Bloom 过滤器</strong>：快速预过滤（可能假阳性但无假阴性）</li>
+<li><strong>私有信息检索 (PIR)</strong>：使用同态加密实现加密查询</li>
+<li><strong>隐私通行证 (Privacy Pass)</strong>：匿名认证机制</li>
+<li><strong>无感 HTTP 中继 (Oblivious HTTP Relay)</strong>：隐藏客户端 IP 地址</li>
+</ol>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>开发者可以通过以下步骤实现 URL 过滤器：</p>
+<ol>
+<li><strong>设置 PIR 服务器</strong></li>
+<li><strong>构建 Bloom 过滤器</strong></li>
+<li><strong>构建 URL 过滤应用</strong></li>
+<li><strong>构建应用扩展</strong></li>
+</ol>
+<p>示例代码：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> manager <span class="operator">=</span> <span class="type">NEURLFilterManager</span>.shared</span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> manager.loadFromPreferences()</span><br><span class="line"><span class="keyword">try</span> manager.setConfiguration(</span><br><span class="line">    pirServerURL: <span class="type">URL</span>(string:<span class="string">&quot;https://pir.example.com&quot;</span>)<span class="operator">!</span>,</span><br><span class="line">    pirPrivacyPassIssuerURL: <span class="type">URL</span>(string:<span class="string">&quot;https://privacypass.example.com&quot;</span>)<span class="operator">!</span>,</span><br><span class="line">    pirAuthenticationToken: <span class="string">&quot;1234&quot;</span>,</span><br><span class="line">    controlProviderBundleIdentifier: <span class="string">&quot;com.example.myURLFilter.extension&quot;</span>)</span><br><span class="line">manager.prefilterFetchInterval <span class="operator">=</span> <span class="number">86400</span> <span class="comment">// 每日更新</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>NetworkExtension 框架为开发者提供了强大的工具，使其能够：</p>
+<ul>
+<li>使用网络中继安全访问 TCP/UDP 流量</li>
+<li>构建完整的 VPN 解决方案</li>
+<li>通过 URL 过滤 API 创建强大的内容过滤器</li>
+</ul>
+<p>开发者可以立即查看相关示例和文档开始开发工作。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/246">将隐私保护融入开发流程</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2019/714">适用于现代 Mac 的网络扩展</a></p>
+<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/filtering-traffic-by-url">按 URL 过滤流量</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/NEHotspotManager">NEHotspotManager</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension">Network Extension</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/NEURLFilterManager">NEURLFilterManager</a><br><a target="_blank" rel="noopener" href="https://swiftpackageindex.com/apple/pir-service-example/main/documentation/pirservice">PIRService</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Technotes/tn3120-expected-use-cases-for-network-extension-packet-tunnel-providers">TN3120：网络扩展包隧道提供商的预期用例</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Technotes/tn3165-packet-filter-is-not-api">TN3165：包过滤器不是 API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/NEURLFilter/verdict(for:">verdict(for:)</a>)</p>
 
       
 
@@ -450,18 +422,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_319/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_226/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          在你的 App 中录制电影效果视频
+          分析并优化 App 的功耗
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_314/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">开始使用量子安全加密技术</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_237/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">空间网页的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

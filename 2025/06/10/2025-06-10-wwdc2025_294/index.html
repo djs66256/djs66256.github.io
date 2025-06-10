@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索用于通过 compositor services 打造沉浸式 app 的 metal 渲染的最新改进。了解如何通过添加悬停效果来突出展示 app 的交互式元素，以及如何通过动态渲染质量实现更高保真度的渲染。了解新的 progressive 沉浸样式。探索如何通过将 mac 中的 metal 内容直接渲染至 vision pro，来为 macos app 提供沉浸式体验。 要充分利用好本次讲座，">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9895/9895_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:37:14.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:37:14.942Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.105Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="macos">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_294/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:37:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,49 +228,35 @@ var _hmt = _hmt || [];
         <p>探索用于通过 compositor services 打造沉浸式 app 的 metal 渲染的最新改进。了解如何通过添加悬停效果来突出展示 app 的交互式元素，以及如何通过动态渲染质量实现更高保真度的渲染。了解新的 progressive 沉浸样式。探索如何通过将 mac 中的 metal 内容直接渲染至 vision pro，来为 macos app 提供沉浸式体验。</p>
 <p>要充分利用好本次讲座，请先观看 wwdc23 讲座“探索 metal 技术打造沉浸式 app”。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9895/9895_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/294/">视频地址</a></p>
-<h1 id="探索-Vision-Pro-的-Metal-渲染新功能：打造更沉浸的体验"><a href="#探索-Vision-Pro-的-Metal-渲染新功能：打造更沉浸的体验" class="headerlink" title="探索 Vision Pro 的 Metal 渲染新功能：打造更沉浸的体验"></a>探索 Vision Pro 的 Metal 渲染新功能：打造更沉浸的体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 Vision Pro 的推出，开发者们获得了在 visionOS 上创建沉浸式应用的新机遇。苹果在今年的开发者大会上宣布了一系列 Metal 渲染的新功能，这些改进将为用户带来更丰富、更交互的沉浸式体验。本文将详细介绍这些新特性，帮助开发者更好地利用它们。</p>
-<h2 id="新的渲染循环-API"><a href="#新的渲染循环-API" class="headerlink" title="新的渲染循环 API"></a>新的渲染循环 API</h2><p>Metal 沉浸式应用始于 SwiftUI，开发者需要创建包含 compositor 层的沉浸空间。今年的 Compositor Services 新增了返回数组的 <code>queryDrawables</code> 函数：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 场景渲染循环示例</span></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">Renderer</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">renderFrame</span>(<span class="params">with</span> <span class="params">scene</span>: <span class="type">MyScene</span>) &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> frame <span class="operator">=</span> layerRenderer.queryNextFrame() <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        </span><br><span class="line">        frame.startUpdate()</span><br><span class="line">        scene.performFrameIndependentUpdates()</span><br><span class="line">        frame.endUpdate()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> drawables <span class="operator">=</span> frame.queryDrawables()</span><br><span class="line">        <span class="keyword">guard</span> <span class="operator">!</span>drawables.isEmpty <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> timing <span class="operator">=</span> frame.predictTiming() <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        <span class="type">LayerRenderer</span>.<span class="type">Clock</span>().wait(until: timing.optimalInputTime)</span><br><span class="line">        frame.startSubmission()</span><br><span class="line">        scene.render(to: drawable)</span><br><span class="line">        frame.endSubmission()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>根据系统上下文，该数组可能包含 1-2 个 drawable，这为开发提供了更大的灵活性。</p>
-<h2 id="交互式悬停效果"><a href="#交互式悬停效果" class="headerlink" title="交互式悬停效果"></a>交互式悬停效果</h2><p>新增的悬停效果能让用户直观识别可交互对象。实现步骤包括：</p>
-<ol>
-<li>配置 layer renderer 使用 8 位像素格式的跟踪区域纹理</li>
-<li>注册交互对象时添加唯一标识符</li>
-<li>通过 .automatic 属性添加悬停效果</li>
-</ol>
-<p>使用多采样抗锯齿(MSAA)时需要特别注意跟踪区域纹理的处理方式。</p>
-<h2 id="动态渲染质量"><a href="#动态渲染质量" class="headerlink" title="动态渲染质量"></a>动态渲染质量</h2><p>开发者现在可以根据场景复杂度动态调整分辨率：</p>
-<ol>
-<li>指定应用适用的最大渲染质量</li>
-<li>运行时在设定范围内调整质量等级</li>
-</ol>
-<p>质量调整会影响纹理细节和性能，开发者应针对不同场景元素采用合适的质量设置。</p>
-<h2 id="渐进式沉浸模式"><a href="#渐进式沉浸模式" class="headerlink" title="渐进式沉浸模式"></a>渐进式沉浸模式</h2><p>新型渐进式沉浸模式允许用户通过 Digital Crown 控制沉浸度：</p>
-<ol>
-<li>仅支持 layered 布局</li>
-<li>配置 8 位模板格式(stencil8)</li>
-<li>添加 render context 绘制模板遮罩</li>
-</ol>
-<p>Xcode 模板已经包含渐进式沉浸的完整示例，开发者可以直接参考。</p>
-<h2 id="macOS-空间渲染"><a href="#macOS-空间渲染" class="headerlink" title="macOS 空间渲染"></a>macOS 空间渲染</h2><p>最新功能允许通过 Mac 向 Vision Pro 直接渲染/流式传输沉浸式内容：</p>
-<ol>
-<li>使用 RemoteImmersiveSpace 场景类型</li>
-<li>通过 remoteDeviceIdentifier 连接 ARKit 会话</li>
-<li>支持多种输入方式</li>
-</ol>
-<p>C/C++渲染引擎可以通过原生 C API 接入，为已有应用添加沉浸式功能提供了便利。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>这些 Metal 渲染新功能为开发者提供了更强大的工具，可以创建更具交互性、更沉浸的应用体验。无论是悬停效果、动态质量调整还是渐进式沉浸模式，都为应用带来了新的可能性。特别是 Mac 内容直接渲染至 Vision Pro 的能力，为高性能应用开发开辟了新途径。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/289">探索 visionOS 上的空间配件输入</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/317">visionOS 26 的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10092">在 visionOS 中使用透视功能渲染 Metal</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10089">探索 Metal 技术打造沉浸式 App</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/Optimizing-GPU-performance">Optimizing GPU performance</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="用于打造沉浸式-App-的-Metal-渲染新功能"><a href="#用于打造沉浸式-App-的-Metal-渲染新功能" class="headerlink" title="用于打造沉浸式 App 的 Metal 渲染新功能"></a>用于打造沉浸式 App 的 Metal 渲染新功能</h1><p>苹果在 WWDC 上展示了通过 Compositor Services 打造沉浸式应用的 Metal 渲染最新改进。这些新功能包括悬停效果、动态渲染质量和渐进式沉浸风格，为开发者提供了更丰富的工具来提升应用交互性和视觉效果。</p>
+<h2 id="新渲染循环-API"><a href="#新渲染循环-API" class="headerlink" title="新渲染循环 API"></a>新渲染循环 API</h2><p>Metal 沉浸式应用的渲染流程始于新的渲染循环 API。开发者需要创建包含合成器层的沉浸空间，该层提供用于渲染循环的层渲染器对象。今年的 Compositor Services 新增了返回数组的 queryDrawables 函数，根据系统上下文，该数组将包含 1 或 2 个 drawables。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 场景渲染循环</span></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">Renderer</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">renderFrame</span>(<span class="params">with</span> <span class="params">scene</span>: <span class="type">MyScene</span>) &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> frame <span class="operator">=</span> layerRenderer.queryNextFrame() <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        </span><br><span class="line">        frame.startUpdate()</span><br><span class="line">        scene.performFrameIndependentUpdates()</span><br><span class="line">        frame.endUpdate()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> drawables <span class="operator">=</span> frame.queryDrawables()</span><br><span class="line">        <span class="keyword">guard</span> <span class="operator">!</span>drawables.isEmpty <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> timing <span class="operator">=</span> frame.predictTiming() <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        <span class="type">LayerRenderer</span>.<span class="type">Clock</span>().wait(until: timing.optimalInputTime)</span><br><span class="line">        frame.startSubmission()</span><br><span class="line">        scene.render(to: drawable)</span><br><span class="line">        frame.endSubmission()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="悬停效果"><a href="#悬停效果" class="headerlink" title="悬停效果"></a>悬停效果</h2><p>新的悬停效果功能让用户能直观看到哪些对象可交互。系统会动态高亮用户注视对象，为应用和游戏添加更丰富的交互细节。</p>
+<p>开发者需要在层配置中设置追踪区域格式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 层配置</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyConfiguration</span>: <span class="title class_ inherited__">CompositorLayerConfiguration</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">makeConfiguration</span>(<span class="params">capabilities</span>: <span class="type">LayerRenderer</span>.<span class="type">Capabilities</span>,</span><br><span class="line">                           <span class="params">configuration</span>: <span class="keyword">inout</span> <span class="type">LayerRenderer</span>.<span class="type">Configuration</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> trackingAreasFormat: <span class="type">MTLPixelFormat</span> <span class="operator">=</span> .r8Uint</span><br><span class="line">        <span class="keyword">if</span> capabilities.supportedTrackingAreasFormats.contains(trackingAreasFormat) &#123;</span><br><span class="line">            configuration.trackingAreasFormat <span class="operator">=</span> trackingAreasFormat</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对象渲染时需要处理悬停效果：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对象渲染函数</span></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">MyObject</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">render</span>(<span class="params">drawable</span>: <span class="type">Drawable</span>, <span class="params">renderEncoder</span>: <span class="type">MTLRenderCommandEncoder</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> renderValue: <span class="type">LayerRenderer</span>.<span class="type">Drawable</span>.<span class="type">TrackingArea</span>.<span class="type">RenderValue</span>? <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.isInteractive &#123;</span><br><span class="line">            <span class="keyword">let</span> trackingArea <span class="operator">=</span> drawable.addTrackingArea(identifier: <span class="keyword">self</span>.identifier)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">self</span>.usesHoverEffect &#123;</span><br><span class="line">                trackingArea.addHoverEffect(.automatic)</span><br><span class="line">            &#125;</span><br><span class="line">            renderValue <span class="operator">=</span> trackingArea.renderValue</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">self</span>.draw(with: commandEncoder, trackingAreaRenderValue: renderValue)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Metal 片段着色器需要同时输出颜色和追踪区域值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Metal 片段着色器</span><br><span class="line">struct FragmentOut</span><br><span class="line">&#123;</span><br><span class="line">    float4 color [[color(0)]];</span><br><span class="line">    uint16_t trackingAreaRenderValue [[color(1)]];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">fragment FragmentOut fragmentShader( /* ... */ )</span><br><span class="line">&#123;</span><br><span class="line">    return FragmentOut &#123;</span><br><span class="line">        float4(outColor, 1.0),</span><br><span class="line">        uniforms.trackingAreaRenderValue</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="动态渲染质量"><a href="#动态渲染质量" class="headerlink" title="动态渲染质量"></a>动态渲染质量</h2><p>动态渲染质量功能允许应用根据场景复杂度调整内容分辨率。开发者可以指定适合应用的最大渲染质量，并根据显示内容类型在运行时调整质量。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 质量常量</span></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">MyScene</span> &#123;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Constants</span> &#123;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">let</span> menuRenderQuality: <span class="type">LayerRenderer</span>.<span class="type">RenderQuality</span> <span class="operator">=</span> .<span class="keyword">init</span>(<span class="number">0.8</span>)</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">let</span> worldRenderQuality: <span class="type">LayerRenderer</span>.<span class="type">RenderQuality</span> <span class="operator">=</span> .<span class="keyword">init</span>(<span class="number">0.6</span>)</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">var</span> maxRenderQuality: <span class="type">LayerRenderer</span>.<span class="type">RenderQuality</span> &#123; menuRenderQuality &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>层配置中需要设置最大渲染质量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 层配置</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyConfiguration</span>: <span class="title class_ inherited__">CompositorLayerConfiguration</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">makeConfiguration</span>(<span class="params">capabilities</span>: <span class="type">LayerRenderer</span>.<span class="type">Capabilities</span>,</span><br><span class="line">                           <span class="params">configuration</span>: <span class="keyword">inout</span> <span class="type">LayerRenderer</span>.<span class="type">Configuration</span>) &#123;</span><br><span class="line">       <span class="keyword">if</span> configuration.isFoveationEnabled &#123;</span><br><span class="line">           configuration.maxRenderQuality <span class="operator">=</span> <span class="type">MyScene</span>.<span class="type">Constants</span>.maxRenderQuality</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行时可以根据场景类型调整渲染质量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置运行时渲染质量</span></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">MyScene</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> renderQuality: <span class="type">LayerRenderer</span>.<span class="type">RenderQuality</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> type &#123;</span><br><span class="line">        <span class="keyword">case</span> .world: <span class="type">Constants</span>.worldRenderQuality</span><br><span class="line">        <span class="keyword">case</span> .menu: <span class="type">Constants</span>.menuRenderQuality</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">Renderer</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">adjustRenderQuality</span>(<span class="params">for</span> <span class="params">scene</span>: <span class="type">MyScene</span>) &#123;</span><br><span class="line">        <span class="keyword">guard</span> layerRenderer.configuration.isFoveationEnabled <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        layerRenderer.renderQuality <span class="operator">=</span> scene.renderQuality</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="渐进式沉浸"><a href="#渐进式沉浸" class="headerlink" title="渐进式沉浸"></a>渐进式沉浸</h2><p>渐进式沉浸风格允许用户通过旋转 Digital Crown 控制沉浸程度。系统仅渲染当前沉浸级别内的内容，通过门户模板屏蔽外部内容，节省计算资源。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>开发者可以通过以下资源深入了解这些新功能：</p>
+<p>相关视频:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10083/">探索 Metal 技术打造沉浸式 App</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10084/">探索 Metal 4</a></li>
+</ul>
+<p>文档:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/compositorservices/rendering_hover_effects_in_metal_immersive_apps">在 Metal 沉浸式应用中渲染悬停效果</a></li>
 </ul>
 
       
@@ -378,18 +364,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_211/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_284/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          深入探索 Metal 4 游戏
+          使用全新设计系统构建 UIKit App
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_289/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">探索 visionOS 上的空间配件输入</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_288/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">将 SceneKit 项目移植到 RealityKit</div>
       <i class="icon-circle-right"></i>
     </a>
   

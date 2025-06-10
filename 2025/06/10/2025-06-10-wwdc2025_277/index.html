@@ -6,24 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://djs66256.github.io">
-  <title>支持 visionOS App 播放沉浸视频 | 苍耳的技术博客</title>
+  <title>借助 SpeechAnalyzer 将先进的语音转文本功能引入 App | 苍耳的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="了解如何在 visionos app 中播放沉浸视频。我们将介绍各种沉浸感十足的渲染模式、查看支持这些模式的框架，并讲解如何在你的 app 中渲染沉浸视频。为了充分利用好本次视频，我们建议你先观看 wwdc25 讲座“探索 visionos 的视频体验”。">
+  <meta name="description" content="探索带来语音转文本功能的全新 speechanalyzer api。我们将了解这一 swift api 及其丰富的功能，这些功能为“备忘录”“语音备忘录”“手记”等 app 提供了支持。我们将深入探讨相关细节，了解语音转文本功能的运作方式，以及 speechanalyzer 和 speechtranscriber 如何助你构建精彩、实用的功能。你还将跟着视频学习如何通过编程将 speechanal">
 <meta property="og:type" content="article">
-<meta property="og:title" content="支持 visionOS App 播放沉浸视频">
-<meta property="og:url" content="http://djs66256.github.io/2025/06/10/2025-06-10-wwdc2025_296/index.html">
+<meta property="og:title" content="借助 SpeechAnalyzer 将先进的语音转文本功能引入 App">
+<meta property="og:url" content="http://djs66256.github.io/2025/06/10/2025-06-10-wwdc2025_277/index.html">
 <meta property="og:site_name" content="苍耳的技术博客">
-<meta property="og:description" content="了解如何在 visionos app 中播放沉浸视频。我们将介绍各种沉浸感十足的渲染模式、查看支持这些模式的框架，并讲解如何在你的 app 中渲染沉浸视频。为了充分利用好本次视频，我们建议你先观看 wwdc25 讲座“探索 visionos 的视频体验”。">
+<meta property="og:description" content="探索带来语音转文本功能的全新 speechanalyzer api。我们将了解这一 swift api 及其丰富的功能，这些功能为“备忘录”“语音备忘录”“手记”等 app 提供了支持。我们将深入探讨相关细节，了解语音转文本功能的运作方式，以及 speechanalyzer 和 speechtranscriber 如何助你构建精彩、实用的功能。你还将跟着视频学习如何通过编程将 speechanal">
 <meta property="og:locale">
-<meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10057/10057_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:55:09.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:55:09.230Z">
+<meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9978/9978_wide_250x141_2x.jpg">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.388Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
-<meta property="article:tag" content="visionos">
-<meta property="article:tag" content="音频和视频">
+<meta property="article:tag" content="ios">
+<meta property="article:tag" content="ipados">
+<meta property="article:tag" content="macos">
+<meta property="article:tag" content="机器学习与-ai">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10057/10057_wide_250x141_2x.jpg">
+<meta name="twitter:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9978/9978_wide_250x141_2x.jpg">
   
     <link rel="alternative" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
   
@@ -204,82 +206,81 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2025-06-10-wwdc2025_296" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-2025-06-10-wwdc2025_277" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      支持 visionOS App 播放沉浸视频
+      借助 SpeechAnalyzer 将先进的语音转文本功能引入 App
     </h1>
   
 
         
-        <a href="/2025/06/10/2025-06-10-wwdc2025_296/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:55:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+        <a href="/2025/06/10/2025-06-10-wwdc2025_277/" class="archive-article-date">
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>了解如何在 visionos app 中播放沉浸视频。我们将介绍各种沉浸感十足的渲染模式、查看支持这些模式的框架，并讲解如何在你的 app 中渲染沉浸视频。为了充分利用好本次视频，我们建议你先观看 wwdc25 讲座“探索 visionos 的视频体验”。<br><span id="more"></span></p>
-<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10057/10057_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/296/">视频地址</a></p>
-<h1 id="在-visionOS-应用中实现沉浸式视频播放的完整指南"><a href="#在-visionOS-应用中实现沉浸式视频播放的完整指南" class="headerlink" title="在 visionOS 应用中实现沉浸式视频播放的完整指南"></a>在 visionOS 应用中实现沉浸式视频播放的完整指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 visionOS 26 的推出，开发者现在可以在应用中实现更丰富的沉浸式视频播放体验。本文将详细介绍如何在 visionOS 应用中支持各种沉浸式视频格式，包括 2D、3D、180 度、360 度以及广视角视频。</p>
-<h2 id="visionOS-26-支持的视频格式"><a href="#visionOS-26-支持的视频格式" class="headerlink" title="visionOS 26 支持的视频格式"></a>visionOS 26 支持的视频格式</h2><p>visionOS 26 引入了多种新的视频配置文件：</p>
-<ul>
-<li><strong>2D 和 3D 视频</strong>：传统的平面和立体视频</li>
-<li><strong>空间视频</strong>：提供立体感的沉浸内容</li>
-<li><strong>Apple 投影媒体配置文件 (APMP)</strong>：包括 180 度、360 度和广视角视频</li>
-<li><strong>Apple 沉浸式视频</strong>：最顶级的沉浸体验</li>
-</ul>
-<p>开发者可以根据应用需求选择合适的视频格式，每种格式都能带来不同的视觉体验。</p>
-<h2 id="开发框架选择"><a href="#开发框架选择" class="headerlink" title="开发框架选择"></a>开发框架选择</h2><p>visionOS 提供了多个框架来支持不同级别的视频播放需求：</p>
-<ol>
-<li><strong>Quick Look</strong>：最简单快捷的实现方式，适合快速集成</li>
-<li><strong>AVKit</strong>：提供跨平台一致性的播放体验</li>
-<li><strong>RealityKit</strong>：适合需要高度自定义的游戏或特殊应用场景</li>
-<li><strong>网页内容</strong>：适用于网页应用</li>
-</ol>
-<h2 id="Quick-Look-实现方案"><a href="#Quick-Look-实现方案" class="headerlink" title="Quick Look 实现方案"></a>Quick Look 实现方案</h2><p>Quick Look 提供了两种主要 API：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 跨进程媒体呈现</span></span><br><span class="line"><span class="type">PreviewApplication</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 应用内媒体呈现</span></span><br><span class="line"><span class="type">QLPreviewController</span></span><br></pre></td></tr></table></figure>
-<p>在 visionOS 26 中，这两个 API 都得到了增强，能够自动处理新视频格式的呈现和转场效果，开发者几乎无需额外工作就能获得沉浸式体验。</p>
-<h2 id="AVKit-高级配置"><a href="#AVKit-高级配置" class="headerlink" title="AVKit 高级配置"></a>AVKit 高级配置</h2><p>AVKit 在 visionOS 26 中引入了全新的 <code>AVExperienceController</code>，提供了更精细的控制：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Expanded 配置示例</span></span><br><span class="line">experienceController.configuration.expanded.automaticTransitionToImmersive <span class="operator">=</span> .none</span><br><span class="line"></span><br><span class="line"><span class="comment">// Immersive 体验配置</span></span><br><span class="line">experienceController.configuration.placement <span class="operator">=</span> .over(scene: myScene)</span><br></pre></td></tr></table></figure>
-<p>开发者可以通过 <code>AVExperienceController.Delegate</code> 协议监控三种状态变化：</p>
-<ol>
-<li>可用体验变化</li>
-<li>转场准备状态</li>
-<li>转场完成状态</li>
-</ol>
-<h2 id="RealityKit-自定义实现"><a href="#RealityKit-自定义实现" class="headerlink" title="RealityKit 自定义实现"></a>RealityKit 自定义实现</h2><p>对于需要高度定制的应用，RealityKit 是最佳选择：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置渐进沉浸模式</span></span><br><span class="line">videoPlayerComponent.desiredImmersiveViewingMode <span class="operator">=</span> .progressive</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置空间视频模式</span></span><br><span class="line">videoPlayerComponent.desiredSpatialVideoMode <span class="operator">=</span> .spatial</span><br></pre></td></tr></table></figure>
-<p>RealityKit 还支持舒适性缓解检测，当系统检测到可能导致用户不适的剧烈运动时，会自动调整沉浸级别。</p>
-<h2 id="SwiftUI-集成最佳实践"><a href="#SwiftUI-集成最佳实践" class="headerlink" title="SwiftUI 集成最佳实践"></a>SwiftUI 集成最佳实践</h2><p>与 SwiftUI 集成时，建议：</p>
-<ul>
-<li>使用 <code>GeometryReader3D</code> 调整视频尺寸</li>
-<li>添加 <code>ModelSortGroupComponent</code> 解决 UI 排序问题</li>
-<li>确保 <code>ImmersionStyle</code> 与 <code>desiredImmersiveViewingMode</code> 匹配</li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>visionOS 26 为开发者提供了强大的工具来创建沉浸式视频体验。无论是简单的 Quick Look 集成，还是高度定制的 RealityKit 实现，都能满足不同应用场景的需求。建议开发者根据应用的具体需求选择合适的实现方案。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/403">了解 Apple 沉浸视频技术</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/297">了解 Apple Projected Media Profile</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/304">探索 visionOS 的视频体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/237">空间网页的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10153">深入探究空间容器和沉浸式空间</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10081">使用 RealityKit 增强你的空间计算 App</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVFoundation">AVFoundation 文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVKit">AVKit 文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/streaming/examples/">HTTP Live Streaming 示例</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/RealityKit">RealityKit 文档</a><blockquote>
+        <p>探索带来语音转文本功能的全新 speechanalyzer api。我们将了解这一 swift api 及其丰富的功能，这些功能为“备忘录”“语音备忘录”“手记”等 app 提供了支持。我们将深入探讨相关细节，了解语音转文本功能的运作方式，以及 speechanalyzer 和 speechtranscriber 如何助你构建精彩、实用的功能。你还将跟着视频学习如何通过编程将 speechanalyzer 和实时转录功能整合到 app 中。<br><span id="more"></span></p>
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9978/9978_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/277/">视频地址</a></p>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="通过-SpeechAnalyzer-为-App-引入先进的语音转文本功能"><a href="#通过-SpeechAnalyzer-为-App-引入先进的语音转文本功能" class="headerlink" title="通过 SpeechAnalyzer 为 App 引入先进的语音转文本功能"></a>通过 SpeechAnalyzer 为 App 引入先进的语音转文本功能</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在 iOS 18 中，苹果推出了全新的 SpeechAnalyzer API，这是一个强大的语音转文本解决方案，为开发者提供了与系统应用（如备忘录、语音备忘录和手记）相同的核心技术。这项创新技术不仅提升了转录速度和准确性，还支持本地端处理，确保了用户隐私。</p>
+<h2 id="SpeechAnalyzer-API-概述"><a href="#SpeechAnalyzer-API-概述" class="headerlink" title="SpeechAnalyzer API 概述"></a>SpeechAnalyzer API 概述</h2><h3 id="与传统技术的比较"><a href="#与传统技术的比较" class="headerlink" title="与传统技术的比较"></a>与传统技术的比较</h3><p>SpeechAnalyzer 取代了 iOS 10 引入的 SFSpeechRecognizer，提供了更先进的语音识别能力。传统技术主要用于短文本听写，而新 API 专为处理长距离音频场景（如讲座、会议和对话）优化，具有以下显著优势：</p>
+<ul>
+<li>更快的处理速度</li>
+<li>更强的适应性</li>
+<li>更好的长音频处理能力</li>
+<li>本地端处理确保隐私安全</li>
 </ul>
+<h3 id="API-架构设计"><a href="#API-架构设计" class="headerlink" title="API 架构设计"></a>API 架构设计</h3><p>SpeechAnalyzer 采用模块化设计，核心类是 SpeechAnalyzer 和 SpeechTranscriber。其工作流程如下：</p>
+<ol>
+<li>创建分析器实例</li>
+<li>添加转录模块</li>
+<li>接收音频缓冲区</li>
+<li>异步返回处理结果</li>
+</ol>
+<p>这种设计充分利用了 Swift 的异步序列机制，将音频输入和结果输出解耦，所有操作都基于精确的音频时间线执行。</p>
+<h2 id="核心功能与使用方式"><a href="#核心功能与使用方式" class="headerlink" title="核心功能与使用方式"></a>核心功能与使用方式</h2><h3 id="转录结果类型"><a href="#转录结果类型" class="headerlink" title="转录结果类型"></a>转录结果类型</h3><p>SpeechAnalyzer 提供两种转录结果：</p>
+<ul>
+<li><strong>易变结果(volatile results)</strong>：近乎实时呈现但准确性较低</li>
+<li><strong>确定性结果</strong>：随着获取更多上下文音频，模型会逐步优化并最终输出</li>
+</ul>
+<p>开发者可以通过简单的代码实现基本转录功能：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> transcriber <span class="operator">=</span> <span class="type">SpeechTranscriber</span>(locale: locale, preset: .offlineTranscription)</span><br><span class="line"><span class="keyword">async</span> <span class="keyword">let</span> transcriptionFuture <span class="operator">=</span> <span class="keyword">try</span> transcriber.results</span><br><span class="line">    .reduce(<span class="string">&quot;&quot;</span>) &#123; str, result <span class="keyword">in</span> str <span class="operator">+</span> result.text &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> analyzer <span class="operator">=</span> <span class="type">SpeechAnalyzer</span>(modules: [transcriber])</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> lastSample <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> analyzer.analyzeSequence(from: file) &#123;</span><br><span class="line">    <span class="keyword">try</span> <span class="keyword">await</span> analyzer.finalizeAndFinish(through: lastSample)</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> analyzer.cancelAndFinishNow()</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">return</span> <span class="keyword">try</span> <span class="keyword">await</span> transcriptionFuture</span><br></pre></td></tr></table></figure>
+<h3 id="SpeechTranscriber-模式"><a href="#SpeechTranscriber-模式" class="headerlink" title="SpeechTranscriber 模式"></a>SpeechTranscriber 模式</h3><p>SpeechTranscriber 由苹果全新研发的模型驱动，具有以下特点：</p>
+<ul>
+<li>支持多语言（持续增加中）</li>
+<li>适用于除 watchOS 外的所有平台</li>
+<li>模型自动更新机制</li>
+<li>不增加应用下载大小或存储占用</li>
+</ul>
+<p>对于不支持的语言或设备，API 还提供了 DictationTranscriber 作为备用方案。</p>
+<h2 id="实战应用：构建实时转录功能"><a href="#实战应用：构建实时转录功能" class="headerlink" title="实战应用：构建实时转录功能"></a>实战应用：构建实时转录功能</h2><h3 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h3><ol>
+<li><strong>配置 SpeechTranscriber</strong></li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">setUpTranscriber</span>() <span class="keyword">async</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    transcriber <span class="operator">=</span> <span class="type">SpeechTranscriber</span>(locale: <span class="type">Locale</span>.current,</span><br><span class="line">                                    transcriptionOptions: [],</span><br><span class="line">                                    reportingOptions: [.volatileResults],</span><br><span class="line">                                    attributeOptions: [.audioTimeRange])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><strong>设置 SpeechAnalyzer 和音频格式</strong></li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">analyzer <span class="operator">=</span> <span class="type">SpeechAnalyzer</span>(modules: [transcriber])</span><br><span class="line"><span class="keyword">self</span>.analyzerFormat <span class="operator">=</span> <span class="keyword">await</span> <span class="type">SpeechAnalyzer</span>.bestAvailableAudioFormat(compatibleWith: [transcriber])</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><strong>处理转录结果</strong></li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">recognizerTask <span class="operator">=</span> <span class="type">Task</span> &#123;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> <span class="keyword">try</span> <span class="keyword">await</span> <span class="keyword">case</span> <span class="keyword">let</span> result <span class="keyword">in</span> transcriber.results &#123;</span><br><span class="line">            <span class="keyword">let</span> text <span class="operator">=</span> result.text</span><br><span class="line">            <span class="keyword">if</span> result.isFinal &#123;</span><br><span class="line">                finalizedTranscript <span class="operator">+=</span> text</span><br><span class="line">                volatileTranscript <span class="operator">=</span> <span class="string">&quot;&quot;</span></span><br><span class="line">                updateStoryWithNewText(withFinal: text)</span><br><span class="line">                <span class="built_in">print</span>(text.audioTimeRange)</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                volatileTranscript <span class="operator">=</span> text</span><br><span class="line">                volatileTranscript.foregroundColor <span class="operator">=</span> .purple.opacity(<span class="number">0.4</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;语音识别失败&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="音频处理"><a href="#音频处理" class="headerlink" title="音频处理"></a>音频处理</h3><p>音频输入处理包括权限请求和 AVAudioSession 配置：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">record</span>() <span class="keyword">async</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">self</span>.story.url.wrappedValue <span class="operator">=</span> url</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">await</span> isAuthorized() <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;用户拒绝麦克风权限&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">#if</span> os(iOS)</span><br><span class="line">    <span class="keyword">try</span> setUpAudioSession()</span><br><span class="line"><span class="keyword">#endif</span></span><br><span class="line">    <span class="keyword">try</span> <span class="keyword">await</span> transcriber.setUpTranscriber()</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">await</span> input <span class="keyword">in</span> <span class="keyword">try</span> <span class="keyword">await</span> audioStream() &#123;</span><br><span class="line">        <span class="keyword">try</span> <span class="keyword">await</span> <span class="keyword">self</span>.transcriber.streamAudioToTranscriber(input)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="与-Apple-Intelligence-结合"><a href="#与-Apple-Intelligence-结合" class="headerlink" title="与 Apple Intelligence 结合"></a>与 Apple Intelligence 结合</h2><p>SpeechTranscriber 的高准确性使其成为 Apple Intelligence 处理的理想输入源。开发者可以利用 FoundationModels API 进行后续处理，如自动生成内容摘要或标题。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>SpeechAnalyzer API 为开发者提供了强大而灵活的语音转文本解决方案，使得构建类似备忘录这样功能丰富的应用变得简单高效。新模型的速度、准确性和隐私保护特性，加上 Swift 的现代异步编程模型，为开发者创造了绝佳的开发体验。</p>
+<p>更多技术细节和示例应用代码，开发者可以参考官方文档和示例项目。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10033">使用个人和自定义声音扩展语音合成</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Speech">Speech</a></p>
 
       
 
@@ -297,11 +298,19 @@ var _hmt = _hmt || [];
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">visionos</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">音频和视频</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">macos</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">机器学习与-ai</a>
         		</li>
       		
 		</ul>
@@ -368,7 +377,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://djs66256.github.io/2025/06/10/2025-06-10-wwdc2025_296/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://djs66256.github.io/2025/06/10/2025-06-10-wwdc2025_277/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -382,18 +391,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_304/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_404/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          探索 visionOS 的视频体验
+          通过小小文字改动让 App 变得大不同
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_318/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">与附近用户共享 visionOS 体验</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_202/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">“钱包”的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="本次讲座主要面向 it 管理员、mdm 开发者和身份提供商，内容涵盖声明式设备管理、apple 商务管理、apple 校园教务管理、平台单点登录等方面的最新更新。了解如何利用这些改进来简化部署流程、增强安全性，并提升用户体验。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9950/9950_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:34:41.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:34:41.715Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.106Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_258/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:34:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,102 +231,104 @@ var _hmt = _hmt || [];
       
         <p>本次讲座主要面向 it 管理员、mdm 开发者和身份提供商，内容涵盖声明式设备管理、apple 商务管理、apple 校园教务管理、平台单点登录等方面的最新更新。了解如何利用这些改进来简化部署流程、增强安全性，并提升用户体验。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9950/9950_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/258/">视频地址</a></p>
-<h1 id="Apple设备管理与身份管理的全面革新"><a href="#Apple设备管理与身份管理的全面革新" class="headerlink" title="Apple设备管理与身份管理的全面革新"></a>Apple设备管理与身份管理的全面革新</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>作为IT管理员或MDM开发者，您是否在寻找更高效的Apple设备管理方案？在2025年的WWDC大会上，Apple带来了众多激动人心的新功能，从声明式设备管理到身份集成，每一项革新都旨在简化部署流程、增强安全性并提升用户体验。</p>
-<h2 id="Apple服务更新"><a href="#Apple服务更新" class="headerlink" title="Apple服务更新"></a>Apple服务更新</h2><h3 id="托管式Apple账户"><a href="#托管式Apple账户" class="headerlink" title="托管式Apple账户"></a>托管式Apple账户</h3><p>托管式Apple账户是为工作/教育场景设计的专属账户，IT部门拥有完全控制权。今年新增：</p>
-<ul>
-<li>账户列表下载功能，便于批量通知用户升级</li>
-<li>组织设备上禁止个人Apple账户登录</li>
-<li>分步实施建议：域名锁定→账户捕获→联邦认证→启用服务</li>
-</ul>
-<h3 id="设备清单增强"><a href="#设备清单增强" class="headerlink" title="设备清单增强"></a>设备清单增强</h3><p>设备清单信息更加丰富：</p>
-<ul>
-<li>新增蜂窝网络信息(IMEI/EID)</li>
-<li>即将推出蓝牙/Wi-Fi的Mac地址</li>
-<li>AppleCare保修状态查询</li>
-</ul>
-<h3 id="突破性API开放"><a href="#突破性API开放" class="headerlink" title="突破性API开放"></a>突破性API开放</h3><p>Apple商务管理和校园教务管理首次开放API：</p>
-<ul>
-<li>首批提供设备清单查询和MDM服务器分配功能</li>
-<li>通过创建API账户并使用私钥访问</li>
-</ul>
-<h3 id="部署改进"><a href="#部署改进" class="headerlink" title="部署改进"></a>部署改进</h3><ul>
-<li>Vision Pro支持通过iPhone的Apple Configurator加入组织</li>
-<li>账户驱动注册优化：自动发现MDM服务器端点</li>
-<li>设备管理迁移：无需擦除即可切换MDM服务器</li>
-</ul>
-<h2 id="设备管理增强"><a href="#设备管理增强" class="headerlink" title="设备管理增强"></a>设备管理增强</h2><h3 id="软件更新"><a href="#软件更新" class="headerlink" title="软件更新"></a>软件更新</h3><p>声明式软件更新扩展至：</p>
-<ul>
-<li>Vision Pro</li>
-<li>Apple TV<br>逐步淘汰传统MDM软件更新方式</li>
-</ul>
-<h3 id="Safari管理"><a href="#Safari管理" class="headerlink" title="Safari管理"></a>Safari管理</h3><p>新增声明式配置：</p>
-<ul>
-<li>书签管理</li>
-<li>默认主页设置<br>整合原有Safari限制配置</li>
-</ul>
-<h3 id="恢复服务优化"><a href="#恢复服务优化" class="headerlink" title="恢复服务优化"></a>恢复服务优化</h3><p>共享设备场景改进：</p>
-<ul>
-<li>iPhone/iPad重置保留托管应用</li>
-<li>Vision Pro新增”为下位用户重置”选项</li>
-<li>控制中心10秒倒计时或锁定界面操作</li>
-</ul>
-<h2 id="应用管理新能力"><a href="#应用管理新能力" class="headerlink" title="应用管理新能力"></a>应用管理新能力</h2><h3 id="iOS-iPadOS应用控制"><a href="#iOS-iPadOS应用控制" class="headerlink" title="iOS/iPadOS应用控制"></a>iOS/iPadOS应用控制</h3><p>托管应用配置新增：</p>
-<ul>
-<li>逐应用定义更新行为</li>
-<li>实时安装进度监控</li>
-<li>蜂窝数据下载限制</li>
-</ul>
-<h3 id="macOS应用部署"><a href="#macOS应用部署" class="headerlink" title="macOS应用部署"></a>macOS应用部署</h3><p>macOS Tahoe引入：</p>
-<ul>
-<li>声明式管理App Store应用</li>
-<li>自定义应用和包部署</li>
-<li>安装状态报告</li>
-</ul>
-<h3 id="ManagedApp框架"><a href="#ManagedApp框架" class="headerlink" title="ManagedApp框架"></a>ManagedApp框架</h3><p>开发者新工具：</p>
-<ul>
-<li>安全部署应用配置</li>
-<li>获取API令牌</li>
-<li>添加自定义证书</li>
-<li>访问硬件密钥</li>
-</ul>
-<h2 id="身份集成改进"><a href="#身份集成改进" class="headerlink" title="身份集成改进"></a>身份集成改进</h2><h3 id="平台SSO优化"><a href="#平台SSO优化" class="headerlink" title="平台SSO优化"></a>平台SSO优化</h3><p>Mac设置助手整合：</p>
-<ul>
-<li>自动设备注册时完成SSO配置</li>
-<li>同步本地账户密码或使用安全enclave密钥</li>
-<li>账户头像同步功能</li>
-</ul>
-<h3 id="认证访客模式"><a href="#认证访客模式" class="headerlink" title="认证访客模式"></a>认证访客模式</h3><p>共享设备新方案：</p>
-<ul>
-<li>直接使用云身份登录</li>
-<li>登出自动清除数据</li>
-<li>“自动推进”静默完成配置</li>
-</ul>
-<h3 id="轻触登录"><a href="#轻触登录" class="headerlink" title="轻触登录"></a>轻触登录</h3><p>医疗等行业优化：</p>
-<ul>
-<li>Mac支持NFC读卡器配置</li>
-<li>企业工牌/学校ID快速登录</li>
-<li>通行证密钥存储在安全enclave</li>
-</ul>
-<h2 id="总结与行动建议"><a href="#总结与行动建议" class="headerlink" title="总结与行动建议"></a>总结与行动建议</h2><p>2025年的Apple设备管理革新覆盖了从基础服务到高级集成的各个环节。我们建议：</p>
-<ol>
-<li>立即评估托管Apple账户新功能</li>
-<li>探索API自动化可能性</li>
-<li>开始迁移到声明式应用管理</li>
-<li>为Vision Pro部署做好准备</li>
-<li>实施平台SSO优化登录体验</li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/203">了解 ManagedApp 框架</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/234">借助 NetworkExtension 优化网络流量过滤和隧道</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://support.apple.com/guide/apple-school-manager/">Apple School Manager User Guide</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/ManagedApp">ManagedApp</a></li>
-<li><a target="_blank" rel="noopener" href="https://support.apple.com/guide/deployment/welcome/">Support - Apple Platform Deployment</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="Apple设备管理与身份管理新功能详解"><a href="#Apple设备管理与身份管理新功能详解" class="headerlink" title="Apple设备管理与身份管理新功能详解"></a>Apple设备管理与身份管理新功能详解</h1><p>在最近的WWDC演讲中，Apple设备管理团队详细介绍了针对IT管理员、MDM开发者和身份提供商的一系列新功能。这些改进涵盖了从设备管理到身份集成的多个方面，旨在帮助组织更轻松地部署和保护Apple设备。</p>
+<h2 id="Apple服务更新"><a href="#Apple服务更新" class="headerlink" title="Apple服务更新"></a>Apple服务更新</h2><p>Apple商务管理和Apple校园教务管理作为基础服务，获得了多项重要更新。首先是托管式Apple账户的强化功能：</p>
+<ul>
+<li><strong>域名锁定</strong>：允许IT接管特定域名创建的Apple账户</li>
+<li><strong>账户列表下载</strong>：方便管理员通知用户更新账户</li>
+<li><strong>访问管理扩展</strong>：禁止在组织设备上登录个人Apple账户</li>
 </ul>
+<p>设备库存功能也得到增强，现在可以查看：</p>
+<ul>
+<li>激活锁状态和设备存储</li>
+<li>蜂窝网络信息（IMEI/EID）</li>
+<li>设备释放记录</li>
+<li>即将推出的MAC地址信息</li>
+<li>AppleCare保修状态</li>
+</ul>
+<p>特别值得一提的是新推出的<strong>Apple商务/校园教务管理API</strong>，它支持：</p>
+<ul>
+<li>查询设备信息</li>
+<li>设备管理服务分配</li>
+<li>批量活动状态获取</li>
+</ul>
+<h2 id="设备管理增强"><a href="#设备管理增强" class="headerlink" title="设备管理增强"></a>设备管理增强</h2><p>设备管理方面，Apple带来了以下改进：</p>
+<h3 id="软件更新"><a href="#软件更新" class="headerlink" title="软件更新"></a>软件更新</h3><ul>
+<li>声明式设备管理的更新控制扩展至Vision Pro和Apple TV</li>
+<li>正式弃用传统MDM软件更新管理方式</li>
+</ul>
+<h3 id="Safari管理"><a href="#Safari管理" class="headerlink" title="Safari管理"></a>Safari管理</h3><ul>
+<li>声明式配置的书签管理</li>
+<li>默认主页设置</li>
+<li>现有限制整合</li>
+</ul>
+<h3 id="设备重置服务"><a href="#设备重置服务" class="headerlink" title="设备重置服务"></a>设备重置服务</h3><ul>
+<li>iPhone/iPad可保留托管应用（仅清除用户数据）</li>
+<li>Vision Pro新增”为下个用户重置”选项</li>
+<li>锁定界面长按数码表冠也可触发重置</li>
+</ul>
+<p>其他更新包括：</p>
+<ul>
+<li>iPad电池健康信息</li>
+<li>默认消息/通话应用设置</li>
+<li>按SIM卡限制信息/FaceTime</li>
+<li>临时使用AirPods/Beats耳机支持</li>
+</ul>
+<h2 id="应用管理新能力"><a href="#应用管理新能力" class="headerlink" title="应用管理新能力"></a>应用管理新能力</h2><p>应用管理获得了重大改进，包括：</p>
+<p><strong>iOS/iPadOS托管应用配置新增：</strong></p>
+<ul>
+<li>按应用定义更新行为</li>
+<li>强制/禁用自动更新选项</li>
+<li>版本锁定功能</li>
+<li>实时安装进度反馈</li>
+</ul>
+<p><strong>macOS Tahoe新增：</strong></p>
+<ul>
+<li>声明式管理部署App Store/自定义应用</li>
+<li>必需或可选部署选项</li>
+<li>安装状态反馈</li>
+</ul>
+<p>开发者方面，新增的<strong>ManagedApp框架</strong>支持：</p>
+<ul>
+<li>安全部署应用配置</li>
+<li>定制体验实现</li>
+<li>API令牌获取</li>
+<li>硬件绑定密钥等场景</li>
+</ul>
+<h2 id="身份集成改进"><a href="#身份集成改进" class="headerlink" title="身份集成改进"></a>身份集成改进</h2><p>身份验证是部署的关键环节，新功能包括：</p>
+<p><strong>平台单点登录（Platform SSO）优化：</strong></p>
+<ul>
+<li>自动设备注册期间完成注册</li>
+<li>认证成功后同步创建本地账户</li>
+<li>支持账户头像同步</li>
+</ul>
+<p><strong>认证访客模式：</strong></p>
+<ul>
+<li>直接从登录窗口使用云身份验证</li>
+<li>登出后清除所有会话数据</li>
+<li>可搭配自动推进功能</li>
+</ul>
+<p><strong>革命性的轻触登录功能：</strong></p>
+<ul>
+<li>用户轻触iPhone/Apple Watch即可登录Mac</li>
+<li>密钥存储在安全飞地</li>
+<li>支持Express模式</li>
+</ul>
+<h2 id="总结与资源"><a href="#总结与资源" class="headerlink" title="总结与资源"></a>总结与资源</h2><p>这些新功能将帮助组织：</p>
+<ol>
+<li>改善托管Apple账户用户体验</li>
+<li>自动化常见管理任务</li>
+<li>简化MDM服务器切换</li>
+<li>优化应用管理实践</li>
+<li>实现Vision Pro设备共享</li>
+<li>创新身份验证方式</li>
+</ol>
+<p>更多详细信息可以参考以下资源：</p>
+<h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/203">了解 ManagedApp 框架</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/234">借助 NetworkExtension 优化网络流量过滤和隧道</a></p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://support.apple.com/guide/apple-school-manager/">Apple School Manager User Guide</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/ManagedApp">ManagedApp</a><br><a target="_blank" rel="noopener" href="https://support.apple.com/guide/deployment/welcome/">Support - Apple Platform Deployment</a></p>
 
       
 
@@ -449,18 +451,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_288/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_256/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          将 SceneKit 项目移植到 RealityKit
+          SwiftUI 的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_203/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">了解 ManagedApp 框架</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_262/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">实现 Metal 4 机器学习与图形应用程序的完美融合</div>
       <i class="icon-circle-right"></i>
     </a>
   

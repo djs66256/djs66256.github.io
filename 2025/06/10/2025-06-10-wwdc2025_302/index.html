@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何在你的 app 中打造高级的多画面播放体验。我们将介绍如何跨多个播放器实现播放同步、通过隔空播放的无缝整合提升多画面播放效果，同时优化播放质量，以便提供引人入胜的多画面播放体验。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10056/10056_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:53:59.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:53:59.834Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.869Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -221,7 +221,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_302/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:53:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -230,52 +230,43 @@ var _hmt = _hmt || [];
       
         <p>了解如何在你的 app 中打造高级的多画面播放体验。我们将介绍如何跨多个播放器实现播放同步、通过隔空播放的无缝整合提升多画面播放效果，同时优化播放质量，以便提供引人入胜的多画面播放体验。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10056/10056_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/302/">视频地址</a></p>
-<h1 id="构建专业级多视角播放体验的技术指南"><a href="#构建专业级多视角播放体验的技术指南" class="headerlink" title="构建专业级多视角播放体验的技术指南"></a>构建专业级多视角播放体验的技术指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在现代多媒体应用中，多视角播放功能正变得越来越重要。无论是体育赛事的多个机位画面，还是演讲活动的主画面与手语翻译画面，为用户提供同步的多视角观看体验都能显著提升应用价值。本文将详细介绍如何利用苹果的AVFoundation框架构建专业级的多视角播放系统。</p>
-<h2 id="多视角播放的核心挑战"><a href="#多视角播放的核心挑战" class="headerlink" title="多视角播放的核心挑战"></a>多视角播放的核心挑战</h2><p>多视角播放面临三大主要技术挑战：</p>
-<ol>
-<li><strong>播放同步</strong>：确保多个播放器保持精准同步</li>
-<li><strong>隔空播放支持</strong>：处理投屏时的智能路由</li>
-<li><strong>质量优化</strong>：合理分配网络资源保证关键流的播放质量</li>
-</ol>
-<h2 id="播放同步解决方案：AVPlaybackCoordinationMedium"><a href="#播放同步解决方案：AVPlaybackCoordinationMedium" class="headerlink" title="播放同步解决方案：AVPlaybackCoordinationMedium"></a>播放同步解决方案：AVPlaybackCoordinationMedium</h2><p>对于需要严格同步的场景（如体育赛事的多机位画面），AVPlaybackCoordinationMedium组件提供了完美的解决方案。它能自动处理：</p>
-<ul>
-<li>播放速率变化</li>
-<li>跳转操作</li>
-<li>卡顿恢复</li>
-<li>中断事件</li>
-<li>初始同步</li>
-</ul>
-<p>实现代码非常简单：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> coordinationMedium <span class="operator">=</span> <span class="type">AVPlaybackCoordinationMedium</span>()</span><br><span class="line"><span class="keyword">try</span> player1.playbackCoordinator.coordinate(using: coordinationMedium)</span><br><span class="line"><span class="keyword">try</span> player2.playbackCoordinator.coordinate(using: coordinationMedium)</span><br></pre></td></tr></table></figure></p>
-<h2 id="隔空播放支持：AVRoutingPlaybackArbiter"><a href="#隔空播放支持：AVRoutingPlaybackArbiter" class="headerlink" title="隔空播放支持：AVRoutingPlaybackArbiter"></a>隔空播放支持：AVRoutingPlaybackArbiter</h2><p>当用户使用隔空播放功能时，AVRoutingPlaybackArbiter组件可以智能地处理路由：</p>
-<ol>
-<li>视频优先投送至Apple TV（仅支持单流）</li>
-<li>音频优先路由至HomePod</li>
-</ol>
-<p>配置示例：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arbiter <span class="operator">=</span> <span class="type">AVRoutingPlaybackArbiter</span>.shared()</span><br><span class="line">arbiter.preferredParticipantForExternalPlayback <span class="operator">=</span> birdsEyePlayer</span><br><span class="line">arbiter.preferredParticipantForNonMixableAudioRoutes <span class="operator">=</span> birdsEyePlayer</span><br></pre></td></tr></table></figure></p>
-<h2 id="质量优化：网络资源优先级"><a href="#质量优化：网络资源优先级" class="headerlink" title="质量优化：网络资源优先级"></a>质量优化：网络资源优先级</h2><p>在多视角播放中，不同流的重要性不同。通过设置networkResourcePriority参数，可以优化网络资源分配：</p>
-<ul>
-<li>.high：关键流媒体（如主赛场画面）</li>
-<li>.low：次要内容（如观众镜头）</li>
-</ul>
-<p>优先级设置示例：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mainViewPlayer.networkResourcePriority <span class="operator">=</span> .high</span><br><span class="line">crowdViewPlayer.networkResourcePriority <span class="operator">=</span> .low</span><br></pre></td></tr></table></figure></p>
-<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>这项技术适用于多种专业场景：</p>
-<ul>
-<li>体育赛事的多机位直播</li>
-<li>会议活动的主画面与手语翻译流</li>
-<li>媒体监看的多频道同步播放</li>
-<li>音乐会/演出的多视角体验</li>
-</ul>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过组合使用AVPlaybackCoordinationMedium、AVRoutingPlaybackArbiter和网络资源优先级设置，开发者可以构建专业级的、具有沉浸式体验的多视角播放应用。这些技术不仅能确保播放同步，还能优化用户体验和资源分配。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10225">使用群组活动协调媒体体验</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVFoundation">AVFoundation</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVRouting">AVRouting</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="打造流畅的多视角播放体验：WWDC技术解析"><a href="#打造流畅的多视角播放体验：WWDC技术解析" class="headerlink" title="打造流畅的多视角播放体验：WWDC技术解析"></a>打造流畅的多视角播放体验：WWDC技术解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着多视角内容消费需求的增长，开发者面临如何实现流畅同步播放的技术挑战。苹果在WWDC上展示了如何利用AVFoundation和AVRouting框架构建专业级多视角播放体验，涵盖同步播放、AirPlay支持和质量优化三大核心能力。</p>
+<h2 id="多视角播放同步技术"><a href="#多视角播放同步技术" class="headerlink" title="多视角播放同步技术"></a>多视角播放同步技术</h2><p>当应用需要同步播放多个关联音视频流时（如体育赛事多机位），AVPlaybackCoordinationMedium提供了完善的解决方案。该技术基于SharePlay的协调机制扩展而来，能自动处理播放控制、速率变化和时间跳跃等复杂场景。</p>
+<p>关键实现仅需三个步骤：</p>
+<ol>
+<li>创建AVPlaybackCoordinationMedium实例</li>
+<li>为每个AVPlayer实例获取playbackCoordinator</li>
+<li>调用coordinate方法连接协调媒介</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> coordinationMedium <span class="operator">=</span> <span class="type">AVPlaybackCoordinationMedium</span>()</span><br><span class="line"><span class="keyword">try</span> player1.playbackCoordinator.coordinate(using: coordinationMedium)</span><br><span class="line"><span class="keyword">try</span> player2.playbackCoordinator.coordinate(using: coordinationMedium)</span><br></pre></td></tr></table></figure>
+<p>此方案支持任意数量播放器的同步，且在画中画模式和系统”正在播放”界面中仍保持同步效果。</p>
+<h2 id="AirPlay多视图路由管理"><a href="#AirPlay多视图路由管理" class="headerlink" title="AirPlay多视图路由管理"></a>AirPlay多视图路由管理</h2><p>AVRoutingPlaybackArbiter解决了多视图应用投屏时的路由选择问题，主要处理两类场景：</p>
+<ol>
+<li><strong>视频路由</strong>：当投屏至电视等单流设备时，自动选择主视图传输</li>
+<li><strong>音频路由</strong>：向HomePod等设备传输时管理不可混音的路由</li>
+</ol>
+<p>开发者可通过设置preferredParticipant属性指定优先投屏的播放器：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">AVRoutingPlaybackArbiter</span>.shared().preferredParticipantForExternalPlayback <span class="operator">=</span> mainPlayer</span><br></pre></td></tr></table></figure>
+<p>该机制与播放协调功能完美兼容，投屏时仍能保持多播放器的同步状态。</p>
+<h2 id="网络资源智能分配"><a href="#网络资源智能分配" class="headerlink" title="网络资源智能分配"></a>网络资源智能分配</h2><p>在多视角场景中，通过networkResourcePriority属性实现差异化的质量保障：</p>
+<ul>
+<li><code>.high</code>：保障关键视角的高清质量（如赛事主视角）</li>
+<li><code>.low</code>：允许次要视角适应网络状况（如观众特写）</li>
 </ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">primaryPlayer.networkResourcePriority <span class="operator">=</span> .high</span><br><span class="line">secondaryPlayer.networkResourcePriority <span class="operator">=</span> .low</span><br></pre></td></tr></table></figure>
+<p>系统会根据优先级、播放器数量、视频尺寸等综合因素自动优化带宽分配，在有限网络条件下提供最佳体验。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>苹果提供的多视角播放技术栈包含：</p>
+<ul>
+<li>AVPlaybackCoordinationMedium实现播放同步</li>
+<li>AVRoutingPlaybackArbiter管理AirPlay路由</li>
+<li>网络优先级设置保障关键流质量</li>
+</ul>
+<p>这些API组合为开发者提供了构建专业级多视角应用的全套工具，从体育直播到多机位演出等各种场景都能获得完美支持。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10225">使用群组活动协调媒体体验</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVFoundation">AVFoundation</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVRouting">AVRouting</a></p>
 
       
 
@@ -394,18 +385,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_318/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_301/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          与附近用户共享 visionOS 体验
+          深入了解 Foundation Models 框架
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_279/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">通行密钥的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_303/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">为 visionOS 设计悬停交互</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何添加帧率转换、超高分辨率和噪声过滤等效果来改善视频编辑与直播体验。我们将探索 video toolbox 框架中专为 apple 芯片优化的基于 ml 的视频处理算法。了解如何将这些效果整合起来，以增强 app 在真实用例中的功能。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10054/10054_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:44:57.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:44:57.867Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.578Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_300/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:44:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,58 +228,42 @@ var _hmt = _hmt || [];
       
         <p>了解如何添加帧率转换、超高分辨率和噪声过滤等效果来改善视频编辑与直播体验。我们将探索 video toolbox 框架中专为 apple 芯片优化的基于 ml 的视频处理算法。了解如何将这些效果整合起来，以增强 app 在真实用例中的功能。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10054/10054_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/300/">视频地址</a></p>
-<h1 id="使用机器学习增强视频效果：Video-Toolbox-VTFrameProcessor-全解析"><a href="#使用机器学习增强视频效果：Video-Toolbox-VTFrameProcessor-全解析" class="headerlink" title="使用机器学习增强视频效果：Video Toolbox VTFrameProcessor 全解析"></a>使用机器学习增强视频效果：Video Toolbox VTFrameProcessor 全解析</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Video Toolbox作为Apple平台的核心视频处理框架，在macOS 15.4和iOS 26中迎来了重大升级——VTFrameProcessor API。这个基于机器学习的新接口专为Apple Silicon优化，为开发者带来了帧率转换、超分辨率等专业级视频效果处理能力。本文将详细介绍这些效果的技术实现和应用场景。</p>
-<h2 id="六大视频增强效果详解"><a href="#六大视频增强效果详解" class="headerlink" title="六大视频增强效果详解"></a>六大视频增强效果详解</h2><h3 id="1-帧率转换"><a href="#1-帧率转换" class="headerlink" title="1. 帧率转换"></a>1. 帧率转换</h3><ul>
-<li><strong>应用场景</strong>：体育赛事慢动作、电影特效</li>
-<li><strong>技术特点</strong>：通过智能插帧实现流畅的帧率转换</li>
-<li><strong>示例效果</strong>：足球运动员庆祝动作被完美放慢，细节更丰富</li>
-</ul>
-<h3 id="2-超分辨率缩放"><a href="#2-超分辨率缩放" class="headerlink" title="2. 超分辨率缩放"></a>2. 超分辨率缩放</h3><ul>
-<li><strong>应用场景</strong>：老旧视频修复、照片增强</li>
-<li><strong>技术亮点</strong>：显著提升视频分辨率，还原丢失细节</li>
-<li><strong>效果对比</strong>：处理后视频中的船只纹理更清晰可见</li>
-</ul>
-<h3 id="3-动态模糊"><a href="#3-动态模糊" class="headerlink" title="3. 动态模糊"></a>3. 动态模糊</h3><ul>
-<li><strong>影视级效果</strong>：模拟专业摄影中的运动模糊</li>
-<li><strong>参数可控</strong>：模糊强度可灵活调整</li>
-<li><strong>实用案例</strong>：骑行视频经处理后运动更自然流畅</li>
-</ul>
-<h3 id="4-时域降噪"><a href="#4-时域降噪" class="headerlink" title="4. 时域降噪"></a>4. 时域降噪</h3><ul>
-<li><strong>智能去噪</strong>：基于运动估计消除压缩伪影</li>
-<li><strong>效果展示</strong>：树木视频中的色噪被有效去除</li>
-</ul>
-<h3 id="5-低延迟帧插值"><a href="#5-低延迟帧插值" class="headerlink" title="5. 低延迟帧插值"></a>5. 低延迟帧插值</h3><ul>
-<li><strong>实时处理</strong>：提升视频流畅度的同时保持低延迟</li>
-<li><strong>会议优化</strong>：改善网络不佳时的视频通话体验</li>
-</ul>
-<h3 id="6-低延迟超分辨率"><a href="#6-低延迟超分辨率" class="headerlink" title="6. 低延迟超分辨率"></a>6. 低延迟超分辨率</h3><ul>
-<li><strong>轻量化设计</strong>：专为实时视频优化</li>
-<li><strong>边缘增强</strong>：锐化面部特征等关键细节</li>
-</ul>
-<h2 id="技术集成指南"><a href="#技术集成指南" class="headerlink" title="技术集成指南"></a>技术集成指南</h2><h3 id="基础集成步骤"><a href="#基础集成步骤" class="headerlink" title="基础集成步骤"></a>基础集成步骤</h3><ol>
-<li>导入Video Toolbox框架</li>
-<li>创建处理会话（VTFrameProcessor）</li>
-<li>配置效果参数</li>
-<li>逐帧处理视频数据</li>
-</ol>
-<h3 id="帧率转换代码示例"><a href="#帧率转换代码示例" class="headerlink" title="帧率转换代码示例"></a>帧率转换代码示例</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 配置帧率转换参数</span></span><br><span class="line"><span class="keyword">let</span> processor <span class="operator">=</span> <span class="type">VTFrameProcessor</span>()</span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> configuration <span class="operator">=</span> <span class="type">VTFrameRateConversionConfiguration</span>(</span><br><span class="line">    frameWidth: width,</span><br><span class="line">    frameHeight: height,</span><br><span class="line">    usePrecomputedFlow: <span class="literal">false</span>,</span><br><span class="line">    qualityPrioritization: .normal,</span><br><span class="line">    revision: .revision1</span><br><span class="line">) <span class="keyword">else</span> &#123; <span class="keyword">throw</span> <span class="type">Fault</span>.failedToCreateFRCConfiguration &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> processor.startSession(configuration: configuration)</span><br></pre></td></tr></table></figure>
-<h3 id="动态模糊实现"><a href="#动态模糊实现" class="headerlink" title="动态模糊实现"></a>动态模糊实现</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 动态模糊参数设置</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> parameters <span class="operator">=</span> <span class="type">VTMotionBlurParameters</span>(</span><br><span class="line">    sourceFrame: currentFrame,</span><br><span class="line">    nextFrame: nextFrame,</span><br><span class="line">    previousFrame: previousFrame,</span><br><span class="line">    nextOpticalFlow: <span class="literal">nil</span>,</span><br><span class="line">    previousOpticalFlow: <span class="literal">nil</span>,</span><br><span class="line">    motionBlurStrength: strength,</span><br><span class="line">    submissionMode: .sequential,</span><br><span class="line">    destinationFrame: destinationFrame</span><br><span class="line">) <span class="keyword">else</span> &#123; <span class="keyword">throw</span> <span class="type">Fault</span>.failedToCreateMotionBlurParameters &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> processor.process(parameters: parameters)</span><br></pre></td></tr></table></figure>
-<h2 id="实际应用案例"><a href="#实际应用案例" class="headerlink" title="实际应用案例"></a>实际应用案例</h2><h3 id="视频编辑场景"><a href="#视频编辑场景" class="headerlink" title="视频编辑场景"></a>视频编辑场景</h3><ul>
-<li>慢动作特效：突出舞蹈动作细节</li>
-<li>电影感处理：为延时视频添加动态模糊</li>
-</ul>
-<h3 id="实时视频优化"><a href="#实时视频优化" class="headerlink" title="实时视频优化"></a>实时视频优化</h3><ul>
-<li>视频会议：超分辨率提升画质</li>
-<li>直播推流：帧插值改善卡顿问题</li>
-</ul>
-<h2 id="总结与展望"><a href="#总结与展望" class="headerlink" title="总结与展望"></a>总结与展望</h2><p>VTFrameProcessor API的推出，让开发者能够轻松为应用添加专业级视频效果。无论是提升视频编辑品质，还是优化实时视频体验，这些基于机器学习的技术都将为用户带来显著改进。期待看到开发者们利用这些工具创造出更出色的视频应用！</p>
-<h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/VideoToolbox/frame-processing">Frame processing</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/VideoToolbox">Video Toolbox</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用基于机器学习的视频效果增强你的-App：WWDC-技术解析"><a href="#使用基于机器学习的视频效果增强你的-App：WWDC-技术解析" class="headerlink" title="使用基于机器学习的视频效果增强你的 App：WWDC 技术解析"></a>使用基于机器学习的视频效果增强你的 App：WWDC 技术解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在当今数字时代，视频内容已成为应用体验的重要组成部分。Apple 在最新的 Video Toolbox 框架中引入了一系列基于机器学习且针对 Apple 芯片优化的视频处理算法，为开发者提供了强大的工具来提升视频质量。这些创新技术包括帧率转换、超分辨率处理和降噪过滤等效果，能够显著改善视频编辑与直播体验。</p>
+<h2 id="视频效果概览"><a href="#视频效果概览" class="headerlink" title="视频效果概览"></a>视频效果概览</h2><h3 id="专业级视频编辑效果"><a href="#专业级视频编辑效果" class="headerlink" title="专业级视频编辑效果"></a>专业级视频编辑效果</h3><p>VTFrameProcessor API 提供三种专业视频编辑效果：</p>
+<ol>
+<li><strong>帧率转换</strong>：调整视频的每秒帧数以匹配目标帧率或创建慢动作效果。示例展示了足球运动员庆祝进球的视频，慢动作版本更好地捕捉了庆祝的激情时刻。</li>
+<li><strong>超分辨率缩放</strong>：提升视频分辨率并修复老旧视频细节，特别适合照片增强和媒体修复应用。演示中船只的清晰度显著提升。</li>
+<li><strong>动态模糊</strong>：电影制作常用技术，创造自然运动效果。处理后的骑行者视频消除了卡顿感，看起来速度更快。</li>
+</ol>
+<h3 id="实时视频处理效果"><a href="#实时视频处理效果" class="headerlink" title="实时视频处理效果"></a>实时视频处理效果</h3><p>针对实时应用场景，API提供了：</p>
+<ol>
+<li><strong>时域降噪滤镜</strong>：基于运动估计技术，利用前后参考帧平滑时域噪声。树木视频中的彩色噪点，特别是交通标志部分明显减少。</li>
+<li><strong>低延迟帧插值</strong>：保持实时性能前提下提升帧率，可选择同时提升分辨率。女性讲话视频处理后播放更加流畅。</li>
+<li><strong>低延迟视频超分辨率</strong>：轻量级超缩放器，专为优化视频会议体验设计，减少编码伪影并锐化边缘。</li>
+</ol>
+<h2 id="技术集成指南"><a href="#技术集成指南" class="headerlink" title="技术集成指南"></a>技术集成指南</h2><h3 id="基本处理流程"><a href="#基本处理流程" class="headerlink" title="基本处理流程"></a>基本处理流程</h3><p>使用 VTFrameProcessor API 包含两个主要步骤：</p>
+<ol>
+<li><strong>选择效果</strong>：通过配置参数创建处理会话</li>
+<li><strong>逐帧处理</strong>：应用发送带参数的输入视频帧，框架返回处理后的输出帧</li>
+</ol>
+<p>开发者首先需要导入 Video Toolbox 框架，然后按照特定用例配置处理器。</p>
+<h3 id="帧率转换实现"><a href="#帧率转换实现" class="headerlink" title="帧率转换实现"></a>帧率转换实现</h3><p>以下代码展示了创建帧率转换处理会话的核心实现：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> processor <span class="operator">=</span> <span class="type">VTFrameProcessor</span>()</span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> configuration <span class="operator">=</span> <span class="type">VTFrameRateConversionConfiguration</span>(frameWidth: width,</span><br><span class="line">                                                          frameHeight: height,</span><br><span class="line">                                                   usePrecomputedFlow: <span class="literal">false</span>,</span><br><span class="line">                                                qualityPrioritization: .normal,</span><br><span class="line">                                                             revision: .revision1)</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="keyword">throw</span> <span class="type">Fault</span>.failedToCreateFRCConfiguration</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try</span> processor.startSession(configuration: configuration)</span><br></pre></td></tr></table></figure>
+<p>帧处理参数设置示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sourceFrame <span class="operator">=</span> <span class="type">VTFrameProcessorFrame</span>(buffer: curPixelBuffer, presentationTimeStamp: sourcePTS)</span><br><span class="line">nextFrame <span class="operator">=</span> <span class="type">VTFrameProcessorFrame</span>(buffer: nextPixelBuffer, presentationTimeStamp: nextPTS)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> interpolationPhase: [<span class="type">Float</span>] <span class="operator">=</span> [<span class="number">0.25</span>, <span class="number">0.5</span>, <span class="number">0.75</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> parameters <span class="operator">=</span> <span class="type">VTFrameRateConversionParameters</span>(sourceFrame: sourceFrame,</span><br><span class="line">                                                       nextFrame: nextFrame,</span><br><span class="line">                                                     opticalFlow: <span class="literal">nil</span>,</span><br><span class="line">                                              interpolationPhase: interpolationPhase,</span><br><span class="line">                                                  submissionMode: .sequential,</span><br><span class="line">                                               destinationFrames: destinationFrames)</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">     <span class="keyword">throw</span> <span class="type">Fault</span>.failedToCreateFRCParameters</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> processor.process(parameters: parameters)</span><br></pre></td></tr></table></figure>
+<h3 id="动态模糊效果实现"><a href="#动态模糊效果实现" class="headerlink" title="动态模糊效果实现"></a>动态模糊效果实现</h3><p>动态模糊效果通过以下代码实现，其中模糊强度可通过API调节：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> parameters <span class="operator">=</span> <span class="type">VTMotionBlurParameters</span>(sourceFrame: currentFrame,</span><br><span class="line">                                              nextFrame: nextFrame,</span><br><span class="line">                                          previousFrame: previousFrame,</span><br><span class="line">                                        nextOpticalFlow: <span class="literal">nil</span>,</span><br><span class="line">                                    previousOpticalFlow: <span class="literal">nil</span>,</span><br><span class="line">                                     motionBlurStrength: strength,</span><br><span class="line">                                         submissionMode: .sequential,</span><br><span class="line">                                       destinationFrame: destinationFrame) </span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="type">Fault</span>.failedToCreateMotionBlurParameters</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> processor.process(parameters: parameters)</span><br></pre></td></tr></table></figure>
+<h2 id="实时处理优化"><a href="#实时处理优化" class="headerlink" title="实时处理优化"></a>实时处理优化</h2><p>对于视频会议等实时场景，开发者可以使用：</p>
+<ul>
+<li>LowLatencySuperResolutionScalerConfiguration 实现超分辨率</li>
+<li>低延迟帧插值提升网络不佳时的视频通话流畅度</li>
 </ul>
+<p>这些优化特别适合需要即时处理的场景，如直播和视频会议应用。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Video Toolbox 框架通过 VTFrameProcessor API 为开发者提供了强大的视频处理能力。无论是为视频编辑添加专业效果，还是提升实时视频质量，这些基于机器学习的技术都能显著改善用户体验。随着这些技术在 iOS 26 和 macOS 15.4 中的可用性扩展，开发者现在有更多机会将这些先进功能集成到自己的应用中。</p>
+<h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/VideoToolbox/frame-processing">Frame processing</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/VideoToolbox">Video Toolbox</a></p>
 
       
 
@@ -390,18 +374,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_253/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_297/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          利用拍摄控件提升你的相机体验
+          了解 Apple Projected Media Profile
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_301/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">深入了解 Foundation Models 框架</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_298/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">借助 MLX 在 Apple 芯片上探索大语言模型</div>
       <i class="icon-circle-right"></i>
     </a>
   

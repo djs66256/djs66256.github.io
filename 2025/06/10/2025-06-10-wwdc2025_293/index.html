@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 permissionkit 如何帮助你的 app 增强儿童通信安全。我们将向你展示如何使用这一全新框架来创建适龄通信体验，并利用“家人共享”请求获得家长批准。你将了解如何构建与“信息”无缝整合的权限请求、处理家长答复，并为儿童用户量身定制 ui。为了充分从这个讲座中获益，我们建议你先观看 wwdc25 讲座“在你的 app 中提供适龄体验”视频。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9997/9997_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:27:31.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:27:31.454Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.341Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_293/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:27:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,70 +228,49 @@ var _hmt = _hmt || [];
       
         <p>了解 permissionkit 如何帮助你的 app 增强儿童通信安全。我们将向你展示如何使用这一全新框架来创建适龄通信体验，并利用“家人共享”请求获得家长批准。你将了解如何构建与“信息”无缝整合的权限请求、处理家长答复，并为儿童用户量身定制 ui。为了充分从这个讲座中获益，我们建议你先观看 wwdc25 讲座“在你的 app 中提供适龄体验”视频。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9997/9997_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/293/">视频地址</a></p>
-<h1 id="使用-PermissionKit-为儿童通信安全保驾护航"><a href="#使用-PermissionKit-为儿童通信安全保驾护航" class="headerlink" title="使用 PermissionKit 为儿童通信安全保驾护航"></a>使用 PermissionKit 为儿童通信安全保驾护航</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在数字时代，保护儿童上网安全已成为开发者的重要责任。苹果最新推出的 PermissionKit 框架为开发者提供了一套完整的解决方案，通过”信息”应用建立亲子沟通桥梁，让家长能够直接审批孩子的通信请求。本文将详细介绍如何利用这一技术构建更安全的儿童通信环境。</p>
-<h2 id="PermissionKit-框架概述"><a href="#PermissionKit-框架概述" class="headerlink" title="PermissionKit 框架概述"></a>PermissionKit 框架概述</h2><p>PermissionKit 是 iOS/iPadOS/macOS 26 中的全新框架，专为标准化权限流程设计。其核心价值在于：</p>
-<ul>
-<li>利用”信息”作为天然沟通渠道</li>
-<li>支持儿童向父母/监护人申请新联系人权限</li>
-<li>提供家长直接审批的便捷体验</li>
-</ul>
-<h2 id="实施前注意事项"><a href="#实施前注意事项" class="headerlink" title="实施前注意事项"></a>实施前注意事项</h2><p>在集成 PermissionKit 前需确认：</p>
-<ol>
-<li>用户需加入”家人共享”群组</li>
-<li>家长需为孩子启用”通信限制”功能</li>
-<li>若不符合条件，API 将返回默认响应</li>
-</ol>
-<h2 id="儿童界面定制方案"><a href="#儿童界面定制方案" class="headerlink" title="儿童界面定制方案"></a>儿童界面定制方案</h2><p>针对儿童用户的安全界面设计要点：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PermissionKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> knownHandles <span class="operator">=</span> <span class="keyword">await</span> <span class="type">CommunicationLimits</span>.current.knownHandles(in: conversation.participants)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> knownHandles.isSuperset(of: conversation.participants) &#123;</span><br><span class="line">    <span class="comment">// 显示完整内容</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 隐藏敏感信息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过 <code>knownHandles(in:)</code> 方法识别已知联系人，动态调整界面展示逻辑。</p>
-<h2 id="构建权限申请流程"><a href="#构建权限申请流程" class="headerlink" title="构建权限申请流程"></a>构建权限申请流程</h2><p>分步骤创建完整的通信权限申请：</p>
-<ol>
-<li><p><strong>基础请求创建</strong></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> question <span class="operator">=</span> <span class="type">PermissionQuestion</span>(handles: [</span><br><span class="line">    <span class="type">CommunicationHandle</span>(value: <span class="string">&quot;dragonslayer42&quot;</span>, kind: .custom),</span><br><span class="line">    <span class="type">CommunicationHandle</span>(value: <span class="string">&quot;progamer67&quot;</span>, kind: .custom)</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>增强元数据支持</strong></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people <span class="operator">=</span> [</span><br><span class="line">    <span class="type">PersonInformation</span>(</span><br><span class="line">        handle: <span class="type">CommunicationHandle</span>(value: <span class="string">&quot;dragonslayer42&quot;</span>, kind: .custom),</span><br><span class="line">        nameComponents: nameComponents,</span><br><span class="line">        avatarImage: profilePic</span><br><span class="line">    )</span><br><span class="line">]</span><br><span class="line"><span class="keyword">var</span> topic <span class="operator">=</span> <span class="type">CommunicationTopic</span>(personInformation: people)</span><br><span class="line">topic.actions <span class="operator">=</span> [.message]</span><br><span class="line"><span class="keyword">var</span> question <span class="operator">=</span> <span class="type">PermissionQuestion</span>(communicationTopic: topic)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>界面集成方案</strong></p>
-</li>
-</ol>
-<ul>
-<li>SwiftUI 实现：<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">CommunicationLimitsButton</span>(question: question) &#123;</span><br><span class="line">    <span class="type">Label</span>(<span class="string">&quot;申请权限&quot;</span>, systemImage: <span class="string">&quot;paperplane&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>UIKit 实现：<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> <span class="type">CommunicationLimits</span>.current.ask(question, in: viewController)</span><br></pre></td></tr></table></figure></li>
-<li>AppKit 实现：<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> <span class="type">CommunicationLimits</span>.current.ask(question, in: window)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="家长响应处理机制"><a href="#家长响应处理机制" class="headerlink" title="家长响应处理机制"></a>家长响应处理机制</h2><p>通过 AsyncSequence 实时监听家长答复：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.task &#123;</span><br><span class="line">    <span class="keyword">let</span> updates <span class="operator">=</span> <span class="type">CommunicationLimits</span>.current.updates</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">await</span> update <span class="keyword">in</span> updates &#123;</span><br><span class="line">        <span class="comment">// 更新界面状态</span></span><br><span class="line">        <span class="keyword">self</span>.isShowingResponseAlert <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="完整工作流程演示"><a href="#完整工作流程演示" class="headerlink" title="完整工作流程演示"></a>完整工作流程演示</h2><ol>
-<li>儿童端隐藏未知联系人内容</li>
-<li>触发权限申请按钮</li>
-<li>系统自动生成信息请求</li>
-<li>家长端审批操作</li>
-<li>儿童端实时接收响应</li>
-</ol>
-<h2 id="扩展安全方案"><a href="#扩展安全方案" class="headerlink" title="扩展安全方案"></a>扩展安全方案</h2><p>苹果生态提供的完整儿童保护方案：</p>
-<ul>
-<li>敏感内容分析 API</li>
-<li>Declared Age Range API</li>
-<li>屏幕使用时间框架</li>
-<li>家庭控制框架</li>
-</ul>
-<h2 id="实施路线建议"><a href="#实施路线建议" class="headerlink" title="实施路线建议"></a>实施路线建议</h2><ol>
-<li>确定用户年龄区间</li>
-<li>适配儿童友好界面</li>
-<li>集成 PermissionKit 流程</li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/299">在你的 App 中提供适龄体验</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/DeclaredAgeRange">DeclaredAgeRange 文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/PermissionKit">PermissionKit 文档</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用-PermissionKit-强化儿童安全保护"><a href="#使用-PermissionKit-强化儿童安全保护" class="headerlink" title="使用 PermissionKit 强化儿童安全保护"></a>使用 PermissionKit 强化儿童安全保护</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在数字时代，儿童网络安全成为家长和开发者共同关注的焦点。苹果在 iOS、iPadOS 和 macOS 26 系统中推出的 PermissionKit 框架，为开发者提供了一套完整的解决方案，让应用能够更好地保护儿童通信安全。本文将详细介绍 PermissionKit 的核心功能、技术实现方式以及最佳实践。</p>
+<h2 id="PermissionKit-概述"><a href="#PermissionKit-概述" class="headerlink" title="PermissionKit 概述"></a>PermissionKit 概述</h2><p>PermissionKit 是苹果最新推出的框架，旨在为请求者与权限管理者之间创造快速、一致且一流的权限体验。该框架特别适合用于儿童与父母间的通信权限管理，通过”信息”应用作为沟通桥梁，让儿童能够安全地向家长申请与新联系人的交流权限。</p>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>使用 PermissionKit 前需注意以下几点：</p>
+<ul>
+<li>用户必须加入”家人共享”群组</li>
+<li>家长或监护人需为儿童启用”通信限制”功能</li>
+<li>应用需具备判断用户年龄或年龄段的能力</li>
 </ul>
+<h2 id="为儿童定制安全界面"><a href="#为儿童定制安全界面" class="headerlink" title="为儿童定制安全界面"></a>为儿童定制安全界面</h2><p>对于儿童用户，应用应谨慎展示未知联系人的内容。通过 <code>CommunicationLimits</code> 单例的 <code>knownHandles(in:)</code> 方法，可以高效查询系统已知的联系人：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PermissionKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> knownHandles <span class="operator">=</span> <span class="keyword">await</span> <span class="type">CommunicationLimits</span>.current.knownHandles(in: conversation.participants)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> knownHandles.isSuperset(of: conversation.participants) &#123;</span><br><span class="line">    <span class="comment">// 显示内容</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 隐藏内容</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法对输入的句柄集合执行优化查询，返回系统已知的子集，开发者无需重复构建已有数据。</p>
+<h2 id="构建权限请求流程"><a href="#构建权限请求流程" class="headerlink" title="构建权限请求流程"></a>构建权限请求流程</h2><p>PermissionKit 使用”问题”抽象层封装权限请求的细节。开发者需要构建 <code>PermissionQuestion</code> 对象，包含通信主题和相关信息。</p>
+<h3 id="创建基本问题"><a href="#创建基本问题" class="headerlink" title="创建基本问题"></a>创建基本问题</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PermissionKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> question <span class="operator">=</span> <span class="type">PermissionQuestion</span>(handles: [</span><br><span class="line">    <span class="type">CommunicationHandle</span>(value: <span class="string">&quot;dragonslayer42&quot;</span>, kind: .custom),</span><br><span class="line">    <span class="type">CommunicationHandle</span>(value: <span class="string">&quot;progamer67&quot;</span>, kind: .custom)</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<h3 id="添加元数据增强决策信息"><a href="#添加元数据增强决策信息" class="headerlink" title="添加元数据增强决策信息"></a>添加元数据增强决策信息</h3><p>为帮助家长做出更明智的决定，可以为问题添加更多元数据：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PermissionKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> people <span class="operator">=</span> [</span><br><span class="line">    <span class="type">PersonInformation</span>(</span><br><span class="line">        handle: <span class="type">CommunicationHandle</span>(value: <span class="string">&quot;dragonslayer42&quot;</span>, kind: .custom),</span><br><span class="line">        nameComponents: nameComponents,</span><br><span class="line">        avatarImage: profilePic</span><br><span class="line">    ),</span><br><span class="line">    <span class="type">PersonInformation</span>(</span><br><span class="line">        handle: <span class="type">CommunicationHandle</span>(value: <span class="string">&quot;progamer67&quot;</span>, kind: .custom)</span><br><span class="line">    )</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> topic <span class="operator">=</span> <span class="type">CommunicationTopic</span>(personInformation: people)</span><br><span class="line">topic.actions <span class="operator">=</span> [.message]</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> question <span class="operator">=</span> <span class="type">PermissionQuestion</span>(communicationTopic: topic)</span><br></pre></td></tr></table></figure>
+<h3 id="在不同框架中发起请求"><a href="#在不同框架中发起请求" class="headerlink" title="在不同框架中发起请求"></a>在不同框架中发起请求</h3><p>在 SwiftUI 中使用 <code>CommunicationLimitsButton</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PermissionKit</span><br><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ContentView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> question: <span class="type">PermissionQuestion</span>&lt;<span class="type">CommunicationTopic</span>&gt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">        <span class="type">CommunicationLimitsButton</span>(question: question) &#123;</span><br><span class="line">            <span class="type">Label</span>(<span class="string">&quot;请求权限&quot;</span>, systemImage: <span class="string">&quot;paperplane&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 UIKit 中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PermissionKit</span><br><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> <span class="type">CommunicationLimits</span>.current.ask(question, in: viewController)</span><br></pre></td></tr></table></figure>
+<p>在 AppKit 中：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PermissionKit</span><br><span class="line"><span class="keyword">import</span> AppKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> <span class="type">CommunicationLimits</span>.current.ask(question, in: window)</span><br></pre></td></tr></table></figure>
+<h2 id="处理家长反馈"><a href="#处理家长反馈" class="headerlink" title="处理家长反馈"></a>处理家长反馈</h2><p>家长在”信息”中做出回应后，应用需要在后台处理这些反馈：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> PermissionKit</span><br><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ChatsView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="meta">@State</span> <span class="keyword">var</span> isShowingResponseAlert <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">List</span> &#123;</span><br><span class="line">           <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">        .task &#123;</span><br><span class="line">            <span class="keyword">let</span> updates <span class="operator">=</span> <span class="type">CommunicationLimits</span>.current.updates</span><br><span class="line">            <span class="keyword">for</span> <span class="keyword">await</span> update <span class="keyword">in</span> updates &#123;</span><br><span class="line">                <span class="comment">// 收到反馈！</span></span><br><span class="line">                <span class="keyword">self</span>.isShowingResponseAlert <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="完整工作流程"><a href="#完整工作流程" class="headerlink" title="完整工作流程"></a>完整工作流程</h2><ol>
+<li>儿童在应用中尝试与未知联系人通信</li>
+<li>应用隐藏敏感内容并显示权限请求按钮</li>
+<li>儿童发起请求，系统生成”信息”对话</li>
+<li>家长在”信息”中查看请求详情并做出决策</li>
+<li>决策结果自动同步回应用，更新儿童界面</li>
+</ol>
+<h2 id="其他儿童保护方案"><a href="#其他儿童保护方案" class="headerlink" title="其他儿童保护方案"></a>其他儿童保护方案</h2><p>除 PermissionKit 外，苹果还提供多种儿童保护技术：</p>
+<ul>
+<li>Sensitive Content Analysis API：检测视频通话中的裸露内容</li>
+<li>Declared Age Range API：获取用户年龄段信息</li>
+<li>Screen Time 框架：家长监管工具</li>
+<li>Family Controls 框架：应用级家长控制</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>PermissionKit 为开发者提供了一套完整的儿童通信安全解决方案，通过系统级集成简化了复杂的权限管理流程。开发者只需遵循框架提供的API，就能轻松构建符合儿童安全标准的通信功能。随着数字安全意识的提升，集成此类保护机制将成为儿童友好型应用的必备功能。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/299">在你的 App 中提供适龄体验</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/DeclaredAgeRange">DeclaredAgeRange</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/PermissionKit">PermissionKit</a></p>
 
       
 
@@ -402,18 +381,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_230/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_285/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          使用 AlarmKit API 实现唤醒功能
+          了解 PaperKit
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_232/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">在网页上验证身份证件</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_291/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SwiftData：深入了解继承和架构迁移</div>
       <i class="icon-circle-right"></i>
     </a>
   

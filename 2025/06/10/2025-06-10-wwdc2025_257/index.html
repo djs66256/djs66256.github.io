@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何在你的 app 中支持 energykit，以便用户可以优化家庭用电量。这可以帮助用户在电力更清洁、更便宜的时段运行电器或为电动汽车充电。详细了解如何进行设置，如何生成充电计划，以及如何通过用电量反馈向用户提供能耗洞察信息等详情。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9902/9902_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:48:03.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:48:03.552Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.603Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_257/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:48:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,45 +227,53 @@ var _hmt = _hmt || [];
       
         <p>了解如何在你的 app 中支持 energykit，以便用户可以优化家庭用电量。这可以帮助用户在电力更清洁、更便宜的时段运行电器或为电动汽车充电。详细了解如何进行设置，如何生成充电计划，以及如何通过用电量反馈向用户提供能耗洞察信息等详情。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9902/9902_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/257/">视频地址</a></p>
-<h1 id="使用-EnergyKit-优化家庭用电量"><a href="#使用-EnergyKit-优化家庭用电量" class="headerlink" title="使用 EnergyKit 优化家庭用电量"></a>使用 EnergyKit 优化家庭用电量</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>EnergyKit 是一个全新的开发框架，旨在帮助住宅类应用开发者整合电网洞察功能，让用户能够在电力更清洁、更便宜的时段运行电器或为电动汽车充电。通过本文，你将了解如何设置 EnergyKit、生成充电计划，以及如何利用用电量反馈为用户提供有价值的能耗洞察。</p>
-<h2 id="启用-EnergyKit"><a href="#启用-EnergyKit" class="headerlink" title="启用 EnergyKit"></a>启用 EnergyKit</h2><p>要使用 EnergyKit，用户需要先选择加入清洁能源充电计划，并为每个充电位置进行设置。在我们的示例中，充电位置列表代表电动汽车的不同充电地点。</p>
-<h3 id="关键步骤"><a href="#关键步骤" class="headerlink" title="关键步骤"></a>关键步骤</h3><ol>
-<li>添加开关选项让用户可以启用清洁能源充电</li>
-<li>EnergyVenue 代表设备从电网取电的物理场所</li>
-<li>用户需要通过家庭应用或 EnergyKit 启用流程建立”家”</li>
-<li>保存场所与充电位置的映射关系</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Retrieve an EnergyVenue</span></span><br><span class="line"><span class="keyword">import</span> EnergyKit</span><br><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="meta">@Observable</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">EnergyVenueManager</span>  &#123;</span><br><span class="line">    <span class="keyword">let</span> venue: <span class="type">EnergyVenue</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">venueID</span>: <span class="type">UUID</span>) <span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> energyVenue <span class="operator">=</span> <span class="keyword">await</span> <span class="type">EnergyVenue</span>.venue(for: venueID) <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">        venue <span class="operator">=</span> energyVenue</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="生成充电计划"><a href="#生成充电计划" class="headerlink" title="生成充电计划"></a>生成充电计划</h2><p>确认用户启用清洁能源充电并选择 EnergyVenue 后，下一步是生成清洁能源充电计划。</p>
-<h3 id="用电指导类型"><a href="#用电指导类型" class="headerlink" title="用电指导类型"></a>用电指导类型</h3><ul>
-<li><strong>减少</strong>：适用于智能恒温器等可降低用电量的设备</li>
-<li><strong>转移</strong>：适用于电动汽车等可以调整用电时段但总用电量不变的设备</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fetch ElectricityGuidance</span></span><br><span class="line"><span class="keyword">import</span> EnergyKit</span><br><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="meta">@Observable</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">EnergyVenueManager</span>  &#123;</span><br><span class="line">    <span class="keyword">var</span> guidance: <span class="type">ElectricityGuidance</span>?</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fileprivate</span> <span class="keyword">func</span> <span class="title function_">streamGuidance</span>(</span><br><span class="line">        <span class="params">venueID</span>: <span class="type">UUID</span>,</span><br><span class="line">        <span class="params">update</span>: (<span class="keyword">_</span> guidance: <span class="type">ElectricityGuidance</span>) -&gt; <span class="type">Void</span></span><br><span class="line">    ) <span class="keyword">async</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> query <span class="operator">=</span> <span class="type">ElectricityGuidance</span>.<span class="type">Query</span>(suggestedAction: .shift)</span><br><span class="line">        <span class="keyword">for</span> <span class="keyword">try</span> <span class="keyword">await</span> currentGuidance <span class="keyword">in</span> <span class="type">ElectricityGuidance</span>.sharedService.guidance(</span><br><span class="line">            using: query,</span><br><span class="line">            at: venueID</span><br><span class="line">        ) &#123;</span><br><span class="line">            update(currentGuidance)</span><br><span class="line">          	<span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="洞察分析"><a href="#洞察分析" class="headerlink" title="洞察分析"></a>洞察分析</h2><p>EnergyKit 提供易用的用电信息格式，帮助开发者向用户展示：</p>
-<ul>
-<li>车辆充电时段中使用清洁电力的比例</li>
-<li>基于电价时段的用电分类（五类）</li>
-</ul>
-<h3 id="提交-LoadEvents-反馈"><a href="#提交-LoadEvents-反馈" class="headerlink" title="提交 LoadEvents 反馈"></a>提交 LoadEvents 反馈</h3><p>应在充电过程中定期创建事件：</p>
-<ol>
-<li>充电开始时记录初始状态</li>
-<li>充电期间每15分钟记录稳态充电</li>
-<li>遇到特殊事件时额外记录</li>
-<li>充电结束时提交最终状态</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Update charging measurements</span></span><br><span class="line"><span class="keyword">import</span> EnergyKit</span><br><span class="line"></span><br><span class="line"><span class="meta">@Observable</span> <span class="keyword">class</span> <span class="title class_">ElectricVehicleController</span> &#123;</span><br><span class="line">    <span class="keyword">fileprivate</span> <span class="keyword">func</span> <span class="title function_">chargingMeasurement</span>() -&gt; <span class="type">ElectricVehicleLoadEvent</span>.<span class="type">ElectricalMeasurement</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> stateOfCharge <span class="operator">=</span> <span class="type">Int</span>(configuration.state.stateOfCharge.rounded(.down))</span><br><span class="line">        <span class="keyword">let</span> power <span class="operator">=</span> <span class="type">Measurement</span>&lt;<span class="type">UnitPower</span>&gt;(</span><br><span class="line">            value: configuration.properties.chargingPower <span class="operator">*</span> <span class="number">1000000</span>,</span><br><span class="line">            unit: .milliwatts</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">let</span> energy <span class="operator">=</span> <span class="type">Measurement</span>&lt;<span class="type">UnitEnergy</span>&gt;(</span><br><span class="line">            value: configuration.state.cummulativeEnergy <span class="operator">*</span> <span class="number">1000000</span>,</span><br><span class="line">            unit: .<span class="type">EnergyKit</span>.milliwattHours</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> <span class="type">ElectricVehicleLoadEvent</span>.<span class="type">ElectricalMeasurement</span>(</span><br><span class="line">            stateOfCharge: stateOfCharge,</span><br><span class="line">            direction: .imported,</span><br><span class="line">            power: power,</span><br><span class="line">            energy: energy</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过 EnergyKit，开发者可以轻松为应用添加智能用电功能，帮助用户节省开支并减少碳排放。我们介绍了核心功能包括场所设置、充电计划生成和用电洞察分析。现在就开始使用 EnergyKit，为用户创造更智能、更环保的应用体验吧！</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/227">完成后台任务</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/266">探索 SwiftUI 中的并发机制</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://www.apple.com/environment/">Apple 2030</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="使用-EnergyKit-优化家庭用电量"><a href="#使用-EnergyKit-优化家庭用电量" class="headerlink" title="使用 EnergyKit 优化家庭用电量"></a>使用 EnergyKit 优化家庭用电量</h1><p>EnergyKit 是一个强大的框架，帮助开发者将电网洞察信息整合到住宅应用中，使用户能够更智能地管理家庭用电。本篇文章将详细介绍如何将 EnergyKit 集成到应用中，帮助用户在更清洁且可能更便宜的时段运行电器或为电动汽车充电。</p>
+<h2 id="什么是-EnergyKit？"><a href="#什么是-EnergyKit？" class="headerlink" title="什么是 EnergyKit？"></a>什么是 EnergyKit？</h2><p>EnergyKit 是苹果推出的一个框架，旨在帮助开发者获取电网预测信息，优化家庭用电。该框架支持开发者获取用电指导、生成充电计划，并通过用电量反馈向用户提供能耗洞察信息。通过 EnergyKit，用户可以了解电网中相对清洁的电力供应时段，从而优化用电行为。</p>
+<h2 id="加入-EnergyKit"><a href="#加入-EnergyKit" class="headerlink" title="加入 EnergyKit"></a>加入 EnergyKit</h2><p>将 EnergyKit 集成到应用的第一步是让用户选择加入”清洁能源充电”体验。用户需要为每个希望使用更清洁电力充电的地点进行选择。在应用中，可以通过一个开关控件让用户选择是否启用”清洁能源充电”功能。</p>
+<p>加入流程的核心是 <code>EnergyVenue</code>，它代表一个物理场所，设备从电网消耗电力。开发者可以通过 <code>EnergyVenue.venue(for: venueID)</code> 方法检索用户选择的地点。每次应用启动时，都应检查用户之前选择的场所是否仍然有效。</p>
+<p>以下是检索 <code>EnergyVenue</code> 的代码示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Retrieve an EnergyVenue</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> EnergyKit</span><br><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="meta">@Observable</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">EnergyVenueManager</span>  &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> venue: <span class="type">EnergyVenue</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init?</span>(<span class="params">venueID</span>: <span class="type">UUID</span>) <span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> energyVenue <span class="operator">=</span> <span class="keyword">await</span> <span class="type">EnergyVenue</span>.venue(for: venueID) <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        &#125;</span><br><span class="line">        venue <span class="operator">=</span> energyVenue</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="生成充电计划"><a href="#生成充电计划" class="headerlink" title="生成充电计划"></a>生成充电计划</h2><p>选择 <code>EnergyVenue</code> 后，下一步是生成”清洁能源充电计划”。计划的基础是”用电指导”（Electricity Guidance），它提供用电优化的建议。”用电指导”分为两种类型：</p>
+<ol>
+<li><strong>减少（Reduce）</strong>：适用于智能恒温器等减少用电量的设备。</li>
+<li><strong>转移（Shift）</strong>：适用于电动汽车等可以调整用电时段的设备。</li>
+</ol>
+<p>通过 <code>ElectricityGuidance.sharedService.guidance(using:query,at:venueID)</code> 方法可以获取用电指导。以下是获取用电指导的代码示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fetch ElectricityGuidance</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> EnergyKit</span><br><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="meta">@Observable</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">EnergyVenueManager</span>  &#123;</span><br><span class="line">    <span class="comment">// The current active guidance.</span></span><br><span class="line">    <span class="keyword">var</span> guidance: <span class="type">ElectricityGuidance</span>?</span><br><span class="line"></span><br><span class="line">    <span class="keyword">fileprivate</span> <span class="keyword">func</span> <span class="title function_">streamGuidance</span>(</span><br><span class="line">        <span class="params">venueID</span>: <span class="type">UUID</span>,</span><br><span class="line">        <span class="params">update</span>: (<span class="keyword">_</span> guidance: <span class="type">ElectricityGuidance</span>) -&gt; <span class="type">Void</span></span><br><span class="line">    ) <span class="keyword">async</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> query <span class="operator">=</span> <span class="type">ElectricityGuidance</span>.<span class="type">Query</span>(suggestedAction: .shift)</span><br><span class="line">        <span class="keyword">for</span> <span class="keyword">try</span> <span class="keyword">await</span> currentGuidance <span class="keyword">in</span> <span class="type">ElectricityGuidance</span>.sharedService.guidance(</span><br><span class="line">            using: query,</span><br><span class="line">            at: venueID</span><br><span class="line">        ) &#123;</span><br><span class="line">            update(currentGuidance)</span><br><span class="line">          	<span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="用电量反馈与洞察"><a href="#用电量反馈与洞察" class="headerlink" title="用电量反馈与洞察"></a>用电量反馈与洞察</h2><p>为了让 EnergyKit 提供准确的用电洞察，开发者需要提交充电设备的用电数据。这些数据通过 <code>LoadEvents</code> 提交，并在充电过程中定期更新。用电量按电网清洁度和电价分类：</p>
+<ul>
+<li><strong>清洁度分类</strong>：<ul>
+<li>清洁（Clean）</li>
+<li>减少（Reduced）</li>
+<li>避免（Avoided）</li>
+</ul>
+</li>
+<li><strong>电价分类</strong>（如果有费率计划信息）：<ul>
+<li>超级非高峰（Super Off-Peak）</li>
+<li>非高峰（Off-Peak）</li>
+<li>部分高峰（Partial Peak）</li>
+<li>高峰（Peak）</li>
+<li>关键高峰（Critical Peak）</li>
+</ul>
 </li>
 </ul>
+<p>以下是创建和提交 <code>LoadEvents</code> 的代码示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Update charging measurements</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> EnergyKit</span><br><span class="line"></span><br><span class="line"><span class="comment">// A controller that handles an electric vehicle</span></span><br><span class="line"><span class="meta">@Observable</span> <span class="keyword">class</span> <span class="title class_">ElectricVehicleController</span> &#123;</span><br><span class="line">    <span class="keyword">fileprivate</span> <span class="keyword">func</span> <span class="title function_">chargingMeasurement</span>() -&gt; <span class="type">ElectricVehicleLoadEvent</span>.<span class="type">ElectricalMeasurement</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> stateOfCharge <span class="operator">=</span> <span class="type">Int</span>(configuration.state.stateOfCharge.rounded(.down))</span><br><span class="line">        <span class="keyword">let</span> power <span class="operator">=</span> <span class="type">Measurement</span>&lt;<span class="type">UnitPower</span>&gt;(</span><br><span class="line">            value: configuration.properties.chargingPower <span class="operator">*</span> <span class="number">1000000</span>,</span><br><span class="line">            unit: .milliwatts</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">let</span> energy <span class="operator">=</span> <span class="type">Measurement</span>&lt;<span class="type">UnitEnergy</span>&gt;(</span><br><span class="line">            value: configuration.state.cummulativeEnergy <span class="operator">*</span> <span class="number">1000000</span>,</span><br><span class="line">            unit: .<span class="type">EnergyKit</span>.milliwattHours</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> <span class="type">ElectricVehicleLoadEvent</span>.<span class="type">ElectricalMeasurement</span>(</span><br><span class="line">            stateOfCharge: stateOfCharge,</span><br><span class="line">            direction: .imported,</span><br><span class="line">            power: power,</span><br><span class="line">            energy: energy</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="获取用电洞察"><a href="#获取用电洞察" class="headerlink" title="获取用电洞察"></a>获取用电洞察</h2><p>提交 <code>LoadEvents</code> 后，开发者可以通过 <code>ElectricityInsightQuery</code> 获取用电洞察。以下是查询洞察的代码示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create an insight query</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> EnergyKit</span><br><span class="line"></span><br><span class="line"><span class="meta">@Observable</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">EnergyVenueManager</span>  &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">createInsightsQuery</span>(<span class="params">on</span> <span class="params">date</span>: <span class="type">Date</span>) -&gt; <span class="type">ElectricityInsightQuery</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">ElectricityInsightQuery</span>(</span><br><span class="line">            options: .cleanliness.union(.tariff),</span><br><span class="line">            range: <span class="keyword">self</span>.dayInterval(date: date),</span><br><span class="line">            granularity: .daily,</span><br><span class="line">            flowDirection: .imported</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>EnergyKit 为开发者提供了强大的工具，帮助用户优化家庭用电。通过以下步骤可以完成集成：</p>
+<ol>
+<li><strong>用户加入</strong>：让用户选择加入”清洁能源充电”体验。</li>
+<li><strong>获取用电指导</strong>：使用 <code>ElectricityGuidance</code> 获取优化建议。</li>
+<li><strong>提交用电数据</strong>：通过 <code>LoadEvents</code> 反馈充电行为。</li>
+<li><strong>生成洞察</strong>：利用 <code>ElectricityInsightQuery</code> 提供用户用电报告。</li>
+</ol>
+<p>开发者可以访问苹果官方文档进一步了解 EnergyKit 的实现细节，并通过示例代码优化应用功能。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/227">完成后台任务</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/266">探索 SwiftUI 中的并发机制</a>  </p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://www.apple.com/environment/">Apple 2030</a></p>
 
       
 
@@ -372,18 +380,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_314/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_251/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          开始使用量子安全加密技术
+          提升 App 的音频录制功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_226/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">分析并优化 App 的功耗</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_256/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SwiftUI 的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

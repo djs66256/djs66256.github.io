@@ -16,8 +16,8 @@
 <meta property="og:description" content="简要了解 ios、ipados 和 macos 的全新 app 图标外观，包括浅色调和深色调以及透明选项。了解如何使用霜冻质感和半透明效果使 app 图标更生动鲜活、更富表现力，并了解如何确保你的图标与镜面高光效果相得益彰。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9911/9911_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:31:45.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:31:45.412Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.833Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -220,7 +220,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_220/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:31:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -229,87 +229,41 @@ var _hmt = _hmt || [];
       
         <p>简要了解 ios、ipados 和 macos 的全新 app 图标外观，包括浅色调和深色调以及透明选项。了解如何使用霜冻质感和半透明效果使 app 图标更生动鲜活、更富表现力，并了解如何确保你的图标与镜面高光效果相得益彰。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9911/9911_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/220/">视频地址</a></p>
-<h1 id="全新-App-图标设计语言解析：从-Liquid-Glass-到跨平台适配"><a href="#全新-App-图标设计语言解析：从-Liquid-Glass-到跨平台适配" class="headerlink" title="全新 App 图标设计语言解析：从 Liquid Glass 到跨平台适配"></a>全新 App 图标设计语言解析：从 Liquid Glass 到跨平台适配</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Apple 近期全面革新了 iOS、iPadOS 和 macOS 平台的 App 图标视觉体系。这次重塑不仅带来了惊艳的 Liquid Glass 材质效果，更统一了各平台的设计语言，为开发者提供了更强大的创意表达工具。本文将深入解析这套全新设计系统的核心特性和实用技巧。</p>
-<h2 id="Liquid-Glass-材质革命"><a href="#Liquid-Glass-材质革命" class="headerlink" title="Liquid Glass 材质革命"></a>Liquid Glass 材质革命</h2><p>本次设计革新最引人注目的突破是<strong>Liquid Glass</strong>材质：</p>
-<ul>
-<li>灵感源自 visionOS 的分层图标和真实玻璃特性</li>
-<li>通过边缘高光、磨砂质感与半透明效果叠加实现立体感</li>
-<li>支持”由内发光”的视觉体验</li>
-<li>利用陀螺仪数据实现光线随环境流动的动效</li>
-</ul>
-<p>这套材质系统完美适配：</p>
-<ul>
-<li>浅色/深色双模式</li>
-<li>全新半透明外观选项（包括浅色/深色单色玻璃版本）</li>
-<li>创新的双色调模式（深色调前景元素/浅色调玻璃材质）</li>
-</ul>
-<h2 id="统一的设计体系"><a href="#统一的设计体系" class="headerlink" title="统一的设计体系"></a>统一的设计体系</h2><h3 id="跨平台一致性优化"><a href="#跨平台一致性优化" class="headerlink" title="跨平台一致性优化"></a>跨平台一致性优化</h3><p>新系统解决了历史遗留的平台差异问题：</p>
-<ul>
-<li>简化设计网格结构，增大圆角半径</li>
-<li>1024像素画布统一标准</li>
-<li>圆形图案获得专属框架和留白空间</li>
-<li>watchOS采用1088像素画布保持视觉协调</li>
-</ul>
-<h3 id="macOS专项优化"><a href="#macOS专项优化" class="headerlink" title="macOS专项优化"></a>macOS专项优化</h3><ul>
-<li>使用画布形状作为蒙版规范辅助元素</li>
-<li>形状匹配的图标自动适配新材质</li>
-<li>独特形状图标系统会自动处理（建议手动优化）</li>
-</ul>
-<h2 id="图标设计五大黄金法则"><a href="#图标设计五大黄金法则" class="headerlink" title="图标设计五大黄金法则"></a>图标设计五大黄金法则</h2><ol>
-<li><p><strong>分层设计架构</strong></p>
-<ul>
-<li>基础结构=背景层+前景层</li>
-<li>支持多层前景叠加</li>
-<li>推荐使用立体形状增强材质表现</li>
-</ul>
-</li>
-<li><p><strong>半透明艺术</strong></p>
-<ul>
-<li>模糊效果创造精妙层次</li>
-<li>透明模式可透见墙纸</li>
-<li>各类外观模式下表现稳定</li>
-</ul>
-</li>
-<li><p><strong>简约至上原则</strong></p>
-<ul>
-<li>减少重叠区域突出材质特性</li>
-<li>更新色彩方案保持活力</li>
-<li>避免过度静态效果</li>
-</ul>
-</li>
-<li><p><strong>细节精修指南</strong></p>
-<ul>
-<li>圆角设计优化光线传播</li>
-<li>功能视角优先（如放大镜案例）</li>
-<li>确保小尺寸可读性</li>
-</ul>
-</li>
-<li><p><strong>背景设计秘诀</strong></p>
-<ul>
-<li>采用System Light/Dark渐变</li>
-<li>柔和渐变配合光线方向</li>
-<li>彩色背景增强模式辨识度</li>
-</ul>
-</li>
-</ol>
-<h2 id="设计资源与工具"><a href="#设计资源与工具" class="headerlink" title="设计资源与工具"></a>设计资源与工具</h2><p>Apple为开发者准备了全面支持：</p>
-<ul>
-<li>Figma/Sketch/Photoshop/Illustrator模板</li>
-<li>配套开发工具Icon Composer</li>
-<li>详细Human Interface Guidelines</li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这套全新的App图标设计语言不仅是一次视觉升级，更开创了数字产品表达的新纪元。通过掌握Liquid Glass材质特性和分层设计方法，开发者可以创作出既保持品牌调性又充满生命力的图标作品。现在就访问设计资源页面，开启您的创意之旅吧！</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/219">了解 Liquid Glass</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a> </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/361">使用 Icon Composer 构建图标</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/app-icons">Human Interface Guidelines: App icons</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="苹果WWDC揭秘：全面重构的App图标设计语言"><a href="#苹果WWDC揭秘：全面重构的App图标设计语言" class="headerlink" title="苹果WWDC揭秘：全面重构的App图标设计语言"></a>苹果WWDC揭秘：全面重构的App图标设计语言</h1><p>在2025年苹果全球开发者大会上，苹果设计师Marie详细介绍了全新重构的App图标视觉系统。这项革新将为iOS、iPadOS和macOS等平台带来焕然一新的视觉体验。</p>
+<h2 id="液态玻璃材质：图标设计的革命性突破"><a href="#液态玻璃材质：图标设计的革命性突破" class="headerlink" title="液态玻璃材质：图标设计的革命性突破"></a>液态玻璃材质：图标设计的革命性突破</h2><p>作为今年最具突破性的重新设计，苹果团队从visionOS的分层图标中汲取灵感，结合真实玻璃材质特性，创造出名为”液态玻璃（Liquid Glass）”的全新材质。这种材质通过巧妙的分层技术呈现边缘高光、磨砂纹理和半透明效果：</p>
+<ol>
+<li><strong>立体感增强</strong>：边缘光线会随设备陀螺仪移动而流转</li>
+<li><strong>内部发光效果</strong>：营造出独特的视觉深度</li>
+<li><strong>多模式支持</strong>：完美适配浅色、深色及全新的半透明外观模式</li>
+</ol>
+<p>特别值得注意的是，苹果开发了两类色调模式：深色色调为前景着色，浅色色调则将色彩注入玻璃本身，使图标在锁屏配色搭配时效果尤为惊艳。</p>
+<h2 id="跨平台统一的设计体系"><a href="#跨平台统一的设计体系" class="headerlink" title="跨平台统一的设计体系"></a>跨平台统一的设计体系</h2><p>过去不同设备平台采用差异化设计的问题得到了彻底解决。新系统带来了多项重大改进：</p>
+<ul>
+<li><strong>网格更新</strong>：采用更简洁均匀的间距布局，增大圆角半径</li>
+<li><strong>圆形图案优化</strong>：为圆形图标提供专属框架和更多留白空间</li>
+<li><strong>自动适配机制</strong>：系统能自动应用蒙版或扩展适配模板，赋予旧图标新材质外观</li>
 </ul>
+<p>对于开发者特别关注的macOS图标适配问题，苹果展示了”通讯录”图标的具体改造案例。新系统会智能处理不规则轮廓，同时建议开发者重新绘制图标以充分利用画布空间。</p>
+<h2 id="图标绘制专业技巧"><a href="#图标绘制专业技巧" class="headerlink" title="图标绘制专业技巧"></a>图标绘制专业技巧</h2><p>Marie分享了多项实用设计技巧，帮助开发者充分利用新材质特性：</p>
+<ol>
+<li><strong>分层结构</strong>：背景层+前景层的组合是设计核心</li>
+<li><strong>半透明与模糊</strong>：比以往更优雅简单的实现方式</li>
+<li><strong>简约设计</strong>：遵循”少即是多”原则，让材质本身说话</li>
+<li><strong>背景处理</strong>：推荐使用System Light/Dark渐变而非纯色</li>
+</ol>
+<p>值得注意的是，由于材质本身已包含丰富动态效果，苹果建议减少源图案中的静态效果。此外，设计时还需注意避免尖锐边缘和细线，采用圆角更利于光线传播。</p>
+<h2 id="新时代的图标设计理念"><a href="#新时代的图标设计理念" class="headerlink" title="新时代的图标设计理念"></a>新时代的图标设计理念</h2><p>这项革新不仅是视觉美学的改变，更标志着图标设计新时代的到来。苹果鼓励开发者：</p>
+<ul>
+<li>拥抱变革，探索新的设计可能性</li>
+<li>让图标成为最能体现应用价值的视觉载体</li>
+<li>在叙事与品牌塑造中发挥更关键作用</li>
+</ul>
+<p>对于希望深入了解新设计系统的开发者，苹果提供了配套讲座和设计模板资源。这项全面的图标设计革新预计将随新版操作系统一同推出，为苹果生态系统带来更加统一、精致的视觉体验。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/219">了解 Liquid Glass</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/361">使用 Icon Composer 构建图标</a></p>
+<h2 id="文档资料"><a href="#文档资料" class="headerlink" title="文档资料"></a>文档资料</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/app-icons">人机界面指南：App图标</a></p>
 
       
 
@@ -424,18 +378,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_361/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_208/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          使用 Icon Composer 构建图标
+          提升 iPad App 设计
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_356/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">了解全新设计系统</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_219/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">了解 Liquid Glass</div>
       <i class="icon-circle-right"></i>
     </a>
   

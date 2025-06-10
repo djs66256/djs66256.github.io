@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何在一个代码库中混合使用 swift 和 java。我们将介绍 swift-java 互操作性项目，该项目让你可以在 java 程序中使用 swift，反之亦然。我们将向你展示如何使用 swift-java 提供的工具和库来编写可在这两个运行时之间进行互操作的安全高效代码。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10027/10027_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:30:39.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:30:39.054Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.827Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="swift">
 <meta property="article:tag" content="wwdc2025">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_307/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:30:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,81 +231,104 @@ var _hmt = _hmt || [];
       
         <p>了解如何在一个代码库中混合使用 swift 和 java。我们将介绍 swift-java 互操作性项目，该项目让你可以在 java 程序中使用 swift，反之亦然。我们将向你展示如何使用 swift-java 提供的工具和库来编写可在这两个运行时之间进行互操作的安全高效代码。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10027/10027_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/307/">视频地址</a></p>
-<h1 id="Swift与Java互操作性解析：跨越语言边界的桥梁"><a href="#Swift与Java互操作性解析：跨越语言边界的桥梁" class="headerlink" title="Swift与Java互操作性解析：跨越语言边界的桥梁"></a>Swift与Java互操作性解析：跨越语言边界的桥梁</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在现代软件开发中，多语言协作已成为常态。Swift作为苹果生态的主力语言，如何与其他主流语言(如Java)实现无缝互操作？本文将深入探讨Swift-Java互操作性项目，揭示其技术实现和最佳实践。</p>
-<h2 id="项目背景与目标"><a href="#项目背景与目标" class="headerlink" title="项目背景与目标"></a>项目背景与目标</h2><p>Swift-Java互操作性项目由Swift语言团队于今年初启动，旨在实现：</p>
-<ol>
-<li>在Java应用中调用Swift代码</li>
-<li>在Swift项目中集成Java库</li>
-<li>双向无缝类型转换与内存管理</li>
-</ol>
-<p>这种互操作性让开发者可以：</p>
-<ul>
-<li>渐进式地在现有Java代码库中引入Swift</li>
-<li>复用成熟的Java库</li>
-<li>将Swift库提供给Java项目使用</li>
-</ul>
-<h2 id="技术实现方案"><a href="#技术实现方案" class="headerlink" title="技术实现方案"></a>技术实现方案</h2><h3 id="基础方案：Java原生方法-JNI"><a href="#基础方案：Java原生方法-JNI" class="headerlink" title="基础方案：Java原生方法(JNI)"></a>基础方案：Java原生方法(JNI)</h3><p>传统的Java与原生代码交互方式是通过JNI(Java Native Interface)：</p>
-<ol>
-<li>定义本地方法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">native</span> Integer <span class="title function_">compute</span><span class="params">(Integer value)</span>;</span><br></pre></td></tr></table></figure></li>
-<li>生成C头文件</li>
-<li>用Swift实现函数</li>
-</ol>
-<p>虽然可行，但存在以下问题：</p>
-<ul>
-<li>模板代码复杂</li>
-<li>手动管理对象生命周期</li>
-<li>易出现类型匹配错误</li>
-</ul>
-<h3 id="改进方案：SwiftJava工具链"><a href="#改进方案：SwiftJava工具链" class="headerlink" title="改进方案：SwiftJava工具链"></a>改进方案：SwiftJava工具链</h3><p>SwiftJava项目提供了更优雅的解决方案，包含：</p>
-<ol>
-<li><strong>JavaKit</strong>：Swift包的JNI安全封装</li>
-<li><strong>SwiftKit</strong>：Java处理Swift对象的辅助库</li>
-<li><strong>Swift-Java CLI工具</strong>：自动生成桥接代码</li>
-</ol>
-<p>示例实现：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JavaImplementation</span></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">JNIExample</span>: <span class="title class_ inherited__">JNIExampleNativeMethods</span> &#123;</span><br><span class="line">    <span class="meta">@JavaMethod</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">compute</span>(<span class="params">value</span>: <span class="type">JavaLang</span>.<span class="type">Integer</span>) -&gt; <span class="type">JavaLang</span>.<span class="type">Integer</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">JavaLang</span>.<span class="type">Integer</span>(value.intValue <span class="operator">*</span> <span class="number">2</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>优势：</p>
-<ul>
-<li>简化模板代码</li>
-<li>自动类型安全</li>
-<li>更好的对象生命周期管理</li>
-</ul>
-<h2 id="高级应用场景"><a href="#高级应用场景" class="headerlink" title="高级应用场景"></a>高级应用场景</h2><h3 id="场景一：Swift调用Java库"><a href="#场景一：Swift调用Java库" class="headerlink" title="场景一：Swift调用Java库"></a>场景一：Swift调用Java库</h3><p>以Apache Commons CSV为例：</p>
-<ol>
-<li>指定Maven坐标</li>
-<li>使用SwiftJava工具解析依赖</li>
-<li>自动生成Swift包装</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> JavaKit</span><br><span class="line"><span class="keyword">import</span> CommonsCSV</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> jvm <span class="operator">=</span> <span class="keyword">try</span> <span class="type">JVM</span>()</span><br><span class="line"><span class="keyword">let</span> fileReader <span class="operator">=</span> <span class="keyword">try</span> <span class="type">JavaIO</span>.<span class="type">FileReader</span>(<span class="string">&quot;data.csv&quot;</span>)</span><br><span class="line"><span class="keyword">let</span> csvParser <span class="operator">=</span> <span class="keyword">try</span> <span class="type">CSVParser</span>(fileReader, <span class="type">CSVFormat</span>.<span class="type">DEFAULT</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="场景二：Java调用Swift库"><a href="#场景二：Java调用Swift库" class="headerlink" title="场景二：Java调用Swift库"></a>场景二：Java调用Swift库</h3><p>使用Java 22的Foreign Function API：</p>
-<ol>
-<li>生成Java包装类</li>
-<li>管理Swift值类型内存</li>
-<li>安全释放资源</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> (<span class="type">var</span> <span class="variable">arena</span> <span class="operator">=</span> ConfinedArena.open()) &#123;</span><br><span class="line">    <span class="type">SwiftValue</span> <span class="variable">value</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SwiftValue</span>(arena, <span class="number">42</span>);</span><br><span class="line">    System.out.println(value.compute());</span><br><span class="line">&#125; <span class="comment">// 自动释放内存</span></span><br></pre></td></tr></table></figure>
-<h2 id="内存管理策略"><a href="#内存管理策略" class="headerlink" title="内存管理策略"></a>内存管理策略</h2><p>SwiftJava提供了两种内存管理方式：</p>
-<ol>
-<li><strong>GC依赖模式</strong>：依靠Java垃圾回收器</li>
-<li><strong>作用域模式</strong>(推荐)：使用try-with-resources语法</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 推荐方式</span></span><br><span class="line"><span class="keyword">try</span> (<span class="type">var</span> <span class="variable">arena</span> <span class="operator">=</span> ConfinedArena.open()) &#123;</span><br><span class="line">    <span class="comment">// 使用Swift对象</span></span><br><span class="line">&#125; <span class="comment">// 自动释放</span></span><br></pre></td></tr></table></figure>
-<h2 id="项目现状与未来"><a href="#项目现状与未来" class="headerlink" title="项目现状与未来"></a>项目现状与未来</h2><p>SwiftJava项目已经：</p>
-<ul>
-<li>实现基础双向互操作</li>
-<li>支持常见类型转换</li>
-<li>提供构建系统集成</li>
-</ul>
-<p>未来计划：</p>
-<ul>
-<li>完善Gradle插件</li>
-<li>优化性能</li>
-<li>扩展类型支持</li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Swift-Java互操作性为跨语言开发开辟了新途径，让开发者可以充分利用两种语言的优势。无论您是想在Java中引入Swift的现代特性，还是在Swift项目中复用Java生态，SwiftJava项目都值得尝试。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/312">优化 Swift 代码的内存使用和性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/311">安全地混合使用 C、C ++ 和 Swift</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/245">Swift 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10172">融合 Swift 和 C++</a>  </p>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://www.swift.org">Swift官方网站</a></p>
 <blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="探索-Swift-与-Java-的互操作性"><a href="#探索-Swift-与-Java-的互操作性" class="headerlink" title="探索 Swift 与 Java 的互操作性"></a>探索 Swift 与 Java 的互操作性</h1><p>在现代软件开发中，跨语言互操作性变得越来越重要。Swift 语言团队推出的 Swift-Java 互操作性项目，为开发者提供了在单一代码库中混合使用 Swift 和 Java 的能力，无需进行大规模重写即可逐步引入新技术。</p>
+<h2 id="项目背景与意义"><a href="#项目背景与意义" class="headerlink" title="项目背景与意义"></a>项目背景与意义</h2><p>Swift-Java 互操作性项目旨在消除语言壁垒，允许开发者：</p>
+<ul>
+<li>在 Java 程序中调用 Swift 代码</li>
+<li>在 Swift 程序中调用 Java 代码</li>
+<li>重用现有 Java 库</li>
+<li>将 Swift 库提供给 Java 项目使用</li>
+</ul>
+<p>这种互操作性支持渐进式迁移策略，开发者可以在不影响现有代码库的情况下，逐步用 Swift 替换或添加新功能。</p>
+<h2 id="技术基础：运行时比较"><a href="#技术基础：运行时比较" class="headerlink" title="技术基础：运行时比较"></a>技术基础：运行时比较</h2><p>尽管 Java 和 Swift 运行时有显著差异，但两者也存在诸多相似之处：</p>
+<ol>
+<li><strong>面向对象特性</strong>：都提供类和支持继承的面向对象模型</li>
+<li><strong>内存管理</strong>：均采用自动内存管理机制</li>
+<li><strong>泛型系统</strong>：具有相似的泛型系统（尽管运行时表现不同）</li>
+<li><strong>错误处理</strong>：Swift 错误和 Java 异常都可抛出处理</li>
+</ol>
+<p>这些相似点为互操作性奠定了良好基础。</p>
+<h2 id="Java-原生方法-JNI-集成"><a href="#Java-原生方法-JNI-集成" class="headerlink" title="Java 原生方法 (JNI) 集成"></a>Java 原生方法 (JNI) 集成</h2><p>Java 原生接口 (JNI) 是 Java 与原生代码互操作的传统方式。典型的 JNI 工作流程包括：</p>
+<ol>
+<li>在 Java 中定义原生方法</li>
+<li>使用 Java 编译器生成 C 头文件</li>
+<li>使用原生语言（如 Swift）实现函数</li>
+</ol>
+<p>然而，原始 JNI 存在诸多痛点：</p>
+<ul>
+<li>大量样板代码</li>
+<li>方法签名匹配容易出错</li>
+<li>对象生命周期管理复杂</li>
+<li>需要额外的构建步骤</li>
+</ul>
+<h2 id="SwiftJava-解决方案"><a href="#SwiftJava-解决方案" class="headerlink" title="SwiftJava 解决方案"></a>SwiftJava 解决方案</h2><p>SwiftJava 项目提供了一套完整的工具链来简化互操作：</p>
+<h3 id="主要组件"><a href="#主要组件" class="headerlink" title="主要组件"></a>主要组件</h3><ol>
+<li><strong>JavaKit</strong>：Swift 库，提供 JNI 处理宏和工具</li>
+<li><strong>SwiftKit</strong>：Java 库，帮助处理 Swift 对象</li>
+<li><strong>Swift-Java 命令行工具</strong>：自动化代码生成</li>
+<li><strong>构建系统集成</strong>：支持 SwiftPM 插件和 Gradle 集成</li>
+</ol>
+<h3 id="改进的-JNI-工作流"><a href="#改进的-JNI-工作流" class="headerlink" title="改进的 JNI 工作流"></a>改进的 JNI 工作流</h3><p>使用 SwiftJava 后，JNI 实现变得简洁高效：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JavaImplementation</span></span><br><span class="line"><span class="keyword">extension</span> <span class="title class_">JNIExample</span>: <span class="title class_ inherited__">JNIExampleNativeMethods</span> &#123;</span><br><span class="line">    <span class="meta">@JavaMethod</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">compute</span>(<span class="keyword">_</span> <span class="params">value</span>: <span class="type">JavaInteger</span>) -&gt; <span class="type">JavaInteger</span> &#123;</span><br><span class="line">        <span class="comment">// 业务逻辑实现</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SwiftJava 带来的优势：</p>
+<ul>
+<li>消除手动头文件生成</li>
+<li>自动处理方法签名</li>
+<li>改进的对象生命周期管理</li>
+<li>减少错误可能性</li>
+</ul>
+<h2 id="从-Swift-调用-Java-库"><a href="#从-Swift-调用-Java-库" class="headerlink" title="从 Swift 调用 Java 库"></a>从 Swift 调用 Java 库</h2><p>SwiftJava 支持导入完整的 Java 库而无需修改源代码。以 Apache Commons CSV 为例：</p>
+<ol>
+<li><strong>依赖管理</strong>：通过 Gradle 解析 Java 依赖</li>
+<li><strong>配置方式</strong>：<ul>
+<li>使用 SwiftPM 插件（需关闭安全沙箱）</li>
+<li>或使用命令行工具手动解析</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> JavaKit</span><br><span class="line"><span class="keyword">import</span> JavaApacheCommonsCSV</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 Swift 中启动 JVM 并直接使用 Java 库</span></span><br><span class="line"><span class="keyword">let</span> fileReader <span class="operator">=</span> <span class="type">FileReader</span>(<span class="string">&quot;data.csv&quot;</span>)</span><br><span class="line"><span class="keyword">let</span> parser <span class="operator">=</span> <span class="type">CSVParser</span>(fileReader)</span><br><span class="line"><span class="keyword">for</span> record <span class="keyword">in</span> parser &#123;</span><br><span class="line">    <span class="comment">// 处理 CSV 记录</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关键特性：</p>
+<ul>
+<li>无缝处理 Java 集合（支持 Swift for-each）</li>
+<li>自动管理 Java 对象生命周期</li>
+<li>支持复杂的传递依赖解析</li>
+</ul>
+<h2 id="从-Java-调用-Swift-库"><a href="#从-Java-调用-Swift-库" class="headerlink" title="从 Java 调用 Swift 库"></a>从 Java 调用 Swift 库</h2><p>SwiftJava 还支持将整个 Swift 库包装为 Java 可用的形式：</p>
+<ol>
+<li><strong>使用 Foreign Function &amp; Memory API</strong>（Java 22+）</li>
+<li><strong>生成 Java 包装类</strong>：<ul>
+<li>实现 Swift 值类型接口</li>
+<li>包含原生内存指针</li>
+<li>映射所有公共方法和属性</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java 中使用 Swift 结构体</span></span><br><span class="line"><span class="keyword">try</span> (<span class="type">var</span> <span class="variable">arena</span> <span class="operator">=</span> ConfinedArena.open()) &#123;</span><br><span class="line">    <span class="type">var</span> <span class="variable">business</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SwiftyBusiness</span>(arena, <span class="number">42</span>);</span><br><span class="line">    business.doSomething();</span><br><span class="line">&#125; <span class="comment">// 自动清理</span></span><br></pre></td></tr></table></figure>
+<p>内存管理最佳实践：</p>
+<ul>
+<li>优先使用 <code>ConfinedArena</code> 替代依赖 GC</li>
+<li>确保明确的生命周期管理</li>
+<li>避免大量对象终结带来的性能问题</li>
+</ul>
+<h2 id="项目现状与未来"><a href="#项目现状与未来" class="headerlink" title="项目现状与未来"></a>项目现状与未来</h2><p>SwiftJava 目前已经提供了：</p>
+<ul>
+<li>安全的互操作代码生成</li>
+<li>高效的内存管理</li>
+<li>与主流构建工具集成</li>
+</ul>
+<p>该项目完全开源，欢迎开发者参与贡献或通过 Swift 论坛提供反馈。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Swift-Java 互操作性为开发者提供了灵活的选择：</p>
+<ol>
+<li>在现有 Java 应用中逐步引入 Swift</li>
+<li>在 Swift 项目中复用 Java 生态</li>
+<li>将 Swift 库分享给 Java 团队使用</li>
+</ol>
+<p>随着项目发展，Swift 和 Java 之间的互操作将变得更加无缝和安全。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/312">优化 Swift 代码的内存使用和性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/311">安全地混合使用 C、C ++ 和 Swift</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/245">Swift 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10172">融合 Swift 和 C++</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://www.swift.org">The Swift website</a></p>
 
       
 
@@ -428,18 +451,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_219/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_306/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          了解 Liquid Glass
+          通过 Instrument 优化 SwiftUI 性能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_306/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">通过 Instrument 优化 SwiftUI 性能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_311/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">安全地混合使用 C、C ++ 和 Swift</div>
       <i class="icon-circle-right"></i>
     </a>
   

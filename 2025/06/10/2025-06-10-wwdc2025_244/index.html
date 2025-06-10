@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 app intents 框架及其在 apple 开发者平台中愈显关键的作用。我们将向你全面介绍意图、实体、查询等核心概念。你将了解如何综合运用这些概念，以便使你的 app 与 apple 设备 (从“聚焦”和“快捷指令”等软件功能到操作按钮等硬件功能) 实现整合。我们还将介绍如何将 app intents 作为你 app 的入口，以便将来实现与 apple 智能的整合。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9971/9971_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:43:02.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:43:02.799Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.351Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_244/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:43:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,82 +228,64 @@ var _hmt = _hmt || [];
       
         <p>了解 app intents 框架及其在 apple 开发者平台中愈显关键的作用。我们将向你全面介绍意图、实体、查询等核心概念。你将了解如何综合运用这些概念，以便使你的 app 与 apple 设备 (从“聚焦”和“快捷指令”等软件功能到操作按钮等硬件功能) 实现整合。我们还将介绍如何将 app intents 作为你 app 的入口，以便将来实现与 apple 智能的整合。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9971/9971_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/244/">视频地址</a></p>
-<h1 id="App-Intents-框架：将应用功能扩展到整个-Apple-生态"><a href="#App-Intents-框架：将应用功能扩展到整个-Apple-生态" class="headerlink" title="App Intents 框架：将应用功能扩展到整个 Apple 生态"></a>App Intents 框架：将应用功能扩展到整个 Apple 生态</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>作为 Apple 开发者，您是否想让应用的功能在全系统范围内可用？App Intents 框架正是为此而生。它能帮助您的应用深度集成到 Apple 生态系统中，无论是聚焦搜索、快捷指令、控制中心还是硬件交互，都能为用户提供无缝体验。本文将带您全面了解 App Intents 的核心概念、技术实现和最佳实践。</p>
-<h2 id="App-Intents-的核心价值"><a href="#App-Intents-的核心价值" class="headerlink" title="App Intents 的核心价值"></a>App Intents 的核心价值</h2><p>App Intents 不只是个功能框架，更是让应用能力向外辐射的生态系统。通过它，您可以将应用的功能扩展到：</p>
-<ul>
-<li>聚焦搜索：呈现定制化结果</li>
-<li>操作按钮：提供情境感知体验</li>
-<li>小组件：增加可配置交互</li>
-<li>控制中心：添加快捷控件</li>
-<li>Apple Pencil Pro：设计专属动作</li>
-</ul>
-<p>今年的新功能中，特别值得注意的是 Mac 版聚焦搜索现已支持直接调用应用动作。</p>
-<h2 id="App-Intents-基本概念"><a href="#App-Intents-基本概念" class="headerlink" title="App Intents 基本概念"></a>App Intents 基本概念</h2><h3 id="Intent（意图）"><a href="#Intent（意图）" class="headerlink" title="Intent（意图）"></a>Intent（意图）</h3><p>Intent 是应用动作的定义，可以理解为应用的”动词”。它能接收参数并返回值，这些输入输出可以是：</p>
-<ul>
-<li>Swift 原生类型</li>
-<li>自定义类型</li>
-<li>App Enum（固定值集合）</li>
-<li>App Entity（动态类型数据）</li>
-</ul>
-<h3 id="App-Shortcuts（应用快捷指令）"><a href="#App-Shortcuts（应用快捷指令）" class="headerlink" title="App Shortcuts（应用快捷指令）"></a>App Shortcuts（应用快捷指令）</h3><p>App Shortcuts 能将关键意图提升为系统级功能，在聚焦搜索、Siri、操作按钮等场景直接触达用户。它由意图和参数组成，只需几行代码即可实现。</p>
-<h2 id="如何创建您的第一个-App-Intent"><a href="#如何创建您的第一个-App-Intent" class="headerlink" title="如何创建您的第一个 App Intent"></a>如何创建您的第一个 App Intent</h2><p>下面通过一个旅行地标应用的案例，演示如何创建基本的导航意图：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">NavigateIntent</span>: <span class="title class_ inherited__">AppIntent</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> title: <span class="type">LocalizedStringResource</span> <span class="operator">=</span> <span class="string">&quot;前往地标列表&quot;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> supportedModes: <span class="type">IntentModes</span> <span class="operator">=</span> .foreground</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@MainActor</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">perform</span>() <span class="keyword">async</span> <span class="keyword">throws</span> -&gt; <span class="keyword">some</span> <span class="type">IntentResult</span> &#123;</span><br><span class="line">        <span class="type">Navigator</span>.shared.navigate(to: .landmarks)</span><br><span class="line">        <span class="keyword">return</span> .result()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个基础意图包含三个关键部分：</p>
-<ol>
-<li><code>title</code>：定义意图的显示名称</li>
-<li><code>supportedModes</code>：指定运行模式（前台/后台）</li>
-<li><code>perform</code>：实现具体功能</li>
-</ol>
-<h2 id="进阶功能实现"><a href="#进阶功能实现" class="headerlink" title="进阶功能实现"></a>进阶功能实现</h2><h3 id="支持多模块导航"><a href="#支持多模块导航" class="headerlink" title="支持多模块导航"></a>支持多模块导航</h3><p>我们可以扩展上面的基础意图，使其支持多个导航选项：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">NavigationOption</span>: <span class="title class_ inherited__">String</span>, <span class="title class_ inherited__">AppEnum</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> landmarks <span class="operator">=</span> <span class="string">&quot;地标&quot;</span></span><br><span class="line">    <span class="keyword">case</span> map <span class="operator">=</span> <span class="string">&quot;地图&quot;</span></span><br><span class="line">    <span class="keyword">case</span> collections <span class="operator">=</span> <span class="string">&quot;收藏集&quot;</span></span><br><span class="line">    <span class="comment">// 显示配置代码...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">NavigateIntent</span>: <span class="title class_ inherited__">AppIntent</span> &#123;</span><br><span class="line">    <span class="meta">@Parameter</span>(title: <span class="string">&quot;目标模块&quot;</span>) </span><br><span class="line">    <span class="keyword">var</span> navigationOption: <span class="type">NavigationOption</span></span><br><span class="line">    <span class="comment">// 执行代码...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="优化用户体验"><a href="#优化用户体验" class="headerlink" title="优化用户体验"></a>优化用户体验</h3><p>通过添加参数摘要，可以进一步提升用户体验：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> parameterSummary: <span class="keyword">some</span> <span class="type">ParameterSummary</span> &#123;</span><br><span class="line">    <span class="type">Summary</span>(<span class="string">&quot;跳转到<span class="subst">\(\.<span class="variable">$navigationOption</span>)</span>模块&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>特别提示：当意图包含完整参数摘要时，用户可以直接在 Mac 聚焦搜索中运行该动作。</p>
-<h2 id="处理动态数据（App-Entity）"><a href="#处理动态数据（App-Entity）" class="headerlink" title="处理动态数据（App Entity）"></a>处理动态数据（App Entity）</h2><p>对于像地标这样的动态数据，我们需要使用 App Entity 进行建模：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">LandmarkEntity</span>: <span class="title class_ inherited__">AppEntity</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> id: <span class="type">Int</span> &#123; landmark.id &#125;</span><br><span class="line">    <span class="meta">@ComputedProperty</span> <span class="keyword">var</span> name: <span class="type">String</span> &#123; landmark.name &#125;</span><br><span class="line">    <span class="comment">// 查询协议实现...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>今年的新特性包括：</p>
-<ul>
-<li><code>@ComputedProperty</code>：动态获取属性值</li>
-<li><code>Transferable</code>：支持跨应用数据分享</li>
-<li><code>IndexedEntity</code>：与聚焦搜索深度集成</li>
-</ul>
-<h2 id="精准导航实现"><a href="#精准导航实现" class="headerlink" title="精准导航实现"></a>精准导航实现</h2><p>使用 <code>TargetContentProvidingIntent</code> 协议可以实现精准跳转：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">OpenLandmarkIntent</span>: <span class="title class_ inherited__">OpenIntent</span>, <span class="title class_ inherited__">TargetContentProvidingIntent</span> &#123;</span><br><span class="line">    <span class="meta">@Parameter</span> <span class="keyword">var</span> target: <span class="type">LandmarkEntity</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在SwiftUI中绑定导航</span></span><br><span class="line">.onAppIntentExecution(<span class="type">OpenLandmarkIntent</span>.<span class="keyword">self</span>) &#123; intent <span class="keyword">in</span></span><br><span class="line">    path.append(intent.target.landmark)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="App-Intents-的架构原理"><a href="#App-Intents-的架构原理" class="headerlink" title="App Intents 的架构原理"></a>App Intents 的架构原理</h2><p>App Intents 采用编译时代码解析机制：</p>
-<ol>
-<li>构建时分析 Swift 源码生成意图描述</li>
-<li>描述数据打包进应用二进制</li>
-<li>安装后系统直接读取元数据</li>
-<li>无需运行应用即可理解功能</li>
-</ol>
-<h2 id="跨目标共享实现"><a href="#跨目标共享实现" class="headerlink" title="跨目标共享实现"></a>跨目标共享实现</h2><p>要在不同目标间共享 App Intents，需要声明 <code>AppIntentsPackage</code>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 共享框架中</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> <span class="title class_">TravelTrackingKitPackage</span>: <span class="title class_ inherited__">AppIntentsPackage</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 主应用中</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TravelTrackingPackage</span>: <span class="title class_ inherited__">AppIntentsPackage</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> includedPackages: [<span class="keyword">any</span> <span class="type">AppIntentsPackage</span>.<span class="keyword">Type</span>] &#123;</span><br><span class="line">        [<span class="type">TravelTrackingKitPackage</span>.<span class="keyword">self</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>今年新增了对 Swift 包和静态库的完整支持。</p>
-<h2 id="实施路线建议"><a href="#实施路线建议" class="headerlink" title="实施路线建议"></a>实施路线建议</h2><ol>
-<li>从核心功能创建首个 App Shortcut</li>
-<li>逐步添加实体和高级查询</li>
-<li>利用新特性优化系统集成</li>
-<li>参考其他专题会议深化应用</li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/260">使用 App Intents 针对”快捷指令”和”聚焦”进行开发</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/281">设计交互式摘要卡片</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10210">利用 App Intents 为用户奉上 App 的核心功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10176">利用 App Intents 设计提升系统体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10133">带你的 App 登陆 Siri</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10134">App Intents 的新功能</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/app-intent-domains">App intent domains</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents">App Intents</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/app-shortcuts">App Shortcuts</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/Creating-your-first-app-intent">Creating your first app intent</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/Integrating-actions-with-siri-and-apple-intelligence">Integrating actions with Siri and Apple Intelligence</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/Making-actions-and-content-discoverable-and-widely-available">Making actions and content discoverable and widely available</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="深度解析-App-Intents：打造全系统可用的应用功能"><a href="#深度解析-App-Intents：打造全系统可用的应用功能" class="headerlink" title="深度解析 App Intents：打造全系统可用的应用功能"></a>深度解析 App Intents：打造全系统可用的应用功能</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>App Intents 框架作为 Apple 开发者生态中的重要组成部分，正在为应用带来前所未有的系统级集成能力。本文将详细解析该框架的核心概念与实现方法，帮助开发者理解如何通过 App Intents 让应用功能突破自身边界，融入整个 Apple 生态系统。</p>
+<h2 id="App-Intents-核心概念"><a href="#App-Intents-核心概念" class="headerlink" title="App Intents 核心概念"></a>App Intents 核心概念</h2><h3 id="框架定位与价值"><a href="#框架定位与价值" class="headerlink" title="框架定位与价值"></a>框架定位与价值</h3><p>App Intents 不仅仅是一个功能构建框架，更是一个应用能力辐射系统。通过该框架，开发者可以实现：</p>
+<ul>
+<li>聚焦搜索中的个性化结果展示</li>
+<li>操作按钮的情境感知体验</li>
+<li>小部件的可配置交互</li>
+<li>控制中心的便捷控件</li>
+<li>Apple Pencil Pro 的自定义操作</li>
 </ul>
+<p>特别值得注意的是，今年新增的 Mac 版聚焦搜索功能已能随处调用应用操作，进一步扩展了应用与系统的交互场景。</p>
+<h3 id="基础元素解析"><a href="#基础元素解析" class="headerlink" title="基础元素解析"></a>基础元素解析</h3><p>在 App Intents 框架中，主要包含三类核心元素：</p>
+<ol>
+<li><strong>Intent（意图）</strong>：代表应用的”动词”，描述可执行的操作</li>
+<li><strong>App Enum（枚举）</strong>：表示固定值集合的类型</li>
+<li><strong>App Entity（实体）</strong>：表示动态类型</li>
+</ol>
+<p>这些元素共同构成了应用的语义模型，使其能够被系统理解和调用。</p>
+<h2 id="实践指南"><a href="#实践指南" class="headerlink" title="实践指南"></a>实践指南</h2><h3 id="创建首个-App-Intent"><a href="#创建首个-App-Intent" class="headerlink" title="创建首个 App Intent"></a>创建首个 App Intent</h3><p>以一个全球地标旅行应用为例，创建一个导航至地标列表的 intent 需要以下步骤：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">NavigateIntent</span>: <span class="title class_ inherited__">AppIntent</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> title: <span class="type">LocalizedStringResource</span> <span class="operator">=</span> <span class="string">&quot;导航至地标&quot;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> supportedModes: <span class="type">IntentModes</span> <span class="operator">=</span> .foreground</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@MainActor</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">perform</span>() <span class="keyword">async</span> <span class="keyword">throws</span> -&gt; <span class="keyword">some</span> <span class="type">IntentResult</span> &#123;</span><br><span class="line">        <span class="type">Navigator</span>.shared.navigate(to: .landmarks)</span><br><span class="line">        <span class="keyword">return</span> .result()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码定义了符合 AppIntent 协议的结构体，包含本地化标题和执行逻辑的 perform 方法。由于导航操作需要在主线程执行，perform 方法被标记为 @MainActor。</p>
+<h3 id="参数化-Intent"><a href="#参数化-Intent" class="headerlink" title="参数化 Intent"></a>参数化 Intent</h3><p>为了扩展导航功能，可以创建 App Enum 定义导航选项：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">NavigationOption</span>: <span class="title class_ inherited__">String</span>, <span class="title class_ inherited__">AppEnum</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> landmarks</span><br><span class="line">    <span class="keyword">case</span> map</span><br><span class="line">    <span class="keyword">case</span> collections</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> typeDisplayRepresentation <span class="operator">=</span> <span class="string">&quot;导航选项&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> caseDisplayRepresentations <span class="operator">=</span> [</span><br><span class="line">        .landmarks: <span class="string">&quot;地标&quot;</span>,</span><br><span class="line">        .map: <span class="string">&quot;地图&quot;</span>,</span><br><span class="line">        .collections: <span class="string">&quot;收藏集&quot;</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后在 intent 中添加参数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">NavigateIntent</span>: <span class="title class_ inherited__">AppIntent</span> &#123;</span><br><span class="line">    <span class="meta">@Parameter</span>(title: <span class="string">&quot;版块&quot;</span>, requestValueDialog: <span class="string">&quot;要导航到哪个版块？&quot;</span>) </span><br><span class="line">    <span class="keyword">var</span> navigationOption: <span class="type">NavigationOption</span></span><br><span class="line">    <span class="comment">//...其余实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="优化用户体验"><a href="#优化用户体验" class="headerlink" title="优化用户体验"></a>优化用户体验</h3><p>通过 ParameterSummary 提供流畅的语句式描述：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> parameterSummary: <span class="keyword">some</span> <span class="type">ParameterSummary</span> &#123;</span><br><span class="line">    <span class="type">Summary</span>(<span class="string">&quot;导航至<span class="subst">\(\.<span class="variable">$navigationOption</span>)</span>版块&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>今年新增的功能是：当 intent 包含完整 ParameterSummary 时，用户可直接从 Mac 的聚焦搜索运行该操作。</p>
+<h2 id="系统集成"><a href="#系统集成" class="headerlink" title="系统集成"></a>系统集成</h2><h3 id="App-Shortcuts-创建"><a href="#App-Shortcuts-创建" class="headerlink" title="App Shortcuts 创建"></a>App Shortcuts 创建</h3><p>对于核心 intent，可以通过 App Shortcuts 使其在安装后立即可用：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">TravelTrackingAppShortcuts</span>: <span class="title class_ inherited__">AppShortcutsProvider</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> appShortcuts: [<span class="type">AppShortcut</span>] &#123;</span><br><span class="line">        <span class="type">AppShortcut</span>(</span><br><span class="line">            intent: <span class="type">NavigateIntent</span>(),</span><br><span class="line">            phrases: [</span><br><span class="line">                <span class="string">&quot;在<span class="subst">\(.applicationName)</span>中导航&quot;</span>,</span><br><span class="line">                <span class="string">&quot;在<span class="subst">\(.applicationName)</span>中导航到<span class="subst">\(\.<span class="variable">$navigationOption</span>)</span>&quot;</span></span><br><span class="line">            ],</span><br><span class="line">            shortTitle: <span class="string">&quot;导航&quot;</span>,</span><br><span class="line">            systemImageName: <span class="string">&quot;arrowshape.forward&quot;</span></span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这些快捷方式会突出显示在聚焦搜索中，并支持通过 Siri 语音触发。</p>
+<h2 id="数据建模"><a href="#数据建模" class="headerlink" title="数据建模"></a>数据建模</h2><h3 id="动态实体实现"><a href="#动态实体实现" class="headerlink" title="动态实体实现"></a>动态实体实现</h3><p>地标作为应用的核心概念，需要创建 App Entity 进行建模：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">LandmarkEntity</span>: <span class="title class_ inherited__">AppEntity</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> id: <span class="type">Int</span> &#123; landmark.id &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ComputedProperty</span></span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span> &#123; landmark.name &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> typeDisplayRepresentation <span class="operator">=</span> <span class="type">TypeDisplayRepresentation</span>(name: <span class="string">&quot;地标&quot;</span>)</span><br><span class="line">    <span class="keyword">var</span> displayRepresentation: <span class="type">DisplayRepresentation</span> &#123; <span class="operator">...</span> &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> defaultQuery <span class="operator">=</span> <span class="type">LandmarkEntityQuery</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实体必须提供查询机制（EntityQuery）来回答系统查询：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">LandmarkEntityQuery</span>: <span class="title class_ inherited__">EntityQuery</span> &#123;</span><br><span class="line">    <span class="meta">@Dependency</span> <span class="keyword">var</span> modelData: <span class="type">ModelData</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">entities</span>(<span class="params">for</span> <span class="params">identifiers</span>: [<span class="type">Int</span>]) <span class="keyword">async</span> <span class="keyword">throws</span> -&gt; [<span class="type">LandmarkEntity</span>] &#123;</span><br><span class="line">        modelData.landmarks(for: identifiers).map(<span class="type">LandmarkEntity</span>.<span class="keyword">init</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="进阶功能"><a href="#进阶功能" class="headerlink" title="进阶功能"></a>进阶功能</h2><h3 id="实体功能扩展"><a href="#实体功能扩展" class="headerlink" title="实体功能扩展"></a>实体功能扩展</h3><p>通过实现更多协议，可以扩展实体功能：</p>
+<ol>
+<li><strong>Transferable 协议</strong>：支持图像分享</li>
+<li><strong>IndexedEntity 协议</strong>：实现聚焦搜索索引</li>
+<li><strong>OpenIntent</strong>：实现深度链接</li>
+</ol>
+<p>例如实现深度链接：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">OpenLandmarkIntent</span>: <span class="title class_ inherited__">OpenIntent</span>, <span class="title class_ inherited__">TargetContentProvidingIntent</span> &#123;</span><br><span class="line">    <span class="meta">@Parameter</span>(title: <span class="string">&quot;地标&quot;</span>) </span><br><span class="line">    <span class="keyword">var</span> target: <span class="type">LandmarkEntity</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 SwiftUI 中处理导航</span></span><br><span class="line">.onAppIntentExecution(<span class="type">OpenLandmarkIntent</span>.<span class="keyword">self</span>) &#123; intent <span class="keyword">in</span></span><br><span class="line">    path.append(intent.target.landmark)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查询增强"><a href="#查询增强" class="headerlink" title="查询增强"></a>查询增强</h3><p>通过实现更多查询协议，可以提供更丰富的实体发现方式：</p>
+<ul>
+<li>EnumerableEntityQuery：返回所有实体</li>
+<li>EntityStringQuery：支持文本搜索</li>
+<li>EntityPropertyQuery：支持属性过滤和排序</li>
+</ul>
+<h2 id="底层原理"><a href="#底层原理" class="headerlink" title="底层原理"></a>底层原理</h2><p>App Intents 采用编译时生成机制，应用源代码在构建时会被解析，生成的应用意图表示直接嵌入应用包中。这种设计使得系统在安装后即可理解应用能力，无需实际运行应用。</p>
+<p>当在多个 target 间共享类型时，需要定义 AppIntentsPackage：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在Swift包中</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> <span class="title class_">TravelTrackingKitPackage</span>: <span class="title class_ inherited__">AppIntentsPackage</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在主target中</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">TravelTrackingPackage</span>: <span class="title class_ inherited__">AppIntentsPackage</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> includedPackages: [<span class="keyword">any</span> <span class="type">AppIntentsPackage</span>.<span class="keyword">Type</span>] &#123;</span><br><span class="line">        [<span class="type">TravelTrackingKitPackage</span>.<span class="keyword">self</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>今年新增了对 Swift 包和静态库的支持。</p>
+<h2 id="总结与建议"><a href="#总结与建议" class="headerlink" title="总结与建议"></a>总结与建议</h2><p>App Intents 框架为开发者提供了强大的系统集成能力，建议从小处着手，先添加一个 App Shortcut，再逐步探索框架的其他功能。通过将应用的核心功能转化为系统可理解的意图和实体，开发者可以创造更加无缝的用户体验。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/260">使用 App Intents 针对”快捷指令”和”聚焦”进行开发</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/281">设计交互式摘要卡片</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10210">利用 App Intents 为用户奉上 App 的核心功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10176">利用 App Intents 设计提升系统体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10133">带你的 App 登陆 Siri</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10134">App Intents 的新功能</a>  </p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/app-intent-domains">App intent domains</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents">App Intents</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/app-shortcuts">App Shortcuts</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/Creating-your-first-app-intent">Creating your first app intent</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/Integrating-actions-with-siri-and-apple-intelligence">Integrating actions with Siri and Apple Intelligence</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppIntents/Making-actions-and-content-discoverable-and-widely-available">Making actions and content discoverable and widely available</a></p>
 
       
 
@@ -414,18 +396,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_260/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_237/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          使用 App Intents 针对“快捷指令”和“聚焦”进行开发
+          空间网页的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_272/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">使用 Vision 框架读取文档</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_243/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">UIKit 的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

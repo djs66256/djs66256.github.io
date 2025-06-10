@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索后台任务执行方面的最新进展，并了解系统如何进行运行时调度。我们将讨论如何充分利用后台运行时，让你的 app 既能在后台提供功能，又能保持出色的前台体验。我们还将介绍各种 api 如何为你的 app 提供后台运行时环境，以及每个 api 是怎样针对不同用例量身定制的 — 其中包括 ios 和 ipados 26 中的新 api，这些 api 让你的 app 能够在从前台过渡到后台时顺利完成任务。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9921/9921_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:49:27.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:49:27.013Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.622Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_227/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:49:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,67 +227,55 @@ var _hmt = _hmt || [];
       
         <p>探索后台任务执行方面的最新进展，并了解系统如何进行运行时调度。我们将讨论如何充分利用后台运行时，让你的 app 既能在后台提供功能，又能保持出色的前台体验。我们还将介绍各种 api 如何为你的 app 提供后台运行时环境，以及每个 api 是怎样针对不同用例量身定制的 — 其中包括 ios 和 ipados 26 中的新 api，这些 api 让你的 app 能够在从前台过渡到后台时顺利完成任务。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9921/9921_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/227/">视频地址</a></p>
-<h1 id="iOS后台任务处理全指南：从基础到持续处理任务"><a href="#iOS后台任务处理全指南：从基础到持续处理任务" class="headerlink" title="iOS后台任务处理全指南：从基础到持续处理任务"></a>iOS后台任务处理全指南：从基础到持续处理任务</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在iOS应用开发中，后台任务处理一直是开发者需要重点关注的技术点。合理利用后台运行时可以让应用体验更流畅，同时又能保护电池寿命和系统性能。本文将系统介绍iOS后台任务处理的各个方面，包括基础概念、行为规范、常用API以及iOS 26中新增的持续处理任务。</p>
-<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><h3 id="前台与后台状态"><a href="#前台与后台状态" class="headerlink" title="前台与后台状态"></a>前台与后台状态</h3><p>iOS应用主要有两种运行状态：</p>
-<ul>
-<li><strong>前台状态</strong>：应用界面占据设备焦点，可以自由使用系统资源</li>
-<li><strong>后台状态</strong>：用户离开应用但进程仍存活，默认会被挂起以节省资源</li>
-</ul>
-<p>系统会在以下情况分配后台运行时间：</p>
-<ul>
-<li>完成关键工作（如保存数据）</li>
-<li>执行预加载或同步任务</li>
-<li>处理用户触发的长时间操作</li>
-</ul>
-<h2 id="后台任务的行为规范"><a href="#后台任务的行为规范" class="headerlink" title="后台任务的行为规范"></a>后台任务的行为规范</h2><h3 id="系统约束条件"><a href="#系统约束条件" class="headerlink" title="系统约束条件"></a>系统约束条件</h3><p>iOS系统对后台任务有严格限制，主要考虑以下因素：</p>
-<ol>
-<li><strong>电池寿命</strong>：系统会合并任务，减少不必要的后台活动</li>
-<li><strong>资源分配</strong>：内存、CPU、网络带宽等资源优先分配给前台应用</li>
-<li><strong>用户控制</strong>：用户可以通过设置调节后台行为</li>
-</ol>
-<h3 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h3><p>优秀后台任务应遵循以下原则：</p>
-<ul>
-<li><strong>高效性</strong>：任务应轻量且目的明确</li>
-<li><strong>原子性</strong>：将工作分解为独立单元</li>
-<li><strong>弹性</strong>：支持断点续传</li>
-<li><strong>礼貌性</strong>：尊重用户设置和偏好</li>
-<li><strong>自适应性</strong>：根据系统状况调整行为</li>
-</ul>
-<h2 id="后台任务API详解"><a href="#后台任务API详解" class="headerlink" title="后台任务API详解"></a>后台任务API详解</h2><h3 id="1-BGAppRefreshTask"><a href="#1-BGAppRefreshTask" class="headerlink" title="1. BGAppRefreshTask"></a>1. BGAppRefreshTask</h3><p>适用于从服务器静默获取内容的场景：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> BackgroundTasks</span><br><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">@main</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ColorFeed</span>: <span class="title class_ inherited__">App</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">Scene</span> &#123;</span><br><span class="line">        <span class="type">WindowGroup</span> &#123;</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">        .backgroundTask(.appRefresh(<span class="string">&quot;com.colorfeed.wwdc25.appRefresh&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">self</span>.handleAppRefreshTask()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-BGProcessingTask"><a href="#2-BGProcessingTask" class="headerlink" title="2. BGProcessingTask"></a>2. BGProcessingTask</h3><p>适用于数据处理、数据库维护等场景：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> BackgroundTasks</span><br><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AppDelegate</span>: <span class="title class_ inherited__">UIResponder</span>, <span class="title class_ inherited__">UIApplicationDelegate</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>, <span class="params">didFinishLaunchingWithOptions</span> <span class="params">launchOptions</span>: [<span class="type">UIApplication</span>.<span class="params">LaunchOptionsKey</span>: <span class="keyword">Any</span>]<span class="operator">?</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="type">BGTaskScheduler</span>.shared.register(</span><br><span class="line">            forTaskWithIdentifier: <span class="string">&quot;com.example.apple-samplecode.ColorFeed.db_cleaning&quot;</span>,</span><br><span class="line">            using: <span class="literal">nil</span></span><br><span class="line">        ) &#123; task <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">self</span>.handleAppRefresh(task: task <span class="keyword">as!</span> <span class="type">BGProcessingTask</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-传统后台任务API"><a href="#3-传统后台任务API" class="headerlink" title="3. 传统后台任务API"></a>3. 传统后台任务API</h3><p>适用于完成关键不可中断的工作：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">@main</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AppDelegate</span>: <span class="title class_ inherited__">UIResponder</span>, <span class="title class_ inherited__">UIApplicationDelegate</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> backgroundTaskID: <span class="type">UIBackgroundTaskIdentifier</span> <span class="operator">=</span> .invalid</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">saveState</span>() &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">handlePersistence</span>() &#123;</span><br><span class="line">        <span class="keyword">let</span> app <span class="operator">=</span> <span class="type">UIApplication</span>.shared</span><br><span class="line">        <span class="keyword">guard</span> backgroundTaskID <span class="operator">!=</span> .invalid <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">        backgroundTaskID <span class="operator">=</span> app.beginBackgroundTask(withName: <span class="string">&quot;Finish Export&quot;</span>) &#123;</span><br><span class="line">            app.endBackgroundTask(<span class="keyword">self</span>.backgroundTaskID)</span><br><span class="line">            <span class="keyword">self</span>.backgroundTaskID <span class="operator">=</span> .invalid</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">self</span>.saveState()</span><br><span class="line">        app.endBackgroundTask(backgroundTaskID)</span><br><span class="line">        backgroundTaskID <span class="operator">=</span> .invalid</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="iOS-26新增：持续处理任务"><a href="#iOS-26新增：持续处理任务" class="headerlink" title="iOS 26新增：持续处理任务"></a>iOS 26新增：持续处理任务</h2><h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>持续处理任务(BGContinuedProcessingTask)专门用于处理用户明确触发的长时间操作，如：</p>
-<ul>
-<li>文件导出</li>
-<li>社交媒体内容发布</li>
-<li>配件固件更新</li>
-</ul>
-<h3 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h3><ol>
-<li>在Info.plist中添加任务ID</li>
-<li>注册任务处理程序</li>
-<li>提交任务请求</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> BackgroundTasks</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">handleDialogConfirmation</span>() &#123;</span><br><span class="line">    <span class="type">BGTaskScheduler</span>.shared.register(<span class="string">&quot;com.colorfeed.wwdc25.userTask&quot;</span>) &#123; task <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">let</span> task <span class="operator">=</span> task <span class="keyword">as!</span> <span class="type">BGContinuedProcessingTask</span></span><br><span class="line">                                                                      </span><br><span class="line">        <span class="keyword">var</span> shouldContinue <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">        task.expirationHandler <span class="operator">=</span> &#123; shouldContinue <span class="operator">=</span> <span class="literal">false</span> &#125;</span><br><span class="line"></span><br><span class="line">        task.progress.totalUnitCount <span class="operator">=</span> <span class="number">100</span></span><br><span class="line">        task.progress.completedUnitCount <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> shouldContinue &#123;</span><br><span class="line">            <span class="comment">// 执行工作</span></span><br><span class="line">            task.progress.completedUnitCount <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        task.setTaskCompleted(success: <span class="literal">true</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">submitContinuedProcessingTaskRequest</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> request <span class="operator">=</span> <span class="type">BGContinuedProcessingTaskRequest</span>(</span><br><span class="line">        identifier: <span class="string">&quot;com.colorfeed.wwdc25.userTask&quot;</span>,</span><br><span class="line">        title: <span class="string">&quot;简明标题&quot;</span>,</span><br><span class="line">        subtitle: <span class="string">&quot;实用且信息丰富的副标题&quot;</span></span><br><span class="line">    )</span><br><span class="line">    request.strategy <span class="operator">=</span> .fail</span><br><span class="line">    <span class="type">BGTaskScheduler</span>.shared.submit(request)<span class="operator">!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="关键特性"><a href="#关键特性" class="headerlink" title="关键特性"></a>关键特性</h3><ol>
-<li><strong>进度反馈</strong>：必须及时汇报工作进度</li>
-<li><strong>终止处理</strong>：提供优雅终止任务的机制</li>
-<li><strong>GPU支持</strong>：在支持设备上可获取后台GPU访问权限</li>
-<li><strong>用户控制</strong>：用户可随时查看进度或取消任务</li>
-</ol>
-<h2 id="最佳实践总结"><a href="#最佳实践总结" class="headerlink" title="最佳实践总结"></a>最佳实践总结</h2><ol>
-<li><strong>明确任务类型</strong>：区分是用户触发还是系统触发</li>
-<li><strong>控制任务时长</strong>：短任务优先，长任务分解</li>
-<li><strong>优先用户价值</strong>：后台任务应带来明显用户体验提升</li>
-<li><strong>尊重系统限制</strong>：适应电池、网络等条件变化</li>
-<li><strong>测试各种场景</strong>：包括低电量模式、弱网环境等</li>
-</ol>
-<h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.com/documentation/BackgroundTasks">后台任务官方文档</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.com/documentation/BackgroundTasks/performing-long-running-tasks-on-ios-and-ipados">iOS和iPadOS上的长时任务处理</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="后台任务处理：iOS与iPadOS-26的后台运行时优化"><a href="#后台任务处理：iOS与iPadOS-26的后台运行时优化" class="headerlink" title="后台任务处理：iOS与iPadOS 26的后台运行时优化"></a>后台任务处理：iOS与iPadOS 26的后台运行时优化</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在现代移动操作系统中，后台任务处理一直是开发者面临的重要挑战。iOS系统以其严格的资源管理和卓越的电池优化著称，同时也为开发者提供了多种API来实现高效且用户友好的后台功能。WWDC演讲深入探讨了iOS和iPadOS 26中后台任务处理的最新进展，特别是新引入的BGContinuedProcessingTask API，为开发者提供了更灵活的后台任务管理工具。</p>
+<h2 id="前台与后台的运行机制"><a href="#前台与后台的运行机制" class="headerlink" title="前台与后台的运行机制"></a>前台与后台的运行机制</h2><p>当应用在前台运行时，它拥有最高优先级，可以完全访问系统资源，包括CPU、内存和网络等。此时的应用界面是设备的焦点，用户可以享受开发者精心打造的交互体验。</p>
+<p>但当用户离开应用时，该应用便进入后台状态。默认情况下，后台应用会被系统挂起，不再占用CPU资源。这种设计有效地保护了电池寿命，维护了用户隐私，并为前台应用释放了宝贵的系统资源。然而，在某些情况下，应用可以请求后台执行时间来完成关键任务。</p>
+<h2 id="后台任务的行为约束"><a href="#后台任务的行为约束" class="headerlink" title="后台任务的行为约束"></a>后台任务的行为约束</h2><p>iOS系统对后台任务执行设定了明确的约束和原则：</p>
+<ol>
+<li><strong>能耗管理</strong>：系统会在设备唤醒时合并工作，减少全天的非必要后台活动。</li>
+<li><strong>资源优先级</strong>：前台应用享有内存、CPU时间和网络带宽的优先使用权。</li>
+<li><strong>弹性设计</strong>：后台任务必须能够处理提前终止的情况，并保存中间状态。</li>
+<li><strong>用户控制</strong>：用户通过低电量模式、后台应用刷新等设置影响任务调度。</li>
+</ol>
+<p>iOS 26还引入了更详细的电池性能分析工具，让用户能够清晰地了解各个应用对电池寿命的影响。</p>
+<h2 id="后台任务API概述"><a href="#后台任务API概述" class="headerlink" title="后台任务API概述"></a>后台任务API概述</h2><p>iOS提供了多种后台任务API，每种都针对特定用例进行了优化：</p>
+<h3 id="1-BGAppRefreshTask"><a href="#1-BGAppRefreshTask" class="headerlink" title="1. BGAppRefreshTask"></a>1. BGAppRefreshTask</h3><p>此API最适合用于从服务器获取最新内容。系统会根据应用使用历史智能调度这些任务，频繁使用的应用更可能获得后台运行机会。</p>
+<p>在SwiftUI中使用BGAppRefreshTask的示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import BackgroundTasks</span><br><span class="line">import SwiftUI</span><br><span class="line"></span><br><span class="line">@main</span><br><span class="line">struct ColorFeed: App &#123;</span><br><span class="line">    var body: some Scene &#123;</span><br><span class="line">        WindowGroup &#123;</span><br><span class="line">            // ...</span><br><span class="line">        &#125;</span><br><span class="line">        .backgroundTask(.appRefresh(&quot;com.colorfeed.wwdc25.appRefresh&quot;)) &#123;</span><br><span class="line">            await self.handleAppRefreshTask()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-后台推送通知"><a href="#2-后台推送通知" class="headerlink" title="2. 后台推送通知"></a>2. 后台推送通知</h3><p>与BGAppRefreshTask不同，后台推送通知是由服务器触发的内容更新机制。这些通知以低优先级发送并合并处理，以减少系统开销。</p>
+<h3 id="3-BGProcessingTask"><a href="#3-BGProcessingTask" class="headerlink" title="3. BGProcessingTask"></a>3. BGProcessingTask</h3><p>此API设计用于非时间敏感的维护工作，如运行ML模型或数据库清理。开发者可以配置任务仅在特定条件下运行（如设备充电且联网时）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import BackgroundTasks</span><br><span class="line">import UIKit</span><br><span class="line"></span><br><span class="line">class AppDelegate: UIResponder, UIApplicationDelegate &#123;</span><br><span class="line">    func application(</span><br><span class="line">        _ application: UIApplication,</span><br><span class="line">        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?</span><br><span class="line">    ) -&gt; Bool &#123;</span><br><span class="line">        BGTaskScheduler.shared.register(</span><br><span class="line">            forTaskWithIdentifier: &quot;com.example.apple-samplecode.ColorFeed.db_cleaning&quot;,</span><br><span class="line">            using: nil</span><br><span class="line">        ) &#123; task in</span><br><span class="line">            self.handleAppRefresh(task: task as! BGProcessingTask)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func submitProcessingTaskRequest() &#123;</span><br><span class="line">        let request = BGProcessingTaskRequest(</span><br><span class="line">            identifier: &quot;com.example.apple-samplecode.ColorFeed.db_cleaning&quot;</span><br><span class="line">        )</span><br><span class="line">        request.requiresNetworkConnectivity = true</span><br><span class="line">        request.requiresExternalPower = true</span><br><span class="line">        </span><br><span class="line">        BGTaskScheduler.shared.submit(request)! </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-开始和结束后台任务"><a href="#4-开始和结束后台任务" class="headerlink" title="4. 开始和结束后台任务"></a>4. 开始和结束后台任务</h3><p>对于需要在应用转入后台时完成的关键工作（如保存状态或关闭资源），可以使用beginBackgroundTask和endBackgroundTask API：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import UIKit</span><br><span class="line"></span><br><span class="line">@main</span><br><span class="line">class AppDelegate: UIResponder, UIApplicationDelegate &#123;</span><br><span class="line">    var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid</span><br><span class="line">    </span><br><span class="line">    func saveState() &#123; /*  ... */ &#125;</span><br><span class="line">    </span><br><span class="line">    func handlePersistence() &#123;</span><br><span class="line">        let app = UIApplication.shared</span><br><span class="line">        guard backgroundTaskID != .invalid else &#123; return &#125;</span><br><span class="line">        backgroundTaskID = app.beginBackgroundTask(withName: &quot;Finish Export&quot;) &#123;</span><br><span class="line">            app.endBackgroundTask(self.backgroundTaskID)</span><br><span class="line">            self.backgroundTaskID = .invalid</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        self.saveState()</span><br><span class="line">        </span><br><span class="line">        app.endBackgroundTask(backgroundTaskID)</span><br><span class="line">        backgroundTaskID = .invalid</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="iOS-26新特性：BGContinuedProcessingTask"><a href="#iOS-26新特性：BGContinuedProcessingTask" class="headerlink" title="iOS 26新特性：BGContinuedProcessingTask"></a>iOS 26新特性：BGContinuedProcessingTask</h2><p>iPadOS和iOS 26引入了BGContinuedProcessingTask，这是专门为支持用户发起的后台操作而设计的新API。与之前的后台任务不同，持续处理任务具有以下特点：</p>
+<ol>
+<li><strong>明确用户意图</strong>：每个任务必须由明确的用户动作（如按钮点击）触发</li>
+<li><strong>可视化进度</strong>：系统提供UI展示任务进度，用户可随时取消</li>
+<li><strong>动态标识符</strong>：支持通配符形式的动态任务标识符</li>
+<li><strong>GPU支持</strong>：在支持的设备上可进行后台GPU处理</li>
+</ol>
+<h3 id="持续处理任务的实现"><a href="#持续处理任务的实现" class="headerlink" title="持续处理任务的实现"></a>持续处理任务的实现</h3><p>首先需要在Info.plist中添加任务标识符。然后通过以下代码注册和管理任务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import BackgroundTasks</span><br><span class="line"></span><br><span class="line">func handleDialogConfirmation() &#123;</span><br><span class="line">    BGTaskScheduler.shared.register(&quot;com.colorfeed.wwdc25.userTask&quot;) &#123; task in</span><br><span class="line">        let task = task as! BGContinuedProcessingTask</span><br><span class="line">                                                                      </span><br><span class="line">        var shouldContinue = true</span><br><span class="line">        task.expirationHandler = &#123;</span><br><span class="line">            shouldContinue = false</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        task.progress.totalUnitCount = 100</span><br><span class="line">        task.progress.completedUnitCount = 0</span><br><span class="line">        </span><br><span class="line">        while shouldContinue &#123;</span><br><span class="line">            // 执行某些工作</span><br><span class="line">            task.progress.completedUnitCount += 1</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        task.setTaskCompleted(success: true)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>提交持续处理任务请求时需要提供清晰的任务描述：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import BackgroundTasks</span><br><span class="line"></span><br><span class="line">func submitContinuedProcessingTaskRequest() &#123;</span><br><span class="line">    let request = BGContinuedProcessingTaskRequest(</span><br><span class="line">        identifier: &quot;com.colorfeed.wwdc25.userTask&quot;,</span><br><span class="line">        title: &quot;简洁标题&quot;,</span><br><span class="line">        subtitle: &quot;实用且信息丰富的副标题&quot;</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    request.strategy = .fail</span><br><span class="line">    </span><br><span class="line">    BGTaskScheduler.shared.submit(request)!</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开发者还可以指定任务提交策略：</p>
+<ul>
+<li>默认策略：如果不能立即运行，任务将加入队列</li>
+<li>.fail策略：如果不能立即运行，提交将失败</li>
 </ul>
+<h2 id="最佳实践与总结"><a href="#最佳实践与总结" class="headerlink" title="最佳实践与总结"></a>最佳实践与总结</h2><p>为了实现高效的后台任务处理，开发者应遵循以下原则：</p>
+<ol>
+<li><strong>明确任务目标</strong>：确保每个后台任务只做一件事并高效完成</li>
+<li><strong>尊重系统约束</strong>：考虑电池状态、网络条件和用户偏好</li>
+<li><strong>弹性设计</strong>：任务应能处理中断并保存中间状态</li>
+<li><strong>合理使用新API</strong>：BGContinuedProcessingTask最适合用户明确发起的操作</li>
+</ol>
+<p>iOS的后台任务API生态系统为开发者提供了丰富的工具，从简单的状态保存到复杂的持续处理任务。iOS 26引入的BGContinuedProcessingTask特别适合那些需要将前台操作平滑过渡到后台完成的使用场景，如文件导出或内容发布。</p>
+<p>通过合理利用这些API，开发者可以创造更智能、更高效的后台体验，同时保持iOS系统一贯的流畅性和电池效率。</p>
+<h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/BackgroundTasks">Background Tasks</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/BackgroundTasks/performing-long-running-tasks-on-ios-and-ipados">Performing long-running tasks on iOS and iPadOS</a></p>
 
       
 
@@ -394,18 +382,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_216/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_224/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          针对 CarPlay 车载优化你的 App
+          针对辅助功能标签评估你的 App
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_250/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">将结构化并发代码与 Network 框架搭配使用</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_228/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">借助 Wi-Fi Aware 增强设备连接性能</div>
       <i class="icon-circle-right"></i>
     </a>
   

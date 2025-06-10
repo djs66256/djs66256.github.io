@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索如何使用程序化工具为你的 visionos app 或游戏创建精美的沉浸式环境。我们将分享创建高质量环境的构建要素，然后深入探讨优化流程。了解如何使用 apple 针对 houdini 提供的一整套流程，减少场景的多边形数量、进行几何清理、打包 uv 贴图，并创建 usd 素材以便导入到 reality composer pro 或你选择的游戏引擎中。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9960/9960_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:52:15.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:52:15.138Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.777Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="macos">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_305/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:52:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,64 +227,82 @@ var _hmt = _hmt || [];
       
         <p>探索如何使用程序化工具为你的 visionos app 或游戏创建精美的沉浸式环境。我们将分享创建高质量环境的构建要素，然后深入探讨优化流程。了解如何使用 apple 针对 houdini 提供的一整套流程，减少场景的多边形数量、进行几何清理、打包 uv 贴图，并创建 usd 素材以便导入到 reality composer pro 或你选择的游戏引擎中。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9960/9960_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/305/">视频地址</a></p>
-<h1 id="为-visionOS-优化-3D-环境的完整工作流解析"><a href="#为-visionOS-优化-3D-环境的完整工作流解析" class="headerlink" title="为 visionOS 优化 3D 环境的完整工作流解析"></a>为 visionOS 优化 3D 环境的完整工作流解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在 Apple Vision Pro 平台上打造沉浸式环境时，开发者面临一个关键挑战：如何在保持电影级视觉效果的同时满足实时渲染的性能要求？本文将深入解析一套完整的程序化优化工作流，从几何精简到纹理烘焙，助你突破技术限制，创造惊艳的 visionOS 体验。</p>
-<h2 id="沉浸式环境的独特挑战"><a href="#沉浸式环境的独特挑战" class="headerlink" title="沉浸式环境的独特挑战"></a>沉浸式环境的独特挑战</h2><p>Vision Pro 的全沉浸模式需要渲染每个像素，这对性能提出了极高要求。关键在于利用”沉浸边界”概念——用户可移动的固定空间范围（通常数米）。通过精准定位用户视线和移动范围，开发者可以：</p>
-<ul>
-<li>仅对关键区域保持全精度渲染</li>
-<li>采用梯度式优化策略</li>
-<li>实现艺术表现与技术约束的完美平衡</li>
-</ul>
-<h2 id="几何优化三重奏"><a href="#几何优化三重奏" class="headerlink" title="几何优化三重奏"></a>几何优化三重奏</h2><h3 id="1-自适应多边形精简"><a href="#1-自适应多边形精简" class="headerlink" title="1. 自适应多边形精简"></a>1. 自适应多边形精简</h3><p>通过 Houdini 的 Adaptive Reduce HDA 工具：</p>
-<ul>
-<li>基于观测点对每个三角形智能优化</li>
-<li>热力图可视化显示密度分布（红=高密度，蓝=简化区）</li>
-<li>保留边缘轮廓的同时减少总三角形数<br>案例效果：部分岩石模型精简后保持锐利边缘，而远景自动降低细节</li>
-</ul>
-<h3 id="2-几何体广告牌技术"><a href="#2-几何体广告牌技术" class="headerlink" title="2. 几何体广告牌技术"></a>2. 几何体广告牌技术</h3><p>针对1-3公里外的对象：</p>
-<ul>
-<li>使用 Vista Billboard HDA 生成简化网格</li>
-<li>远距深度感知极限允许用平面图像替代3D几何</li>
-<li>月球场景中使多边形从数百万骤降至数千</li>
-</ul>
-<h3 id="3-遮挡剔除优化"><a href="#3-遮挡剔除优化" class="headerlink" title="3. 遮挡剔除优化"></a>3. 遮挡剔除优化</h3><p>两步高效剔除方案：</p>
-<ol>
-<li>背向面剔除：移除始终不可见的背面多边形</li>
-<li>全遮挡剔除：通过射线投射检测隐藏几何<br>实际效果：月球场景共移除17万三角形，最终降至18万</li>
-</ol>
-<h2 id="UV与纹理的智能压缩"><a href="#UV与纹理的智能压缩" class="headerlink" title="UV与纹理的智能压缩"></a>UV与纹理的智能压缩</h2><h3 id="多角度投影UV布局"><a href="#多角度投影UV布局" class="headerlink" title="多角度投影UV布局"></a>多角度投影UV布局</h3><p>突破单视角局限：</p>
-<ul>
-<li>Mesh Partition HDA 分割最小可见单元</li>
-<li>Multi-Projection HDA 从最佳观测点投射UV</li>
-<li>边界内使用面积缩放，边界外采用屏幕空间缩放<br>成果：数公里地形压缩至两张纹理贴图</li>
-</ul>
-<h3 id="高模到低模烘焙"><a href="#高模到低模烘焙" class="headerlink" title="高模到低模烘焙"></a>高模到低模烘焙</h3><p>创新合成技术：</p>
-<ul>
-<li>球面投影映射结合直接表面投影</li>
-<li>确保预渲染细节完整转移到优化UV</li>
-<li>纹理内存从数十GB压缩至不足200MB</li>
-</ul>
-<h2 id="USD场景配置技巧"><a href="#USD场景配置技巧" class="headerlink" title="USD场景配置技巧"></a>USD场景配置技巧</h2><p>最终优化阶段：</p>
-<ul>
-<li>Boundary Partition HDA 处理边界内密集几何</li>
-<li>Frustum Partition HDA 渐进分块边界外网格</li>
-<li>属性传递实现高效视锥剔除<br>性能数据：单帧绘制调用通常少于100次</li>
-</ul>
-<h2 id="实战成果"><a href="#实战成果" class="headerlink" title="实战成果"></a>实战成果</h2><p>月球场景优化对比：</p>
-<ul>
-<li>多边形：1亿 → 20万（视锥剔除后单屏约10万）</li>
-<li>纹理内存：数十GB → 250MB</li>
-<li>实体数量：控制在200以内</li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这套Houdini工具链展示了程序化工作流的强大之处——通过智能算法而非手工劳动，开发者可以在保持视觉质量的同时突破性能瓶颈。随附的14个HDA工具已开放下载，为各种沉浸式场景提供了灵活解决方案。正如早期游戏开发者用创意突破硬件限制，现在你也可以用这些工具重新定义visionOS的体验边界。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10087">为你的沉浸式 visionOS App 创建自定环境</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10186">为空间计算优化 3D 素材资源</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10115">在自定环境中提升媒体观赏体验的沉浸度</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10086">探索 USD 生态系统</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="为-visionOS-优化你的自定义环境：打造沉浸式体验的技术解析"><a href="#为-visionOS-优化你的自定义环境：打造沉浸式体验的技术解析" class="headerlink" title="为 visionOS 优化你的自定义环境：打造沉浸式体验的技术解析"></a>为 visionOS 优化你的自定义环境：打造沉浸式体验的技术解析</h1><p>在空间计算时代，为 Apple Vision Pro 创建沉浸式环境面临着独特的挑战与机遇。本文将深入解析如何通过程序化工具链构建高质量环境，实现电影级视觉效果与实时性能的完美平衡。</p>
+<h2 id="沉浸式环境的核心挑战"><a href="#沉浸式环境的核心挑战" class="headerlink" title="沉浸式环境的核心挑战"></a>沉浸式环境的核心挑战</h2><p>Vision Pro 平台提供了超高分辨率、快速帧率和无缝实时交互能力，为开发者创造了打造真正临场感环境的绝佳机会。然而，高保真实时渲染往往伴随着高昂的性能代价——柔和的阴影、全局光照和复杂着色等效果都会消耗大量计算资源。</p>
+<p>Alex 在 WWDC24 演讲中提出的解决方案并非依赖单一技术，而是采用一套灵活的工作流程：</p>
+<ol>
+<li>从预渲染图像开始，捕捉电影级光照、丰富细节和高端材质</li>
+<li>根据观看者实际体验优化几何体和纹理</li>
+<li>将预渲染图像应用到优化后的环境</li>
+<li>在实时编辑器（如 Reality Composer 或 Unity）中完成组装</li>
+</ol>
+<h2 id="环境优化的关键技术"><a href="#环境优化的关键技术" class="headerlink" title="环境优化的关键技术"></a>环境优化的关键技术</h2><h3 id="几何优化：从1亿到20万多边形"><a href="#几何优化：从1亿到20万多边形" class="headerlink" title="几何优化：从1亿到20万多边形"></a>几何优化：从1亿到20万多边形</h3><p>面对如月球场景这样包含1亿多边形的复杂环境，演讲中展示了三项突破性的优化技术：</p>
+<h4 id="1-自适应多边形缩减"><a href="#1-自适应多边形缩减" class="headerlink" title="1. 自适应多边形缩减"></a>1. 自适应多边形缩减</h4><p>传统LOD系统简化单个资产的方案在这里被超越。通过基于沉浸边界内可能视点的优化方案：</p>
+<ul>
+<li>使用增强版Houdini PolyReduce工具</li>
+<li>通过属性驱动参数和边界采样点评估几何重要性</li>
+<li>保持细节密度自然渐变，避免突兀变化</li>
+<li>月球场景多边形从1亿降至35万</li>
+</ul>
+<h4 id="2-几何广告牌技术"><a href="#2-几何广告牌技术" class="headerlink" title="2. 几何广告牌技术"></a>2. 几何广告牌技术</h4><p>对于1公里外的远景对象：</p>
+<ul>
+<li>转化为朝向沉浸边界的平面几何体</li>
+<li>通过Vista Billboard HDA工具生成简化剪影</li>
+<li>避免使用透明材质的情况下大幅减少多边形</li>
+<li>月球环境中选择1公里分界点以优化资源分配</li>
+</ul>
+<h4 id="3-遮挡剔除"><a href="#3-遮挡剔除" class="headerlink" title="3. 遮挡剔除"></a>3. 遮挡剔除</h4><p>双重剔除方案显著提升效率：</p>
+<ul>
+<li>背面剔除：移除永远不可见的背面多边形（月球场景移除6万）</li>
+<li>遮挡剔除：通过射线测试移除完全遮挡的三角形（额外移除11万）</li>
+<li>合计移除约50%剩余三角形，最终控制在18万</li>
+</ul>
+<h3 id="UV与纹理优化：保留细节的艺术"><a href="#UV与纹理优化：保留细节的艺术" class="headerlink" title="UV与纹理优化：保留细节的艺术"></a>UV与纹理优化：保留细节的艺术</h3><p>为在优化几何体上保留高精度PBR贴图细节，采用了创新的UV策略：</p>
+<ul>
+<li>沉浸边界内（5米）：基于面积的UV映射，确保纹理密度一致</li>
+<li>沉浸边界外：切换为基于屏幕空间的投影映射</li>
+<li>使用Mesh Partition HDA分割网格为最小可见单元</li>
+<li>Multi-Projection HDA从各分区最佳视角投射UV</li>
+<li>最终压缩到两张纹理：边界内面积缩放，边界外屏幕空间缩放</li>
+</ul>
+<h3 id="纹理烘焙：从数十GB到200MB"><a href="#纹理烘焙：从数十GB到200MB" class="headerlink" title="纹理烘焙：从数十GB到200MB"></a>纹理烘焙：从数十GB到200MB</h3><p>通过组合球形渲染和表面投影技术：</p>
+<ul>
+<li>临时球形投影映射渲染到几何体</li>
+<li>烘焙至最终UV布局</li>
+<li>单视角缺失数据问题通过表面投影解决</li>
+<li>实现数十GB高分辨率纹理压缩至不足200MB</li>
+</ul>
+<h2 id="USD设置与最终优化"><a href="#USD设置与最终优化" class="headerlink" title="USD设置与最终优化"></a>USD设置与最终优化</h2><p>精心设计的USD结构开启最终优化阶段：</p>
+<ul>
+<li>层次划分实现高效视锥剔除</li>
+<li>边界内使用Boundary Partition HDA</li>
+<li>边界外使用Frustum Partition HDA分割为渐进式区块</li>
+<li>导出前仅保留必要属性（名称属性、组分配）</li>
+</ul>
+<p>最终成果令人印象深刻：</p>
+<ul>
+<li>多边形：1亿→20万（实际每帧仅渲染约10万）</li>
+<li>纹理内存：控制在250MB以内</li>
+<li>实体数量：&lt;200个</li>
+<li>单帧绘制调用：通常&lt;100次</li>
+</ul>
+<h2 id="应用场景与工具适配性"><a href="#应用场景与工具适配性" class="headerlink" title="应用场景与工具适配性"></a>应用场景与工具适配性</h2><p>这套工作流程经过精心设计，可适应多种场景需求：</p>
+<ul>
+<li>门户体验：调整遮挡剔除参数</li>
+<li>多沉浸边界场景：通过多组采样点优化</li>
+<li>适用场景类型：<ul>
+<li>岩石地貌（月球、约书亚树）</li>
+<li>大气景观（胡德山、哈雷阿卡拉）</li>
+<li>硬表面室内（会议室、剧院）</li>
+</ul>
 </li>
 </ul>
+<p>对于不同场景需求，可灵活调整优化重点。例如复杂着色器场景可相应缩减几何体，而高效建模环境则无需重度优化。</p>
+<h2 id="开发者资源与核心启示"><a href="#开发者资源与核心启示" class="headerlink" title="开发者资源与核心启示"></a>开发者资源与核心启示</h2><p>随附的示例项目包含完整工作流程和工具，README文件提供详细说明。核心启示在于：高保真内容不必昂贵。将优化思维融入创作过程，借助强大工具链，开发者可以突破可能性边界，打造更具沉浸感的Vision Pro环境。</p>
+<p>相关视频：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10087">为你的沉浸式 visionOS App 创建自定环境</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10186">为空间计算优化 3D 素材资源</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10115">在自定环境中提升媒体观赏体验的沉浸度</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10086">探索 USD 生态系统</a></p>
 
       
 
@@ -391,18 +409,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_224/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_303/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          针对辅助功能标签评估你的 App
+          为 visionOS 设计悬停交互
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_238/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">针对辅助访问自定 App</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_304/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">探索 visionOS 的视频体验</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="辅助访问是一种独具特色、突出重点的 ios 体验，让有认知障碍的用户可以更轻松地独立使用 iphone 和 ipad。在 ios 和 ipados 26 中，你可以对 app 在辅助访问模式下的运行效果进行自定，为用户提供更大的便利性和独立性。了解如何使用 assistiveaccess swiftui 场景类型来定制你的 app，并探索可以帮助你为每一个人打造高质量辅助触控体验的关键设计原则。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9919/9919_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:52:12.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:52:12.792Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.794Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_238/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:52:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,71 +227,35 @@ var _hmt = _hmt || [];
       
         <p>辅助访问是一种独具特色、突出重点的 ios 体验，让有认知障碍的用户可以更轻松地独立使用 iphone 和 ipad。在 ios 和 ipados 26 中，你可以对 app 在辅助访问模式下的运行效果进行自定，为用户提供更大的便利性和独立性。了解如何使用 assistiveaccess swiftui 场景类型来定制你的 app，并探索可以帮助你为每一个人打造高质量辅助触控体验的关键设计原则。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9919/9919_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/238/">视频地址</a></p>
-<h1 id="为认知障碍用户优化应用体验：辅助访问功能详解"><a href="#为认知障碍用户优化应用体验：辅助访问功能详解" class="headerlink" title="为认知障碍用户优化应用体验：辅助访问功能详解"></a>为认知障碍用户优化应用体验：辅助访问功能详解</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>辅助访问（Assistive Access）是苹果为认知障碍用户量身打造的特殊模式，它能简化iOS和iPadOS的交互方式，让这些用户也能独立使用设备。本文将详细介绍如何通过SwiftUI为您的应用添加辅助访问支持，以及优化用户体验的关键设计原则。</p>
-<h2 id="什么是辅助访问？"><a href="#什么是辅助访问？" class="headerlink" title="什么是辅助访问？"></a>什么是辅助访问？</h2><p>辅助访问是iOS/iPadOS 17引入的一项无障碍功能，它通过以下方式降低用户认知负荷：</p>
-<ul>
-<li><strong>超大控件设计</strong>：让所有操作元素更易于识别和点击</li>
-<li><strong>精简界面</strong>：去除不必要的功能和视觉干扰</li>
-<li><strong>视觉化替代文本</strong>：用图形辅助理解</li>
-</ul>
-<h3 id="全屏模式支持"><a href="#全屏模式支持" class="headerlink" title="全屏模式支持"></a>全屏模式支持</h3><p>对于已经为认知障碍用户优化的应用（如辅助沟通应用），可以通过在Info.plist中设置<code>UISupportsFullScreenInAssistiveAccess</code>来启用全屏显示。开发者还可以使用SwiftUI或UIKit API来检测当前是否处于辅助访问模式。</p>
-<h2 id="实现辅助访问场景"><a href="#实现辅助访问场景" class="headerlink" title="实现辅助访问场景"></a>实现辅助访问场景</h2><p>在iOS/iPadOS 26中，未专门优化的应用可以通过创建辅助访问场景来提供定制体验。与全屏模式不同，场景模式会自动采用系统标准的醒目控件风格。</p>
-<h3 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h3><ol>
-<li>在Info.plist中添加<code>UISupportsAssistiveAccess</code>键并设为true</li>
-<li>使用SwiftUI添加场景声明：</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@main</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyApp</span>: <span class="title class_ inherited__">App</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">Scene</span> &#123;</span><br><span class="line">    <span class="type">WindowGroup</span> &#123;</span><br><span class="line">      <span class="type">MainContentView</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AssistiveAccess</span> &#123;  <span class="comment">// 辅助访问场景</span></span><br><span class="line">      <span class="type">SimplifiedView</span>()  </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>使用<code>.assistiveAccess</code>预览特性测试布局</li>
-</ol>
-<p>对于UIKit应用，可以通过场景代理桥接到SwiftUI场景：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MySceneDelegate</span>: <span class="title class_ inherited__">UIHostingSceneDelegate</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">var</span> rootScene: <span class="keyword">some</span> <span class="type">Scene</span> &#123;</span><br><span class="line">    <span class="type">AssistiveAccess</span> &#123; <span class="type">SimplifiedView</span>() &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="设计优化原则"><a href="#设计优化原则" class="headerlink" title="设计优化原则"></a>设计优化原则</h2><p>为辅助访问设计时需要遵循以下核心原则：</p>
-<ol>
-<li><p><strong>功能聚焦</strong><br>保留1-2个核心功能，移除非必要功能</p>
-</li>
-<li><p><strong>交互简化</strong>  </p>
-</li>
-</ol>
-<ul>
-<li>减少同时显示的选项</li>
-<li>避免复杂手势和嵌套UI</li>
-<li>禁用自动超时交互</li>
-<li>采用分步引导流程</li>
-</ul>
-<ol start="3">
-<li><strong>安全设计</strong>  </li>
-</ol>
-<ul>
-<li>移除不可逆操作</li>
-<li>高风险操作需要双重确认</li>
-</ul>
-<ol start="4">
-<li><strong>多模态呈现</strong>  </li>
-</ol>
-<ul>
-<li>控件同时包含图标和文字</li>
-<li>使用系统提供的导航栏图标修饰符：</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.navigationTitle(<span class="string">&quot;绘图&quot;</span>)</span><br><span class="line">.assistiveAccessNavigationIcon(systemImage: <span class="string">&quot;paintbrush.fill&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="实际应用案例"><a href="#实际应用案例" class="headerlink" title="实际应用案例"></a>实际应用案例</h2><p>以一个绘图应用为例，优化颜色选择功能：</p>
-<ul>
-<li>将复杂取色器简化为6种预选颜色</li>
-<li>将颜色选择作为独立步骤</li>
-<li>移除”撤销”功能避免混淆</li>
-</ul>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/256">SwiftUI的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10032">了解Assistive Access</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SwiftUI/AssistiveAccess">AssistiveAccess文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/accessibility">人机界面指南：无障碍功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/BundleResources/Information-Property-List/UISupportsFullScreenInAssistiveAccess">UISupportsFullScreenInAssistiveAccess</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="为辅助访问定制应用：构建包容性体验的技术指南"><a href="#为辅助访问定制应用：构建包容性体验的技术指南" class="headerlink" title="为辅助访问定制应用：构建包容性体验的技术指南"></a>为辅助访问定制应用：构建包容性体验的技术指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在iOS和iPadOS 26中，Apple为开发者提供了全新的AssistiveAccess SwiftUI场景类型，使应用能够更好地融入辅助访问模式。辅助访问是一种经过简化的系统体验，专为认知障碍用户设计，通过大控件、简洁界面和清晰的成功路径降低认知负荷。本文将详细介绍如何利用新技术优化应用，以及设计高质量辅助触控体验的关键原则。</p>
+<h2 id="辅助访问概述"><a href="#辅助访问概述" class="headerlink" title="辅助访问概述"></a>辅助访问概述</h2><p>辅助访问最初在iOS和iPadOS 17中推出，重新定义了设备交互方式，提炼出应用和控件的核心功能。这种体验具有以下特点：</p>
+<ul>
+<li>精简版内置应用（如相机和信息）采用统一设计语言</li>
+<li>大控件和简洁界面提升可操作性</li>
+<li>可视化文本替代方案减少认知负担</li>
 </ul>
+<p>对于未经优化的应用，系统会显示在缩小窗口中，底部提供返回主屏幕按钮。而专门设计的应用（如AAC辅助沟通应用）则可实现全屏显示，只需在Info.plist中设置<code>UISupportsFullScreenInAssistiveAccess</code>为true。</p>
+<h2 id="创建辅助访问场景"><a href="#创建辅助访问场景" class="headerlink" title="创建辅助访问场景"></a>创建辅助访问场景</h2><p>iOS/iPadOS 26引入的AssistiveAccess场景类型，使开发者能够创建符合内置应用风格的定制界面。实现步骤如下：</p>
+<ol>
+<li>在Info.plist设置<code>UISupportsAssistiveAccess</code>为true</li>
+<li>采用AssistiveAccess场景类型构建精简体验</li>
+</ol>
+<p>SwiftUI应用示例代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@main</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">WWDCDrawApp</span>: <span class="title class_ inherited__">App</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">Scene</span> &#123;</span><br><span class="line">    <span class="type">WindowGroup</span> &#123;</span><br><span class="line">      <span class="type">ContentView</span>()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">AssistiveAccess</span> &#123; <span class="comment">// 新增辅助访问场景</span></span><br><span class="line">      <span class="type">AssistiveAccessContentView</span>() </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>#Preview(traits: .assistiveAccess)</code>宏可预览辅助访问场景。UIKit应用则可通过<code>UIHostingSceneDelegate</code>定义SwiftUI场景，并在AppDelegate中激活配置。</p>
+<h2 id="应用定制原则"><a href="#应用定制原则" class="headerlink" title="应用定制原则"></a>应用定制原则</h2><p>为辅助访问优化应用时，应遵循以下核心设计原则：</p>
+<h3 id="功能精简"><a href="#功能精简" class="headerlink" title="功能精简"></a>功能精简</h3><p>保留1-2个核心功能，移除次要功能减少干扰。例如绘图应用可保留”绘制”和”画廊”两个主要功能。</p>
+<h3 id="显性控件"><a href="#显性控件" class="headerlink" title="显性控件"></a>显性控件</h3><p>避免隐藏手势或嵌套UI，使用醒目易见的控件。所有操作都应直观可见。</p>
+<h3 id="无时效限制"><a href="#无时效限制" class="headerlink" title="无时效限制"></a>无时效限制</h3><p>取消自动状态变更，允许用户按自身节奏操作。避免时间敏感的操作流程。</p>
+<h3 id="分步引导"><a href="#分步引导" class="headerlink" title="分步引导"></a>分步引导</h3><p>采用渐进式流程而非一次性展示所有选项。例如颜色选择可作为绘制的必经步骤，而非可选功能。</p>
+<h3 id="安全防护"><a href="#安全防护" class="headerlink" title="安全防护"></a>安全防护</h3><p>移除不可逆操作或设置双重确认。例如从画布移除撤销功能，在画廊移除删除选项。</p>
+<h3 id="多模态呈现"><a href="#多模态呈现" class="headerlink" title="多模态呈现"></a>多模态呈现</h3><p>为所有控件和导航标题同时提供图标和文本标签。使用<code>.assistiveAccessNavigationIcon</code>修饰符添加配套图标。</p>
+<h2 id="测试与优化"><a href="#测试与优化" class="headerlink" title="测试与优化"></a>测试与优化</h2><p>完成初步开发后，建议通过辅助访问社区获取真实用户反馈。持续的测试和优化可确保应用提供最佳的无障碍体验。遵循这些原则，开发者能够创建真正包容的应用，服务于认知障碍用户群体。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/256">SwiftUI 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10032">了解 Assistive Access</a>  </p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SwiftUI/AssistiveAccess">AssistiveAccess</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/accessibility">人机界面指南：无障碍功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/BundleResources/Information-Property-List/UISupportsFullScreenInAssistiveAccess">UISupportsFullScreenInAssistiveAccess</a></p>
 
       
 
@@ -398,18 +362,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_305/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_243/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          针对 visionOS 优化你的自定环境
+          UIKit 的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_316/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">包容性 App 设计的原则</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_247/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Xcode 的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

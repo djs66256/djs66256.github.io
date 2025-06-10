@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何为 visionos 26 设计美观的小组件，确保完美融入用户周围的环境。了解如何在小组件设计中添加深度，并为空间计算自定材质、尺寸和风格。我们将介绍如何针对 visionos 调整你现有的小组件，或设计出类似真实物体的全新小组件。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9957/9957_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:46:41.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:46:41.394Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.609Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_255/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:46:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,95 +226,72 @@ var _hmt = _hmt || [];
       
         <p>了解如何为 visionos 26 设计美观的小组件，确保完美融入用户周围的环境。了解如何在小组件设计中添加深度，并为空间计算自定材质、尺寸和风格。我们将介绍如何针对 visionos 调整你现有的小组件，或设计出类似真实物体的全新小组件。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9957/9957_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/255/">视频地址</a></p>
-<h1 id="为-visionOS-设计空间感知小组件：四大核心原则解析"><a href="#为-visionOS-设计空间感知小组件：四大核心原则解析" class="headerlink" title="为 visionOS 设计空间感知小组件：四大核心原则解析"></a>为 visionOS 设计空间感知小组件：四大核心原则解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在 visionOS 的沉浸式环境中，小组件已从二维界面元素进化为三维空间对象。本文将深入解析 visionOS 小组件设计的四大核心原则——持久性、固定尺寸、个性化定制和距离感知，帮助开发者创建与环境完美融合的数字体验。</p>
-<h2 id="持久性：成为空间的一部分"><a href="#持久性：成为空间的一部分" class="headerlink" title="持久性：成为空间的一部分"></a>持久性：成为空间的一部分</h2><p>visionOS 小组件的标志性特征是其跨会话的持久存在能力。用户添加的小组件会：</p>
-<ul>
-<li>固定在指定位置（桌面/墙面）</li>
-<li>支持多实例同时显示（自动网格对齐）</li>
-<li>保持虚拟与现实的层级关系（始终显示在虚拟内容后方）</li>
-</ul>
-<p>设计要点：</p>
-<ul>
-<li>桌面放置时呈现5°倾斜提升可读性</li>
-<li>墙面放置时采用画框式平贴设计</li>
-<li>强制边框设计强化环境关联性</li>
-</ul>
-<h2 id="固定尺寸：真实世界的比例感"><a href="#固定尺寸：真实世界的比例感" class="headerlink" title="固定尺寸：真实世界的比例感"></a>固定尺寸：真实世界的比例感</h2><p>visionOS 提供物理空间映射的尺寸模板体系：</p>
-<table>
-<thead>
-<tr>
-<th>使用场景</th>
-<th>典型尺寸</th>
-<th>缩放范围</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>桌面效率工具</td>
-<td>Small (10x10cm)</td>
-<td>75%-125%</td>
-</tr>
-<tr>
-<td>墙面艺术展示</td>
-<td>Extra Large (60x60cm)</td>
-<td>需高分辨率资源</td>
-</tr>
-</tbody>
-</table>
-<h2 id="深度个性化设计"><a href="#深度个性化设计" class="headerlink" title="深度个性化设计"></a>深度个性化设计</h2><p>visionOS 提供双层美学系统：</p>
-<ol>
-<li><strong>材质选择</strong></li>
-</ol>
-<ul>
-<li>纸张风格：模拟实体印刷品质感</li>
-<li>玻璃风格：通过分层创造视觉深度</li>
-</ul>
-<ol start="2">
-<li><strong>配色方案</strong></li>
-</ol>
-<ul>
-<li>14种系统预设配色（7亮/7暗）</li>
-<li>支持内容主题色衍生（如音乐专辑封面取色）</li>
-</ul>
-<ol start="3">
-<li><strong>悬挂样式</strong></li>
-</ol>
-<ul>
-<li>凸起式：画框突出效果</li>
-<li>凹入式：窗景深度效果（仅垂直面）</li>
-</ul>
-<h2 id="智能距离感知"><a href="#智能距离感知" class="headerlink" title="智能距离感知"></a>智能距离感知</h2><p>视觉响应系统包含两个设计阈值：</p>
-<ol>
-<li><strong>默认视图</strong>（&lt;2米）</li>
-</ol>
-<ul>
-<li>显示完整内容和交互元素</li>
-<li>文本最小字号24pt保证可读性</li>
-</ul>
-<ol start="2">
-<li><strong>简化视图</strong>（≥2米）</li>
-</ol>
-<ul>
-<li>保留核心视觉元素</li>
-<li>自动调整布局密度</li>
-<li>交互热区保持44x44pt最小尺寸</li>
-</ul>
-<h2 id="迁移与原生开发策略"><a href="#迁移与原生开发策略" class="headerlink" title="迁移与原生开发策略"></a>迁移与原生开发策略</h2><p><strong>现有小组件迁移</strong>：</p>
-<ul>
-<li>启用兼容模式自动获得3D呈现</li>
-<li>保持原有功能同时增加空间布置能力</li>
-</ul>
-<p><strong>原生visionOS小组件</strong>：</p>
-<ul>
-<li>利用平台专属尺寸模板</li>
-<li>深度整合材质系统</li>
-<li>实现完全的距离响应式设计</li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>visionOS 为小组件设计开启了空间计算的新纪元。通过把握持久存在、真实比例、深度个性化和智能响应这四大原则，开发者可以创造出既实用又与环境和谐共生的数字对象。建议从您现有的iPad小组件开始尝试迁移，逐步探索原生visionOS小组件的独特可能性。</p>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WidgetKit/Updating-your-widgets-for-visionOS">为 visionOS 更新小组件</a></p>
 <blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="为-visionOS-设计小组件：打造沉浸式空间体验"><a href="#为-visionOS-设计小组件：打造沉浸式空间体验" class="headerlink" title="为 visionOS 设计小组件：打造沉浸式空间体验"></a>为 visionOS 设计小组件：打造沉浸式空间体验</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在 WWDC 的「为 visionOS 设计小组件」专题演讲中，Jonathan 和 Moritz 详细介绍了如何在 visionOS 26 平台上设计美观且功能强大的小组件。这些三维小组件将打破传统屏幕限制，自然融入用户周围环境，为空间计算体验带来革命性变化。</p>
+<h2 id="核心设计原则"><a href="#核心设计原则" class="headerlink" title="核心设计原则"></a>核心设计原则</h2><p>visionOS 的小组件设计建立在四大核心原则之上：</p>
+<h3 id="持久性：空间中的恒定存在"><a href="#持久性：空间中的恒定存在" class="headerlink" title="持久性：空间中的恒定存在"></a>持久性：空间中的恒定存在</h3><p>一旦用户将小组件放置在环境中，它就会永久驻留在选定位置。这种持久性体现在：</p>
+<ul>
+<li>多实例支持：同一小组件可在空间中有多个副本</li>
+<li>物理吸附特性：仅附着于真实物理表面，不会存在于虚拟环境中</li>
+<li>自动排列：墙面放置时会自动形成网格布局</li>
+</ul>
+<h3 id="固定尺寸：现实世界的比例感"><a href="#固定尺寸：现实世界的比例感" class="headerlink" title="固定尺寸：现实世界的比例感"></a>固定尺寸：现实世界的比例感</h3><p>visionOS 的小组件采用真实物理尺度：</p>
+<ul>
+<li>提供多种与现实物体匹配的模板尺寸</li>
+<li>用户可在75%-125%范围内缩放</li>
+<li>设计需考虑不同放置场景（墙面、桌面等）</li>
+</ul>
+<h2 id="视觉风格与定制化"><a href="#视觉风格与定制化" class="headerlink" title="视觉风格与定制化"></a>视觉风格与定制化</h2><p>Moritz 详细介绍了 visionOS 小组件的两大视觉风格系统：</p>
+<h3 id="纸张风格"><a href="#纸张风格" class="headerlink" title="纸张风格"></a>纸张风格</h3><ul>
+<li>模拟实体印刷品质感</li>
+<li>完全响应环境光照</li>
+<li>由框架、内容层和反射涂层构成</li>
+<li>适合需要与环境高度融合的场景</li>
+</ul>
+<h3 id="玻璃风格"><a href="#玻璃风格" class="headerlink" title="玻璃风格"></a>玻璃风格</h3><ul>
+<li>强调内容清晰度和对比度</li>
+<li>前景元素不受环境光影响</li>
+<li>多层结构创造深度感</li>
+<li>适合信息密集型内容展示</li>
+</ul>
+<p>用户可通过丰富的选项个性化小组件：</p>
+<ul>
+<li>14种系统调色板选择（7浅色+7深色）</li>
+<li>两种悬挂样式（凸起式/嵌入式）</li>
+<li>五种可调框架宽度</li>
+<li>开发者可扩展配置UI加入专属选项</li>
+</ul>
+<h2 id="距离感知与交互设计"><a href="#距离感知与交互设计" class="headerlink" title="距离感知与交互设计"></a>距离感知与交互设计</h2><p>visionOS 小组件的独特能力在于：</p>
+<ul>
+<li>根据用户距离动态调整布局</li>
+<li>提供默认（近）和简化（远）两种显示状态</li>
+<li>保持核心元素在不同距离下的连续性</li>
+<li>优化交互区域的可触达性</li>
+</ul>
+<p>设计建议：</p>
+<ul>
+<li>远距离时精简信息，保留核心内容</li>
+<li>近距离时展示更多细节</li>
+<li>确保交互元素大小适合不同距离操作</li>
+</ul>
+<h2 id="实现路径"><a href="#实现路径" class="headerlink" title="实现路径"></a>实现路径</h2><p>对于开发者而言，有两种主要实现方式：</p>
+<ol>
+<li>兼容模式：现有iPad小组件自动获得空间化呈现</li>
+<li>原生构建：专门为visionOS设计，可充分利用平台特性</li>
+</ol>
+<p>特别推荐观看「WidgetKit新特性」会议获取技术实现细节。</p>
+<h2 id="设计最佳实践"><a href="#设计最佳实践" class="headerlink" title="设计最佳实践"></a>设计最佳实践</h2><p>总结关键设计要点：</p>
+<ul>
+<li>考虑小组件在真实环境中的使用场景</li>
+<li>选择适合内容特性的模板尺寸</li>
+<li>决定采用纸张还是玻璃风格</li>
+<li>实现合理的距离感知响应</li>
+<li>提供有意义的定制选项</li>
+</ul>
+<p>相关文档：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WidgetKit/Updating-your-widgets-for-visionOS">为 visionOS 更新小组件</a></p>
+<p>visionOS 为小组件设计开启了全新维度，开发者现在有机会创造既实用又极具沉浸感的3D空间体验，让数字内容真正成为用户环境的一部分。</p>
 
       
 
@@ -417,18 +394,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_299/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_253/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          在你的 App 中提供适龄体验
+          利用拍摄控件提升你的相机体验
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_237/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">空间网页的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_254/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">探索 Metal 4 游戏</div>
       <i class="icon-circle-right"></i>
     </a>
   

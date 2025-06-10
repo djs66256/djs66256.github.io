@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索 liquid glass 为 app 的外观和风格带来了哪些颠覆性的改变。了解这个亮眼的新材质如何提升不同平台上工具栏、控制项和 app 结构的视觉效果，从而带来引人入胜的交互体验并将你的 app 与系统无缝整合在一起。了解如何采用新的 api 来帮助你充分利用 liquid glass。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10020/10020_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:50:28.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:50:28.443Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.734Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_323/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:50:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,82 +228,48 @@ var _hmt = _hmt || [];
       
         <p>探索 liquid glass 为 app 的外观和风格带来了哪些颠覆性的改变。了解这个亮眼的新材质如何提升不同平台上工具栏、控制项和 app 结构的视觉效果，从而带来引人入胜的交互体验并将你的 app 与系统无缝整合在一起。了解如何采用新的 api 来帮助你充分利用 liquid glass。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10020/10020_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/323/">视频地址</a></p>
-<h1 id="运用-Liquid-Glass-设计系统打造惊艳-SwiftUI-应用"><a href="#运用-Liquid-Glass-设计系统打造惊艳-SwiftUI-应用" class="headerlink" title="运用 Liquid Glass 设计系统打造惊艳 SwiftUI 应用"></a>运用 Liquid Glass 设计系统打造惊艳 SwiftUI 应用</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>iOS 26 和 macOS Tahoe 带来了名为 Liquid Glass 的革命性设计系统，这种自适应材质将玻璃的光学特性与液体流动感完美结合，为应用界面带来前所未有的视觉效果。本文将带您了解如何利用这一设计系统为您的 SwiftUI 应用注入全新活力。</p>
-<h2 id="Liquid-Glass-核心特性"><a href="#Liquid-Glass-核心特性" class="headerlink" title="Liquid Glass 核心特性"></a>Liquid Glass 核心特性</h2><p>Liquid Glass 是一种应用于控件和导航元素的自适应材质，具有以下特点：</p>
-<ul>
-<li>智能调节透明度：根据背景内容自动调整，从浅色过渡到深色</li>
-<li>动态交互效果：开关、分段选择器和滑块等组件在操作时呈现流动玻璃质感</li>
-<li>跨平台一致性：优化适用于所有 Apple 平台</li>
-</ul>
-<h2 id="应用框架革新"><a href="#应用框架革新" class="headerlink" title="应用框架革新"></a>应用框架革新</h2><p>NavigationSplitView 和 TabView 等结构化组件已全面升级：</p>
-<h3 id="NavigationSplitView"><a href="#NavigationSplitView" class="headerlink" title="NavigationSplitView"></a>NavigationSplitView</h3><ul>
-<li>侧边栏悬浮于内容之上并采用 Liquid Glass 材质</li>
-<li>新的 backgroundExtensionEffect 修饰符允许视图安全扩展到区域外</li>
-<li>检查器面板采用更多 Liquid Glass 效果</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NavigationSplitView</span> &#123;</span><br><span class="line">    <span class="comment">// 侧边栏内容</span></span><br><span class="line">&#125; detail: &#123;</span><br><span class="line">    <span class="comment">// 详情视图</span></span><br><span class="line">&#125;</span><br><span class="line">.backgroundExtensionEffect()</span><br></pre></td></tr></table></figure>
-<h3 id="TabView"><a href="#TabView" class="headerlink" title="TabView"></a>TabView</h3><ul>
-<li>iPhone 标签栏悬浮于内容上方</li>
-<li>支持滚动时自动最小化（通过 tabBarMinimizeBehavior 修饰符配置）</li>
-<li>tabViewBottomAccessory 修饰符可在标签栏上方添加视图</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">TabView</span> &#123;</span><br><span class="line">    <span class="comment">// 各个标签页</span></span><br><span class="line">&#125;</span><br><span class="line">.tabBarMinimizeBehavior(.onScrollDown)</span><br></pre></td></tr></table></figure>
-<h2 id="工具栏优化"><a href="#工具栏优化" class="headerlink" title="工具栏优化"></a>工具栏优化</h2><p>新工具栏设计提供了更优雅的操作布局：</p>
-<ul>
-<li>工具栏项目置于悬浮的 Liquid Glass 表面</li>
-<li>ToolbarSpacer API 实现项目分组和间距控制</li>
-<li>单色图标减少视觉干扰，突出应用内容</li>
-<li>轻松添加通知标识（通过 badge 修饰符）</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.toolbar &#123;</span><br><span class="line">    <span class="type">ToolbarItem</span>(placement: .primaryAction) &#123;</span><br><span class="line">        <span class="type">Button</span>(action: &#123;&#125;) &#123;</span><br><span class="line">            <span class="type">Image</span>(systemName: <span class="string">&quot;heart&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        .badge(<span class="number">5</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="搜索体验升级"><a href="#搜索体验升级" class="headerlink" title="搜索体验升级"></a>搜索体验升级</h2><p>两大搜索模式获得显著改进：</p>
-<ol>
-<li><p>工具栏搜索：</p>
-<ul>
-<li>自动适应设备位置（iPhone底部/iPad&amp;Mac右上角）</li>
-<li>可通过 searchToolbarBehavior 修饰符控制最小化行为</li>
-</ul>
-</li>
-<li><p>多标签页搜索：</p>
-<ul>
-<li>作为独立页面呈现</li>
-<li>在 TabView 添加 searchable 修饰符实现</li>
-</ul>
-</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NavigationStack</span> &#123;</span><br><span class="line">    <span class="comment">// 内容</span></span><br><span class="line">&#125;</span><br><span class="line">.searchable(text: <span class="variable">$searchText</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="控件焕新"><a href="#控件焕新" class="headerlink" title="控件焕新"></a>控件焕新</h2><p>主要控件获得统一家族化特征：</p>
-<ul>
-<li>按钮默认采用胶囊形状</li>
-<li>滑块新增刻度标记支持</li>
-<li>菜单跨平台布局更统一</li>
-<li>新增超大按钮样式支持重要操作</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Button</span>(<span class="string">&quot;重要操作&quot;</span>) &#123;</span><br><span class="line">    <span class="comment">// 操作代码</span></span><br><span class="line">&#125;</span><br><span class="line">.buttonStyle(.largeProminent)</span><br></pre></td></tr></table></figure>
-<h2 id="自定义-Liquid-Glass-元素"><a href="#自定义-Liquid-Glass-元素" class="headerlink" title="自定义 Liquid Glass 元素"></a>自定义 Liquid Glass 元素</h2><p>创建自定义特效的四个步骤：</p>
-<ol>
-<li>添加 glassEffect 修饰符创建玻璃背景</li>
-<li>添加 interactive 修饰符实现交互响应</li>
-<li>使用 GlassEffectContainer 确保视觉一致性</li>
-<li>添加 glassEffectID 修饰符实现流体变形过渡</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">CustomBadgeView</span>()</span><br><span class="line">    .glassEffect()</span><br><span class="line">    .interactive()</span><br><span class="line">    .glassEffectID(<span class="string">&quot;badge&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="开始实践"><a href="#开始实践" class="headerlink" title="开始实践"></a>开始实践</h2><p>立即使用 Xcode 26 构建您的应用：</p>
-<ol>
-<li>优化表单和工具栏布局</li>
-<li>运用 Liquid Glass 创造特色组件</li>
-<li>体验全新的设计系统优势</li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a></li>
-</ul>
-<h2 id="文档资料"><a href="#文档资料" class="headerlink" title="文档资料"></a>文档资料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/TechnologyOverviews/adopting-liquid-glass">Adopting Liquid Glass</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SwiftUI/Applying-Liquid-Glass-to-custom-views">Applying Liquid Glass to custom views</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用全新设计系统构建-SwiftUI-应用：Liquid-Glass-带来视觉革命"><a href="#使用全新设计系统构建-SwiftUI-应用：Liquid-Glass-带来视觉革命" class="headerlink" title="使用全新设计系统构建 SwiftUI 应用：Liquid Glass 带来视觉革命"></a>使用全新设计系统构建 SwiftUI 应用：Liquid Glass 带来视觉革命</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在 WWDC 2025 上，苹果发布了 iOS 26 和 macOS Tahoe 的重大视觉更新，核心亮点是名为 Liquid Glass 的全新自适应材质系统。这种创新材质为 SwiftUI 应用带来了革命性的视觉变革，从工具栏、控件到应用结构都焕然一新。本文将详细介绍如何利用这套新设计系统打造视觉惊艳的应用体验。</p>
+<h2 id="Liquid-Glass-的核心概念"><a href="#Liquid-Glass-的核心概念" class="headerlink" title="Liquid Glass 的核心概念"></a>Liquid Glass 的核心概念</h2><p>Liquid Glass 材质巧妙融合了玻璃的光学特性和液体的流动性，创造出轻盈动态的视觉体验。随着用户滚动内容，这种材质能智能适应下方内容，实现从浅色到深色的自然过渡。系统控件如开关、分段选择器和滑块等，在交互时会转变为液态玻璃形态，带来赏心悦目的动态效果。</p>
+<h2 id="应用结构的革新"><a href="#应用结构的革新" class="headerlink" title="应用结构的革新"></a>应用结构的革新</h2><h3 id="NavigationSplitView-优化"><a href="#NavigationSplitView-优化" class="headerlink" title="NavigationSplitView 优化"></a>NavigationSplitView 优化</h3><p><code>NavigationSplitView</code>是构建层级导航的核心组件，现在拥有了悬浮在内容上方、具备 Liquid Glass 效果的侧边栏。新引入的<code>backgroundExtensionEffect</code>修饰符允许视图扩展到安全区域之外而不裁切内容，当侧边栏隐藏时，背景图像会被镜像并模糊处理，确保内容完整可见。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NavigationSplitView</span> &#123;</span><br><span class="line">    <span class="comment">// 侧边栏内容</span></span><br><span class="line">&#125;</span><br><span class="line">detail: &#123;</span><br><span class="line">    <span class="comment">// 详细内容</span></span><br><span class="line">&#125;</span><br><span class="line">.backgroundExtensionEffect()</span><br></pre></td></tr></table></figure>
+<h3 id="TabView-新特性"><a href="#TabView-新特性" class="headerlink" title="TabView 新特性"></a>TabView 新特性</h3><p>iPhone 上的标签栏现在悬浮在内容上方，并可配置为滚动时最小化。通过<code>tabBarMinimizeBehavior</code>修饰符，开发者可以控制标签栏的折叠行为。例如，设置<code>.onScrollDown</code>行为会使标签栏在逆向滚动时重新展开。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">TabView</span> &#123;</span><br><span class="line">    <span class="comment">// 选项卡内容</span></span><br><span class="line">&#125;</span><br><span class="line">.tabBarMinimizeBehavior(.onScrollDown)</span><br></pre></td></tr></table></figure>
+<h2 id="工具栏的全新设计"><a href="#工具栏的全新设计" class="headerlink" title="工具栏的全新设计"></a>工具栏的全新设计</h2><p>新设计中的工具栏项目悬浮在 Liquid Glass 表面，自适应下方内容。系统自动分组工具栏项目，开发者可以使用<code>ToolbarSpacer</code>创建灵活的空间布局或固定间距的分组。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.toolbar &#123;</span><br><span class="line">    <span class="type">ToolbarItemGroup</span>(placement: .primaryAction) &#123;</span><br><span class="line">        <span class="type">Button</span>(action: &#123;&#125;) &#123;</span><br><span class="line">            <span class="type">Label</span>(<span class="string">&quot;Favorite&quot;</span>, systemImage: <span class="string">&quot;heart&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">ToolbarSpacer</span>(fixed: <span class="literal">true</span>) <span class="comment">// 固定间距分组</span></span><br><span class="line">        <span class="type">Button</span>(action: &#123;&#125;) &#123;</span><br><span class="line">            <span class="type">Label</span>(<span class="string">&quot;Add&quot;</span>, systemImage: <span class="string">&quot;plus&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于需要显示状态指示的工具栏项目，简单的<code>badge</code>修饰符就能实现：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ToolbarItem</span> &#123;</span><br><span class="line">    <span class="type">Button</span>(action: &#123;&#125;) &#123;</span><br><span class="line">        <span class="type">Label</span>(<span class="string">&quot;Notifications&quot;</span>, systemImage: <span class="string">&quot;bell&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    .badge(<span class="number">5</span>) <span class="comment">// 显示5条未读通知</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="搜索体验升级"><a href="#搜索体验升级" class="headerlink" title="搜索体验升级"></a>搜索体验升级</h2><p>全新搜索系统提供两种关键模式：</p>
+<ol>
+<li>工具栏搜索：在iPad/Mac上显示于右上角，在iPhone上自动调整到底部</li>
+<li>专用搜索页面：取代标签栏成为独立搜索界面</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NavigationSplitView</span> &#123;</span><br><span class="line">    <span class="comment">// 导航内容</span></span><br><span class="line">&#125;</span><br><span class="line">.searchable(text: <span class="variable">$searchText</span>) <span class="comment">// 应用于整个视图</span></span><br><span class="line">.searchToolbarBehavior(.minimal) <span class="comment">// 可选最小化行为</span></span><br></pre></td></tr></table></figure>
+<h2 id="控件系统的全面更新"><a href="#控件系统的全面更新" class="headerlink" title="控件系统的全面更新"></a>控件系统的全面更新</h2><h3 id="按钮与滑块新特性"><a href="#按钮与滑块新特性" class="headerlink" title="按钮与滑块新特性"></a>按钮与滑块新特性</h3><ul>
+<li>边框按钮默认采用胶囊形状</li>
+<li>新增超大尺寸按钮选项</li>
+<li>滑块支持刻度标记和自定义填充起点</li>
 </ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Slider</span>(value: <span class="variable">$value</span>, in: <span class="number">0</span><span class="operator">...</span><span class="number">100</span>, step: <span class="number">10</span>) <span class="comment">// 自动显示刻度</span></span><br><span class="line">    .ticks &#123; [<span class="number">60</span>, <span class="number">90</span>] &#125; <span class="comment">// 自定义刻度位置</span></span><br><span class="line">    .neutralValue(<span class="number">50</span>) <span class="comment">// 填充起点设为50%</span></span><br><span class="line"></span><br><span class="line"><span class="type">Button</span>(<span class="string">&quot;Action&quot;</span>) &#123; &#125;</span><br><span class="line">    .controlSize(.extraLarge) <span class="comment">// 超大尺寸按钮</span></span><br></pre></td></tr></table></figure>
+<h3 id="同心性设计原则"><a href="#同心性设计原则" class="headerlink" title="同心性设计原则"></a>同心性设计原则</h3><p>新设计强调”角同心性”，确保控件与容器的圆角完美对齐。使用<code>containerConcentric</code>配置可实现自动适应的形状：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Rectangle</span>()</span><br><span class="line">    .corner(.containerConcentric) <span class="comment">// 自动适应容器圆角</span></span><br></pre></td></tr></table></figure>
+<h2 id="自定义-Liquid-Glass-效果"><a href="#自定义-Liquid-Glass-效果" class="headerlink" title="自定义 Liquid Glass 效果"></a>自定义 Liquid Glass 效果</h2><p>对于需要特殊视觉表现的自定义视图，<code>glassEffect</code>修饰符提供了强大的定制能力：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Text</span>(<span class="string">&quot;Badge&quot;</span>)</span><br><span class="line">    .glassEffect() <span class="comment">// 默认胶囊形状背景</span></span><br><span class="line">    .glassEffect(in: <span class="type">Circle</span>()) <span class="comment">// 自定义圆形形状</span></span><br><span class="line">    .tint(.accentColor) <span class="comment">// 强调色</span></span><br><span class="line">    .interactive() <span class="comment">// 添加交互动画</span></span><br></pre></td></tr></table></figure>
+<p>多个玻璃元素需要组合使用时，<code>GlassEffectContainer</code>确保视觉一致性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">GlassEffectContainer</span> &#123;</span><br><span class="line">    <span class="type">ForEach</span>(badges) &#123; badge <span class="keyword">in</span></span><br><span class="line">        <span class="type">BadgeView</span>(badge)</span><br><span class="line">            .glassEffectID(badge.id) <span class="comment">// 关联过渡效果</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结与行动指南"><a href="#总结与行动指南" class="headerlink" title="总结与行动指南"></a>总结与行动指南</h2><p>采用全新设计系统时，建议开发者：</p>
+<ol>
+<li>使用Xcode 26构建应用，自动获得大量视觉改进</li>
+<li>检查并移除表单和工具栏背后的自定义背景</li>
+<li>善用Liquid Glass打造独特视觉元素</li>
+<li>遵循新的同心性设计原则</li>
+<li>充分利用搜索和工具栏的新布局选项</li>
+</ol>
+<p>通过这套全新的设计系统，开发者能够打造出更精美、更统一的应用体验，让应用视觉与苹果生态系统完美融合。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/TechnologyOverviews/adopting-liquid-glass">Adopting Liquid Glass</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SwiftUI/Applying-Liquid-Glass-to-custom-views">Applying Liquid Glass to custom views</a></p>
 
       
 
@@ -414,18 +380,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_274/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_318/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          搭配使用更出色：SwiftUI 和 RealityKit
+          与附近用户共享 visionOS 体验
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_247/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Xcode 的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_334/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">watchOS 26 的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

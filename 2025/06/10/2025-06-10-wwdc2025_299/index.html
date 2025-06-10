@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何使用全新的 declared age range api 在你的 app 中提供适龄体验。我们将介绍家长如何允许孩子与 app 共享年龄范围，以确保在保护隐私的情况下提供安全体验。我们还将探索此框架如何帮助你根据用户的年龄来定制你的 app 内容和功能，并展示如何实施年龄限制、理解缓存机制并尊重用户隐私，同时营造更安全、更有趣的体验。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10025/10025_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:47:41.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:47:41.669Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.612Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_299/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:47:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,78 +228,74 @@ var _hmt = _hmt || [];
       
         <p>了解如何使用全新的 declared age range api 在你的 app 中提供适龄体验。我们将介绍家长如何允许孩子与 app 共享年龄范围，以确保在保护隐私的情况下提供安全体验。我们还将探索此框架如何帮助你根据用户的年龄来定制你的 app 内容和功能，并展示如何实施年龄限制、理解缓存机制并尊重用户隐私，同时营造更安全、更有趣的体验。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10025/10025_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/299/">视频地址</a></p>
-<h1 id="如何在应用中为不同年龄用户提供个性化体验"><a href="#如何在应用中为不同年龄用户提供个性化体验" class="headerlink" title="如何在应用中为不同年龄用户提供个性化体验"></a>如何在应用中为不同年龄用户提供个性化体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着数字产品使用越来越低龄化，如何为不同年龄段的用户提供安全且合适的应用体验变得尤为重要。苹果最新推出的「声明年龄范围API」为开发者提供了一套完整的解决方案，既能保护儿童隐私，又能实现精准的适龄内容展示。本文将详细介绍这一框架的工作原理和实现方法。  </p>
-<h2 id="为什么需要适龄体验"><a href="#为什么需要适龄体验" class="headerlink" title="为什么需要适龄体验"></a>为什么需要适龄体验</h2><h3 id="儿童上网安全的重要性"><a href="#儿童上网安全的重要性" class="headerlink" title="儿童上网安全的重要性"></a>儿童上网安全的重要性</h3><p>苹果始终将用户隐私和安全放在首位，特别是对儿童用户的保护。2025年发布的《保护儿童上网安全》白皮书强调了数字环境中保护儿童的必要性。不同年龄段的孩子面临不同的网络风险，需要针对性的保护措施。  </p>
-<h3 id="苹果的改进措施"><a href="#苹果的改进措施" class="headerlink" title="苹果的改进措施"></a>苹果的改进措施</h3><ul>
-<li>简化的儿童账户设置流程  </li>
-<li>家长可随时修正孩子账户的年龄信息  </li>
-<li>App Store采用更细化的全球年龄评级体系（4+、9+、13+、16+、18+）  </li>
-<li>推出全新的「声明年龄范围API」  </li>
-</ul>
-<h2 id="声明年龄范围框架详解"><a href="#声明年龄范围框架详解" class="headerlink" title="声明年龄范围框架详解"></a>声明年龄范围框架详解</h2><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>该框架让应用可以请求用户的年龄范围，而不是具体生日。系统会根据用户年龄返回一个年龄区间（如13-15岁），应用据此调整内容和功能。  </p>
-<h3 id="主要特点"><a href="#主要特点" class="headerlink" title="主要特点"></a>主要特点</h3><ol>
-<li><strong>隐私保护</strong>：只提供必要的年龄区间信息  </li>
-<li><strong>灵活设置</strong>：家长有三种管理选项：  <ul>
-<li>始终共享  </li>
-<li>每次询问  </li>
-<li>永不共享  </li>
-</ul>
-</li>
-<li><strong>智能缓存</strong>：系统会缓存年龄信息，每年用户生日时自动更新  </li>
-</ol>
-<h3 id="年龄区间设置"><a href="#年龄区间设置" class="headerlink" title="年龄区间设置"></a>年龄区间设置</h3><p>开发者最多可以设置3个年龄阈值，系统会自动生成4个区间：  </p>
-<ul>
-<li>12岁及以下  </li>
-<li>13-15岁  </li>
-<li>16-17岁  </li>
-<li>18岁及以上  </li>
-</ul>
-<p>每个区间跨度至少两年，确保隐私保护。  </p>
-<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><h3 id="1-添加框架能力"><a href="#1-添加框架能力" class="headerlink" title="1. 添加框架能力"></a>1. 添加框架能力</h3><p>在Xcode项目的「Signing and Capabilities」选项卡中添加Declared Age Range能力。  </p>
-<h3 id="2-代码实现"><a href="#2-代码实现" class="headerlink" title="2. 代码实现"></a>2. 代码实现</h3><pre><code class="swift"><span class="keyword">import</span> SwiftUI
-<span class="keyword">import</span> DeclaredAgeRange
-
-<span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;
-    @<span class="type">State</span> <span class="keyword">var</span> featureEnabled = <span class="literal">false</span>
-    @<span class="type">Environment</span>(\.requestAgeRange) <span class="keyword">var</span> requestAgeRange
-
-    <span class="function"><span class="keyword">func</span> <span class="title">checkAge</span><span class="params">()</span></span> async &#123;
-        <span class="keyword">do</span> &#123;
-            <span class="keyword">let</span> response = <span class="keyword">try</span> await requestAgeRange(ageGates: <span class="number">16</span>)
-            <span class="keyword">switch</span> response &#123;
-            <span class="keyword">case</span> <span class="keyword">let</span> .sharing(range):
-                <span class="keyword">if</span> <span class="keyword">let</span> lowerBound = range.lowerBound, lowerBound &gt;= <span class="number">16</span> &#123;
-                    featureEnabled = <span class="literal">true</span>
-                &#125;
-            <span class="keyword">case</span> .declinedSharing:
-                <span class="built_in">print</span>(<span class="string">"用户拒绝共享年龄信息"</span>)
-            &#125;
-        &#125; <span class="keyword">catch</span> &#123;
-            <span class="built_in">print</span>(<span class="string">"请求出错："</span>, error)
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<h3 id="3-检查家长控制"><a href="#3-检查家长控制" class="headerlink" title="3. 检查家长控制"></a>3. 检查家长控制</h3><p>还可以检查家长是否启用了通信限制：  </p>
-<pre><code class="swift"><span class="keyword">if</span> range.activeParentalControls.<span class="built_in">contains</span>(.communicationLimits) &#123;
-    <span class="comment">// 处理通信受限的情况</span>
-&#125;
-</code></pre>
-<h2 id="其他儿童安全功能"><a href="#其他儿童安全功能" class="headerlink" title="其他儿童安全功能"></a>其他儿童安全功能</h2><ul>
-<li><strong>敏感内容分析API</strong>：自动检测不适当内容  </li>
-<li><strong>屏幕时间框架</strong>：帮助家长管理使用时间  </li>
-<li><strong>家庭控制</strong>：全面的家长控制工具  </li>
-</ul>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过「声明年龄范围API」，开发者可以轻松构建尊重隐私的适龄体验。建议所有面向儿童或青少年的应用都应考虑集成这一功能。  </p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/293">使用 PermissionKit 增强儿童安全保护</a>  </li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/DeclaredAgeRange">DeclaredAgeRange官方文档</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="在你的应用中提供适龄体验：Declared-Age-Range-API-详解"><a href="#在你的应用中提供适龄体验：Declared-Age-Range-API-详解" class="headerlink" title="在你的应用中提供适龄体验：Declared Age Range API 详解"></a>在你的应用中提供适龄体验：Declared Age Range API 详解</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着数字世界日益复杂，如何为不同年龄段的用户提供安全、合适的应用体验成为开发者面临的重要课题。在 iOS 26 中，苹果推出了 Declared Age Range API，帮助开发者在保护用户隐私的前提下，根据年龄范围定制应用功能和内容。本文将详细介绍这一新框架的工作原理、实现方法以及相关隐私保护机制。</p>
+<h2 id="儿童上网安全的背景"><a href="#儿童上网安全的背景" class="headerlink" title="儿童上网安全的背景"></a>儿童上网安全的背景</h2><p>苹果始终致力于创造既能丰富用户生活又能保障安全的数字产品。2025年2月发布的《帮助保护儿童上网安全》白皮书强调了持续保护儿童免受网络威胁的重要性。2025年3月，苹果推出了简化的儿童设置流程，并在iOS 26中进一步优化：</p>
+<ul>
+<li>儿童账户年龄错误可轻松更正</li>
+<li>App Store全球年龄评级细化至五个类别（4+、9+、13+、16+、18+）</li>
+<li>提供更详细的产品页面信息，帮助家长了解内容适合度</li>
 </ul>
+<p>这些改进为Declared Age Range API的推出奠定了基础。</p>
+<h2 id="Declared-Age-Range框架解析"><a href="#Declared-Age-Range框架解析" class="headerlink" title="Declared Age Range框架解析"></a>Declared Age Range框架解析</h2><p>Declared Age Range框架允许应用在不获取具体生日的前提下，了解用户的年龄区间范围。其核心特性包括：</p>
+<h3 id="隐私优先设计"><a href="#隐私优先设计" class="headerlink" title="隐私优先设计"></a>隐私优先设计</h3><p>API仅返回由两个数字组成的年龄范围区间，而非具体生日。例如：</p>
+<ul>
+<li>14岁用户可以声明”13-15岁”区间</li>
+<li>9岁用户可以分享”12岁或以下”</li>
+<li>42岁用户可以分享”16岁或以上”</li>
+</ul>
+<p>框架针对儿童和青少年设计，设置了地区最高年龄限制（通常为该地区成人年龄）。</p>
+<h3 id="灵活的年龄区间设置"><a href="#灵活的年龄区间设置" class="headerlink" title="灵活的年龄区间设置"></a>灵活的年龄区间设置</h3><p>应用可以根据自身需求：</p>
+<ul>
+<li>指定最多三个不同年龄节点</li>
+<li>产生四个不同区间（每个区间至少持续两年）</li>
+<li>自定义适合应用的年龄划分标准</li>
+</ul>
+<p>例如，照片分享应用可能关注13岁和16岁两个关键年龄节点。</p>
+<h3 id="家长控制选项"><a href="#家长控制选项" class="headerlink" title="家长控制选项"></a>家长控制选项</h3><p>家长可通过多种途径管理孩子的年龄分享设置：</p>
+<ol>
+<li>家庭与设置 &gt; 选择孩子 &gt; Apple账户与密码 &gt; 应用年龄范围</li>
+<li>孩子设备上的Apple账户与设置 &gt; 个人信息 &gt; 应用年龄范围</li>
+</ol>
+<p>API提供三种分享模式：</p>
+<ul>
+<li>“始终分享”：自动返回年龄范围，有更新时显示通知</li>
+<li>“询问首先”：每次请求时显示分享提示</li>
+<li>“从不分享”：始终拒绝请求</li>
+</ul>
+<h2 id="隐私保护机制"><a href="#隐私保护机制" class="headerlink" title="隐私保护机制"></a>隐私保护机制</h2><p>为防止生日信息泄露，框架采取了特殊措施：</p>
+<ol>
+<li>在”询问首先”模式下，默认只在原始响应周年纪念日显示提示</li>
+<li>在”始终分享”模式下，默认只在周年纪念日透露新年龄信息</li>
+</ol>
+<p>例如，孩子年满13岁后，API在周年日前仍会返回”12岁或以下”，直到周年日才会更新。</p>
+<p>用户也可手动清除缓存，在设置中选择特定应用并再次点击”分享年龄范围”，强制下次请求时获得更新后的响应。</p>
+<h2 id="代码实现示例"><a href="#代码实现示例" class="headerlink" title="代码实现示例"></a>代码实现示例</h2><p>以下是在SwiftUI应用中使用Declared Age Range API的完整步骤：</p>
+<h3 id="1-添加框架能力"><a href="#1-添加框架能力" class="headerlink" title="1. 添加框架能力"></a>1. 添加框架能力</h3><p>在项目目标的Signing and Capabilities标签页添加Declared Age Range能力。</p>
+<h3 id="2-请求年龄范围"><a href="#2-请求年龄范围" class="headerlink" title="2. 请求年龄范围"></a>2. 请求年龄范围</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"><span class="keyword">import</span> DeclaredAgeRange</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">LandmarkDetail</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="meta">@State</span> <span class="keyword">var</span> photoSharingEnabled <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">    <span class="meta">@Environment</span>(\.requestAgeRange) <span class="keyword">var</span> requestAgeRange</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">ScrollView</span> &#123;</span><br><span class="line">            <span class="type">Button</span>(<span class="string">&quot;Share Photos&quot;</span>) &#123;&#125;</span><br><span class="line">                .disabled(<span class="operator">!</span>photoSharingEnabled)</span><br><span class="line">        &#125;</span><br><span class="line">        .task &#123;</span><br><span class="line">            <span class="keyword">await</span> requestAgeRangeHelper()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">requestAgeRangeHelper</span>() <span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> ageRangeResponse <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> requestAgeRange(ageGates: <span class="number">16</span>)</span><br><span class="line">            <span class="keyword">switch</span> ageRangeResponse &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="keyword">let</span> .sharing(range):</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">let</span> lowerBound <span class="operator">=</span> range.lowerBound, lowerBound <span class="operator">&gt;=</span> <span class="number">16</span> &#123;</span><br><span class="line">                    photoSharingEnabled <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">print</span>(range.ageRangeDeclaration)</span><br><span class="line">            <span class="keyword">case</span> .declinedSharing:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;拒绝分享&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> <span class="type">AgeRangeService</span>.<span class="type">Error</span>.invalidRequest &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;处理无效请求错误&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">catch</span> <span class="type">AgeRangeService</span>.<span class="type">Error</span>.notAvailable &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;处理不可用错误&quot;</span>)</span><br><span class="line">        &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;未处理错误: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-处理响应和错误"><a href="#3-处理响应和错误" class="headerlink" title="3. 处理响应和错误"></a>3. 处理响应和错误</h3><p>API可能返回两种响应：</p>
+<ul>
+<li><code>.sharing(range)</code>：包含年龄区间和声明类型（guardianDeclared或selfDeclared）</li>
+<li><code>.declinedSharing</code>：用户拒绝分享</li>
+</ul>
+<p>错误类型包括：</p>
+<ul>
+<li><code>invalidRequest</code>：请求格式错误</li>
+<li><code>notAvailable</code>：设备配置不支持</li>
+</ul>
+<h3 id="4-检查家长控制"><a href="#4-检查家长控制" class="headerlink" title="4. 检查家长控制"></a>4. 检查家长控制</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> range.activeParentalControls.contains(.communicationLimits) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;通讯限制已启用&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>API还会返回家长配置的其他控制项信息。</p>
+<h2 id="其他儿童安全工具"><a href="#其他儿童安全工具" class="headerlink" title="其他儿童安全工具"></a>其他儿童安全工具</h2><p>除了Declared Age Range API，开发者还可以利用以下工具增强儿童安全：</p>
+<ul>
+<li>Sensitive Content Analysis API：检测图片视频中的裸露内容</li>
+<li>Screen Time框架：提供设备使用监管功能</li>
+<li>Family Controls：为应用添加家长控制功能</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Declared Age Range API为开发者提供了一种隐私友好的方式，在不获取具体生日的前提下，根据用户年龄范围定制应用体验。通过合理的年龄区间划分、灵活的家长控制选项和严格的隐私保护机制，该框架帮助开发者在保护儿童安全与尊重用户隐私之间取得平衡。开发者应结合应用实际需求，在适当位置添加适龄体验，为用户提供更安全、更有趣的数字产品。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/293">使用 PermissionKit 增强儿童安全保护</a></p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/DeclaredAgeRange">DeclaredAgeRange</a></p>
 
       
 
@@ -410,18 +406,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_226/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_290/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          分析并优化 App 的功耗
+          借助 SwiftUI 在 visionOS 中设置场景
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_255/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">针对 visionOS 设计小组件</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_287/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">RealityKit 的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

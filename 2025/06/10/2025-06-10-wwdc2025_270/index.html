@@ -16,8 +16,8 @@
 <meta property="og:description" content="通过更新一个现有的示例 app，我们将向你介绍如何通过 swift 并发机制来优化 app 的用户体验。我们将从一个主 actor app 入手，然后根据需要逐步引入异步代码。我们将使用任务来优化主 actor 上运行的代码，并探索如何通过将工作转移到后台来实现代码并行运行。我们将探讨数据争用安全机制提供的功能，并讲解如何解读和修复数据争用安全错误。最后，我们将展示如何在 app 情境中充分利用结">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9949/9949_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:39:49.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:39:49.860Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.314Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_270/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:39:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,47 +231,81 @@ var _hmt = _hmt || [];
       
         <p>通过更新一个现有的示例 app，我们将向你介绍如何通过 swift 并发机制来优化 app 的用户体验。我们将从一个主 actor app 入手，然后根据需要逐步引入异步代码。我们将使用任务来优化主 actor 上运行的代码，并探索如何通过将工作转移到后台来实现代码并行运行。我们将探讨数据争用安全机制提供的功能，并讲解如何解读和修复数据争用安全错误。最后，我们将展示如何在 app 情境中充分利用结构化并发机制。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9949/9949_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/270/">视频地址</a></p>
-<h1 id="使用-Swift-并发机制提升应用性能的实践指南"><a href="#使用-Swift-并发机制提升应用性能的实践指南" class="headerlink" title="使用 Swift 并发机制提升应用性能的实践指南"></a>使用 Swift 并发机制提升应用性能的实践指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在现代应用开发中，保持主线程流畅响应至关重要。Swift 提供了一套完整的并发机制工具链，帮助开发者编写安全高效的异步代码。本文将带您通过一个贴纸制作应用的实例，学习如何运用 Swift 并发机制优化应用性能。</p>
-<h2 id="应用架构设计"><a href="#应用架构设计" class="headerlink" title="应用架构设计"></a>应用架构设计</h2><p>我们的演示应用包含两个核心视图组件：</p>
-<ol>
-<li><strong>贴纸轮播视图</strong> - 展示带有渐变背景的贴纸</li>
-<li><strong>贴纸网格视图</strong> - 预览整套可导出的贴纸</li>
-</ol>
-<p>核心处理逻辑由 <code>PhotoProcessor</code> 结构体实现，主要负责两个耗时的操作：</p>
-<ul>
-<li>贴纸图像提取</li>
-<li>主色调分析</li>
-</ul>
-<h2 id="关键技术实现"><a href="#关键技术实现" class="headerlink" title="关键技术实现"></a>关键技术实现</h2><h3 id="异步照片加载"><a href="#异步照片加载" class="headerlink" title="异步照片加载"></a>异步照片加载</h3><p>使用 <code>PhotosPickerItem</code> 的异步方法 <code>loadTransferable</code> 从相册加载数据，并通过 SwiftUI 的 <code>task</code> 修饰符触发异步操作：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.task &#123;</span><br><span class="line">    <span class="keyword">await</span> viewModel.loadPhoto(selectedPhoto)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="后台线程处理"><a href="#后台线程处理" class="headerlink" title="后台线程处理"></a>后台线程处理</h3><p>为 <code>PhotoProcessor</code> 添加适当的标记，使其能够安全地在后台线程运行：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">nonisolated</span> <span class="keyword">struct</span> <span class="title class_">PhotoProcessor</span> &#123;</span><br><span class="line">    <span class="meta">@concurrent</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">process</span>(<span class="params">data</span>: <span class="type">Data</span>) <span class="keyword">async</span> -&gt; <span class="type">ProcessedPhoto</span>?</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="并行任务优化"><a href="#并行任务优化" class="headerlink" title="并行任务优化"></a>并行任务优化</h3><p>利用 <code>async let</code> 语法同时执行贴纸提取和颜色分析操作：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">let</span> sticker <span class="operator">=</span> extractSticker(from: data)</span><br><span class="line"><span class="keyword">async</span> <span class="keyword">let</span> colors <span class="operator">=</span> extractColors(from: data)</span><br></pre></td></tr></table></figure>
-<h3 id="数据竞争防护"><a href="#数据竞争防护" class="headerlink" title="数据竞争防护"></a>数据竞争防护</h3><p>通过将 <code>ColorExtractor</code> 改为局部变量，确保每个任务都有独立的实例，从而消除并行访问的内存风险：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">extractColors</span>(<span class="params">from</span> <span class="params">data</span>: <span class="type">Data</span>) -&gt; <span class="type">PhotoColorScheme</span>? &#123;</span><br><span class="line">    <span class="keyword">let</span> colorExtractor <span class="operator">=</span> <span class="type">ColorExtractor</span>() <span class="comment">// 每个任务独立实例</span></span><br><span class="line">    <span class="keyword">return</span> colorExtractor.extractColors(from: data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="结构化并发"><a href="#结构化并发" class="headerlink" title="结构化并发"></a>结构化并发</h3><p>使用 <code>TaskGroup</code> 批量处理所有照片，提高整体效率：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> withTaskGroup &#123; group <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> selection &#123;</span><br><span class="line">        group.addTask &#123; <span class="comment">/* 处理单个照片 */</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="性能优化成果"><a href="#性能优化成果" class="headerlink" title="性能优化成果"></a>性能优化成果</h2><p>通过以上技术实现，我们取得了显著的性能提升：</p>
-<ol>
-<li>主线程保持流畅响应</li>
-<li>处理耗时降低50%以上</li>
-<li>完全消除了数据竞争风险</li>
-<li>实现了高效的批量导出功能</li>
-</ol>
-<h2 id="总结与建议"><a href="#总结与建议" class="headerlink" title="总结与建议"></a>总结与建议</h2><p>Swift的并发机制为应用性能优化提供了强大而安全的工具。从简单的异步操作到复杂的结构化并发，开发者可以逐步将这些技术应用到实际项目中。建议从项目中识别出可以异步执行的操作开始，逐步引入这些技术。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/266">探索 SwiftUI 中的并发机制</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/268">采用 Swift 并发</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10248">使用 Instruments 分析挂起</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10170">超越结构化并发的基础</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://www.swift.org/migration/documentation/migrationguide/">Swift 迁移指南</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="利用-Swift-并发机制提升-App-性能：从主线程到结构化并发的演进之路"><a href="#利用-Swift-并发机制提升-App-性能：从主线程到结构化并发的演进之路" class="headerlink" title="利用 Swift 并发机制提升 App 性能：从主线程到结构化并发的演进之路"></a>利用 Swift 并发机制提升 App 性能：从主线程到结构化并发的演进之路</h1><p>本文将深入剖析如何运用 Swift 并发机制优化 App 性能，通过一个贴纸生成应用的实例，展示从单线程到结构化并发的完整演进过程。</p>
+<h2 id="应用背景与架构"><a href="#应用背景与架构" class="headerlink" title="应用背景与架构"></a>应用背景与架构</h2><p>该示例应用是一个能将任意照片转为贴纸包的创意工具，包含两个核心组件：</p>
+<ul>
+<li>贴纸轮播视图（StickerCarousel）：展示带有渐变色背景的照片贴纸</li>
+<li>网格预览视图（StickerGrid）：提供贴纸包的导出分享功能</li>
 </ul>
+<p>应用的底层架构采用 PhotoProcessor 结构体处理照片，执行两项核心操作：</p>
+<ol>
+<li>从照片中提取贴纸图像</li>
+<li>计算照片的主色调（用于生成渐变色背景）</li>
+</ol>
+<h2 id="性能优化演进路径"><a href="#性能优化演进路径" class="headerlink" title="性能优化演进路径"></a>性能优化演进路径</h2><h3 id="初始问题：主线程阻塞"><a href="#初始问题：主线程阻塞" class="headerlink" title="初始问题：主线程阻塞"></a>初始问题：主线程阻塞</h3><p>最初的实现将所有逻辑放在主线程执行，导致以下问题：</p>
+<ul>
+<li>照片加载时界面冻结</li>
+<li>图像处理耗时超过10秒</li>
+<li>滚动体验卡顿</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始同步实现（导致主线程阻塞）</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PhotoProcessor</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">process</span>(<span class="params">data</span>: <span class="type">Data</span>) -&gt; <span class="type">ProcessedPhoto</span>? &#123;</span><br><span class="line">        <span class="keyword">let</span> sticker <span class="operator">=</span> extractSticker(from: data) <span class="comment">// 耗时操作</span></span><br><span class="line">        <span class="keyword">let</span> colors <span class="operator">=</span> extractColors(from: data)   <span class="comment">// 耗时操作</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">ProcessedPhoto</span>(sticker: sticker, colorScheme: colors)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第一步：异步加载照片"><a href="#第一步：异步加载照片" class="headerlink" title="第一步：异步加载照片"></a>第一步：异步加载照片</h3><p>通过引入 async/await 机制，将照片加载移至后台：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 异步加载实现</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">loadPhoto</span>(<span class="keyword">_</span> <span class="params">item</span>: <span class="type">SelectedPhoto</span>) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> data: <span class="type">Data</span>? <span class="operator">=</span> <span class="keyword">try?</span> <span class="keyword">await</span> item.loadTransferable(type: <span class="type">Data</span>.<span class="keyword">self</span>)</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> data <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">    processedPhotos[item.id] <span class="operator">=</span> <span class="type">Image</span>(data: data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在视图中使用 task 修饰符触发异步加载：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">StickerPlaceholder</span>()</span><br><span class="line">    .task &#123;</span><br><span class="line">        <span class="keyword">await</span> viewModel.loadPhoto(selectedPhoto)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第二步：后台图像处理"><a href="#第二步：后台图像处理" class="headerlink" title="第二步：后台图像处理"></a>第二步：后台图像处理</h3><p>运用 Swift 6.1 的并发特性，将图像处理移至后台：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">nonisolated</span> <span class="keyword">struct</span> <span class="title class_">PhotoProcessor</span> &#123;</span><br><span class="line">    <span class="meta">@concurrent</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">process</span>(<span class="params">data</span>: <span class="type">Data</span>) <span class="keyword">async</span> -&gt; <span class="type">ProcessedPhoto</span>? &#123;</span><br><span class="line">        <span class="comment">// 后台执行的处理逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第三步：并行处理优化"><a href="#第三步：并行处理优化" class="headerlink" title="第三步：并行处理优化"></a>第三步：并行处理优化</h3><p>通过 async let 并行执行相互独立的操作：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">let</span> sticker <span class="operator">=</span> extractSticker(from: data)  <span class="comment">// 并行执行</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">let</span> colors <span class="operator">=</span> extractColors(from: data)    <span class="comment">// 并行执行</span></span><br></pre></td></tr></table></figure>
+<p>处理数据竞争问题的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">func</span> <span class="title function_">extractColors</span>(<span class="params">from</span> <span class="params">data</span>: <span class="type">Data</span>) -&gt; <span class="type">PhotoColorScheme</span>? &#123;</span><br><span class="line">    <span class="keyword">let</span> colorExtractor <span class="operator">=</span> <span class="type">ColorExtractor</span>()  <span class="comment">// 每次创建新实例</span></span><br><span class="line">    <span class="keyword">return</span> colorExtractor.extractColors(from: data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="第四步：结构化并发与批量处理"><a href="#第四步：结构化并发与批量处理" class="headerlink" title="第四步：结构化并发与批量处理"></a>第四步：结构化并发与批量处理</h3><p>使用 TaskGroup 实现高效的批量照片处理：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">processAllPhotos</span>() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> withTaskGroup &#123; group <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> selection &#123;</span><br><span class="line">            group.addTask &#123;</span><br><span class="line">                <span class="comment">// 并行处理每个照片</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> <span class="keyword">await</span> result <span class="keyword">in</span> group &#123;</span><br><span class="line">            <span class="comment">// 收集处理结果</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关键技术与最佳实践"><a href="#关键技术与最佳实践" class="headerlink" title="关键技术与最佳实践"></a>关键技术与最佳实践</h2><ol>
+<li><p><strong>主线程优化策略</strong></p>
+<ul>
+<li>使用 await 创建暂停点</li>
+<li>通过 task 修饰符管理异步任务生命周期</li>
+</ul>
+</li>
+<li><p><strong>后台执行控制</strong></p>
+<ul>
+<li>nonisolated 标记脱离主线程</li>
+<li>@concurrent 确保方法在后台执行</li>
+</ul>
+</li>
+<li><p><strong>并行处理模式</strong></p>
+<ul>
+<li>async let 并行独立任务</li>
+<li>避免共享可变状态</li>
+</ul>
+</li>
+<li><p><strong>数据竞争防护</strong></p>
+<ul>
+<li>Swift 6 编译时检查</li>
+<li>采用 Sendable 值类型</li>
+<li>必要时隔离到主线程</li>
+</ul>
+</li>
+<li><p><strong>结构化并发</strong></p>
+<ul>
+<li>TaskGroup 批量任务管理</li>
+<li>结果有序收集机制</li>
+</ul>
+</li>
+</ol>
+<h2 id="性能优化成果"><a href="#性能优化成果" class="headerlink" title="性能优化成果"></a>性能优化成果</h2><p>经过上述优化步骤，应用实现了：</p>
+<ul>
+<li>主线程保持高响应性</li>
+<li>图像处理时间大幅缩短</li>
+<li>滚动体验流畅</li>
+<li>批量处理效率显著提升</li>
+</ul>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/266">探索 SwiftUI 中的并发机制</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/268">采用 Swift 并发</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10248">使用 Instruments 分析挂起</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10170">超越结构化并发的基础</a>  </p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://www.swift.org/migration/documentation/migrationguide/">Swift Migration Guide</a></p>
 
       
 
@@ -394,18 +428,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_346/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_259/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          了解 Containerization
+          跟着视频学编程：使用 Foundation Models 框架将设备端 AI 引入你的 App
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_102/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Platforms State of the Union</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_273/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">了解 SwiftUI 空间布局</div>
       <i class="icon-circle-right"></i>
     </a>
   

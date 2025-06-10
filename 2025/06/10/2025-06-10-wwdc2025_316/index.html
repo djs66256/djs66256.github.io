@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索了解残障人士的需求如何有助于你打造出人人都能方便使用的更出色 app。了解如何通过支持多种类型的交互、提供自定功能以及采用各种辅助功能 api，让你的 app 更具包容性。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9961/9961_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:52:01.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:52:01.611Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.781Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_316/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:52:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,61 +231,46 @@ var _hmt = _hmt || [];
       
         <p>探索了解残障人士的需求如何有助于你打造出人人都能方便使用的更出色 app。了解如何通过支持多种类型的交互、提供自定功能以及采用各种辅助功能 api，让你的 app 更具包容性。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9961/9961_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/316/">视频地址</a></p>
-<h1 id="构建包容性应用：从残障视角出发的设计实践"><a href="#构建包容性应用：从残障视角出发的设计实践" class="headerlink" title="构建包容性应用：从残障视角出发的设计实践"></a>构建包容性应用：从残障视角出发的设计实践</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在数字时代，应用设计不应仅服务于”标准用户”。全球约七分之一人群存在不同形式的残障，而每个人在生命不同阶段都可能面临暂时性或永久性的能力局限。本文将从专业视角，为您拆解如何通过四项核心策略（多感官交互、自定义选项、辅助API、债务追踪）打造真正包容的应用程序。</p>
-<h2 id="理解残障的连续性"><a href="#理解残障的连续性" class="headerlink" title="理解残障的连续性"></a>理解残障的连续性</h2><p>残障不是非此即彼的二元状态，而是存在于连续谱系中。以视力为例：</p>
-<ul>
-<li>法定失明者可能保留色彩感知能力</li>
-<li>黄斑变性患者可能仅中央视力模糊</li>
-<li>弱光环境下任何人都可能面临视觉挑战</li>
-</ul>
-<p>这种连续性的认知，将彻底改变您的设计思路。</p>
-<h2 id="四大设计策略精解"><a href="#四大设计策略精解" class="headerlink" title="四大设计策略精解"></a>四大设计策略精解</h2><h3 id="1-多感官交互设计"><a href="#1-多感官交互设计" class="headerlink" title="1. 多感官交互设计"></a>1. 多感官交互设计</h3><p>关键原则：信息应通过多通道冗余传递</p>
-<ul>
-<li>视觉通道：为音频内容添加字幕（服务于听障用户/静音场景）</li>
-<li>听觉通道：为视觉内容提供语音描述（服务于视障用户/多任务场景）</li>
-<li>触觉反馈：增强操作确认（如振动提示）</li>
-</ul>
-<p>典型案例：Crouton食谱应用的”免提模式”通过语音交互解放用户双手</p>
-<h3 id="2-深度自定义体系"><a href="#2-深度自定义体系" class="headerlink" title="2. 深度自定义体系"></a>2. 深度自定义体系</h3><p>构建灵活的UI调整层：</p>
-<ul>
-<li>文本可调：字号、字距、行高、字体（特别推荐旧金山字体）</li>
-<li>色彩方案：高对比度模式、色盲优化配色</li>
-<li>布局选择：从信息密集到极简视图（参考Carrot Weather）</li>
-</ul>
-<p>设计箴言：”应用适应用户，而非用户适应应用”</p>
-<h3 id="3-辅助API整合"><a href="#3-辅助API整合" class="headerlink" title="3. 辅助API整合"></a>3. 辅助API整合</h3><p>必须集成的三大基础API：</p>
-<ul>
-<li>VoiceOver：屏幕阅读器兼容性测试</li>
-<li>Switch Control：替代触控的交互支持</li>
-<li>Dynamic Type：系统级文字缩放适配</li>
-</ul>
-<p>游戏案例：Blackbox通过VoiceOver+触觉反馈让视障玩家享受解谜乐趣</p>
-<h3 id="4-包容性债务管理"><a href="#4-包容性债务管理" class="headerlink" title="4. 包容性债务管理"></a>4. 包容性债务管理</h3><p>建立迭代优化机制：</p>
-<ul>
-<li>定期进行辅助功能审计</li>
-<li>建立残障用户测试小组</li>
-<li>制定渐进式改进路线图</li>
-</ul>
-<p>技术债务类比：将未解决的包容性问题视为需要偿还的”债务”</p>
-<h2 id="实践工具与资源"><a href="#实践工具与资源" class="headerlink" title="实践工具与资源"></a>实践工具与资源</h2><p>立即行动的三步曲：</p>
-<ol>
-<li>启用Xcode辅助功能检查器</li>
-<li>体验VoiceOver的开发者模式</li>
-<li>参考App Store新推出的无障碍特性展示规范</li>
-</ol>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>包容性设计不是额外负担，而是创新催化剂。从路缘坡道到语音助手，历史上许多全民性创新都源于残障需求。当您下次设计功能时，不妨自问：”这个交互方式，能否覆盖更广泛的能力谱系？” 答案或许就是下一个突破性创新的起点。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/224">针对辅助功能标签评估你的 App</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10275">包容性设计实践</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10304">包容性设计过程</a>  </li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/accessibility">人机界面指南：辅助功能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/inclusion/">人机界面指南：包容性</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="包容性应用设计原则：为所有人打造无障碍体验"><a href="#包容性应用设计原则：为所有人打造无障碍体验" class="headerlink" title="包容性应用设计原则：为所有人打造无障碍体验"></a>包容性应用设计原则：为所有人打造无障碍体验</h1><p>在当今数字化时代，应用开发者肩负着重要责任——确保每个人都能平等享受科技带来的便利。WWDC演讲中，无障碍设计专家克里斯和丽莎分享了如何通过包容性设计原则，打造适合残障人士使用的应用。这些原则不仅帮助扩大用户覆盖范围，更能激发创新灵感。</p>
+<h2 id="残障的多元视角"><a href="#残障的多元视角" class="headerlink" title="残障的多元视角"></a>残障的多元视角</h2><p>残障并非单纯的个人特性，而是一种个人能力与社会预期之间的落差。全球大约每七个人中就有一位残障人士，这个数字远超许多人的想象。残障状态呈现为连续光谱而非二元对立——以视力为例，从全盲到视力完好之间存在各种不同程度的视力障碍，每个人的情况都独一无二。</p>
+<p>这种理解至关重要，因为它打破了”非残即健”的刻板印象，提醒开发者需要考虑更广泛的用户需求。社会通常默认人都会经历”获得能力-逐渐丧失”的标准轨迹，但现实中的生命曲线充满多样性。正是个人实际能力与社会预期之间的差异，构成了”包容性缺口”。</p>
+<h2 id="从缺口到创新"><a href="#从缺口到创新" class="headerlink" title="从缺口到创新"></a>从缺口到创新</h2><p>包容性缺口不仅是挑战，更是创新的源泉。历史上许多伟大发明都源于弥合这种缺口的尝试：</p>
+<ul>
+<li>麦克风解决了人类嗓音不够洪亮的限制</li>
+<li>眼镜帮助视力模糊者阅读小字</li>
+<li>路缘坡道最初为轮椅设计，后来惠及骑行者、婴儿车等更多人群</li>
 </ul>
+<p>这些例子证明，为残障人士设计的产品往往能产生广泛的外溢效益，让更多人受益。开发者应主动寻找应用中的包容性缺口，思考如何通过设计创新来缩小这些差距。</p>
+<h2 id="四大实用设计策略"><a href="#四大实用设计策略" class="headerlink" title="四大实用设计策略"></a>四大实用设计策略</h2><h3 id="支持多感官通道"><a href="#支持多感官通道" class="headerlink" title="支持多感官通道"></a>支持多感官通道</h3><p>最有效的包容性策略之一是提供多样化的信息获取方式。视频字幕就是典型案例——它不仅帮助听障人士，也让图书馆等安静环境的用户受益。开发者需要考虑：</p>
+<ul>
+<li>视觉障碍用户是否有听觉替代方案？</li>
+<li>听障用户能否通过视觉获取完整信息？</li>
+<li>是否存在触觉反馈等替代交互方式？</li>
+</ul>
+<p>“无障碍阅读器”功能展示了多感官通道的完美实现：支持纯视觉阅读、纯听觉播放，以及视听结合的跟读模式。第三方应用Crouton也提供了优秀范例，通过”从图片导入”、”相机拍摄”和”免提模式”等多元交互方式满足不同用户需求。</p>
+<h3 id="提供个性化定制"><a href="#提供个性化定制" class="headerlink" title="提供个性化定制"></a>提供个性化定制</h3><p>标准化的界面无法满足所有用户，因此个性化定制至关重要。Accessibility Reader允许用户调整文字大小、更改颜色、选择高辨识度字体。气象应用Carrot Weather更是典范，支持从数据密集布局切换到极简界面，让用户按需定制信息展示方式。</p>
+<p>开发者应考虑添加哪些定制选项来满足不同用户需求，实现”应用适应用户”而非相反的理念。</p>
+<h3 id="采用辅助技术API"><a href="#采用辅助技术API" class="headerlink" title="采用辅助技术API"></a>采用辅助技术API</h3><p>苹果提供了丰富的辅助技术API，开发者应充分利用：</p>
+<ul>
+<li>VoiceOver：支持盲人或低视力用户通过语音导航</li>
+<li>切换控制：允许通过物理按钮操作设备</li>
+<li>更大文字：将文字放大三倍并自动调整布局</li>
+</ul>
+<p>Blackbox游戏展示了API整合的优秀案例——通过VoiceOver提供音频线索，让盲人玩家也能享受解谜乐趣。就像建设人行道时要考虑路缘坡道，采用辅助技术API才能确保使用辅助设备的用户也能操作应用。</p>
+<h3 id="追踪包容性债务"><a href="#追踪包容性债务" class="headerlink" title="追踪包容性债务"></a>追踪包容性债务</h3><p>包容性是持续旅程而非终点。开发者应将未解决的包容性问题视为”包容性债务”，定期评估并制定改进计划。主动寻找应用中的缺口，与残障人士协作测试，不断优化用户体验。</p>
+<h2 id="构建更包容的数字世界"><a href="#构建更包容的数字世界" class="headerlink" title="构建更包容的数字世界"></a>构建更包容的数字世界</h2><p>包容性设计不仅造福残障人士，也能提升所有用户的体验。正如路缘坡道最初为轮椅设计却惠及更多人，为特定人群优化的功能往往产生广泛效益。</p>
+<p>开发者可通过以下资源深入学习：</p>
+<ul>
+<li>观看WWDC视频《SwiftUI辅助功能最新进展》</li>
+<li>阅读Human Interface Guidelines中的Accessibility和Inclusion章节</li>
+<li>在App Store展示应用的无障碍特性</li>
+</ul>
+<p>通过践行这些设计原则，开发者不仅能扩大用户基础，更能参与构建一个更灵活、包容的数字世界。正如演讲者所言：”关于我们的决策不能没有我们参与”——与残障社群协作，开发者将获得宝贵洞见，打造真正普惠的应用体验。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/224">针对辅助功能标签评估你的 App</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10275">包容性设计实践</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10304">包容性设计过程</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/accessibility">Human Interface Guidelines: Accessibility</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/inclusion/">Human Interface Guidelines: Inclusion</a></p>
 
       
 
@@ -408,18 +393,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_238/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_315/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          针对辅助访问自定 App
+          开始使用适用于 Apple 芯片的 MLX
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_290/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">借助 SwiftUI 在 visionOS 中设置场景</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_314/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">开始使用量子安全加密技术</div>
       <i class="icon-circle-right"></i>
     </a>
   

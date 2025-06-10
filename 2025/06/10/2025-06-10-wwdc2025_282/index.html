@@ -16,8 +16,8 @@
 <meta property="og:description" content="探究如何使用场景和容器视图控制器让你的 uikit app 在 iphone、ipad、mac 和 apple vision pro 上变得更加灵活。了解如何从以 app 为中心的生命周期过渡到基于场景的生命周期 (包括优化的窗口大小调整和改进的多任务处理)，以便解锁 app 的全部潜能。探索 uisplitviewcontroller 的增强功能，例如以交互方式调整列大小以及为检查器列提供一流支">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10000/10000_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:38:56.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:38:56.621Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.032Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -221,7 +221,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_282/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:38:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -230,59 +230,64 @@ var _hmt = _hmt || [];
       
         <p>探究如何使用场景和容器视图控制器让你的 uikit app 在 iphone、ipad、mac 和 apple vision pro 上变得更加灵活。了解如何从以 app 为中心的生命周期过渡到基于场景的生命周期 (包括优化的窗口大小调整和改进的多任务处理)，以便解锁 app 的全部潜能。探索 uisplitviewcontroller 的增强功能，例如以交互方式调整列大小以及为检查器列提供一流支持；并通过采用新的布局 api 来增强视图和控制器的自适应性。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10000/10000_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/282/">视频地址</a></p>
-<h1 id="构建适应多平台的-UIKit-应用：场景、容器与自适应-UI"><a href="#构建适应多平台的-UIKit-应用：场景、容器与自适应-UI" class="headerlink" title="构建适应多平台的 UIKit 应用：场景、容器与自适应 UI"></a>构建适应多平台的 UIKit 应用：场景、容器与自适应 UI</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在今天的多设备时代，一个优秀的应用需要在 iPhone、iPad、Mac 和 Apple Vision Pro 等不同平台上提供一致的体验。本文将深入探讨如何利用 UIKit 的场景系统、容器视图控制器和自适应 UI 技术，让你的应用在各种尺寸和环境下都能展现最佳状态。</p>
-<h2 id="场景：灵活应用的基础"><a href="#场景：灵活应用的基础" class="headerlink" title="场景：灵活应用的基础"></a>场景：灵活应用的基础</h2><p>场景是 UIKit 应用 UI 的独立实例，每个场景拥有：</p>
-<ul>
-<li>独立的视图控制器和视图层级</li>
-<li>专属的状态保存与恢复机制</li>
-<li>精确的显示上下文信息（包括屏幕详情和窗口几何数据）</li>
-</ul>
-<h3 id="场景配置与生命周期"><a href="#场景配置与生命周期" class="headerlink" title="场景配置与生命周期"></a>场景配置与生命周期</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@main</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AppDelegate</span>: <span class="title class_ inherited__">UIResponder</span>, <span class="title class_ inherited__">UIApplicationDelegate</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">application</span>(<span class="keyword">_</span> <span class="params">application</span>: <span class="type">UIApplication</span>,</span><br><span class="line">                    <span class="params">configurationForConnecting</span> <span class="params">sceneSession</span>: <span class="type">UISceneSession</span>,</span><br><span class="line">                    <span class="params">options</span>: <span class="type">UIScene</span>.<span class="type">ConnectionOptions</span>) -&gt; <span class="type">UISceneConfiguration</span> &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> sceneSession.role <span class="operator">==</span> .windowExternalDisplayNonInteractive &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="type">UISceneConfiguration</span>(name: <span class="string">&quot;Timer Scene&quot;</span>, </span><br><span class="line">                                      sessionRole: sceneSession.role)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="type">UISceneConfiguration</span>(name: <span class="string">&quot;Main Scene&quot;</span>,</span><br><span class="line">                                      sessionRole: sceneSession.role)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>iOS 26 起，采用 UIScene 生命周期将成为强制要求，这是迈向灵活应用的第一步。</p>
-<h2 id="容器视图控制器"><a href="#容器视图控制器" class="headerlink" title="容器视图控制器"></a>容器视图控制器</h2><p>UIKit 提供了强大的容器视图控制器来管理复杂布局：</p>
-<h3 id="增强的分栏视图控制器"><a href="#增强的分栏视图控制器" class="headerlink" title="增强的分栏视图控制器"></a>增强的分栏视图控制器</h3><p>UISplitViewController 的最新改进包括：</p>
-<ul>
-<li>交互式列宽调整</li>
-<li>检查器列的一流支持</li>
-<li>灵活的宽度控制</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">splitViewController.minimumPrimaryColumnWidth <span class="operator">=</span> <span class="number">200.0</span></span><br><span class="line">splitViewController.maximumPrimaryColumnWidth <span class="operator">=</span> <span class="number">400.0</span></span><br><span class="line">splitViewController.preferredSupplementaryColumnWidth <span class="operator">=</span> <span class="number">500.0</span></span><br></pre></td></tr></table></figure>
-<h3 id="标签栏控制器的多平台适应"><a href="#标签栏控制器的多平台适应" class="headerlink" title="标签栏控制器的多平台适应"></a>标签栏控制器的多平台适应</h3><p>UITabBarController 在不同设备上呈现不同形态：</p>
-<ul>
-<li>iPhone：底部标签栏</li>
-<li>Mac：工具栏或侧边栏</li>
-<li>Apple Vision Pro：场景边缘装饰栏</li>
-<li>iPad：顶部标签栏可自适应为侧边栏</li>
-</ul>
-<h2 id="构建真正的自适应-UI"><a href="#构建真正的自适应-UI" class="headerlink" title="构建真正的自适应 UI"></a>构建真正的自适应 UI</h2><p>要实现完全自适应的界面，需要关注以下关键点：</p>
-<h3 id="安全区域与布局边距"><a href="#安全区域与布局边距" class="headerlink" title="安全区域与布局边距"></a>安全区域与布局边距</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> contentGuide <span class="operator">=</span> containerView.layoutMarginsGuide</span><br><span class="line"><span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">    contentView.anchors.constraint(equalTo: contentGuide)</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
-<h3 id="窗口尺寸控制"><a href="#窗口尺寸控制" class="headerlink" title="窗口尺寸控制"></a>窗口尺寸控制</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">scene</span>(<span class="keyword">_</span> <span class="params">scene</span>: <span class="type">UIScene</span>, <span class="params">willConnectTo</span> <span class="params">session</span>: <span class="type">UISceneSession</span>, <span class="params">options</span>: <span class="type">UIScene</span>.<span class="type">ConnectionOptions</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> windowScene <span class="operator">=</span> scene <span class="keyword">as!</span> <span class="type">UIWindowScene</span></span><br><span class="line">    windowScene.sizeRestrictions<span class="operator">?</span>.minimumSize.width <span class="operator">=</span> <span class="number">500.0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="方向锁定处理"><a href="#方向锁定处理" class="headerlink" title="方向锁定处理"></a>方向锁定处理</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">var</span> prefersInterfaceOrientationLocked: <span class="type">Bool</span> &#123; <span class="keyword">return</span> isDriving &#125;</span><br><span class="line"><span class="keyword">var</span> isDriving <span class="operator">=</span> <span class="literal">false</span> &#123;</span><br><span class="line">    <span class="keyword">didSet</span> &#123; setNeedsUpdateOfPrefersInterfaceOrientationLocked() &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="未来兼容性建议"><a href="#未来兼容性建议" class="headerlink" title="未来兼容性建议"></a>未来兼容性建议</h2><p>随着 iOS 26 的推出，系统将不再对新屏幕尺寸进行自动缩放调整。开发者需要：</p>
-<ul>
-<li>移除 UIRequiresFullscreen 这种兼容模式</li>
-<li>确保应用在各种尺寸下都能正确显示</li>
-<li>采用最新的自适应布局技术</li>
-</ul>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>构建真正灵活的多平台应用需要：</p>
-<ol>
-<li>采用场景生命周期作为基础架构</li>
-<li>合理使用容器视图控制器管理复杂布局</li>
-<li>充分利用安全区域和自适应布局 API</li>
-<li>关注未来兼容性要求</li>
-</ol>
-<p>通过这些技术组合，你的应用将能够在 Apple 生态系统的任何设备上提供卓越的用户体验。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/243">UIKit 的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10147">提升 iPadOS 中的标签页和边栏使用体验</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Technotes/tn3187-Migrating-to-the-UIKit-scene-based-life-cycle">TN3187: 迁移至 UIKit 基于场景的生命周期</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Updates/UIKit">UIKit 更新</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="让你的UIKit应用更具灵活性：全面适配多平台的实践指南"><a href="#让你的UIKit应用更具灵活性：全面适配多平台的实践指南" class="headerlink" title="让你的UIKit应用更具灵活性：全面适配多平台的实践指南"></a>让你的UIKit应用更具灵活性：全面适配多平台的实践指南</h1><p>在如今多样化的苹果设备生态系统中，如何确保UIKit应用能够在iPhone、iPad、Mac和Apple Vision Pro等不同平台上提供一致而优秀的用户体验？本文将从场景基础、容器视图控制器到自适应UI构建，全面解析UIKit应用灵活性提升的最佳实践。</p>
+<h2 id="场景：灵活应用的基石"><a href="#场景：灵活应用的基石" class="headerlink" title="场景：灵活应用的基石"></a>场景：灵活应用的基石</h2><p>场景作为应用UI的独立实例，为灵活应用提供了坚实基础。每个场景包含应用视图控制器和视图，具有独立生命周期和状态恢复能力。在iOS 26中，开发者现在可以在单个应用中混合使用SwiftUI和UIKit场景类型。</p>
+<p>场景实现的关键步骤包括：</p>
+<ol>
+<li>在应用委托中处理场景配置，区分不同角色（如主场景和AirPlay到Apple TV的外部显示器场景）</li>
+<li>通过UISceneDelegate管理单个场景生命周期，包括窗口创建和根视图控制器设置</li>
+<li>实现状态恢复机制，使用UI状态活动保存和恢复场景的交互状态</li>
+</ol>
+<p>值得注意的是，采用UIScene生命周期即将成为强制要求。开发者应参考技术说明”迁移到基于场景的UIKit生命周期”（TN3187）完成这一关键过渡。</p>
+<h2 id="容器视图控制器：灵活布局的核心"><a href="#容器视图控制器：灵活布局的核心" class="headerlink" title="容器视图控制器：灵活布局的核心"></a>容器视图控制器：灵活布局的核心</h2><p>UIKit提供的容器视图控制器是实现灵活布局的核心工具。</p>
+<h3 id="UISplitViewController的新特性"><a href="#UISplitViewController的新特性" class="headerlink" title="UISplitViewController的新特性"></a>UISplitViewController的新特性</h3><p>UISplitViewController管理多列内容显示，并获得了多项增强：</p>
+<ol>
+<li><strong>交互式列调整</strong>：用户现在可通过拖动分隔符调整列宽，指针形状会相应变化指示调整方向</li>
+<li><strong>列宽自定义</strong>：开发者可设置minimumWidth、maximumWidth和preferredWidth属性优化列显示</li>
+<li><strong>分割视图控制器布局环境</strong>：新特征帮助UI根据展开/折叠状态自适应调整</li>
+<li><strong>检查器列支持</strong>：原生支持在尾随边缘显示元数据等附加信息，自动适应展开/折叠状态</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：设置分割视图控制器的列宽偏好</span></span><br><span class="line">splitViewController.setMinimumWidth(<span class="number">200</span>, for: .primary)</span><br><span class="line">splitViewController.setMaximumWidth(<span class="number">400</span>, for: .primary)</span><br><span class="line">splitViewController.setPreferredWidth(<span class="number">300</span>, for: .primary)</span><br></pre></td></tr></table></figure>
+<h3 id="UITabBarController的多平台适配"><a href="#UITabBarController的多平台适配" class="headerlink" title="UITabBarController的多平台适配"></a>UITabBarController的多平台适配</h3><p>UITabBarController在不同平台呈现差异化：</p>
+<ul>
+<li>iPhone：底部标签栏</li>
+<li>Mac：工具栏或边栏</li>
+<li>Apple Vision Pro：场景前缘装饰</li>
+<li>iPad：顶部与导航控件结合或作为边栏</li>
 </ul>
+<p>标签组管理是重要功能，开发者可通过UITabBarControllerDelegate自定义导航堆栈的视图控制器推送逻辑。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：自定义标签组视图控制器显示</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">tabBarController</span>(<span class="keyword">_</span> <span class="params">tabBarController</span>: <span class="type">UITabBarController</span>, </span><br><span class="line">                    <span class="params">displayedViewControllersFor</span> <span class="params">tab</span>: <span class="type">UITabBarItem</span>) -&gt; [<span class="type">UIViewController</span>] &#123;</span><br><span class="line">    <span class="keyword">guard</span> tab <span class="operator">==</span> libraryTab <span class="keyword">else</span> &#123; <span class="keyword">return</span> [] &#125;</span><br><span class="line">    <span class="keyword">return</span> [libraryViewController]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="构建真正自适应的UI"><a href="#构建真正自适应的UI" class="headerlink" title="构建真正自适应的UI"></a>构建真正自适应的UI</h2><h3 id="安全区域与布局指南"><a href="#安全区域与布局指南" class="headerlink" title="安全区域与布局指南"></a>安全区域与布局指南</h3><p>确保内容位于安全区域内是自适应UI的关键。开发者应：</p>
+<ol>
+<li>使用layoutMarginsGuide为标准边距定位内容</li>
+<li>在iPadOS 26中，注意窗口控制对布局的影响</li>
+<li>使用水平角适应的布局边距指南处理窗口控制周边的布局</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：安全区域布局实现</span></span><br><span class="line"><span class="keyword">let</span> margins <span class="operator">=</span> view.layoutMarginsGuide</span><br><span class="line">contentView.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">contentView.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive <span class="operator">=</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h3 id="窗口控制与方向管理"><a href="#窗口控制与方向管理" class="headerlink" title="窗口控制与方向管理"></a>窗口控制与方向管理</h3><p>iPadOS 26引入了类似macOS的窗口控制。开发者应：</p>
+<ol>
+<li>通过UIWindowSceneDelegate实现preferredWindowingControlStyle指定偏好样式</li>
+<li>使用考虑窗口控制的布局指南防止UI遮挡</li>
+<li>谨慎使用界面方向锁定，仅在必要时通过prefersInterfaceOrientationLocked实现</li>
+</ol>
+<h3 id="性能优化与未来兼容"><a href="#性能优化与未来兼容" class="headerlink" title="性能优化与未来兼容"></a>性能优化与未来兼容</h3><p>对于资源密集型UI（如游戏），应：</p>
+<ol>
+<li>通过isInteractivelyResizing仅在交互完成后更新资源</li>
+<li>移除已弃用的UIRequiresFullscreen键</li>
+<li>注意iOS 26后系统将不再为新屏幕尺寸自动缩放应用UI</li>
+</ol>
+<h2 id="总结与下一步"><a href="#总结与下一步" class="headerlink" title="总结与下一步"></a>总结与下一步</h2><p>构建灵活UIKit应用的三部曲：</p>
+<ol>
+<li><strong>采用场景生命周期</strong>：为多平台适配奠定基础</li>
+<li><strong>善用容器视图控制器</strong>：UISplitViewController和UITabBarController是强大工具</li>
+<li><strong>实现自适应UI</strong>：通过安全区域、布局指南等API确保界面弹性</li>
+</ol>
+<p>开发者应观看相关视频”UIKit的新功能”和”提升iPadOS中的标签页和边栏使用体验”，并参考技术文档完成迁移。通过这些实践，应用将能在苹果全平台生态中提供卓越的用户体验。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/243">UIKit的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10147">提升iPadOS中的标签页和边栏使用体验</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Technotes/tn3187-Migrating-to-the-UIKit-scene-based-life-cycle">TN3187:迁移到基于场景的UIKit生命周期</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Updates/UIKit">UIKit更新</a></p>
 
       
 
@@ -401,18 +406,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_256/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_281/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          SwiftUI 的新功能
+          设计交互式摘要卡片
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_204/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">深入探索 MapKit</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_289/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">探索 visionOS 上的空间配件输入</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何使用 icon composer 为 ios、ipados、macos 和 watchos 构建最新 app 图标。探索如何从你选择的设计工具中导出素材，将它们添加到 icon composer 中，应用实时玻璃属性和其他效果，以及预览不同平台和外观模式下的显示效果并进行调整。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10087/10087_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:32:04.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:32:04.534Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.840Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -220,7 +220,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_361/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:32:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -229,91 +229,56 @@ var _hmt = _hmt || [];
       
         <p>了解如何使用 icon composer 为 ios、ipados、macos 和 watchos 构建最新 app 图标。探索如何从你选择的设计工具中导出素材，将它们添加到 icon composer 中，应用实时玻璃属性和其他效果，以及预览不同平台和外观模式下的显示效果并进行调整。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10087/10087_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/361/">视频地址</a></p>
-<h1 id="使用-Icon-Composer-轻松打造跨平台应用图标"><a href="#使用-Icon-Composer-轻松打造跨平台应用图标" class="headerlink" title="使用 Icon Composer 轻松打造跨平台应用图标"></a>使用 Icon Composer 轻松打造跨平台应用图标</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在2025年，随着iOS、macOS和watchOS的外观模式不断丰富，应用图标设计迎来了新的挑战与机遇。Apple推出的Icon Composer工具，让开发者能够通过单一文件为所有Apple平台创建完美适配的图标，同时支持多种外观模式的实时预览和调整。本文将详细介绍Icon Composer的工作流程和实用技巧。</p>
-<h2 id="Icon-Composer概述"><a href="#Icon-Composer概述" class="headerlink" title="Icon Composer概述"></a>Icon Composer概述</h2><p>Icon Composer是Apple最新推出的图标设计工具，它能够：</p>
-<ul>
-<li>通过单一设计文件为iPhone、iPad、Mac和Apple Watch生成差异化呈现</li>
-<li>实时预览六种全新外观模式（默认、深色、透明浅色、透明深色、着色浅色、着色深色）</li>
-<li>自动适配不同设备尺寸，告别繁琐的多尺寸图标制作</li>
-<li>应用Liquid Glass技术，赋予图标动态生命力</li>
-</ul>
-<h2 id="工作流程详解"><a href="#工作流程详解" class="headerlink" title="工作流程详解"></a>工作流程详解</h2><h3 id="1-在设计工具中创作"><a href="#1-在设计工具中创作" class="headerlink" title="1. 在设计工具中创作"></a>1. 在设计工具中创作</h3><p>推荐使用矢量绘图工具（如Illustrator）进行设计，并采用分层设计原则：</p>
-<ul>
-<li>每个图层代表Z轴深度层级</li>
-<li>背景为底层，其余图像逐层叠加</li>
-<li>简单图标（如”信息”App）只需前景加背景</li>
-<li>复杂设计（如”家庭”App）可能需要更多分层</li>
-</ul>
-<p><strong>设计建议</strong>：</p>
-<ul>
-<li>使用Apple设计资源网站提供的图标模板</li>
-<li>iPhone/iPad/Mac统一采用1024px画布</li>
-<li>Watch采用1088px画布</li>
-<li>为不同图层设置差异颜色，便于后期调整</li>
-</ul>
-<h3 id="2-导出图层"><a href="#2-导出图层" class="headerlink" title="2. 导出图层"></a>2. 导出图层</h3><p>将图层导出为SVG文件时需注意：</p>
-<ul>
-<li>确保画布尺寸准确</li>
-<li>按Z轴顺序编号图层</li>
-<li>背景色和渐变无需手动导出</li>
-<li>文本需转为轮廓</li>
-<li>复杂元素导出为PNG（保留透明背景）</li>
-<li>切勿在导出文件中添加圆角或圆形蒙版</li>
-</ul>
-<h3 id="3-导入Icon-Composer调整"><a href="#3-导入Icon-Composer调整" class="headerlink" title="3. 导入Icon Composer调整"></a>3. 导入Icon Composer调整</h3><p>Icon Composer界面分为三部分：</p>
-<ol>
-<li><strong>左侧边栏</strong>：画布、分组与图层管理</li>
-<li><strong>中央预览区</strong>：多平台/模式效果展示</li>
-<li><strong>右侧检查器</strong>：外观属性与文档设置调整</li>
-</ol>
-<p><strong>实用调整技巧</strong>：</p>
-<ul>
-<li>设置画布背景（建议使用系统预设的优化配色）</li>
-<li>每层可应用独立玻璃效果</li>
-<li>关闭狭窄元素的镜面效果提升清晰度</li>
-<li>深色模式需重点调整填充色</li>
-<li>单色模式至少保留一个白色元素确保辨识度</li>
-</ul>
-<h3 id="4-保存并导入Xcode"><a href="#4-保存并导入Xcode" class="headerlink" title="4. 保存并导入Xcode"></a>4. 保存并导入Xcode</h3><p>完成调整后：</p>
-<ul>
-<li>保存为.icon文件</li>
-<li>导入Xcode</li>
-<li>项目编辑器选择图标后，应用将自动适配各平台与外观模式</li>
-</ul>
-<h2 id="设计技巧与注意事项"><a href="#设计技巧与注意事项" class="headerlink" title="设计技巧与注意事项"></a>设计技巧与注意事项</h2><ol>
-<li><p><strong>Liquid Glass效果</strong>：</p>
-<ul>
-<li>可动态添加重叠部分模糊效果或细微阴影</li>
-<li>源文件应保持简洁图形核心</li>
-</ul>
-</li>
-<li><p><strong>圆形平台（如Watch）</strong>：</p>
-<ul>
-<li>注意构图调整</li>
-<li>边缘元素可适度放大</li>
-</ul>
-</li>
-<li><p><strong>预览功能</strong>：</p>
-<ul>
-<li>更换背景测试对比度</li>
-<li>图标堆叠查看光影流动</li>
-<li>缩放检查细节</li>
-</ul>
-</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Icon Composer代表了图标设计从平面图像向沉浸式体验的演进，它不仅节省了反复生成素材的时间，更让开发者能以灵动方式创作响应式、多层次的动态图标。通过单一设计文件，您的应用图标将能够在所有Apple平台上呈现浑然一体的视觉体验。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/219">了解 Liquid Glass</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/220">了解焕然一新的 App 图标</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/creating-your-app-icon-using-icon-composer">使用 Icon Composer 创建应用图标</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/app-icons">人机界面指南：应用图标</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用-Icon-Composer-构建图标：Apple-平台图标设计新方式"><a href="#使用-Icon-Composer-构建图标：Apple-平台图标设计新方式" class="headerlink" title="使用 Icon Composer 构建图标：Apple 平台图标设计新方式"></a>使用 Icon Composer 构建图标：Apple 平台图标设计新方式</h1><p>在 WWDC 2025 上，Apple 发布了全新的 Icon Composer 工具，这款工具彻底革新了为 Apple 平台设计 App 图标的方式。作为一名科技领域的专业博客作者，本文将深入解析这项新工具的功能与优势。</p>
+<h2 id="Icon-Composer-带来的变革"><a href="#Icon-Composer-带来的变革" class="headerlink" title="Icon Composer 带来的变革"></a>Icon Composer 带来的变革</h2><p>Icon Composer 解决了多平台图标适配的长期痛点。以往开发者需要为不同平台和设备创建多个版本的图标，而现在只需一个设计就能为 iPhone、iPad、Mac 和 Apple Watch 等所有 Apple 设备生成适配图标。</p>
+<p>这款工具特别值得关注的是其对六种全新外观模式的支持：默认、深色、透明浅色、透明深色、着色浅色和着色深色。Icon Composer 让开发者能够实时预览这些不同模式下的显示效果，确保图标在各种环境下都能保持最佳视觉效果。</p>
+<h2 id="设计流程优化"><a href="#设计流程优化" class="headerlink" title="设计流程优化"></a>设计流程优化</h2><p>Icon Composer 的工作流程分为四个简单步骤：</p>
+<ol>
+<li>在设计工具中创建图标</li>
+<li>导出分层设计</li>
+<li>导入 Icon Composer 进行调整</li>
+<li>保存并导入 Xcode</li>
+</ol>
+<p>Apple 设计团队已在今年使用这个工具更新了所有原生 App 的图标，显著提高了工作效率。对于开发者而言，这意味着可以节省大量原本用于多平台图标适配的时间。</p>
+<h2 id="设计技巧与规范"><a href="#设计技巧与规范" class="headerlink" title="设计技巧与规范"></a>设计技巧与规范</h2><p>在使用 Icon Composer 前，设计阶段需要注意以下要点：</p>
+<ul>
+<li>使用矢量绘图工具（如 Figma、Sketch、Photoshop 或 Illustrator）</li>
+<li>设置合适的画布尺寸（1024px 用于 iPhone/iPad/Mac，1088px 用于 Watch）</li>
+<li>采用分层设计结构，底层作为背景，其他元素沿 Z 轴堆叠</li>
+<li>保持设计简洁，避免在原始设计中添加后期可通过 Icon Composer 实现的效果</li>
 </ul>
+<p>分层设计是 Icon Composer 发挥最大效用的关键。简单图标可能只需要前景和背景两层，复杂图标最多可达四层。恰当的颜色分层能为 Icon Composer 提供更大的控制空间。</p>
+<h2 id="导出与导入注意事项"><a href="#导出与导入注意事项" class="headerlink" title="导出与导入注意事项"></a>导出与导入注意事项</h2><p>将设计导入 Icon Composer 前，需要注意以下导出规范：</p>
+<ul>
+<li>按 Z 轴顺序编号图层</li>
+<li>确保所有文字已转为轮廓</li>
+<li>避免在导出文件中添加圆角或圆形蒙版</li>
+<li>自定义渐变或复杂效果需导出为 PNG 格式</li>
+<li>支持 SVG 或 PNG 导出格式</li>
+</ul>
+<h2 id="Icon-Composer-功能详解"><a href="#Icon-Composer-功能详解" class="headerlink" title="Icon Composer 功能详解"></a>Icon Composer 功能详解</h2><p>导入 Icon Composer 后，开发者将面对三个主要工作区：</p>
+<ul>
+<li>左侧边栏：管理画布、分组和图层</li>
+<li>中间区域：实时预览面板</li>
+<li>右侧检查器：调整外观属性</li>
+</ul>
+<p>Icon Composer 的核心功能包括自动应用 Liquid Glass 效果（可在图层级别控制），以及强大的颜色和构图控制功能。这些工具特别适合为不同外观模式创建变体，并处理平台特定的适配需求。</p>
+<p>使用 Icon Composer 时，有几个实用技巧值得注意：</p>
+<ul>
+<li>关闭镜面效果可以解决图标在狭窄空间的显示问题</li>
+<li>色彩阴影能有效增强材质感</li>
+<li>深色模式需要特别注意填充效果</li>
+<li>单色外观应保证至少包含一个白色元素</li>
+<li>圆形平台（如 watchOS）需特别关注边缘构图</li>
+</ul>
+<h2 id="交付与未来展望"><a href="#交付与未来展望" class="headerlink" title="交付与未来展望"></a>交付与未来展望</h2><p>完成图标调整后，开发者只需保存 .icon 文件并导入 Xcode 即可。Icon Composer 代表了图标设计从静态图像向动态设计的转变，使图标能够响应不同输入并完美适配各种外观。</p>
+<p>Icon Composer 目前提供测试版，Apple 鼓励开发者下载试用并通过 Feedback Assistant 提交使用反馈。这项工具的推出标志着 Apple 在设计工具生态上的重要进步，为开发者提供了更高效的图标创作流程。</p>
+<p>对于希望深入了解 Icon Composer 及相关技术的开发者，Apple 提供了丰富的学习资源：</p>
+<h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/219">了解 Liquid Glass</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/220">了解焕然一新的 App 图标</a></p>
+<h3 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/creating-your-app-icon-using-icon-composer">使用 Icon Composer 创建应用图标</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/app-icons">人机界面指南：应用图标</a></p>
 
       
 
@@ -428,18 +393,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_337/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_356/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          SF Symbols 7 的新功能
+          了解全新设计系统
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_220/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">了解焕然一新的 App 图标</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_266/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">探索 SwiftUI 中的并发机制</div>
       <i class="icon-circle-right"></i>
     </a>
   

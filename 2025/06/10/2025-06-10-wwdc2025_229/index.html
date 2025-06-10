@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何整合那些可充分利用 macos 强大功能和灵活性的辅助功能。深入探索如何支持“旁白”和“语音控制”，如何改进视图的布局，以及辅助技术如何导航你的内容，等等。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9918/9918_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:52:37.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:52:37.584Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.794Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="macos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_229/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:52:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,38 +226,30 @@ var _hmt = _hmt || [];
       
         <p>了解如何整合那些可充分利用 macos 强大功能和灵活性的辅助功能。深入探索如何支持“旁白”和“语音控制”，如何改进视图的布局，以及辅助技术如何导航你的内容，等等。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9918/9918_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/229/">视频地址</a></p>
-<h1 id="打造无障碍的-macOS-应用：SwiftUI-实践指南"><a href="#打造无障碍的-macOS-应用：SwiftUI-实践指南" class="headerlink" title="打造无障碍的 macOS 应用：SwiftUI 实践指南"></a>打造无障碍的 macOS 应用：SwiftUI 实践指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在当今数字时代，构建无障碍应用已成为开发者不可忽视的责任。通过支持旁白、语音控制等辅助技术，我们可以让视力障碍、运动障碍等用户群体也能顺畅使用我们的应用。本文将深入探讨如何利用 SwiftUI 优化 macOS 应用的无障碍体验。</p>
-<h2 id="布局优化策略"><a href="#布局优化策略" class="headerlink" title="布局优化策略"></a>布局优化策略</h2><h3 id="无障碍元素容器化"><a href="#无障碍元素容器化" class="headerlink" title="无障碍元素容器化"></a>无障碍元素容器化</h3><p>SwiftUI 会将构成应用的各个视图自动呈现为无障碍元素。关键在于如何合理组织这些元素，就像视觉上精心设计界面一样。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 视图分组示例</span></span><br><span class="line"><span class="type">VStack</span> &#123;</span><br><span class="line">    <span class="type">FirstView</span>()</span><br><span class="line">    <span class="type">SecondView</span>()</span><br><span class="line">&#125;</span><br><span class="line">.accessibilityElement(children: .contain)</span><br></pre></td></tr></table></figure>
-<p><code>.contain</code> 行为将子视图包含在无障碍容器中，而 <code>.combine</code> 会将子视图合并为一个无障碍元素，<code>.ignore</code> 则会隐藏子视图的无障碍元素。</p>
-<h3 id="调整阅读顺序"><a href="#调整阅读顺序" class="headerlink" title="调整阅读顺序"></a>调整阅读顺序</h3><p>通过 <code>accessibilitySortPriority</code> 修饰符，我们可以优化旁白朗读顺序：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Text</span>(book.title)</span><br><span class="line">    .accessibilitySortPriority(<span class="number">1</span>)  <span class="comment">// 优先朗读书名</span></span><br></pre></td></tr></table></figure>
-<h2 id="导航加速技巧"><a href="#导航加速技巧" class="headerlink" title="导航加速技巧"></a>导航加速技巧</h2><h3 id="旋钮功能实现"><a href="#旋钮功能实现" class="headerlink" title="旋钮功能实现"></a>旋钮功能实现</h3><p>为书签页面添加无障碍旋钮，让旁白用户能快速跳转：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.accessibilityRotor(<span class="string">&quot;Bookmarks&quot;</span>) &#123;</span><br><span class="line">    <span class="type">ForEach</span>(pages) &#123; page <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> page.isBookmarked &#123;</span><br><span class="line">            <span class="type">AccessibilityRotorEntry</span>(page.title, id: page.id)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="设置默认焦点"><a href="#设置默认焦点" class="headerlink" title="设置默认焦点"></a>设置默认焦点</h3><p>在 macOS 26 中，可以使用无障碍默认焦点修饰符：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.accessibilityDefaultFocus(<span class="variable">$focusedForVoiceOver</span>, <span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="交互无障碍设计"><a href="#交互无障碍设计" class="headerlink" title="交互无障碍设计"></a>交互无障碍设计</h2><h3 id="替代悬停交互"><a href="#替代悬停交互" class="headerlink" title="替代悬停交互"></a>替代悬停交互</h3><p>对于需要悬停或触控板手势的交互，应提供替代方式：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.accessibilityAction(named: page.isBookmarked <span class="operator">?</span> <span class="string">&quot;移除书签&quot;</span> : <span class="string">&quot;添加书签&quot;</span>) &#123;</span><br><span class="line">    page.isBookmarked.toggle()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="快捷键的重要性"><a href="#快捷键的重要性" class="headerlink" title="快捷键的重要性"></a>快捷键的重要性</h3><p>添加快捷键不仅能提升效率，对无法使用鼠标的用户也至关重要。</p>
-<h2 id="测试与评估"><a href="#测试与评估" class="headerlink" title="测试与评估"></a>测试与评估</h2><p>建议开发者：</p>
-<ol>
-<li>使用旁白测试每个新功能</li>
-<li>优化容器结构，避免过度嵌套</li>
-<li>探索添加自定义旋钮的可能性</li>
-<li>通过无障碍营养标签展示应用特性</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>构建无障碍的 macOS 应用不仅是一种责任，更能扩大用户群体。通过 SwiftUI 提供的强大工具，我们可以轻松实现出色的无障碍体验。从优化布局到加速导航，再到改进交互方式，每一步都能让应用更加包容。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10073">了解 SwiftUI 中的辅助功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10119">SwiftUI 辅助功能：超越基础功能</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swiftui/view-accessibility">Accessibility</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/accessibility">Human Interface Guidelines: Accessibility</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
-</ul>
+<h1 id="让你的-Mac-应用对所有人都更易用：深入无障碍功能开发指南"><a href="#让你的-Mac-应用对所有人都更易用：深入无障碍功能开发指南" class="headerlink" title="让你的 Mac 应用对所有人都更易用：深入无障碍功能开发指南"></a>让你的 Mac 应用对所有人都更易用：深入无障碍功能开发指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在当今数字时代，确保应用对所有用户都具有可访问性已成为开发者的重要责任。WWDC 2024 演讲中，无障碍团队工程师 Nicholas 分享了如何充分利用 macOS 的强大功能和灵活性，将无障碍特性深度整合到 Mac 应用的开发中。本文将详细介绍这些专业技巧，帮助开发者创建更友好的应用体验。</p>
+<h2 id="布局优化：构建高效的无障碍元素结构"><a href="#布局优化：构建高效的无障碍元素结构" class="headerlink" title="布局优化：构建高效的无障碍元素结构"></a>布局优化：构建高效的无障碍元素结构</h2><p>Mac 应用通常设计用于键盘和鼠标交互，具有密集的用户界面和强大的多任务处理能力。这些特性带来了独特的无障碍考量要点。SwiftUI 将应用中的各个视图呈现为无障碍元素，这些元素包含无障碍技术理解和与应用交互所需的关键信息。</p>
+<p>旁白(VoiceOver)作为 macOS 内置的屏幕阅读器，能够将应用界面转化为语音或盲文输出。Mac 上的旁白主要通过键盘快捷键控制，用户可以通过快捷键在元素间移动。为了优化旁白导航体验，SwiftUI 提供了将无障碍元素分组到容器的功能。</p>
+<p>开发者需要注意，Mac 上的容器通常包含嵌套容器，形成树状的无障碍元素结构。合理地将相关元素分组到容器中可以使旁白导航更高效，但过多的嵌套层级反而会降低使用体验。</p>
+<p>SwiftUI 提供了三种主要的行为选项来优化容器：</p>
+<ol>
+<li><strong>包含子视图</strong>(<code>.contain</code>)：将子视图包含在无障碍容器中</li>
+<li><strong>合并子视图</strong>(<code>.combine</code>)：将子视图合并为一个无障碍元素</li>
+<li><strong>忽略子视图</strong>(<code>.ignore</code>)：从无障碍中隐藏子视图</li>
+</ol>
+<p>通过合理使用这些选项，开发者可以显著改善旁白用户的导航体验。例如，在文本编辑应用中，可以将样式预设视图分组为容器，避免用户必须遍历每个预设才能到达下一个功能区。</p>
+<h2 id="导航增强：转子与焦点管理"><a href="#导航增强：转子与焦点管理" class="headerlink" title="导航增强：转子与焦点管理"></a>导航增强：转子与焦点管理</h2><p>优化应用的无障碍结构后，进一步改善导航体验的方法是利用转子和焦点管理功能。转子是旁白的重要功能，它允许用户定义应用中的视图或文本范围集合，实现快速导航。</p>
+<p>在文本编辑应用的例子中，可以创建专门的书签转子，让旁白用户能够直接跳转到书签页面，而无需遍历每个页面检查是否有书签标记。这种设计实现了与视觉用户相似的便捷体验。</p>
+<p>macOS 和 iOS 26 还引入了<code>accessibilityDefaultFocus</code>修饰符，允许应用为旁白等无障碍技术建议初始焦点位置。开发者可以使用<code>AccessibilityFocusState</code>属性包装器来管理旁白焦点状态，确保用户首次进入应用时能够直接访问最重要的内容。</p>
+<h2 id="交互优化：超越鼠标与触控板"><a href="#交互优化：超越鼠标与触控板" class="headerlink" title="交互优化：超越鼠标与触控板"></a>交互优化：超越鼠标与触控板</h2><p>确保所有交互方式对所有用户都可用是开发无障碍应用的关键。许多 Mac 应用依赖鼠标悬停或触控板手势来触发特定功能，但这些交互方式对某些用户可能不可行。</p>
+<p>针对这种情况，SwiftUI 提供了替代的交互实现方式。例如，可以为悬停显示的按钮添加无障碍动作，确保使用旁白的用户也能执行相同功能。开发者应该为应用中的常见任务添加快捷键，这不仅提升了高级用户的工作效率，也为无法使用鼠标的用户提供了替代交互方式。</p>
+<p>对于自定义控件，开发者需要特别注意为其提供完整的无障碍信息。标准的 SwiftUI 控件通常已内置无障碍支持，但自定义控件可能需要额外的工作才能确保良好的可访问性。</p>
+<h2 id="结论与后续资源"><a href="#结论与后续资源" class="headerlink" title="结论与后续资源"></a>结论与后续资源</h2><p>通过优化布局结构、增强导航体验和完善交互方式，开发者可以显著提升 Mac 应用的无障碍性。演讲中建议开发者使用旁白测试自己的应用，研究可以添加自定义转子的地方，并通过无障碍营养标签展示应用的无障碍特性。</p>
+<p>如需深入了解相关内容，可以参考以下资源：</p>
+<p>相关视频：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10073">了解 SwiftUI 中的辅助功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10119">SwiftUI 辅助功能：超越基础功能</a></p>
+<p>文档：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swiftui/view-accessibility">Accessibility</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/accessibility">Human Interface Guidelines: Accessibility</a></p>
 
       
 
@@ -360,18 +352,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_243/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_225/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          UIKit 的新功能
+          跟着视频学编程：使用 Xcode 探索本地化
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_224/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">针对辅助功能标签评估你的 App</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_226/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">分析并优化 App 的功耗</div>
       <i class="icon-circle-right"></i>
     </a>
   

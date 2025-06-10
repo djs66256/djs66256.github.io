@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何使用 chart3d 将你的 2d swift charts 转换为三维图表，从全新角度直观呈现你的数据集。绘制 3d 数据图表，以可视化方式显示数学表面，并对摄像头、材质等各种因素进行自定，让你的 3d 图表更加清晰直观、赏心悦目。 为了充分从这个讲座中获益，我们建议你先熟悉一下如何创建 2d swift charts。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9954/9954_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:34:18.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:34:18.756Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.851Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_313/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:34:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,46 +227,39 @@ var _hmt = _hmt || [];
         <p>了解如何使用 chart3d 将你的 2d swift charts 转换为三维图表，从全新角度直观呈现你的数据集。绘制 3d 数据图表，以可视化方式显示数学表面，并对摄像头、材质等各种因素进行自定，让你的 3d 图表更加清晰直观、赏心悦目。</p>
 <p>为了充分从这个讲座中获益，我们建议你先熟悉一下如何创建 2d swift charts。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9954/9954_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/313/">视频地址</a></p>
-<h1 id="探索-Swift-Charts-的三维可视化能力"><a href="#探索-Swift-Charts-的三维可视化能力" class="headerlink" title="探索 Swift Charts 的三维可视化能力"></a>探索 Swift Charts 的三维可视化能力</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Swift Charts 是 Apple 提供的一个强大框架，用于创建直观精美的图表。在 iOS、macOS 和 visionOS 26 中，Swift Charts 迎来了令人振奋的新功能 - 三维图表支持。本文将带您了解如何将二维图表升级为三维，绘制三维数学曲面，以及如何定制三维图表的外观和行为。</p>
-<h2 id="从二维到三维的转变"><a href="#从二维到三维的转变" class="headerlink" title="从二维到三维的转变"></a>从二维到三维的转变</h2><p>Swift Charts 的二维图表已经广泛应用于天气应用、系统设置等多个场景。现在，通过 Chart3D 视图，我们可以轻松地将二维图表升级为三维：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二维图表</span></span><br><span class="line"><span class="type">Chart</span> &#123;</span><br><span class="line">    <span class="type">PointMark</span>(</span><br><span class="line">        x: .value(<span class="string">&quot;Flipper Length&quot;</span>, penguin.flipperLength),</span><br><span class="line">        y: .value(<span class="string">&quot;Body Mass&quot;</span>, penguin.bodyMass)</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 三维图表</span></span><br><span class="line"><span class="type">Chart3D</span> &#123;</span><br><span class="line">    <span class="type">PointMark</span>(</span><br><span class="line">        x: .value(<span class="string">&quot;Flipper Length&quot;</span>, penguin.flipperLength),</span><br><span class="line">        y: .value(<span class="string">&quot;Body Mass&quot;</span>, penguin.bodyMass),</span><br><span class="line">        z: .value(<span class="string">&quot;Beak Length&quot;</span>, penguin.beakLength)</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种转变让用户可以从全新的视角探索和理解数据，特别是对于本身就具有三维特征的数据集。</p>
-<h2 id="曲面图-SurfacePlot-的应用"><a href="#曲面图-SurfacePlot-的应用" class="headerlink" title="曲面图(SurfacePlot)的应用"></a>曲面图(SurfacePlot)的应用</h2><p>SurfacePlot 是 Chart3D 的独家功能，它是 LinePlot 的三维扩展，非常适合绘制包含两个变量的数学曲面：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Chart3D</span> &#123;</span><br><span class="line">    <span class="type">SurfacePlot</span> &#123; x, z <span class="keyword">in</span></span><br><span class="line">        x <span class="operator">*</span> z</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>您可以在 SurfacePlot 中实现任意复杂的数学表达式：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">SurfacePlot</span> &#123; x, z <span class="keyword">in</span></span><br><span class="line">    sin(x <span class="operator">*</span> .pi) <span class="operator">*</span> cos(z <span class="operator">*</span> .pi)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>SurfacePlot 也适用于数据可视化，比如展示企鹅体征数据的线性回归关系：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">SurfacePlot</span> &#123; flipperLength, beakLength <span class="keyword">in</span></span><br><span class="line">    <span class="type">LinearRegression</span>.predictBodyMass(flipperLength: flipperLength, beakLength: beakLength)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="三维图表定制技巧"><a href="#三维图表定制技巧" class="headerlink" title="三维图表定制技巧"></a>三维图表定制技巧</h2><p>Chart3D 提供了丰富的定制选项：</p>
-<ol>
-<li><p><strong>调整初始姿态</strong>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.chart3DPose(.front)  <span class="comment">// 预设视角</span></span><br><span class="line"><span class="comment">// 或自定义视角</span></span><br><span class="line">.chart3DPose(<span class="type">Pose3D</span>(azimuth: .degrees(<span class="number">45</span>), elevation: .degrees(<span class="number">30</span>)))</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>投影方式选择</strong>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.chart3DProjection(.orthographic)  <span class="comment">// 正交投影(默认)</span></span><br><span class="line">.chart3DProjection(.perspective)   <span class="comment">// 透视投影</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>曲面样式定制</strong>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 渐变着色</span></span><br><span class="line">.foregroundStyle(.ellipticalGradient(colors: [.red, .green, .blue]))</span><br><span class="line"><span class="comment">// 基于高度着色</span></span><br><span class="line">.foregroundStyle(heightBased: [.red, .green, .blue])</span><br><span class="line"><span class="comment">// 基于法线角度着色</span></span><br><span class="line">.foregroundStyle(normalBased: [.red, .green, .blue])</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="三维图表的应用建议"><a href="#三维图表的应用建议" class="headerlink" title="三维图表的应用建议"></a>三维图表的应用建议</h2><p>虽然三维图表提供了新的数据视角，但需要注意：</p>
-<ul>
-<li>三维图表的可读性高度依赖交互操作</li>
-<li>评估交互体验是否对您的应用场景必不可少</li>
-<li>二维与三维图表可以互补使用</li>
-</ul>
-<p>特别是在 Vision Pro 上，三维图表能够提供惊艳的视觉效果和交互体验。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Swift Charts 的三维功能为数据可视化开辟了新的可能性。通过 PointMark、RuleMark、RectangleMark 和 SurfacePlot 的组合使用，结合丰富的定制选项，开发者可以创建出独具特色的三维可视化方案。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10155">Swift Charts：矢量图与函数图</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/110342">利用图表设计 App 体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/110340">设计实用高效的图表</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Charts">Swift Charts 官方文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Updates/SwiftCharts">Swift Charts 更新日志</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="将-Swift-Charts-扩展为三维图表：数据可视化新维度"><a href="#将-Swift-Charts-扩展为三维图表：数据可视化新维度" class="headerlink" title="将 Swift Charts 扩展为三维图表：数据可视化新维度"></a>将 Swift Charts 扩展为三维图表：数据可视化新维度</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Apple 在 iOS、macOS 和 visionOS 26 中为 Swift Charts 框架引入了令人振奋的三维图表功能。这项突破性扩展让开发者能够通过 Chart3D 将二维图表转换为三维可视化，为用户提供探索和理解数据集的全新视角。本文将详细介绍如何利用三维图表呈现数据、绘制数学曲面以及自定义图表样式，助您掌握这项强大的可视化工具。</p>
+<h2 id="三维图表基础与应用场景"><a href="#三维图表基础与应用场景" class="headerlink" title="三维图表基础与应用场景"></a>三维图表基础与应用场景</h2><p>Swift Charts 三维图表特别适合呈现数据形态比精确值更重要的情况，尤其是本身具有三维空间属性的数据。以企鹅数据集为例，通过三维散点图可以同时展示鳍肢长度、体重和喙长三个维度的数据，比传统的二维图表更能直观呈现不同企鹅物种间的整体差异。</p>
+<p>创建三维图表非常简单，开发者只需将原来的 <code>Chart</code> 替换为 <code>Chart3D</code>，并为现有的标记(如 <code>PointMark</code>)提供 Z 轴值即可。Chart3D 支持 <code>PointMark</code>、<code>RuleMark</code> 和 <code>RectangleMark</code> 等常用标记类型，用户可以通过手势旋转图表从多个角度观察数据。</p>
+<p>值得注意的是，三维图表依赖交互操作来理解数据，因此在选择使用三维图表时，应考虑交互是否能真正提升应用体验。当需要同时展示多个变量关系或数据本身具有三维属性时，三维图表会是理想选择。</p>
+<h2 id="SurfacePlot：三维曲面绘制功能"><a href="#SurfacePlot：三维曲面绘制功能" class="headerlink" title="SurfacePlot：三维曲面绘制功能"></a>SurfacePlot：三维曲面绘制功能</h2><p><code>SurfacePlot</code> 是 Chart3D 独有的强大功能，作为 <code>LinePlot</code> 的三维扩展，它能够绘制包含最多两个变量的数学曲面。其 API 设计与 <code>LinePlot</code> 类似，接收一个将两个 Double 参数转换为 Double 输出的闭包：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">SurfacePlot</span> &#123; x, z <span class="keyword">in</span></span><br><span class="line">    x <span class="operator">*</span> z</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开发者可以轻松绘制从简单乘法曲面到复杂三角函数曲面等各种数学图形。此外，<code>SurfacePlot</code> 还支持将机器学习模型预测结果可视化。例如，使用 CreateML 框架训练企鹅数据的回归模型后，可以将预测结果作为灰色曲面绘制在图表中，清晰展示变量间的关联程度。</p>
+<h2 id="丰富的自定义选项"><a href="#丰富的自定义选项" class="headerlink" title="丰富的自定义选项"></a>丰富的自定义选项</h2><p>Chart3D 提供了多种自定义功能，让图表更具表现力：</p>
+<ol>
+<li><p><strong>视角设置</strong>：通过 <code>Chart3DPose</code> 修饰符可以预设初始视角，包括内置的 <code>.front</code> 视角或自定义方位角(azimuth)和倾角(inclination)。</p>
 </li>
+<li><p><strong>投影模式</strong>：</p>
+<ul>
+<li>正交投影(orthographic)：保持远近物体大小一致，适合侧面观察</li>
+<li>透视投影(perspective)：增强深度感知，营造沉浸体验</li>
 </ul>
+</li>
+<li><p><strong>曲面样式</strong>：</p>
+<ul>
+<li>应用 <code>LinearGradient</code> 或 <code>EllipticalGradient</code> 等渐变</li>
+<li><code>heightBased</code> 模式根据曲面高度着色</li>
+<li><code>normalBased</code> 模式根据曲面法线角度着色</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">SurfacePlot</span> &#123; x, z <span class="keyword">in</span></span><br><span class="line">    sinc(sqrt(x<span class="operator">*</span>x <span class="operator">+</span> z<span class="operator">*</span>z))</span><br><span class="line">&#125;</span><br><span class="line">.gradient(.ellipticalGradient(.white, center: .center, startRadiusFraction: <span class="number">0</span>, endRadiusFraction: <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<p>这些自定义选项在 Vision Pro 上尤其出色，为三维数据提供了自然的展示平台。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Swift Charts 的三维功能为数据可视化开启了全新维度。当数据集适合三维呈现时，Chart3D 能够通过其直观的 API 和丰富的定制选项，帮助开发者创建具有深度和表现力的可视化效果。无论是展示生物统计数据、数学曲面，还是机器学习模型预测，三维图表都能提供传统二维图表无法比拟的数据洞察能力。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10155">Swift Charts：矢量图与函数图</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/110342">利用图表设计 App 体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/110340">设计实用高效的图表</a>  </p>
+<h3 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Charts">Swift Charts</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Updates/SwiftCharts">Swift Charts 更新日志</a></p>
 
       
 
@@ -369,18 +362,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_334/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_310/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          watchOS 26 的新功能
+          使用全新设计系统构建 AppKit App
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_208/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">提升 iPad App 设计</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_312/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">优化 Swift 代码的内存使用和性能</div>
       <i class="icon-circle-right"></i>
     </a>
   

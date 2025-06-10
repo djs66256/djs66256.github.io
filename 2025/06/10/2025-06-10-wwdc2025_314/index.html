@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何通过抵御量子计算这一新兴威胁来保护 app 的敏感用户数据，并了解如何保护用户隐私。我们将探索不同类型的量子攻击、它们对现有加密协议的影响，以及如何使用量子安全加密技术来抵御这些攻击。你将了解如何使用量子安全 tls 来保护网络数据，以及如何使用 cryptokit 的量子安全 api 来保护应用程序数据。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10036/10036_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:48:31.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:48:31.706Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.634Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_314/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:48:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,50 +231,44 @@ var _hmt = _hmt || [];
       
         <p>了解如何通过抵御量子计算这一新兴威胁来保护 app 的敏感用户数据，并了解如何保护用户隐私。我们将探索不同类型的量子攻击、它们对现有加密协议的影响，以及如何使用量子安全加密技术来抵御这些攻击。你将了解如何使用量子安全 tls 来保护网络数据，以及如何使用 cryptokit 的量子安全 api 来保护应用程序数据。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10036/10036_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/314/">视频地址</a></p>
-<h1 id="量子安全加密技术：保护你的应用免受未来威胁"><a href="#量子安全加密技术：保护你的应用免受未来威胁" class="headerlink" title="量子安全加密技术：保护你的应用免受未来威胁"></a>量子安全加密技术：保护你的应用免受未来威胁</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着量子计算的快速发展，传统的加密技术正面临前所未有的挑战。本指南将带你了解如何通过量子安全加密技术保护应用中的敏感数据，抵御量子计算带来的新型威胁。</p>
-<h2 id="量子攻击威胁解析"><a href="#量子攻击威胁解析" class="headerlink" title="量子攻击威胁解析"></a>量子攻击威胁解析</h2><p>当今应用处理的健康数据、地理位置和照片等敏感信息都依赖加密技术保护。但量子计算机的出现可能破解现有加密体系。</p>
-<p>主要威胁包括：</p>
-<ul>
-<li><strong>“现在收割，未来解密”攻击</strong>：攻击者现在截获加密数据，待量子计算机成熟后再解密</li>
-<li><strong>身份伪造攻击</strong>：利用量子计算机破解签名算法，伪造用户身份</li>
-</ul>
-<h2 id="量子安全加密解决方案"><a href="#量子安全加密解决方案" class="headerlink" title="量子安全加密解决方案"></a>量子安全加密解决方案</h2><p>密码学界已研发出能同时抵御经典和量子计算机攻击的新型算法：</p>
-<h3 id="公钥密码学升级"><a href="#公钥密码学升级" class="headerlink" title="公钥密码学升级"></a>公钥密码学升级</h3><ul>
-<li>采用”后量子混合公钥加密”(Post-quantum HPKE)</li>
-<li>使用”后量子混合签名”</li>
-<li>需要同时攻破两种算法才能破解</li>
-</ul>
-<h3 id="对称密钥密码学优化"><a href="#对称密钥密码学优化" class="headerlink" title="对称密钥密码学优化"></a>对称密钥密码学优化</h3><ul>
-<li>仅需将密钥长度加倍即可实现量子安全</li>
-<li>例如从AES-128升级到AES-256</li>
-</ul>
-<h2 id="网络数据保护方案"><a href="#网络数据保护方案" class="headerlink" title="网络数据保护方案"></a>网络数据保护方案</h2><p>大多数网络数据通过TLS保护，最新TLS 1.3已实现量子安全升级：</p>
-<ul>
-<li>iOS 26后，URLSession等网络API将默认启用量子安全TLS</li>
-<li>开发者应逐步弃用旧API</li>
-<li>服务器端需要相应升级</li>
-</ul>
-<h2 id="自定义协议保护方案"><a href="#自定义协议保护方案" class="headerlink" title="自定义协议保护方案"></a>自定义协议保护方案</h2><p>如果你的应用使用自定义加密协议，升级步骤如下：</p>
-<ol>
-<li><strong>识别现有加密方案</strong>中的薄弱环节</li>
-<li><strong>制定升级计划</strong>改用量子安全算法</li>
-<li><strong>使用CryptoKit新API</strong>实现安全升级</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用CryptoKit的量子安全API示例</span></span><br><span class="line"><span class="keyword">let</span> ciphersuite <span class="operator">=</span> <span class="type">HPKE</span>.<span class="type">Ciphersuite</span>.<span class="type">XWingMLKEM768X25519_SHA256_AES_GCM_256</span></span><br><span class="line"><span class="keyword">let</span> privateKey <span class="operator">=</span> <span class="keyword">try</span> <span class="type">XWingMLKEM768X25519</span>.<span class="type">PrivateKey</span>.generate()</span><br><span class="line"><span class="keyword">let</span> publicKey <span class="operator">=</span> privateKey.publicKey</span><br></pre></td></tr></table></figure>
-<h2 id="立即行动"><a href="#立即行动" class="headerlink" title="立即行动"></a>立即行动</h2><p>量子安全升级刻不容缓，建议：</p>
-<ol>
-<li>确保网络数据使用量子安全TLS</li>
-<li>升级服务器配置</li>
-<li>自定义协议改用CryptoKit量子安全API</li>
-<li>优先采用Post-quantum HPKE</li>
-</ol>
-<h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/CryptoKit">Apple CryptoKit</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://security.apple.com/blog/imessage-pq3/">PQ3消息协议：大规模量子安全通信的新标杆</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="采用量子安全加密技术抵御未来威胁"><a href="#采用量子安全加密技术抵御未来威胁" class="headerlink" title="采用量子安全加密技术抵御未来威胁"></a>采用量子安全加密技术抵御未来威胁</h1><p>随着量子计算技术的快速发展，传统加密系统正面临前所未有的安全挑战。本文将详细介绍量子计算对现有加密体系的威胁以及如何采用量子安全加密技术进行防御。</p>
+<h2 id="量子计算带来的加密挑战"><a href="#量子计算带来的加密挑战" class="headerlink" title="量子计算带来的加密挑战"></a>量子计算带来的加密挑战</h2><p>现代应用程序通常存储和传输大量用户敏感数据，包括健康记录、地理位置信息和私人照片等。这些数据主要通过加密技术进行保护，例如TLS协议保障数据传输安全。然而量子计算的崛起正在动摇这些传统加密手段的安全性。</p>
+<p>密码学工程专家指出，量子计算机将对两大类加密技术产生重大影响：</p>
+<ol>
+<li><p>公钥密码学（包括加密和签名）：当前广泛使用的RSA和椭圆曲线离散对数等算法在量子计算机面前将变得脆弱，量子计算机能够指数级加速破解这些数学难题。</p>
 </li>
-</ul>
+<li><p>对称密钥密码学：虽然量子计算机对其影响较小，但仍建议将密钥长度加倍（如从AES-128升级到AES-256）以确保安全性。</p>
+</li>
+</ol>
+<p>值得注意的是，一些量子攻击甚至不需要等待量子计算机问世。典型的”现在窃取，将来解密”攻击已经开始发生：攻击者现在就开始收集加密数据，等待未来获得量子计算能力后进行解密。</p>
+<h2 id="量子安全加密解决方案"><a href="#量子安全加密解决方案" class="headerlink" title="量子安全加密解决方案"></a>量子安全加密解决方案</h2><p>为应对这些威胁，密码学界已经开发出能够抵抗量子攻击的新算法。这些量子安全加密技术能够在现有经典计算机上运行，同时提供抵御量子计算机攻击的能力。</p>
+<h3 id="网络数据保护"><a href="#网络数据保护" class="headerlink" title="网络数据保护"></a>网络数据保护</h3><p>对于网络数据传输，量子安全TLS 1.3已成为标准解决方案。从iOS 26开始：</p>
+<ol>
+<li>URLSession和Network.framework等推荐网络API将默认启用量子安全TLS</li>
+<li>开发者应逐步淘汰Secure Transport等旧API</li>
+<li>服务器端需要相应配置支持量子安全密钥交换方案</li>
+</ol>
+<p>苹果系统服务如iCloud数据同步、推送通知等正在逐步部署量子安全TLS。建议所有处理敏感数据的应用尽快跟进这一安全升级。</p>
+<h3 id="自定义协议保护"><a href="#自定义协议保护" class="headerlink" title="自定义协议保护"></a>自定义协议保护</h3><p>对于需要端到端加密的自定义协议，CryptoKit提供了全新的量子安全API：</p>
+<ol>
+<li>基于X-Wing的后量子混合公钥加密(Post-quantum HPKE)</li>
+<li>支持ML-KEM后量子算法，性能媲美经典算法</li>
+<li>安全隔区实现硬件级隔离防御</li>
+<li>经过形式化验证的核心实现</li>
+</ol>
+<p>这些API特别适合需要严格保护用户数据、防止服务器获知明文的场景。服务器端可以使用Swift Crypto库（与CryptoKit API兼容）或其他符合标准的实现。</p>
+<h2 id="行动建议"><a href="#行动建议" class="headerlink" title="行动建议"></a>行动建议</h2><p>量子安全加密升级不是遥远的未来需求，而是当前的迫切任务。开发者应采取以下行动：</p>
+<ol>
+<li>评估应用中敏感数据的加密现状</li>
+<li>优先升级网络层到量子安全TLS</li>
+<li>自定义加密协议改用CryptoKit量子安全API</li>
+<li>确保服务器端相应配置</li>
+</ol>
+<p>正如苹果已在iMessage PQ3中实现的量子安全加密所展示的，提前部署这些防御措施能够有效保护用户数据免受未来量子攻击的威胁。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/CryptoKit">Apple CryptoKit文档</a><br><a target="_blank" rel="noopener" href="https://security.apple.com/blog/imessage-pq3/">iMessage PQ3量子安全消息技术详解</a></p>
 
       
 
@@ -397,18 +391,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_234/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_316/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          借助 NetworkExtension 优化网络流量过滤和隧道
+          包容性 App 设计的原则
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_257/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">使用 EnergyKit 优化家庭用电量</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_317/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">visionOS 26 的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

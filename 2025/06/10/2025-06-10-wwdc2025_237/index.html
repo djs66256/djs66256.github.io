@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 visionos 26 上适用于网页的最新空间功能。我们将介绍如何使用全新的 html 模型元素来显示内联 3d 模型。我们还将分享模型照明、交互和动画等强大功能。了解如何在你的网站上嵌入新支持的沉浸式媒体，例如 360 度视频和 apple 沉浸视频。另外，你还将抢先体验如何在网页中添加自定环境。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9935/9935_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:46:33.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:46:33.883Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.577Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_237/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:46:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,35 +226,49 @@ var _hmt = _hmt || [];
       
         <p>了解 visionos 26 上适用于网页的最新空间功能。我们将介绍如何使用全新的 html 模型元素来显示内联 3d 模型。我们还将分享模型照明、交互和动画等强大功能。了解如何在你的网站上嵌入新支持的沉浸式媒体，例如 360 度视频和 apple 沉浸视频。另外，你还将抢先体验如何在网页中添加自定环境。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9935/9935_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/237/">视频地址</a></p>
-<h1 id="探索-visionOS-26：网页端空间计算新特性全面解析"><a href="#探索-visionOS-26：网页端空间计算新特性全面解析" class="headerlink" title="探索 visionOS 26：网页端空间计算新特性全面解析"></a>探索 visionOS 26：网页端空间计算新特性全面解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 visionOS 26 的发布，网页开发迎来了空间计算的新纪元。苹果为 Safari 浏览器带来了一系列突破性的功能，包括 3D 模型嵌入、沉浸式媒体支持以及自定义环境体验。本文将深入解析这些激动人心的新特性，帮助开发者打造下一代空间网页体验。</p>
-<h2 id="嵌入-3D-模型：HTML模型元素的革命"><a href="#嵌入-3D-模型：HTML模型元素的革命" class="headerlink" title="嵌入 3D 模型：HTML模型元素的革命"></a>嵌入 3D 模型：HTML模型元素的革命</h2><h3 id="基础语法与优势"><a href="#基础语法与优势" class="headerlink" title="基础语法与优势"></a>基础语法与优势</h3><p>全新的 <code>&lt;model&gt;</code> 元素让网页3D内容变得前所未有的简单：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">model</span> <span class="attr">src</span>=<span class="string">&quot;teapot.usdz&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">model</span>&gt;</span></span><br><span class="line">```  </span><br><span class="line">与传统3D渲染库相比，该元素原生支持立体渲染，用户能自然感知深度并环绕观察模型。</span><br><span class="line"></span><br><span class="line">### 资产准备与优化  </span><br><span class="line"></span><br><span class="line">支持USDZ格式的多种获取方式：  </span><br><span class="line">- 实景捕捉（iPhone Reality Composer）  </span><br><span class="line">- 格式转换（macOS预览工具）  </span><br><span class="line">- 专业建模软件导出  </span><br><span class="line"></span><br><span class="line">优化建议：  </span><br><span class="line">- 使用macOS预览工具压缩纹理  </span><br><span class="line">- 服务器需配置正确MIME类型  </span><br><span class="line">- 大型文件(&gt;10MB)应添加加载指示器  </span><br><span class="line"></span><br><span class="line">### 进阶功能详解  </span><br><span class="line"></span><br><span class="line">**光照控制**：</span><br><span class="line">```html</span><br><span class="line"><span class="tag">&lt;<span class="name">model</span> <span class="attr">src</span>=<span class="string">&quot;camera.usdz&quot;</span> <span class="attr">environmentmap</span>=<span class="string">&quot;sunset.exr&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">model</span>&gt;</span></span><br><span class="line">```  </span><br><span class="line">支持OpenEXR/HDR环境贴图，实现更真实的反射效果。</span><br><span class="line"></span><br><span class="line">**交互与动画**：  </span><br><span class="line">- 内置拖拽分享功能  </span><br><span class="line">- 通过JavaScript精确控制模型位姿  </span><br><span class="line">- 类似视频API的动画控制  </span><br><span class="line"></span><br><span class="line">**动态生成示例**：</span><br><span class="line">```javascript</span><br><span class="line">const bytes = await new USDZExporter().parseAsync(scene);</span><br><span class="line">mymodel.src = URL.createObjectURL(new Blob([bytes]));</span><br></pre></td></tr></table></figure></p>
-<h2 id="沉浸式媒体体验升级"><a href="#沉浸式媒体体验升级" class="headerlink" title="沉浸式媒体体验升级"></a>沉浸式媒体体验升级</h2><p>visionOS新增支持：  </p>
-<ul>
-<li>iPhone 15 Pro拍摄的空间视频  </li>
-<li>180°/360°/广角视频  </li>
-<li>Apple沉浸视频  </li>
-</ul>
-<p>标准嵌入方式：</p>
-<pre><code class="html"><span class="tag">&lt;<span class="name">video</span> <span class="attr">src</span>=<span class="string">"360_video.m3u8"</span> <span class="attr">controls</span>&gt;</span><span class="tag">&lt;/<span class="name">video</span>&gt;</span>
-</code></pre>
-<p>全屏播放时自动切换沉浸模式，全景图支持新增controls属性。</p>
-<h2 id="自定义环境体验（开发者预览）"><a href="#自定义环境体验（开发者预览）" class="headerlink" title="自定义环境体验（开发者预览）"></a>自定义环境体验（开发者预览）</h2><p>通过简单标记指定虚拟环境：</p>
-<pre><code class="html"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"spatial-backdrop"</span> <span class="attr">href</span>=<span class="string">"office.usdz"</span> <span class="attr">environmentmap</span>=<span class="string">"lighting.hdr"</span>&gt;</span>
-</code></pre>
-<p>用户可调节沉浸程度，需在Safari设置中启用功能标志。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>visionOS 26为网页开发者打开了空间计算的大门。从3D模型到沉浸式媒体，再到自定义环境，这些新特性将彻底改变用户的网页浏览体验。建议开发者立即开始尝试这些功能，为即将到来的空间互联网时代做好准备。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/297">了解 Apple Projected Media Profile</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/304">探索 visionOS 的视频体验</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/296">支持 visionOS App 播放沉浸视频</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari 浏览器和 WebKit 的新功能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10087">为你的沉浸式 visionOS App 创建自定环境</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10086">探索 USD 生态系统</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10083">认识 Reality Composer Pro</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="空间网页新功能：visionOS-26带来HTML模型元素与沉浸式体验"><a href="#空间网页新功能：visionOS-26带来HTML模型元素与沉浸式体验" class="headerlink" title="空间网页新功能：visionOS 26带来HTML模型元素与沉浸式体验"></a>空间网页新功能：visionOS 26带来HTML模型元素与沉浸式体验</h1><p>随着visionOS 26的发布，网页开发领域迎来了突破性的空间计算功能。这些创新技术将彻底改变用户在Web上浏览3D内容和沉浸式媒体的体验。</p>
+<h2 id="3D模型嵌入的革命"><a href="#3D模型嵌入的革命" class="headerlink" title="3D模型嵌入的革命"></a>3D模型嵌入的革命</h2><p>传统的HTML Image元素在网页上展示二维图片已有数十年历史，而全新的HTML Model元素开启了3D内容展示的新篇章。这一标准提案经过多年发展，现在被visionOS的Safari浏览器原生支持。</p>
+<h3 id="基础实现与准备工作"><a href="#基础实现与准备工作" class="headerlink" title="基础实现与准备工作"></a>基础实现与准备工作</h3><p>开发者可以通过简单的标记语言将3D模型嵌入网页：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">model</span> <span class="attr">src</span>=<span class="string">&quot;teapot.usdz&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">model</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>实现这一功能首先需要准备USDZ格式的3D模型文件。获取途径包括：</p>
+<ul>
+<li>使用iPhone的Reality Composer应用或Object Capture API捕捉实物对象</li>
+<li>通过macOS的Preview或命令行工具转换现有3D模型</li>
+<li>使用专业3D软件如Blender、Houdini导出</li>
 </ul>
+<h3 id="技术细节与优化技巧"><a href="#技术细节与优化技巧" class="headerlink" title="技术细节与优化技巧"></a>技术细节与优化技巧</h3><p>为提升兼容性和性能表现，开发者可采用以下优化策略：</p>
+<p><strong>服务器配置</strong>需正确识别USDZ文件类型：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NGINX mime.types配置</span></span><br><span class="line"><span class="section">types</span> &#123;</span><br><span class="line">  model/vnd.usdz+<span class="attribute">zip</span> usdz;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>渐进增强策略</strong>可确保在不同设备上提供适当体验：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">model</span> <span class="attr">src</span>=<span class="string">&quot;camera.usdz&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;camera.png&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;相机模型&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">model</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>JavaScript检测支持情况：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable language_">window</span>.<span class="property">HTMLModelElement</span>) &#123;</span><br><span class="line">  <span class="comment">// 浏览器支持Model元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="高级渲染与交互功能"><a href="#高级渲染与交互功能" class="headerlink" title="高级渲染与交互功能"></a>高级渲染与交互功能</h3><p>模型元素支持立体渲染，用户可直接感知对象深度。通过环境光照设置可获得更真实的视觉效果：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">model</span> <span class="attr">src</span>=<span class="string">&quot;camera.usdz&quot;</span> <span class="attr">environmentmap</span>=<span class="string">&quot;sunset.exr&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">model</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>交互功能方面，开发者可以：</p>
+<ul>
+<li>启用内联旋转功能：<code>stagemode=&quot;orbit&quot;</code></li>
+<li>通过JavaScript控制模型变换</li>
+<li>管理内置动画播放</li>
+</ul>
+<h2 id="沉浸式媒体体验升级"><a href="#沉浸式媒体体验升级" class="headerlink" title="沉浸式媒体体验升级"></a>沉浸式媒体体验升级</h2><p>visionOS 26扩展了沉浸式媒体支持范围，包括：</p>
+<ul>
+<li>空间视频</li>
+<li>180/360度视频</li>
+<li>Apple沉浸式视频</li>
+</ul>
+<p>实现方式与传统视频元素一致：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">src</span>=<span class="string">&quot;spatial_video.mov&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">video</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>全景和空间照片新增<code>controls</code>属性，引导用户进入全屏沉浸体验：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;spatial.heic&quot;</span> <span class="attr">id</span>=<span class="string">&quot;img&quot;</span> <span class="attr">controls</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="开发者预览：网站环境"><a href="#开发者预览：网站环境" class="headerlink" title="开发者预览：网站环境"></a>开发者预览：网站环境</h2><p>创新的网站环境功能允许开发者指定USDZ作为虚拟背景：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;spatial-backdrop&quot;</span> <span class="attr">href</span>=<span class="string">&quot;office.usdz&quot;</span> <span class="attr">environmentmap</span>=<span class="string">&quot;lighting.hdr&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>用户可通过页面菜单或数码表冠控制环境展示程度。</p>
+<h2 id="技术展望与学习资源"><a href="#技术展望与学习资源" class="headerlink" title="技术展望与学习资源"></a>技术展望与学习资源</h2><p>这些新功能为Web开发开辟了全新可能。开发者可访问webkit.org查看具体示例，并通过Vision Pro设备亲身体验效果。随着空间计算技术的发展，网页体验正迈向更具沉浸感和交互性的未来。</p>
+<p>相关视频：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/297">了解 Apple Projected Media Profile</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/304">探索 visionOS 的视频体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/296">支持 visionOS App 播放沉浸视频</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari 浏览器和 WebKit 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10087">为你的沉浸式 visionOS App 创建自定环境</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10086">探索 USD 生态系统</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10083">认识 Reality Composer Pro</a></p>
 
       
 
@@ -357,18 +371,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_255/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_234/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          针对 visionOS 设计小组件
+          借助 NetworkExtension 优化网络流量过滤和隧道
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_297/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">了解 Apple Projected Media Profile</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_244/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">了解 App Intents</div>
       <i class="icon-circle-right"></i>
     </a>
   

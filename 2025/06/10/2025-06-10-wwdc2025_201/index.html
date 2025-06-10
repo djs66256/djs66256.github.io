@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索 apple pay 中的最新改进和新 api。你将探索 apple pay ecommerce 体验有哪些优化 (例如新增的动态支付按钮)，并了解如何充分利用增强后的预授权付款支持。我们将介绍“钱包”中的订单跟踪将迎来哪些全新功能，并了解一些有助于让订单呈现精美外观的建议。我们还将深入了解 financekit 的新背景交付 api，这些 api 让财务管理 app 即使在非活跃状态下也能获">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9873/9873_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:25:56.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:25:56.447Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.343Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_201/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:25:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,56 +231,36 @@ var _hmt = _hmt || [];
       
         <p>探索 apple pay 中的最新改进和新 api。你将探索 apple pay ecommerce 体验有哪些优化 (例如新增的动态支付按钮)，并了解如何充分利用增强后的预授权付款支持。我们将介绍“钱包”中的订单跟踪将迎来哪些全新功能，并了解一些有助于让订单呈现精美外观的建议。<br>我们还将深入了解 financekit 的新背景交付 api，这些 api 让财务管理 app 即使在非活跃状态下也能获取最新数据。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9873/9873_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/201/">视频地址</a></p>
-<h1 id="Apple-Pay-新功能全面解析：从支付体验到财务管理"><a href="#Apple-Pay-新功能全面解析：从支付体验到财务管理" class="headerlink" title="Apple Pay 新功能全面解析：从支付体验到财务管理"></a>Apple Pay 新功能全面解析：从支付体验到财务管理</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Apple Pay 近期迎来多项重要更新，涵盖支付流程优化、订单追踪增强和财务管理革新三大领域。这些改进不仅提升了用户体验，也为开发者提供了更多创新可能。本文将深入解析这些新功能的技术实现和最佳实践。</p>
-<h2 id="增强支付体验"><a href="#增强支付体验" class="headerlink" title="增强支付体验"></a>增强支付体验</h2><h3 id="动态Apple-Pay按钮"><a href="#动态Apple-Pay按钮" class="headerlink" title="动态Apple Pay按钮"></a>动态Apple Pay按钮</h3><p>今年Apple Pay推出了全新设计的动态支付按钮，能够自动显示用户的默认支付方式及卡片图案。这一功能通过以下方式实现：</p>
-<ul>
-<li>在支付请求中添加商户类别码（MCC）属性</li>
-<li>声明支持的所有支付网络</li>
-<li>使用<code>merchantCategoryCode</code>属性设置商业类型代码</li>
-</ul>
-<p>如需保留传统按钮样式，可以使用<code>payWithApplePayButtonDisableCardArt</code>视图修饰符。</p>
-<h3 id="预授权付款优化"><a href="#预授权付款优化" class="headerlink" title="预授权付款优化"></a>预授权付款优化</h3><p>预授权付款功能现在提供统一的管理界面和增强的品牌展示能力：</p>
-<ul>
-<li>商户可通过Apple Business Connect配置品牌图标、名称和描述图片</li>
-<li>在服务器端建立包含加密元数据的接口</li>
-<li>返回包含企业标识和交易记录的压缩包（最大5MB）</li>
-<li>所有数据传输采用端到端加密</li>
-</ul>
-<p>技术实现基于iOS 16的商户令牌（Merchant Token）功能。</p>
-<h2 id="订单追踪优化"><a href="#订单追踪优化" class="headerlink" title="订单追踪优化"></a>订单追踪优化</h2><h3 id="智能邮件识别"><a href="#智能邮件识别" class="headerlink" title="智能邮件识别"></a>智能邮件识别</h3><p>钱包应用现在能够自动检测邮件中的订单信息并转换为钱包订单。关键实现要素包括：</p>
-<ul>
-<li>订单邮件须包含商户名称、订单编号和物流单号</li>
-<li>支持通过Apple Business Connect进行品牌统一配置</li>
-<li>仍可通过订单文件附件或<code>webServiceURL</code>提供完整功能</li>
-</ul>
-<h3 id="订单展示功能"><a href="#订单展示功能" class="headerlink" title="订单展示功能"></a>订单展示功能</h3><p>钱包中的订单展示支持：</p>
-<ul>
-<li>自动通知和实时更新</li>
-<li>无邮件更新功能</li>
-<li>集成收据与退换货服务</li>
-</ul>
-<h2 id="FinanceKit革新"><a href="#FinanceKit革新" class="headerlink" title="FinanceKit革新"></a>FinanceKit革新</h2><h3 id="后台交付扩展"><a href="#后台交付扩展" class="headerlink" title="后台交付扩展"></a>后台交付扩展</h3><p>FinanceKit API新增的后台交付功能允许应用在非活跃状态下获取财务数据：</p>
-<ul>
-<li>创建后台交付扩展目标</li>
-<li>处理<code>didReceiveData</code>回调（包含账户、余额、交易等数据）</li>
-<li>可设置小时、天、周等不同更新频率</li>
-<li>长时间任务需在<code>willTerminate</code>回调中保存进度</li>
-</ul>
-<p>注意扩展与主应用需共享相同的财务数据权限。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Apple Pay的最新改进从支付按钮到财务管理形成了完整的生态闭环。开发者可以通过Apple Business Connect统一品牌形象，查阅商户令牌实现细节，或探索FinanceKit后台交付的强大功能。这些创新将帮助您打造更安全、便捷和个性化的支付体验。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/202">“钱包”的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/2023">了解FinanceKit</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10114">“钱包”和Apple Pay的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10041">钱包与Apple Pay的新功能</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/apple-pay/">Apple Pay开发文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/apple-pay/">人机交互指南：Apple Pay</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="Apple-Pay-新功能：电子商务体验与FinanceKit深度解析"><a href="#Apple-Pay-新功能：电子商务体验与FinanceKit深度解析" class="headerlink" title="Apple Pay 新功能：电子商务体验与FinanceKit深度解析"></a>Apple Pay 新功能：电子商务体验与FinanceKit深度解析</h1><p>Apple Pay作为苹果生态系统的核心支付解决方案，在WWDC上公布了多项重要更新。这些改进覆盖了支付全流程体验、订单管理以及FinanceKit API的扩展功能，为开发者和商户提供了更强大的工具来优化用户交互与后台数据处理。</p>
+<h2 id="支付体验全面升级"><a href="#支付体验全面升级" class="headerlink" title="支付体验全面升级"></a>支付体验全面升级</h2><p>今年Apple Pay的改进首先体现在支付按钮的动态显示功能上。该系统会根据用户默认支付方式自动调整按钮显示内容，展示卡片图像和相关信息。为实现这一功能，开发者需要在支付请求中提供商户类别代码(Merchant Category Code)和支持的支付网络信息。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置商户类别代码示例</span></span><br><span class="line">paymentRequest.merchantCategoryCode <span class="operator">=</span> .retail</span><br></pre></td></tr></table></figure>
+<p>值得注意的是，苹果仍严格保护用户隐私，应用无法直接访问卡片详细信息。SwiftUI和UIKit应用将自动获得新按钮支持，同时开发者也可选择继续使用传统样式。</p>
+<p>预授权支付功能获得了显著增强，新增的统一视图让用户可以集中管理所有预授权交易。商户现在可以通过提供丰富的品牌信息来定制界面体验，这需要从bundle分发端点提供包含特定信息的bundle：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 商户令牌信息架构示例</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;merchantTokenIdentifier&quot;</span>: <span class="string">&quot;com.example.merchant&quot;</span>,</span><br><span class="line">  <span class="string">&quot;merchantName&quot;</span>: <span class="string">&quot;Example Store&quot;</span>,</span><br><span class="line">  <span class="string">&quot;merchantLogoName&quot;</span>: <span class="string">&quot;logo.png&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="智能订单跟踪系统"><a href="#智能订单跟踪系统" class="headerlink" title="智能订单跟踪系统"></a>智能订单跟踪系统</h2><p>自iOS 16引入订单跟踪功能以来，今年苹果进一步整合了智能技术实现自动订单检测。钱包应用现在能够安全地扫描邮件中的订单信息，自动创建跟踪条目。</p>
+<p>为确保最佳自动跟踪效果，商户邮件需要包含三个关键要素：</p>
+<ul>
+<li>邮件正文中的商户名称</li>
+<li>每封邮件独有的订单编号</li>
+<li>用于关联承运商信息的跟踪编号</li>
 </ul>
+<p>商户还可以通过Apple Business Connect设置品牌logo和其他详细信息，这些内容将应用于所有相关邮件订单。</p>
+<h2 id="FinanceKit-API的重大扩展"><a href="#FinanceKit-API的重大扩展" class="headerlink" title="FinanceKit API的重大扩展"></a>FinanceKit API的重大扩展</h2><p>FinanceKit API自iOS 17.4发布以来首次迎来重大更新。最引人注目的是新增的后台交付功能，它允许金融类应用在非活跃状态下仍能获取最新数据。</p>
+<p>后台交付扩展需要实现两个核心端点：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 后台交付扩展实现示例</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">didReceiveData</span>(<span class="keyword">_</span> <span class="params">data</span>: [<span class="type">BackgroundDataType</span>]) &#123;</span><br><span class="line">    <span class="comment">// 处理数据变更</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">willTerminate</span>() &#123;</span><br><span class="line">    <span class="comment">// 清理资源</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开发者可以配置三种数据更新频率（每小时、每日、每周），系统会根据实际数据变化情况智能触发扩展。同时，FinanceKit API现已扩展至英国市场，支持Connected Cards功能。</p>
+<h2 id="开发者资源与后续步骤"><a href="#开发者资源与后续步骤" class="headerlink" title="开发者资源与后续步骤"></a>开发者资源与后续步骤</h2><p>苹果为开发者提供了全面的资源支持：</p>
+<ul>
+<li>商户品牌展示：通过Apple Business Connect统一管理</li>
+<li>订单体验优化：注册订单确认邮件地址或集成订单跟踪bundle</li>
+<li>FinanceKit集成：Xcode直接支持后台交付功能开发</li>
+</ul>
+<p>相关技术文档和WWDC视频资源已全面更新，帮助开发者快速掌握这些新功能。</p>
+<p><strong>相关视频</strong><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/202">“钱包”的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/2023">了解FinanceKit</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10114">“钱包”和Apple Pay的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10041">钱包与Apple Pay的新功能</a></p>
+<p><strong>文档</strong><br><a target="_blank" rel="noopener" href="https://developer.apple.com/apple-pay/">Apple Pay</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/apple-pay/">Human Interface Guidelines: Apple Pay</a></p>
 
       
 
@@ -403,18 +383,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_324/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_202/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          借助 App Store Connect API 实现开发流程自动化
+          “钱包”的新功能
         
       </div>
     </a>
   
   
-    <a href="/2021/12/22/2021-12-22-%E7%BB%99%E9%9D%A2%E8%AF%95%E8%80%85%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BB%BA%E8%AE%AE/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">给面试者的一些建议</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_208/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">提升 iPad App 设计</div>
       <i class="icon-circle-right"></i>
     </a>
   

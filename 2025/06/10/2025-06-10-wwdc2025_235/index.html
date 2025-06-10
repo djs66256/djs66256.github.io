@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解声明式网页推送如何帮助你更可靠地发送通知。了解如何借鉴现有标准实现更高效、更透明的设计，同时保证与原始网页推送的向后兼容性。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9933/9933_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:29:38.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:29:38.659Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.823Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -220,7 +220,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_235/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:29:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -229,65 +229,70 @@ var _hmt = _hmt || [];
       
         <p>了解声明式网页推送如何帮助你更可靠地发送通知。了解如何借鉴现有标准实现更高效、更透明的设计，同时保证与原始网页推送的向后兼容性。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9933/9933_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/235/">视频地址</a></p>
-<h1 id="声明式网页推送：更高效可靠的通知解决方案"><a href="#声明式网页推送：更高效可靠的通知解决方案" class="headerlink" title="声明式网页推送：更高效可靠的通知解决方案"></a>声明式网页推送：更高效可靠的通知解决方案</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>推送通知已成为现代数字体验的核心功能。无论是在原生应用还是网页中，它都扮演着至关重要的角色。苹果早在2009年就开始构建推送通知系统，而现在，Web标准社区正在通过声明式网页推送来重新定义网页推送的未来。</p>
-<h2 id="传统网页推送的局限性"><a href="#传统网页推送的局限性" class="headerlink" title="传统网页推送的局限性"></a>传统网页推送的局限性</h2><p>传统Web Push规范完全依赖JavaScript代码驱动：</p>
-<ol>
-<li>需要开发者在Service Worker中编写处理逻辑</li>
-<li>代码执行带来性能开销</li>
-<li>存在潜在的隐私安全风险</li>
-<li>智能防追踪(ITP)限制了JS的生命周期</li>
-</ol>
-<h2 id="声明式推送的核心理念"><a href="#声明式推送的核心理念" class="headerlink" title="声明式推送的核心理念"></a>声明式推送的核心理念</h2><p>声明式网页推送借鉴了原生推送系统的成功经验：</p>
-<ul>
-<li><strong>无需代码编写</strong>：采用标准化JSON格式描述通知</li>
-<li><strong>更高效率</strong>：浏览器直接解析处理，无需JS执行</li>
-<li><strong>更好兼容性</strong>：与现有Web Push标准保持向后兼容</li>
-<li><strong>渐进增强</strong>：在不支持的浏览器中自动回退传统方式</li>
-</ul>
-<h2 id="技术实现对比"><a href="#技术实现对比" class="headerlink" title="技术实现对比"></a>技术实现对比</h2><h3 id="传统Web-Push流程"><a href="#传统Web-Push流程" class="headerlink" title="传统Web Push流程"></a>传统Web Push流程</h3><ol>
-<li>获取推送订阅</li>
-<li>服务器发送消息到订阅URL</li>
-<li>浏览器唤醒Service Worker</li>
-<li>Service Worker处理push事件并调用showNotification</li>
-<li>用户点击触发notificationclick事件</li>
-</ol>
-<h3 id="声明式Web-Push流程"><a href="#声明式Web-Push流程" class="headerlink" title="声明式Web Push流程"></a>声明式Web Push流程</h3><ol>
-<li>获取推送订阅（可通过window.PushManager）</li>
-<li>服务器发送标准化JSON消息</li>
-<li>浏览器自动验证并显示通知</li>
-<li>用户点击自动打开指定URL</li>
-</ol>
-<h2 id="声明式JSON格式详解"><a href="#声明式JSON格式详解" class="headerlink" title="声明式JSON格式详解"></a>声明式JSON格式详解</h2><p>最小化示例：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;web_push&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8-0-3-0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;notification&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;您有新消息&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://example.com&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>完整支持W3C NotificationOptions的所有选项：</p>
-<ul>
-<li>消息正文</li>
-<li>通知标签</li>
-<li>系统提示音</li>
-<li>应用角标更新</li>
-</ul>
-<h2 id="高级定制能力"><a href="#高级定制能力" class="headerlink" title="高级定制能力"></a>高级定制能力</h2><p>对于需要额外处理的场景：</p>
-<ol>
-<li>在JSON中添加”mutable”:true标记</li>
-<li>Service Worker将收到推送事件</li>
-<li>可以进行消息解密或内容修正</li>
-<li>处理失败时回退原始通知</li>
-</ol>
-<h2 id="迁移与兼容性策略"><a href="#迁移与兼容性策略" class="headerlink" title="迁移与兼容性策略"></a>迁移与兼容性策略</h2><p>现有Web Push应用可轻松迁移：</p>
-<ol>
-<li>重命名现有JSON属性为标准格式</li>
-<li>添加”web_push”魔法键</li>
-<li>简化Service Worker中的处理逻辑</li>
-<li>新旧浏览器自动获得最佳体验</li>
-</ol>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>声明式网页推送代表了Web通知技术的未来方向，它结合了原生推送的可靠性和Web的开放性。现在就是开始采用这一新技术的最佳时机，无论是新建项目还是现有应用的升级。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/232">在网页上验证身份证件</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari浏览器和WebKit的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10098">Safari浏览器网页推送功能简介</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="声明式网页推送：更高效可靠的通知解决方案"><a href="#声明式网页推送：更高效可靠的通知解决方案" class="headerlink" title="声明式网页推送：更高效可靠的通知解决方案"></a>声明式网页推送：更高效可靠的通知解决方案</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>推送通知已成为现代网页和移动应用不可或缺的功能。从2009年iPhone OS 3首次引入推送通知以来，这项技术已发展成为各平台的标配功能。WebKit架构团队工程师Brady Eidson在WWDC上详细介绍了网页推送通知的最新进展——声明式网页推送（Declarative Web Push），这一创新旨在提供更高效、更透明且更可靠的通知解决方案。</p>
+<h2 id="原始Web-Push的局限性"><a href="#原始Web-Push的局限性" class="headerlink" title="原始Web Push的局限性"></a>原始Web Push的局限性</h2><p>传统的Web Push完全依赖JavaScript驱动，具体流程包括：</p>
+<ol>
+<li>需要安装Service Worker处理推送事件</li>
+<li>获取推送订阅后将信息发送到服务器</li>
+<li>服务器使用订阅URL发送推送消息</li>
+<li>浏览器启动Service Worker处理push事件</li>
+<li>Service Worker调用showNotification API显示通知</li>
+<li>用户点击通知后再次启动Service Worker处理点击事件</li>
+</ol>
+<p>这种设计的灵活性虽然高，但也带来诸多问题：</p>
+<ul>
+<li><strong>性能开销</strong>：每次推送都需要运行JavaScript代码</li>
+<li><strong>隐私风险</strong>：网站数据可能成为用户追踪的媒介</li>
+<li><strong>可靠性问题</strong>：复杂代码链增加了出错概率</li>
 </ul>
+<h2 id="声明式网页推送的工作原理"><a href="#声明式网页推送的工作原理" class="headerlink" title="声明式网页推送的工作原理"></a>声明式网页推送的工作原理</h2><p>声明式网页推送借鉴了iOS和macOS原生推送的设计理念，通过标准化JSON格式描述通知，大幅减少了JavaScript代码的需求。其核心优势包括：</p>
+<ol>
+<li><strong>简化的订阅获取</strong>：PushManager可直接在window对象上使用，无需先安装Service Worker</li>
+<li><strong>自动化的通知处理</strong>：浏览器直接解析JSON格式的推送消息并自动显示通知</li>
+<li><strong>渐进式增强</strong>：与现有Web Push标准保持兼容</li>
+</ol>
+<h2 id="声明式JSON格式详解"><a href="#声明式JSON格式详解" class="headerlink" title="声明式JSON格式详解"></a>声明式JSON格式详解</h2><p>有效的声明式推送消息必须包含：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;web_push&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8-0-3-0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;notification&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;通知标题&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;body&quot;</span><span class="punctuation">:</span> <span class="string">&quot;通知内容&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://example.com&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>其中<code>web_push: &quot;8-0-3-0&quot;</code>是识别声明式推送的”魔法键”。该格式支持完整的NotificationOptions选项，包括：</p>
+<ul>
+<li>标题和正文文本</li>
+<li>通知标签</li>
+<li>默认提示音</li>
+<li>应用徽章更新</li>
+<li>点击导航URL</li>
+</ul>
+<h2 id="高级功能：可变通知处理"><a href="#高级功能：可变通知处理" class="headerlink" title="高级功能：可变通知处理"></a>高级功能：可变通知处理</h2><p>对于需要客户端处理的特殊场景（如端到端加密消息），声明式推送支持<code>mutable: true</code>标记：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;web_push&quot;</span><span class="punctuation">:</span> <span class="string">&quot;8-0-3-0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;notification&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;加密消息&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;body&quot;</span><span class="punctuation">:</span> <span class="string">&quot;需要解密的内容&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;encrypted&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;payload&quot;</span><span class="punctuation">:</span> <span class="string">&quot;...&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;mutable&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>当Service Worker接收到这类推送时，可以解密内容并替换原始通知：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;push&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (event.<span class="property">data</span>.<span class="title function_">json</span>().<span class="property">mutable</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> original = event.<span class="property">data</span>.<span class="title function_">json</span>().<span class="property">notification</span>;</span><br><span class="line">    <span class="keyword">const</span> decrypted = <span class="title function_">decryptMessage</span>(original.<span class="property">body</span>);</span><br><span class="line">    event.<span class="title function_">waitUntil</span>(</span><br><span class="line">      self.<span class="property">registration</span>.<span class="title function_">showNotification</span>(decrypted.<span class="property">title</span>, &#123;</span><br><span class="line">        <span class="attr">body</span>: decrypted.<span class="property">content</span>,</span><br><span class="line">        <span class="attr">data</span>: &#123; <span class="attr">url</span>: original.<span class="property">data</span>.<span class="property">url</span> &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="向后兼容性设计"><a href="#向后兼容性设计" class="headerlink" title="向后兼容性设计"></a>向后兼容性设计</h2><p>声明式网页推送完美兼容现有Web Push系统：</p>
+<ol>
+<li>不支持声明式的浏览器会回退到原始Web Push处理流程</li>
+<li>已使用原始Web Push的网站可以逐步迁移</li>
+<li>JSON格式可以同时满足新旧两种处理方式</li>
+</ol>
+<p>迁移步骤建议：</p>
+<ol>
+<li>重构推送消息为声明式标准格式</li>
+<li>简化Service Worker代码仅处理必要逻辑</li>
+<li>逐步添加声明式特定功能</li>
+</ol>
+<h2 id="可用性与资源"><a href="#可用性与资源" class="headerlink" title="可用性与资源"></a>可用性与资源</h2><p>声明式网页推送已在以下版本中提供支持：</p>
+<ul>
+<li>macOS Safari 18.5+</li>
+<li>iOS 18.4+</li>
+<li>iPadOS 18.4+</li>
+</ul>
+<p>开发者可以利用相关资源进一步学习：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/232">在网页上验证身份证件</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari浏览器和WebKit的新功能</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10098">Safari浏览器网页推送功能简介</a></li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>声明式网页推送代表了Web通知技术的重大进步，它结合了原生推送的高效性和Web的开放性。通过减少JavaScript依赖、标准化消息格式和保持向后兼容，它为开发者提供了更可靠的解决方案，同时为用户带来更好的隐私保护和性能体验。无论是新建项目还是现有系统迁移，现在都是采用声明式推送的理想时机。</p>
 
       
 
@@ -402,11 +407,11 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_311/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_233/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          安全地混合使用 C、C ++ 和 Swift
+          Safari 浏览器和 WebKit 的新功能
         
       </div>
     </a>

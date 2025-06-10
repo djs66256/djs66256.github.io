@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何使用 webkit 将网页内容轻松整合到你的 swiftui app 中。了解如何载入和显示网页内容、与网页进行通信等。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9929/9929_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:29:21.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:29:21.210Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.826Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -220,7 +220,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_231/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:29:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -229,42 +229,61 @@ var _hmt = _hmt || [];
       
         <p>了解如何使用 webkit 将网页内容轻松整合到你的 swiftui app 中。了解如何载入和显示网页内容、与网页进行通信等。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9929/9929_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/231/">视频地址</a></p>
-<h1 id="在-SwiftUI-中无缝集成-WebKit：构建强大的网页应用体验"><a href="#在-SwiftUI-中无缝集成-WebKit：构建强大的网页应用体验" class="headerlink" title="在 SwiftUI 中无缝集成 WebKit：构建强大的网页应用体验"></a>在 SwiftUI 中无缝集成 WebKit：构建强大的网页应用体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 SwiftUI 的不断发展，苹果为开发者提供了更简单高效的方式来集成 WebKit 功能。无论您需要在应用中展示网页内容，还是实现复杂的网页交互，新的 WebKit API 都能满足您的需求。本文将带您深入了解如何利用这些新特性，构建功能丰富的应用。</p>
-<h2 id="WebView-基础使用"><a href="#WebView-基础使用" class="headerlink" title="WebView 基础使用"></a>WebView 基础使用</h2><p>全新的 <code>WebView</code> 组件让网页内容集成变得异常简单。只需创建一个 <code>WebView</code> 并指定 URL，就能在所有支持 WebKit 的平台展现精美网页内容。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WebView</span>(url: <span class="type">URL</span>(string: <span class="string">&quot;https://www.apple.com&quot;</span>)<span class="operator">!</span>)</span><br></pre></td></tr></table></figure>
-<p>如果需要动态切换 URL，WebView 会自动导航至新地址：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> currentURL <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;https://www.apple.com&quot;</span>)<span class="operator">!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">    <span class="type">WebView</span>(url: currentURL)</span><br><span class="line">    <span class="type">Button</span>(<span class="string">&quot;切换页面&quot;</span>) &#123;</span><br><span class="line">        currentURL <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;https://developer.apple.com&quot;</span>)<span class="operator">!</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="高级内容加载"><a href="#高级内容加载" class="headerlink" title="高级内容加载"></a>高级内容加载</h2><p>当需要更复杂的交互时，可以创建 <code>WebPage</code> 实例并与 <code>WebView</code> 绑定：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ContentView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="meta">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> webPage <span class="operator">=</span> <span class="type">WebPage</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">WebView</span>(page: webPage)</span><br><span class="line">            .onAppear &#123;</span><br><span class="line">                webPage.load(<span class="type">URLRequest</span>(url: <span class="type">URL</span>(string: <span class="string">&quot;https://www.apple.com&quot;</span>)<span class="operator">!</span>))</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>加载内容的方式多样：</p>
-<ul>
-<li>通过 <code>load</code> API 加载远程 URL</li>
-<li>直接注入 HTML 字符串及基准 URL</li>
-<li>加载 WebArchive 等数据类型（需指定 MIME 类型和编码）</li>
-</ul>
-<h2 id="本地资源管理"><a href="#本地资源管理" class="headerlink" title="本地资源管理"></a>本地资源管理</h2><p>通过实现 <code>URLSchemeHandler</code> 协议，您可以轻松加载本地资源：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LakesSchemeHandler</span>: <span class="title class_ inherited__">NSObject</span>, <span class="title class_ inherited__">URLSchemeHandler</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WebView</span>, </span><br><span class="line">                <span class="params">start</span> <span class="params">task</span>: <span class="type">URLSchemeTask</span>) &#123;</span><br><span class="line">        <span class="comment">// 处理自定义 URL 请求</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">webView</span>(<span class="keyword">_</span> <span class="params">webView</span>: <span class="type">WebView</span>, </span><br><span class="line">                <span class="params">stop</span> <span class="params">task</span>: <span class="type">URLSchemeTask</span>) &#123;</span><br><span class="line">        <span class="comment">// 停止任务</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注册自定义 scheme</span></span><br><span class="line"><span class="type">WebPage</span>.registerURLSchemeHandler(</span><br><span class="line">    <span class="type">LakesSchemeHandler</span>(),</span><br><span class="line">    forURLScheme: <span class="string">&quot;lakes&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h2 id="导航与交互控制"><a href="#导航与交互控制" class="headerlink" title="导航与交互控制"></a>导航与交互控制</h2><p>监听导航状态变化：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.onReceive(webPage.currentNavigationEvent) &#123; event <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">switch</span> event &#123;</span><br><span class="line">    <span class="keyword">case</span> .startedProvisionalNavigation:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;导航开始&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> .finish:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;导航完成&quot;</span>)</span><br><span class="line">    <span class="comment">// 其他情况处理...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过 <code>callJavaScript</code> API 执行 JS 代码：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">webPage.callJavaScript(<span class="string">&quot;document.title&quot;</span>) &#123; result <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">switch</span> result &#123;</span><br><span class="line">    <span class="keyword">case</span> .success(<span class="keyword">let</span> value):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;返回值：<span class="subst">\(value)</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">case</span> .failure(<span class="keyword">let</span> error):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;错误：<span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="视图修饰与定制"><a href="#视图修饰与定制" class="headerlink" title="视图修饰与定制"></a>视图修饰与定制</h2><p>WebView 提供丰富的修饰符来优化体验：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WebView</span>(url: url)</span><br><span class="line">    .scrollBounceBehavior(.always)</span><br><span class="line">    .findNavigator()</span><br><span class="line">    .webViewScrollPosition(<span class="variable">$scrollPosition</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>SwiftUI 中的 WebKit 新 API 提供了简单易用的网页内容集成方案，同时支持高级定制功能。无论您需要基本的网页展示，还是复杂的交互控制，这些新工具都能帮助您构建出色的用户体验。</p>
-<p>立即尝试这些新特性，并将 WebKit 的强大功能整合到您的 SwiftUI 应用中吧！</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/236">使用 WebGPU 解锁 GPU 计算能力</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/237">空间网页的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari 浏览器和 WebKit 的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/245">Swift 的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/256">SwiftUI 的新功能</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SwiftUI">SwiftUI 官方文档</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="探索适用于-SwiftUI-的-WebKit"><a href="#探索适用于-SwiftUI-的-WebKit" class="headerlink" title="探索适用于 SwiftUI 的 WebKit"></a>探索适用于 SwiftUI 的 WebKit</h1><p>苹果在 WWDC 2025 上发布了 WebKit for SwiftUI，这是一个全新的 SwiftUI API，旨在帮助开发者更轻松地将网页内容集成到 SwiftUI 应用中。该 API 结合了 WebKit 的强大网络能力与 SwiftUI 的简洁特性，为开发者提供了前所未有的便捷开发体验。</p>
+<h2 id="WebKit-for-SwiftUI-简介"><a href="#WebKit-for-SwiftUI-简介" class="headerlink" title="WebKit for SwiftUI 简介"></a>WebKit for SwiftUI 简介</h2><p>WebKit 是 Safari、Mail 以及众多苹果平台应用的核心浏览器引擎。全新的 WebKit for SwiftUI API 让开发者能够以极简的方式调用 WebKit 的功能，只需创建 WebView 并提供一个 URL 即可显示网页内容。该 API 支持所有 WebKit 兼容平台，包括 iOS、iPadOS、VisionOS 和 macOS。</p>
+<h2 id="加载与显示网页内容"><a href="#加载与显示网页内容" class="headerlink" title="加载与显示网页内容"></a>加载与显示网页内容</h2><p>WebKit for SwiftUI 提供了 WebView 视图，这是专门为展示网页内容而设计的新 SwiftUI 视图。开发者只需简单地将 URL 传递给 WebView，它就会自动加载并显示内容。不仅如此，WebView 还支持动态切换 URL，当 URL 变化时，WebView 会自动导航至新的 URL。</p>
+<h3 id="使用-WebPage-观察网页内容"><a href="#使用-WebPage-观察网页内容" class="headerlink" title="使用 WebPage 观察网页内容"></a>使用 WebPage 观察网页内容</h3><p>除了基本的 URL 加载，开发者还可以创建 WebPage 并将其连接到 WebView。WebPage 是一个全新的 Observable 类，代表网页内容，能够完美适配 Swift 和 SwiftUI。通过 WebPage，开发者可以观察网页内容的各种属性变化，如页面标题、URL 等。</p>
+<p>WebPage 提供了多种加载网页内容的方式：</p>
+<ol>
+<li><p>加载远程 URL：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webPage.load(<span class="type">URLRequest</span>(url: url))</span><br></pre></td></tr></table></figure>
 </li>
+<li><p>直接加载 HTML 字符串：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webPage.loadHTMLString(htmlString, baseURL: baseURL)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加载 web archive 数据：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webPage.load(data: data, mimeType: mimeType, characterEncodingName: encoding, baseURL: baseURL)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="自定义-URL-Scheme-处理"><a href="#自定义-URL-Scheme-处理" class="headerlink" title="自定义 URL Scheme 处理"></a>自定义 URL Scheme 处理</h3><p>WebKit for SwiftUI 还支持自定义 URL scheme 处理，允许开发者处理特定 scheme 的资源加载。开发者可以创建遵循 URLSchemeHandler 协议的类型，并通过实现 reply 函数来提供自定义数据。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">LakesSchemeHandler</span>: <span class="title class_ inherited__">URLSchemeHandler</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">reply</span>(<span class="params">to</span> <span class="params">request</span>: <span class="type">URLRequest</span>) <span class="keyword">async</span> -&gt; <span class="type">AsyncSequence</span>&lt;<span class="type">URLSchemeTaskResult</span>&gt; &#123;</span><br><span class="line">        <span class="comment">// 实现自定义资源加载逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="与页面通信"><a href="#与页面通信" class="headerlink" title="与页面通信"></a>与页面通信</h2><h3 id="观察导航事件"><a href="#观察导航事件" class="headerlink" title="观察导航事件"></a>观察导航事件</h3><p>WebPage 提供了 currentNavigationEvent 属性，允许开发者观察网页的导航状态变化。导航事件包括：</p>
+<ul>
+<li>startedProvisionalNavigation：导航开始</li>
+<li>receivedServerRedirect：服务器重定向</li>
+<li>committed：开始接收主框架内容</li>
+<li>finish：导航完成</li>
+<li>failed/failedProvisionalNavigation：导航失败</li>
 </ul>
+<p>开发者可以使用 Swift 6.2 的 Observations API 来观察这些事件的变化：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="keyword">await</span> event <span class="keyword">in</span> webPage.currentNavigationEvent.values &#123;</span><br><span class="line">    <span class="comment">// 处理导航事件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="JavaScript-通信"><a href="#JavaScript-通信" class="headerlink" title="JavaScript 通信"></a>JavaScript 通信</h3><p>WebPage 提供了 callJavaScript API，允许开发者评估 JavaScript 代码并与页面通信。该 API 支持传递参数，并将 JavaScript 返回值转换为 Swift 类型。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> result <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> webPage.callJavaScript(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    document.getElementById(&#x27;<span class="subst">\(sectionID)</span>&#x27;).getBoundingClientRect().top</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="定制内容交互"><a href="#定制内容交互" class="headerlink" title="定制内容交互"></a>定制内容交互</h2><p>WebKit for SwiftUI 提供了丰富的视图修饰符，用于定制用户与网页内容的交互方式：</p>
+<h3 id="滚动行为定制"><a href="#滚动行为定制" class="headerlink" title="滚动行为定制"></a>滚动行为定制</h3><ul>
+<li>scrollBounceBehavior：定制滚动弹跳行为</li>
+<li>webViewScrollPosition：关联 WebView 的滚动位置</li>
+<li>onScrollGeometryChange：响应滚动几何变化</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WebView</span>(webPage: webPage)</span><br><span class="line">    .scrollBounceBehavior(.vertical, axes: .vertical)</span><br><span class="line">    .webViewScrollPosition(<span class="variable">$scrollPosition</span>)</span><br><span class="line">    .onScrollGeometryChange &#123; geometry <span class="keyword">in</span></span><br><span class="line">        <span class="comment">// 处理滚动变化</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="查找功能"><a href="#查找功能" class="headerlink" title="查找功能"></a>查找功能</h3><p>开发者可以使用现有的 findNavigator 修饰符为 WebView 添加查找功能：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WebView</span>(webPage: webPage)</span><br><span class="line">    .findNavigator(isPresented: <span class="variable">$isFindNavigatorPresented</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="VisionOS-特定功能"><a href="#VisionOS-特定功能" class="headerlink" title="VisionOS 特定功能"></a>VisionOS 特定功能</h3><p>在 visionOS 上，WebView 支持 look to scroll 功能，可以通过 webViewScrollInputBehavior 修饰符启用：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WebView</span>(webPage: webPage)</span><br><span class="line">    .webViewScrollInputBehavior(.look)</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>WebKit for SwiftUI 提供了一个简单而功能强大的 API，将网页内容无缝集成到 SwiftUI 应用中。它支持：</p>
+<ul>
+<li>多种网页内容加载方式</li>
+<li>自定义 URL scheme 处理</li>
+<li>丰富的网页交互观察能力</li>
+<li>JavaScript 通信</li>
+<li>灵活的滚动和查找功能定制</li>
+</ul>
+<p>开发者可以参考官方文档了解更多细节，并尝试将现有应用迁移到这一新 API 上。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/236">使用 WebGPU 解锁 GPU 计算能力</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/237">空间网页的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari 浏览器和 WebKit 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/245">Swift 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/256">SwiftUI 的新功能</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SwiftUI">SwiftUI</a></p>
 
       
 
@@ -379,18 +398,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_236/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_230/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          使用 WebGPU 解锁 GPU 计算能力
+          使用 AlarmKit API 实现唤醒功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_249/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">深入探索适用于 App 内购买项目的 App Store Server API</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_232/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">在网页上验证身份证件</div>
       <i class="icon-circle-right"></i>
     </a>
   

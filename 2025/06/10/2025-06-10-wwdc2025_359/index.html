@@ -16,8 +16,8 @@
 <meta property="og:description" content="清晰、直观、易用，是每款优秀 app 的必备要素。在本讲座中，你将了解如何通过 app 设计来加强功能效果、充分展现 app 的用途、引导用户浏览你的内容，并合理使用组件打造简洁明了又打动人心的出色体验。本次讲座适合各种技能水平的设计师和开发者，也欢迎希望了解设计知识的其他人员参加。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10047/10047_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:41:53.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:41:53.505Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.312Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_359/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:41:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,82 +231,77 @@ var _hmt = _hmt || [];
       
         <p>清晰、直观、易用，是每款优秀 app 的必备要素。在本讲座中，你将了解如何通过 app 设计来加强功能效果、充分展现 app 的用途、引导用户浏览你的内容，并合理使用组件打造简洁明了又打动人心的出色体验。本次讲座适合各种技能水平的设计师和开发者，也欢迎希望了解设计知识的其他人员参加。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10047/10047_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/359/">视频地址</a></p>
-<h1 id="打造卓越用户体验：苹果平台应用设计全解析"><a href="#打造卓越用户体验：苹果平台应用设计全解析" class="headerlink" title="打造卓越用户体验：苹果平台应用设计全解析"></a>打造卓越用户体验：苹果平台应用设计全解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在当今竞争激烈的应用市场中，用户体验已成为决定产品成败的关键因素。本文将以苹果设计布道师Majo的分享为基础，系统讲解如何从结构、导航、内容和视觉四个维度打造出色的iOS应用体验。无论您是设计师、开发者还是产品经理，这些实用技巧都能帮助您提升应用品质。</p>
-<h2 id="结构设计：应用的骨架"><a href="#结构设计：应用的骨架" class="headerlink" title="结构设计：应用的骨架"></a>结构设计：应用的骨架</h2><h3 id="核心设计原则"><a href="#核心设计原则" class="headerlink" title="核心设计原则"></a>核心设计原则</h3><p>优秀应用结构应当让用户能够快速回答三个基本问题：</p>
-<ol>
-<li>我在哪里？</li>
-<li>我能做什么？</li>
-<li>我可以去哪里？</li>
-</ol>
-<h3 id="实战案例：黑胶唱片应用"><a href="#实战案例：黑胶唱片应用" class="headerlink" title="实战案例：黑胶唱片应用"></a>实战案例：黑胶唱片应用</h3><p>以黑胶唱片收藏应用为例，原始版本存在三个主要问题：</p>
-<ul>
-<li>首屏展示菜单而非上下文内容</li>
-<li>标题更像是品牌标识而非定位信息</li>
-<li>核心功能入口隐藏过深</li>
-</ul>
-<h3 id="优化三步法"><a href="#优化三步法" class="headerlink" title="优化三步法"></a>优化三步法</h3><ol>
-<li><strong>全面梳理功能点</strong>：先不加筛选地列出所有功能</li>
-<li><strong>模拟用户场景</strong>：设计典型用户流程和使用路径</li>
-<li><strong>精简重组模块</strong>：保留核心功能，优化关联性</li>
-</ol>
-<h2 id="导航设计：用户的路标"><a href="#导航设计：用户的路标" class="headerlink" title="导航设计：用户的路标"></a>导航设计：用户的路标</h2><h3 id="Tab-Bar最佳实践"><a href="#Tab-Bar最佳实践" class="headerlink" title="Tab Bar最佳实践"></a>Tab Bar最佳实践</h3><p>iOS平台推荐使用Tab Bar作为主要导航方式，设计时应注意：</p>
-<ul>
-<li>标签项不超过5个（最好3-4个）</li>
-<li>避免在Tab Bar中放置动作按钮</li>
-<li>使用语义明确的标签文字</li>
-</ul>
-<h3 id="导航优化案例"><a href="#导航优化案例" class="headerlink" title="导航优化案例"></a>导航优化案例</h3><p>在原唱片应用中，导航系统经过以下改进：</p>
-<ol>
-<li>合并”唱片”与”分类箱”（后者仅是前者的分组视图）</li>
-<li>移除Tab Bar中的”添加”动作（不符合HIG规范）</li>
-<li>采用SF Symbols图标确保视觉一致性</li>
-</ol>
-<h3 id="增强定位感"><a href="#增强定位感" class="headerlink" title="增强定位感"></a>增强定位感</h3><p>通过引入Toolbar组件，包含：</p>
-<ul>
-<li>当前屏幕标题</li>
-<li>情境化操作按钮</li>
-<li>使用SF Symbols保持操作识别度</li>
-</ul>
-<h2 id="内容呈现：信息的艺术"><a href="#内容呈现：信息的艺术" class="headerlink" title="内容呈现：信息的艺术"></a>内容呈现：信息的艺术</h2><h3 id="内容组织原则"><a href="#内容组织原则" class="headerlink" title="内容组织原则"></a>内容组织原则</h3><p>优秀的内容呈现应当：</p>
-<ul>
-<li>突出关键信息</li>
-<li>符合用户浏览习惯</li>
-<li>引导有效操作</li>
-</ul>
-<h3 id="渐进式披露策略"><a href="#渐进式披露策略" class="headerlink" title="渐进式披露策略"></a>渐进式披露策略</h3><p>针对信息量大的情况，建议：</p>
-<ol>
-<li>首屏只展示少量精选内容</li>
-<li>提供展开控件查看更多</li>
-<li>保持次级页面与主视图的视觉连贯性</li>
-</ol>
-<h3 id="智能分组方法"><a href="#智能分组方法" class="headerlink" title="智能分组方法"></a>智能分组方法</h3><p>根据黑胶唱片应用特性，可采用三种分组逻辑：</p>
-<ol>
-<li><strong>时间维度</strong>：最新添加/最近播放</li>
-<li><strong>进度维度</strong>：未完成收藏/进行中交易</li>
-<li><strong>模式维度</strong>：风格流派/艺术家关联</li>
-</ol>
-<h2 id="视觉设计：品牌与功能的平衡"><a href="#视觉设计：品牌与功能的平衡" class="headerlink" title="视觉设计：品牌与功能的平衡"></a>视觉设计：品牌与功能的平衡</h2><h3 id="视觉层级构建"><a href="#视觉层级构建" class="headerlink" title="视觉层级构建"></a>视觉层级构建</h3><ol>
-<li>增强重点内容对比度</li>
-<li>采用系统文本样式（支持Dynamic Type）</li>
-<li>图片文字添加渐变蒙层保障可读性</li>
-</ol>
-<h3 id="色彩系统规范"><a href="#色彩系统规范" class="headerlink" title="色彩系统规范"></a>色彩系统规范</h3><ul>
-<li>优先使用语义化系统颜色（自动适配深色模式）</li>
-<li>谨慎使用强调色（不影响可访问性）</li>
-<li>保持动态色彩适应性</li>
-</ul>
-<h3 id="图像处理技巧"><a href="#图像处理技巧" class="headerlink" title="图像处理技巧"></a>图像处理技巧</h3><p>为列表项添加代表性图片时：</p>
-<ol>
-<li>建立统一视觉风格</li>
-<li>限定4种主色</li>
-<li>使用复古几何元素</li>
-<li>标题使用扩展字体</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>设计是一个持续迭代的过程。通过优化信息架构、导航系统、内容组织和视觉表现，您的应用将能够提供更流畅、更直观的用户体验。苹果的设计系统提供了丰富的资源支持，期待看到更多优秀的创意成果！</p>
-<h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines">人机交互指南</a></p>
 <blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="设计基础：从创意到界面"><a href="#设计基础：从创意到界面" class="headerlink" title="设计基础：从创意到界面"></a>设计基础：从创意到界面</h1><p>本文将详细介绍WWDC演讲中分享的应用设计基础理念，涵盖从结构设计到视觉呈现的完整流程，帮助开发者打造清晰、直观且易用的优秀应用。</p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在数字产品领域，优秀应用的核心特征在于其清晰度、直观性和易用性。本次WWDC演讲由设计布道团队的Majo主持，系统性地讲解了如何通过科学的设计方法强化应用功能、有效传达应用价值、优化用户导航体验，并合理运用组件创建简洁动人的界面交互。</p>
+<h2 id="结构设计：应用的基础框架"><a href="#结构设计：应用的基础框架" class="headerlink" title="结构设计：应用的基础框架"></a>结构设计：应用的基础框架</h2><p>应用结构决定了用户如何使用应用，影响着导航路径、内容优先级和整体体验呈现。一个良好的结构能让用户操作行云流水，而混乱的结构则会导致困惑和放弃使用。</p>
+<h3 id="设计评估的关键问题"><a href="#设计评估的关键问题" class="headerlink" title="设计评估的关键问题"></a>设计评估的关键问题</h3><p>在评估应用设计时，需要关注三个核心问题：</p>
+<ul>
+<li>用户是否能清楚知道自己当前所处位置</li>
+<li>可执行的操作是否明确可见</li>
+<li>是否有清晰的下一步行动指引</li>
+</ul>
+<p>这些问题的解决程度直接决定了应用的使用流畅度。</p>
+<h3 id="信息架构优化方法"><a href="#信息架构优化方法" class="headerlink" title="信息架构优化方法"></a>信息架构优化方法</h3><p>优化信息架构的流程包括：</p>
+<ol>
+<li>列出所有功能（包括核心功能和辅助功能）</li>
+<li>设计用户使用场景和使用环境</li>
+<li>精简内容：移除非核心功能、重命名模糊项、合理归类相关项</li>
+</ol>
+<p>这种精简过程有助于明确应用的核心价值主张，为用户提供清晰的路径。</p>
+<h2 id="导航设计：用户移动方式"><a href="#导航设计：用户移动方式" class="headerlink" title="导航设计：用户移动方式"></a>导航设计：用户移动方式</h2><p>导航设计的目标是让用户在应用中能够明确方位、自信操作。iOS的Tab bar组件是实现主要功能导航的理想选择，但需要注意：</p>
+<ul>
+<li>控制选项卡数量（过多会增加用户决策负担）</li>
+<li>确保每个选项卡都有清晰的目的</li>
+<li>遵循《人机界面指南》原则（Tab bar用于导航而非执行操作）</li>
+</ul>
+<h3 id="导航优化技巧"><a href="#导航优化技巧" class="headerlink" title="导航优化技巧"></a>导航优化技巧</h3><ol>
+<li>优化选项卡标签和图标：使用直观的标签和标准化的SF Symbols图标</li>
+<li>合理使用工具栏：放置屏幕相关操作和标题，保持方位感</li>
+<li>迭代设计：通过多次调整使导航更具支持性、可预测性和易操作性</li>
+</ol>
+<h2 id="内容呈现：引导用户关注"><a href="#内容呈现：引导用户关注" class="headerlink" title="内容呈现：引导用户关注"></a>内容呈现：引导用户关注</h2><p>内容组织应引导用户关注重点信息和预期内容。核心策略包括：</p>
+<h3 id="渐进式呈现-progressive-disclosure"><a href="#渐进式呈现-progressive-disclosure" class="headerlink" title="渐进式呈现(progressive disclosure)"></a>渐进式呈现(progressive disclosure)</h3><p>这种技术只展示必要的前置内容，通过交互逐步展示更多细节。实现方式包括：</p>
+<ul>
+<li>初始界面保持简洁</li>
+<li>高级选项隐藏在展开控件中</li>
+<li>新屏幕与前屏保持布局一致性</li>
+</ul>
+<h3 id="内容组织方法"><a href="#内容组织方法" class="headerlink" title="内容组织方法"></a>内容组织方法</h3><p>针对大量内容，可采用以下分组方式：</p>
+<ol>
+<li>时间分组（如”最近文件”）</li>
+<li>季节性/时效性分组</li>
+<li>进度分组（如草稿、进行中的任务）</li>
+<li>模式分组（展示关联项）</li>
+</ol>
+<p>对于视觉性内容，集合视图(Collection)是最佳选择，它能：</p>
+<ul>
+<li>保持项间间距一致</li>
+<li>避免过多文本干扰</li>
+<li>呈现动态浏览体验</li>
+</ul>
+<h2 id="视觉设计：个性与可用性的平衡"><a href="#视觉设计：个性与可用性的平衡" class="headerlink" title="视觉设计：个性与可用性的平衡"></a>视觉设计：个性与可用性的平衡</h2><p>视觉设计通过层次、排版、图像和色彩的协调运用，在支持功能的同时传递情感。关键要素包括：</p>
+<h3 id="视觉层次创建"><a href="#视觉层次创建" class="headerlink" title="视觉层次创建"></a>视觉层次创建</h3><ol>
+<li>使用系统文本样式(System text styles)创建清晰层次</li>
+<li>支持动态类型(Dynamic Type)适配不同文字大小需求</li>
+<li>图像上叠加文本时，添加渐变或模糊背景提升可读性</li>
+</ol>
+<h3 id="色彩与图像运用"><a href="#色彩与图像运用" class="headerlink" title="色彩与图像运用"></a>色彩与图像运用</h3><ol>
+<li>建立统一的调色板和使用规则</li>
+<li>合理使用语义颜色(Semantic colors)自动适应不同模式</li>
+<li>在集合视图中添加代表性图像提升扫描效率</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>优秀的设计是一个系统工程，需要从结构、导航、内容到视觉的全面考量。核心要点包括：</p>
+<ul>
+<li>精简信息架构明确应用核心价值</li>
+<li>使用标准组件创建可预测的导航</li>
+<li>采用渐进式呈现优化内容组织</li>
+<li>平衡个性与可用性的视觉表达</li>
+</ul>
+<p>设计过程本质上是迭代的，没有标准答案。开发者可以通过持续学习和实践，结合平台设计资源，创造出更优秀的应用体验。</p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines">Human Interface Guidelines</a></p>
 
       
 
@@ -429,18 +424,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_276/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_364/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          BNNS Graph 的新功能
+          Welcome to WWDC25
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_308/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">通过 Instruments 优化 CPU 性能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_404/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">通过小小文字改动让 App 变得大不同</div>
       <i class="icon-circle-right"></i>
     </a>
   

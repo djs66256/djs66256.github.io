@@ -16,8 +16,8 @@
 <meta property="og:description" content="widgetkit 带来小组件、实时活动以及控制方面的众多更新，助你提升 app 性能。了解如何将小组件引入 visionos，如何利用 carplay 车载让小组件在驾驶途中也能顺畅使用，以及如何使用强调渲染模式优化小组件的视觉效果。此外，探索如何让相关小组件呈现在 watchos 的智能叠放中，以及如何使用推送通知确保小组件保持最新。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9952/9952_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:32:49.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:32:49.545Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.838Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -221,7 +221,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_278/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:32:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -230,58 +230,45 @@ var _hmt = _hmt || [];
       
         <p>widgetkit 带来小组件、实时活动以及控制方面的众多更新，助你提升 app 性能。了解如何将小组件引入 visionos，如何利用 carplay 车载让小组件在驾驶途中也能顺畅使用，以及如何使用强调渲染模式优化小组件的视觉效果。此外，探索如何让相关小组件呈现在 watchos 的智能叠放中，以及如何使用推送通知确保小组件保持最新。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9952/9952_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/278/">视频地址</a></p>
-<h1 id="WidgetKit-新特性全解析：打造跨平台智能小组件体验"><a href="#WidgetKit-新特性全解析：打造跨平台智能小组件体验" class="headerlink" title="WidgetKit 新特性全解析：打造跨平台智能小组件体验"></a>WidgetKit 新特性全解析：打造跨平台智能小组件体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 iOS 17 和 visionOS 的推出，WidgetKit 迎来了重大更新。小组件不再只是简单的信息展示窗口，而是成为连接用户与应用的核心桥梁。本文将深入解析如何利用 WidgetKit 的新特性，为您的应用打造更智能、更沉浸的小组件体验。</p>
-<h2 id="视觉革新：强调渲染模式"><a href="#视觉革新：强调渲染模式" class="headerlink" title="视觉革新：强调渲染模式"></a>视觉革新：强调渲染模式</h2><p>iOS 17 引入了全新的”透明玻璃”风格小组件呈现方式。这种视觉体系的核心是<strong>强调渲染模式</strong>，它会自动将小组件内容转为白色调，并替换背景为符合主题的玻璃或着色效果。</p>
-<h3 id="优化技巧"><a href="#优化技巧" class="headerlink" title="优化技巧"></a>优化技巧</h3><p>对于包含复杂视觉元素的小组件，可以使用 <code>widgetAccentedRenderingMode</code> 修饰符精确控制呈现效果：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Image</span>(entry.beverageImage)</span><br><span class="line">    .resizable()</span><br><span class="line">    .widgetAccentedRenderingMode(.desaturated)</span><br><span class="line">    .aspectRatio(contentMode: .fill)</span><br></pre></td></tr></table></figure>
-<p>支持五种渲染模式：</p>
-<ul>
-<li><code>nil</code>: 应用主色调</li>
-<li><code>.accented</code>: 应用强调色</li>
-<li><code>.desaturated</code>: 去饱和度处理</li>
-<li><code>.accentedDesaturated</code>: 复合效果</li>
-<li><code>.fullColor</code>: 原色显示</li>
-</ul>
-<h2 id="visionOS-小组件开发"><a href="#visionOS-小组件开发" class="headerlink" title="visionOS 小组件开发"></a>visionOS 小组件开发</h2><p>visionOS 26 首次支持小组件功能，具有以下特性：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">CaffeineTrackerWidget</span>: <span class="title class_ inherited__">Widget</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">WidgetConfiguration</span> &#123;</span><br><span class="line">        <span class="type">StaticConfiguration</span>(</span><br><span class="line">            kind: <span class="string">&quot;BaristaWidget&quot;</span>,</span><br><span class="line">            provider: <span class="type">Provider</span>()</span><br><span class="line">        ) &#123; entry <span class="keyword">in</span></span><br><span class="line">            <span class="type">CaffeineTrackerWidgetView</span>(entry: entry)</span><br><span class="line">        &#125;</span><br><span class="line">        .configurationDisplayName(<span class="string">&quot;咖啡因追踪&quot;</span>)</span><br><span class="line">        .description(<span class="string">&quot;记录每日咖啡因摄入量的小组件&quot;</span>)</span><br><span class="line">        .supportedMountingStyles([.elevated])</span><br><span class="line">        .widgetTexture(.paper)</span><br><span class="line">        .supportedFamilies([.systemExtraLargePortrait])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>关键配置项：</p>
-<ul>
-<li><code>supportedMountingStyles</code>: 悬浮或嵌入风格</li>
-<li><code>widgetTexture</code>: 材质选择（玻璃/纸质）</li>
-<li><code>systemExtraLargePortrait</code>: 新增特大尺寸</li>
-</ul>
-<h2 id="跨平台适配策略"><a href="#跨平台适配策略" class="headerlink" title="跨平台适配策略"></a>跨平台适配策略</h2><p>各平台新增支持：</p>
-<ul>
-<li><strong>CarPlay</strong>: 仪表盘小组件叠放</li>
-<li><strong>macOS Tahoe</strong>: iPhone 实时活动镜像</li>
-<li><strong>watchOS 26</strong>: <ul>
-<li>控制中心/操作按钮/智能叠放三位置控件</li>
-<li>相关性小组件(RelevanceConfiguration)</li>
-</ul>
-</li>
-</ul>
-<h2 id="内容更新机制"><a href="#内容更新机制" class="headerlink" title="内容更新机制"></a>内容更新机制</h2><p>三种更新方式确保信息实时性：</p>
-<ol>
-<li>定时重载(TimelineReloadPolicy)</li>
-<li>应用主动触发(WidgetCenter API)</li>
-<li>服务器推送(WidgetPushHandler)</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">CaffeineTrackerPushHandler</span>: <span class="title class_ inherited__">WidgetPushHandler</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">pushTokenDidChange</span>(<span class="keyword">_</span> <span class="params">pushInfo</span>: <span class="type">WidgetPushInfo</span>, <span class="params">widgets</span>: [<span class="type">WidgetInfo</span>]) &#123;</span><br><span class="line">        <span class="comment">// 向服务器注册推送令牌</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>推送请求格式：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;aps&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;content-changed&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>WidgetKit 的新特性为开发者提供了更丰富的工具集，让小组件能在更多场景中发挥价值。无论是视觉优化、跨平台适配还是实时更新，这些改进都将显著提升用户体验。建议开发者根据应用特性，选择最适合的新功能进行集成。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/216">针对 CarPlay 车载优化你的 App</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/255">针对 visionOS 设计小组件</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/334">watchOS 26 的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10098">为 Apple Watch 设计实时活动</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WidgetKit/Widget-Suggestions-In-Smart-Stacks">提升智能叠放中的小组件可见性</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WidgetKit/optimizing-your-widget-for-accented-rerendering-mode-and-liquid-glass">优化强调渲染模式和玻璃效果</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WidgetKit/Updating-widgets-with-widgetkit-push-notifications">通过推送通知更新小组件</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="小组件新特性全面解析：WidgetKit-的跨平台进化"><a href="#小组件新特性全面解析：WidgetKit-的跨平台进化" class="headerlink" title="小组件新特性全面解析：WidgetKit 的跨平台进化"></a>小组件新特性全面解析：WidgetKit 的跨平台进化</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>WidgetKit 作为苹果生态系统中的重要组件，在 WWDC 2024 上迎来了一系列令人振奋的更新。这些改进不仅增强了小组件的功能性，更将其应用场景扩展到了 visionOS、CarPlay 车载等新平台。系统体验团队工程师 Tanner Oakes 以咖啡因记录应用为例，详细展示了如何充分利用这些新特性提升用户体验。</p>
+<h2 id="一、传统平台的小组件视觉升级"><a href="#一、传统平台的小组件视觉升级" class="headerlink" title="一、传统平台的小组件视觉升级"></a>一、传统平台的小组件视觉升级</h2><p>在 iOS 26 和 macOS Tahoe 中，小组件迎来了全新的视觉呈现方式。用户可将主屏幕配置为透明玻璃效果来展示图标和小组件，并选择特定色调进行深度自定义。这种新呈现方式采用了强调渲染模式技术，该技术会先生成白色调内容，再移除背景替换为符合主题的玻璃或着色效果。</p>
+<p>开发者在适配过程中需要注意，像咖啡因追踪这样显示最常饮用饮料的小组件，在强调模式下可能会出现图像辨认困难的问题。解决方案是观察 <code>.widgetRenderingMode</code> 并添加条件渲染逻辑，使用 <code>.widgetAccentedRenderingMode</code> 修饰符提供的五种图像处理选项（包括去饱和、强调色等）来优化显示效果。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 强调渲染模式的优化实现示例</span></span><br><span class="line"><span class="type">Image</span>(<span class="string">&quot;coffee-cup&quot;</span>)</span><br><span class="line">    .widgetAccentedRenderingMode(.selectiveColor)</span><br></pre></td></tr></table></figure>
+<h2 id="二、visionOS-的小组件革命"><a href="#二、visionOS-的小组件革命" class="headerlink" title="二、visionOS 的小组件革命"></a>二、visionOS 的小组件革命</h2><p>visionOS 26 的重大突破在于允许应用包含小组件，这标志着小组件正式进入空间计算领域。兼容 iPhone/iPad 的小组件可以自动移植到 visionOS，并支持交互和动画功能。用户可以将小组件添加到空间环境中，选择悬浮或嵌入式两种呈现方式。</p>
+<p>开发者为 visionOS 适配小组件时，可通过 <code>.supportedMountingStyles</code> 和 <code>.widgetTexture</code> 修饰符配置悬挂样式和材质（如纸质纹理）。新引入的 <code>systemExtraLargePortrait</code> 系列完善了海报风格的视觉效果，而 <code>LevelOfDetail</code> API 则能根据观看距离自动调整内容密度，确保远距离观看时的可读性。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// visionOS 小组件配置示例</span></span><br><span class="line"><span class="type">WidgetConfiguration</span>()</span><br><span class="line">    .supportedMountingStyles([.floating, .embedded])</span><br><span class="line">    .widgetTexture(.paper)</span><br></pre></td></tr></table></figure>
+<h2 id="三、CarPlay-车载与-watchOS-的新整合"><a href="#三、CarPlay-车载与-watchOS-的新整合" class="headerlink" title="三、CarPlay 车载与 watchOS 的新整合"></a>三、CarPlay 车载与 watchOS 的新整合</h2><p>CarPlay 车载现在支持显示小组件和实时活动，这对驾驶场景下的应用体验提升显著。小组件显示在仪表板左侧的堆叠中，采用 StandBy 样式以确保清晰度。实时活动默认显示灵动岛视图，但开发者可以通过配置 <code>.supplementalActivityFamilies</code> 和 <code>.activityFamily</code> 来优化显示效果。</p>
+<p>watchOS 26 引入了关联性小组件（Relevance Widgets）这一创新概念，它们仅在相关内容出现时才会显示在智能堆叠中。通过 <code>RelevanceConfiguration</code> 和 <code>RelevanceEntriesProvider</code> 的实现，可以创建根据时间区间等条件动态显示的小组件。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关联性小组件配置示例</span></span><br><span class="line"><span class="type">RelevanceConfiguration</span>(</span><br><span class="line">    provider: <span class="type">CoffeeDealsProvider</span>(),</span><br><span class="line">    placeholder: <span class="type">Text</span>(<span class="string">&quot;No current offers&quot;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="四、全面的更新机制"><a href="#四、全面的更新机制" class="headerlink" title="四、全面的更新机制"></a>四、全面的更新机制</h2><p>为确保跨设备数据同步，WidgetKit 提供了三种互补的更新机制：</p>
+<ol>
+<li>定时重新加载：适合定期更新内容</li>
+<li>App 主动触发：通过 <code>WidgetCenter</code> API 实现</li>
+<li>服务器推送通知：针对外部数据变更</li>
+</ol>
+<p>实现推送通知需要创建符合 <code>WidgetPushHandler</code> 的类型，并在小组件配置中添加 <code>.pushHandler</code> 修饰符。值得注意的是，系统会对推送更新实施预算管理以保障性能，开发期间可使用 WidgetKit 开发者模式暂时忽略这一限制。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 推送通知处理示例</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">CoffeeWidgetPushHandler</span>: <span class="title class_ inherited__">WidgetPushHandler</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">handle</span>(<span class="keyword">_</span> <span class="params">notification</span>: <span class="type">UNNotification</span>) <span class="keyword">async</span> &#123;</span><br><span class="line">        <span class="comment">// 处理推送内容</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结论与最佳实践"><a href="#结论与最佳实践" class="headerlink" title="结论与最佳实践"></a>结论与最佳实践</h2><p>WidgetKit 的这些新特性为开发者提供了更广阔的创新空间和更丰富的交互可能性。从 visionOS 的空间体验到 CarPlay 的车载整合，从 watchOS 的智能堆叠到跨平台推送更新，每个改进都值得开发者深入研究。</p>
+<p>建议开发者根据具体场景组合使用不同的更新机制：紧急通知采用用户通知，限时更新使用实时活动，保持最新状态则选择推送更新。同时，充分利用新的视觉渲染模式和平台特定特性，为用户创造更自然、更智能的小组件体验。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>建议观看以下视频深入了解：</p>
+<ul>
+<li>CarPlay 车载优化</li>
+<li>visionOS 小组件设计  </li>
+<li>watchOS 26 新功能</li>
+<li>实时活动设计</li>
+<li>系统级控制扩展</li>
+<li>推送通知专题</li>
+</ul>
+<p>文档资源包括：</p>
+<ul>
+<li>智能堆叠可见性优化  </li>
+<li>强调渲染模式指南  </li>
+<li>RelevanceKit 文档  </li>
+<li>推送通知实现  </li>
+<li>visionOS 适配指南</li>
 </ul>
 
       
@@ -401,18 +388,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_310/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_265/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          使用全新设计系统构建 AppKit App
+          深入了解写作工具
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_337/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SF Symbols 7 的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_280/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">跟着视频学编程：使用 SwiftUI 和 AttributedString 精心打造富文本体验</div>
       <i class="icon-circle-right"></i>
     </a>
   

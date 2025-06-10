@@ -16,8 +16,8 @@
 <meta property="og:description" content="借助 uikit 最新推出的多种 api，对你的 app 进行现代化改造，这些更新包括增强的菜单栏支持、自动观察跟踪、全新 ui 更新方法，以及动画效果改进。我们还将介绍如何在 uikitapp 中包含 swiftui 场景，并探讨 sf symbols、hdr 颜色选择器等内容。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9943/9943_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:52:49.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:52:49.043Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.801Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_243/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:52:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,70 +227,52 @@ var _hmt = _hmt || [];
       
         <p>借助 uikit 最新推出的多种 api，对你的 app 进行现代化改造，这些更新包括增强的菜单栏支持、自动观察跟踪、全新 ui 更新方法，以及动画效果改进。我们还将介绍如何在 uikitapp 中包含 swiftui 场景，并探讨 sf symbols、hdr 颜色选择器等内容。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9943/9943_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/243/">视频地址</a></p>
-<h1 id="深入解析UIKit新特性：从菜单栏到SwiftUI整合"><a href="#深入解析UIKit新特性：从菜单栏到SwiftUI整合" class="headerlink" title="深入解析UIKit新特性：从菜单栏到SwiftUI整合"></a>深入解析UIKit新特性：从菜单栏到SwiftUI整合</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>UIKit作为苹果生态系统的核心开发框架，在iOS 26中迎来了一系列重大更新。无论是增强的菜单栏支持、自动观察追踪机制，还是与SwiftUI的深度整合，这些新特性都将为开发者带来更强大的工具和更流畅的开发体验。本文将全面解析这些创新功能，帮助您快速掌握UIKit的最新进展。</p>
-<h2 id="全新设计系统带来的视觉革新"><a href="#全新设计系统带来的视觉革新" class="headerlink" title="全新设计系统带来的视觉革新"></a>全新设计系统带来的视觉革新</h2><p>iOS 26引入了名为”液态玻璃”的突破性材质设计，具有以下显著特点：</p>
-<ul>
-<li>半透明特性与动态视觉效果完美结合</li>
-<li>支持镜面高光和折射等高级渲染效果</li>
-<li>导航栏、搜索框等标准组件全面升级</li>
-</ul>
-<p>开发适配建议：</p>
-<ol>
-<li>使用背景扩展视图实现边栏玻璃面板的优雅显示</li>
-<li>为自定义控件应用玻璃材质提升专业质感</li>
-<li>启用滚动边缘特效增强导航元素可视性</li>
-</ol>
-<h2 id="容器与布局的增强"><a href="#容器与布局的增强" class="headerlink" title="容器与布局的增强"></a>容器与布局的增强</h2><p>UISplitViewController在iOS 26中获得重大改进：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 检查器支持示例</span></span><br><span class="line"><span class="keyword">let</span> splitVC <span class="operator">=</span> <span class="type">UISplitViewController</span>(style: .tripleColumn)</span><br><span class="line">splitVC.showsSecondaryOnlyButton <span class="operator">=</span> <span class="literal">true</span>  <span class="comment">// 显示次级视图切换按钮</span></span><br></pre></td></tr></table></figure><br>新特性包括：</p>
-<ul>
-<li>一流的检查器支持，可显示选中内容的详细信息</li>
-<li>支持通过拖拽调整分屏控制器栏宽</li>
-<li>指针形状自动变化提示可调整方向</li>
-</ul>
-<h2 id="菜单栏的跨平台进化"><a href="#菜单栏的跨平台进化" class="headerlink" title="菜单栏的跨平台进化"></a>菜单栏的跨平台进化</h2><p>iPadOS现在支持完整的macOS风格菜单栏，关键特性包括：</p>
-<ul>
-<li>从屏幕顶部轻扫即可调出应用菜单</li>
-<li>支持全部菜单功能（图像、子菜单、复选标记等）</li>
-<li>保持不可用命令可见但禁用状态</li>
-</ul>
-<p>配置主菜单系统的新API：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config <span class="operator">=</span> <span class="type">UIMainMenuSystem</span>.<span class="type">Configuration</span>()</span><br><span class="line">config.printingPreference <span class="operator">=</span> .included  <span class="comment">// 包含打印命令</span></span><br><span class="line">config.inspectorPreference <span class="operator">=</span> .removed  <span class="comment">// 移除检查器命令</span></span><br><span class="line">config.findingConfiguration.style <span class="operator">=</span> .search  <span class="comment">// 整合查找功能</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="架构层面的现代化改进"><a href="#架构层面的现代化改进" class="headerlink" title="架构层面的现代化改进"></a>架构层面的现代化改进</h2><p>iOS 26为UIKit带来了多项底层革新：</p>
-<ol>
-<li><strong>自动观察追踪</strong>：在<code>layoutSubviews()</code>等方法中自动追踪Observable对象</li>
-<li><strong>updateProperties()</strong>：新增的独立属性更新机制</li>
-<li><strong>SwiftUI整合</strong>：通过<code>UIHostingSceneDelegate</code>嵌入SwiftUI场景</li>
-<li><strong>HDR色彩</strong>：UIColor支持SDR基色和曝光值指定</li>
-<li><strong>强类型通知</strong>：NSNotification进化为类型安全的<code>NotificationCenter.Message</code></li>
-</ol>
-<p>重要迁移提示：从iOS 26开始，使用最新SDK构建的UIKit应用必须采用UIScene生命周期。</p>
-<h2 id="SF-Symbols-7的动画增强"><a href="#SF-Symbols-7的动画增强" class="headerlink" title="SF Symbols 7的动画增强"></a>SF Symbols 7的动画增强</h2><p>最新版SF Symbols引入三种新动画模式：</p>
-<ul>
-<li><strong>Draw On/Off</strong>：通过绘制动作显示/隐藏符号</li>
-<li><strong>Variable Draw</strong>：沿路径绘制变量值（如进度指示）</li>
-<li><strong>魔术替换过渡</strong>：特定符号间的特殊绘制动画</li>
-</ul>
-<p>UIButton新增专用API简化集成：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> configuration <span class="operator">=</span> <span class="type">UIButton</span>.<span class="type">Configuration</span>.plain()</span><br><span class="line">configuration.symbolContentTransition <span class="operator">=</span> <span class="type">UISymbolContentTransition</span>(.replace)</span><br></pre></td></tr></table></figure></p>
-<h2 id="总结与行动指南"><a href="#总结与行动指南" class="headerlink" title="总结与行动指南"></a>总结与行动指南</h2><p>要充分利用UIKit新特性，建议采取以下步骤：</p>
-<ol>
-<li>立即使用iOS 26 SDK编译您的应用</li>
-<li>评估应用在新设计系统中的视觉表现</li>
-<li>采用UISplitViewController等标准容器</li>
-<li>重构应用菜单系统以利用新API</li>
-<li>通过updateProperties优化代码结构</li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/284">使用全新设计系统构建UIKit App</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/208">提升iPad App设计</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/282">让你的UIKit App更加灵活</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/337">SF Symbols 7的新功能</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines">人机界面指南</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Updates/UIKit">UIKit更新日志</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="UIKit-新特性全面解析：现代化升级指南"><a href="#UIKit-新特性全面解析：现代化升级指南" class="headerlink" title="UIKit 新特性全面解析：现代化升级指南"></a>UIKit 新特性全面解析：现代化升级指南</h1><p>随着 iOS/iPadOS 26 的发布，UIKit 框架迎来了一系列重大更新，为开发者提供了更强大的工具来构建现代化应用体验。本文将从设计系统、菜单栏支持、架构改进等多个维度，深入解析 UIKit 的最新特性。</p>
+<h2 id="全新设计系统：Liquid-Glass-材质"><a href="#全新设计系统：Liquid-Glass-材质" class="headerlink" title="全新设计系统：Liquid Glass 材质"></a>全新设计系统：Liquid Glass 材质</h2><p>UIKit 在 iOS/iPadOS 26 中引入了创新的 Liquid Glass 设计系统，其核心是兼具半透明特性和动态效果的材质。这种材质包含镜面高光和折射等光学特性，为系统组件带来了前所未有的视觉表现。</p>
+<p>开发者可通过以下新工具实现设计升级：</p>
+<ul>
+<li><strong>背景延展视图</strong>：让内容显示在玻璃面板下方，保持视觉连贯性</li>
+<li><strong>自定义组件玻璃材质</strong>：为自制控件添加专业玻璃效果</li>
+<li><strong>全新滚动边缘效果</strong>：内容滚动时呈现优雅渐变动画，提升工具栏可视性</li>
 </ul>
+<p>导航过渡现在支持流畅且可中断的动画，用户无需等待动画完成即可与内容互动，显著提升交互体验。</p>
+<h2 id="菜单栏系统：iPadOS-的重大升级"><a href="#菜单栏系统：iPadOS-的重大升级" class="headerlink" title="菜单栏系统：iPadOS 的重大升级"></a>菜单栏系统：iPadOS 的重大升级</h2><p>iOS/iPadOS 26 将 macOS 的菜单栏体验带到了 iPad 平台。用户只需从屏幕顶部轻扫即可调出完整应用菜单，无需硬件键盘即可访问所有功能。</p>
+<h3 id="主菜单系统配置-API"><a href="#主菜单系统配置-API" class="headerlink" title="主菜单系统配置 API"></a>主菜单系统配置 API</h3><p>新 API 允许开发者深度定制菜单系统：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> config <span class="operator">=</span> <span class="type">UIMainMenuSystem</span>.<span class="type">Configuration</span>()</span><br><span class="line">config.printingPreference <span class="operator">=</span> .included</span><br><span class="line">config.inspectorPreference <span class="operator">=</span> .removed</span><br><span class="line">config.findingConfiguration.style <span class="operator">=</span> .search</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">UIMainMenuSystem</span>.shared.setBuildConfiguration(config) &#123; builder <span class="keyword">in</span></span><br><span class="line">    builder.insertElements([<span class="operator">...</span>], afterCommand: <span class="keyword">#selector</span>(<span class="keyword">copy</span>(<span class="keyword">_</span>:)))</span><br><span class="line">    <span class="keyword">let</span> deleteKeyCommand <span class="operator">=</span> <span class="type">UIKeyCommand</span>(<span class="operator">...</span>)</span><br><span class="line">    builder.replace(command: <span class="keyword">#selector</span>(delete(<span class="keyword">_</span>:)), withElements: [deleteKeyCommand])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="动态菜单支持"><a href="#动态菜单支持" class="headerlink" title="动态菜单支持"></a>动态菜单支持</h3><p>对于需要动态内容的菜单项（如浏览历史），可使用基于焦点的延迟菜单元素：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> historyDeferredElement <span class="operator">=</span> <span class="type">UIDeferredMenuElement</span>.usingFocus(</span><br><span class="line">    identifier: .browserHistory,</span><br><span class="line">    shouldCacheItems: <span class="literal">false</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="架构改进：Swift-Observable-原生支持"><a href="#架构改进：Swift-Observable-原生支持" class="headerlink" title="架构改进：Swift Observable 原生支持"></a>架构改进：Swift Observable 原生支持</h2><p>iOS 26 将 Swift Observation 整合到 UIKit 核心中，实现了自动依赖追踪。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Observable</span> <span class="keyword">class</span> <span class="title class_">UnreadMessagesModel</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> showStatus: <span class="type">Bool</span></span><br><span class="line">    <span class="keyword">var</span> statusText: <span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MessageListViewController</span>: <span class="title class_ inherited__">UIViewController</span> &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">viewWillLayoutSubviews</span>() &#123;</span><br><span class="line">        statusLabel.alpha <span class="operator">=</span> unreadMessagesModel.showStatus <span class="operator">?</span> <span class="number">1.0</span> : <span class="number">0.0</span></span><br><span class="line">        statusLabel.text <span class="operator">=</span> unreadMessagesModel.statusText <span class="comment">// 自动建立依赖关系</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="全新UI更新流程"><a href="#全新UI更新流程" class="headerlink" title="全新UI更新流程"></a>全新UI更新流程</h2><p>UIKit 引入了 updateProperties() 方法，将属性更新与布局更新分离，优化性能。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">updateProperties</span>() &#123;</span><br><span class="line">    folderButton.badge <span class="operator">=</span> model.badgeCount.map &#123; .count(<span class="variable">$0</span>) &#125; <span class="comment">// 仅更新徽章计数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>新的更新流程顺序为：</p>
+<ol>
+<li>更新特征集合</li>
+<li>调用 updateProperties()</li>
+<li>执行 layoutSubviews()</li>
+<li>显示流程</li>
+<li>渲染帧</li>
+</ol>
+<h2 id="HDR-色彩与-SF-Symbols-7"><a href="#HDR-色彩与-SF-Symbols-7" class="headerlink" title="HDR 色彩与 SF Symbols 7"></a>HDR 色彩与 SF Symbols 7</h2><p>iOS 26 扩展了 HDR 支持到色彩领域：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> hdrRed <span class="operator">=</span> <span class="type">UIColor</span>(red: <span class="number">1.0</span>, green: <span class="number">0.0</span>, blue: <span class="number">0.0</span>, alpha: <span class="number">1.0</span>, linearExposure: <span class="number">2.5</span>)</span><br></pre></td></tr></table></figure>
+<p>SF Symbols 7 新增了多种绘制效果和动画功能：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> configuration <span class="operator">=</span> <span class="type">UIButton</span>.<span class="type">Configuration</span>.plain()</span><br><span class="line">configuration.symbolContentTransition <span class="operator">=</span> <span class="type">UISymbolContentTransition</span>(.replace)</span><br></pre></td></tr></table></figure>
+<h2 id="迁移指南"><a href="#迁移指南" class="headerlink" title="迁移指南"></a>迁移指南</h2><p>建议开发者：</p>
+<ol>
+<li>使用 iOS 26 SDK 重新编译应用</li>
+<li>评估应用在新设计系统中的表现</li>
+<li>采用 UISplitViewController 等标准容器</li>
+<li>使用新菜单 API</li>
+<li>采用 updateProperties 和观察追踪</li>
+<li>迁移到场景化生命周期</li>
+</ol>
+<p>通过这些改进，开发者可以为用户打造更强大、愉悦的应用体验。建议参考相关视频和文档获取更详细的技术指导。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/284">使用全新设计系统构建 UIKit App</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/208">提升 iPad App 设计</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/282">让你的 UIKit App 更加灵活</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/337">SF Symbols 7 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10177">利用 HDR 为 App 打造动态图像体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10258">在 App 中为符号添加动画效果</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10181">在你的 App 中支持 HDR 图像</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10057">使您的 iPad App 更上一层楼</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines">人机界面指南</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Updates/UIKit">UIKit 更新</a></p>
 
       
 
@@ -397,18 +379,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_317/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_244/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          visionOS 26 的新功能
+          了解 App Intents
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_229/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">让所有人都能更方便地使用你的 Mac App</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_238/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">针对辅助访问自定 App</div>
       <i class="icon-circle-right"></i>
     </a>
   

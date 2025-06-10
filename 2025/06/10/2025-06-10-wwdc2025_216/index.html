@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何将实时活动和小组件引入 carplay 车载和 carplay 车载 ultra，以便用户查看活动进度并一目了然地掌握相关信息。探索所有 carplay 车载 app 均可使用的新增模板选项，并了解导航类 app 如何提供逐向导航元数据，以便显示在车载仪表盘或 hud 上。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9903/9903_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:49:31.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:49:31.815Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.719Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_216/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:49:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,69 +226,71 @@ var _hmt = _hmt || [];
       
         <p>了解如何将实时活动和小组件引入 carplay 车载和 carplay 车载 ultra，以便用户查看活动进度并一目了然地掌握相关信息。探索所有 carplay 车载 app 均可使用的新增模板选项，并了解导航类 app 如何提供逐向导航元数据，以便显示在车载仪表盘或 hud 上。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9903/9903_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/216/">视频地址</a></p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># iOS 26 CarPlay 开发指南：如何为车载场景优化你的应用</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 引言</span></span><br><span class="line">CarPlay 作为 iPhone 车载延伸体验的核心系统，在 iOS 26 中迎来重大升级。本文将详解如何通过实时活动、小组件和增强框架 API，让你的应用更好地服务于驾驶场景，涵盖从界面适配到性能优化的全流程技术要点。</span><br><span class="line"></span><br><span class="line"><span class="section">## 一、CarPlay 基础架构升级</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 1.1 显示适配新特性</span></span><br><span class="line"><span class="bullet">-</span> <span class="strong">**智能显示缩放**</span>：支持驾驶员调整屏幕比例，应用自动响应布局变化</span><br><span class="line"><span class="bullet">-</span> <span class="strong">**视觉自适应**</span>：系统自动为应用应用新的视觉风格，无需开发者额外配置</span><br><span class="line"></span><br><span class="line"><span class="section">### 1.2 CarPlay Ultra 支持</span></span><br><span class="line">新一代 CarPlay 架构提供：</span><br><span class="line"><span class="bullet">-</span> 全显示屏统一体验</span><br><span class="line"><span class="bullet">-</span> 现有 CarPlay 应用的平滑兼容</span><br><span class="line"><span class="bullet">-</span> 扩展的开发者 API 套件</span><br><span class="line"></span><br><span class="line"><span class="section">## 二、小组件车载集成方案</span></span><br><span class="line"></span><br><span class="line"><span class="section">### 2.1 实现要点</span></span><br><span class="line"><span class="code">```swift</span></span><br><span class="line"><span class="code">// 声明支持 systemSmall 尺寸</span></span><br><span class="line"><span class="code">WidgetConfiguration()</span></span><br><span class="line"><span class="code">    .supportedFamilies([.systemSmall])</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-2-场景优化策略"><a href="#2-2-场景优化策略" class="headerlink" title="2.2 场景优化策略"></a>2.2 场景优化策略</h3><ul>
-<li>使用 <code>disfavoredLocations</code> 排除不适用场景</li>
-<li>遵循内容边距规范</li>
-<li>设置 <code>containerBackgroundRemovable</code> 提升可读性</li>
-</ul>
-<p><strong>不推荐场景示例</strong>：</p>
-<ul>
-<li>游戏类交互组件</li>
-<li>依赖复杂手势的操作</li>
-<li>需要访问相册等保护数据的组件</li>
-</ul>
-<h2 id="三、实时活动车载适配"><a href="#三、实时活动车载适配" class="headerlink" title="三、实时活动车载适配"></a>三、实时活动车载适配</h2><h3 id="3-1-显示规则"><a href="#3-1-显示规则" class="headerlink" title="3.1 显示规则"></a>3.1 显示规则</h3><ul>
-<li>自动同步 iPhone 活动状态</li>
-<li>仪表盘优先显示 <code>activityFamilySmall</code> 尺寸</li>
-<li>动态岛视图作为降级方案</li>
-</ul>
-<h3 id="3-2-设计规范"><a href="#3-2-设计规范" class="headerlink" title="3.2 设计规范"></a>3.2 设计规范</h3><ul>
-<li>仅展示核心状态信息</li>
-<li>禁止交互控件</li>
-<li>支持专注模式过滤</li>
-</ul>
-<h2 id="四、CarPlay-框架深度解析"><a href="#四、CarPlay-框架深度解析" class="headerlink" title="四、CarPlay 框架深度解析"></a>四、CarPlay 框架深度解析</h2><h3 id="4-1-模板系统增强"><a href="#4-1-模板系统增强" class="headerlink" title="4.1 模板系统增强"></a>4.1 模板系统增强</h3><p><strong>CPListTemplate 新型元素</strong>：</p>
-<ol>
-<li>卡片元素 (CPListImageRowItem)</li>
-<li>紧凑元素 (带圆形图标)</li>
-<li>网格元素 (全图展示)</li>
-<li>置顶元素 (headerGridButtons)</li>
-</ol>
-<h3 id="4-2-音频专项优化"><a href="#4-2-音频专项优化" class="headerlink" title="4.2 音频专项优化"></a>4.2 音频专项优化</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 体育赛事直播元数据配置</span></span><br><span class="line"><span class="keyword">let</span> mode <span class="operator">=</span> <span class="type">CPNowPlayingModeSports</span>(</span><br><span class="line">    teams: [homeTeam, awayTeam],</span><br><span class="line">    score: <span class="string">&quot;3-2&quot;</span>,</span><br><span class="line">    clock: gameClock</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p><strong>关键改进</strong>：</p>
-<ul>
-<li>自动时钟计数</li>
-<li>时间偏移同步</li>
-<li>空间音频支持</li>
-</ul>
-<h2 id="五、导航应用高级功能"><a href="#五、导航应用高级功能" class="headerlink" title="五、导航应用高级功能"></a>五、导航应用高级功能</h2><h3 id="5-1-元数据工作流"><a href="#5-1-元数据工作流" class="headerlink" title="5.1 元数据工作流"></a>5.1 元数据工作流</h3><ol>
-<li>创建含 54 种机动类型的 CPManeuver</li>
-<li>实现 <code>mapTemplateShouldProvideNavigationMetadata</code></li>
-<li>动态更新 CPRouteInformation</li>
-</ol>
-<h3 id="5-2-性能优化技巧"><a href="#5-2-性能优化技巧" class="headerlink" title="5.2 性能优化技巧"></a>5.2 性能优化技巧</h3><ul>
-<li>设备温度敏感型渲染降级</li>
-<li>CADisplayLink 自适应帧率</li>
-<li>中控屏与仪表盘差异渲染</li>
-</ul>
-<h2 id="开发工具推荐"><a href="#开发工具推荐" class="headerlink" title="开发工具推荐"></a>开发工具推荐</h2><ul>
-<li><strong>CarPlay 模拟器</strong> (包含于 Xcode 附加工具包)</li>
-<li><strong>Instruments 性能分析</strong> </li>
-<li><strong>多车型真机测试</strong></li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>iOS 26 为 CarPlay 开发带来前所未有的可能性。通过合理运用小组件、实时活动和增强框架，开发者可以创造更安全、更高效的车载体验。建议从仪表盘小组件入手，逐步扩展至全功能集成。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/278">小组件的新功能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/308">通过 Instruments 优化 CPU 性能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10111">了解新一代 CarPlay 车载架构</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WidgetKit/adding-standby-and-carplay-support-to-your-widget">为小组件添加待机和 CarPlay 支持</a><br><code>`</code><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="为-CarPlay-车载优化你的应用：iOS-26-新功能详解"><a href="#为-CarPlay-车载优化你的应用：iOS-26-新功能详解" class="headerlink" title="为 CarPlay 车载优化你的应用：iOS 26 新功能详解"></a>为 CarPlay 车载优化你的应用：iOS 26 新功能详解</h1><p>随着 iOS 26 的发布，苹果为 CarPlay 车载系统带来了一系列创新功能，使开发者能够为用户提供更加安全、便捷的车载体验。本文将详细介绍这些新功能及其实现方式。</p>
+<h2 id="核心功能概述"><a href="#核心功能概述" class="headerlink" title="核心功能概述"></a>核心功能概述</h2><p>iOS 26 为 CarPlay 引入了三大关键改进：</p>
+<ol>
+<li>小组件支持 - 让驾驶者快速获取关键信息</li>
+<li>实时活动 - 显示重要进度和状态更新</li>
+<li>导航元数据 - 在仪表盘和HUD上显示转向信息</li>
+</ol>
+<p>这些功能不仅适用于专门开发的CarPlay应用，也支持仅提供小组件或实时活动的iPhone应用。</p>
+<h2 id="小组件集成"><a href="#小组件集成" class="headerlink" title="小组件集成"></a>小组件集成</h2><p>CarPlay现在支持显示iPhone应用的小组件，即使该应用没有专门的CarPlay版本。驾驶者可以在CarPlay仪表盘左侧查看这些小组件。</p>
+<h3 id="技术实现要点"><a href="#技术实现要点" class="headerlink" title="技术实现要点"></a>技术实现要点</h3><p>开发者为CarPlay添加小组件支持非常简单，只需满足以下条件：</p>
+<ul>
+<li>支持systemSmall小组件家族</li>
+<li>遵循CarPlay特定的设计规范</li>
 </ul>
+<p>对于不适合CarPlay的小组件（如游戏类或需要复杂交互的），可以使用disfavoredLocations修饰符将其标记为”非优选”：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WidgetConfiguration</span>()</span><br><span class="line">    .disfavoredLocations([.carPlay], for: [.systemSmall])</span><br></pre></td></tr></table></figure>
+<h3 id="设计最佳实践"><a href="#设计最佳实践" class="headerlink" title="设计最佳实践"></a>设计最佳实践</h3><ol>
+<li>内容简洁直观 - 避免高密度文本和与驾驶无关的信息</li>
+<li>自动适应布局 - widgetContentMargins会根据CarPlay需求自动调整</li>
+<li>使用系统字体和颜色 - 确保文本可读性</li>
+<li>可选背景移除 - 通过containerBackgroundRemovable修饰符实现</li>
+</ol>
+<h2 id="实时活动支持"><a href="#实时活动支持" class="headerlink" title="实时活动支持"></a>实时活动支持</h2><p>iOS 26将iPhone的实时活动功能扩展到了CarPlay。当iPhone上开启支持的实时活动时，它会自动出现在CarPlay仪表盘。</p>
+<h3 id="技术规格"><a href="#技术规格" class="headerlink" title="技术规格"></a>技术规格</h3><ol>
+<li>显示尺寸 - CarPlay使用activity family small尺寸类</li>
+<li>交互限制 - CarPlay中的实时活动不支持交互</li>
+<li>通知机制 - 当仪表盘不可见时，会在屏幕底部显示通知提醒</li>
+</ol>
+<h3 id="实现建议"><a href="#实现建议" class="headerlink" title="实现建议"></a>实现建议</h3><ol>
+<li>只传达关键状态信息</li>
+<li>优先实现activity family small尺寸</li>
+<li>无需考虑交互功能</li>
+</ol>
+<p>开发者可以使用macOS的CarPlay模拟器应用进行测试，无需实际车辆。</p>
+<h2 id="CarPlay框架增强"><a href="#CarPlay框架增强" class="headerlink" title="CarPlay框架增强"></a>CarPlay框架增强</h2><p>CarPlay框架为各类车载应用提供了优化的UI模板。iOS 26带来了多项改进：</p>
+<h3 id="列表模板升级"><a href="#列表模板升级" class="headerlink" title="列表模板升级"></a>列表模板升级</h3><ol>
+<li>CPListImageRowItem新增自定义选项</li>
+<li>支持禁用单个行元素</li>
+<li>允许多行显示</li>
+<li>引入pinned元素API用于显示重要元素</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> headerGridButtons: [<span class="type">CPGridButton</span>]<span class="operator">?</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CPGridButton</span></span><br><span class="line"><span class="keyword">init</span>(titleVariants: [<span class="type">String</span>],</span><br><span class="line">     image: <span class="type">UIImage</span>,</span><br><span class="line">     handler: ((<span class="type">CPGridButton</span>) -&gt; <span class="type">Void</span>)<span class="operator">?</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="音频应用新功能"><a href="#音频应用新功能" class="headerlink" title="音频应用新功能"></a>音频应用新功能</h3><p>体育赛事音频应用现在可以使用专门的”正在播放”模板变体：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> clock <span class="operator">=</span> <span class="type">CPNowPlayingSportsClock</span>(elapsedTime: time, paused: <span class="literal">false</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> status <span class="operator">=</span> <span class="type">CPNowPlayingSportsEventStatus</span>(</span><br><span class="line">    eventStatusText: [<span class="string">&quot;1st&quot;</span>],</span><br><span class="line">    eventStatusImage: <span class="type">UIImage</span>(named: <span class="string">&quot;Semifinals&quot;</span>),</span><br><span class="line">    eventClock: clock</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> sports <span class="operator">=</span> <span class="type">CPNowPlayingModeSports</span>(</span><br><span class="line">    leftTeam: getLeftTeam(),</span><br><span class="line">    rightTeam: getRightTeam(),</span><br><span class="line">    eventStatus: status,</span><br><span class="line">    backgroundArtwork: getBackgroundArtwork()</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="type">CPNowPlayingTemplate</span>.sharedTemplate.nowPlayingMode <span class="operator">=</span> sports</span><br></pre></td></tr></table></figure>
+<h3 id="导航应用改进"><a href="#导航应用改进" class="headerlink" title="导航应用改进"></a>导航应用改进</h3><ol>
+<li>按钮自动获得Liquid Glass外观</li>
+<li>支持多点触控交互</li>
+<li>仪表盘地图显示</li>
+<li>转向导航元数据支持</li>
+</ol>
+<p>转向导航元数据允许在车辆仪表盘或HUD上显示导航信息：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">mapTemplateShouldProvideNavigationMetadata</span>(<span class="keyword">_</span> <span class="params">mapTemplate</span>: <span class="type">CPMapTemplate</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">cpNavigationSession.add(maneuvers)</span><br><span class="line">cpNavigationSession.add(laneGuidance)</span><br><span class="line"></span><br><span class="line">cpNavigationSession.pauseTrip(for: .rerouting, description: <span class="string">&quot;重新规划路线&quot;</span>)</span><br><span class="line">cpNavigationSession.resumeTrip(updatedRouteInformation: cpRouteInformation)</span><br></pre></td></tr></table></figure>
+<h2 id="性能优化建议"><a href="#性能优化建议" class="headerlink" title="性能优化建议"></a>性能优化建议</h2><ol>
+<li>观察设备温度级别，适当降低渲染细节</li>
+<li>利用CADisplayLink的自动帧率调整</li>
+<li>主屏幕和仪表盘地图可采用不同显示模式</li>
+<li>预先提供转向信息优化性能</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>iOS 26为CarPlay带来了显著的增强，使开发者能够创建更丰富、更智能的车载体验。通过小组件、实时活动和导航元数据等新功能，应用可以在不分散驾驶注意力的情况下，提供更多有价值的信息和服务。</p>
+<p>开发者应充分利用这些新功能，同时遵循苹果的设计规范和性能建议，确保为用户提供安全、流畅的车载体验。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/278">小组件的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/308">通过 Instruments 优化 CPU 性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10111">了解新一代 CarPlay 车载架构</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10112">了解新一代 CarPlay 车载设计系统</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10016">利用 CarPlay 车载让您的 App 一日千里</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WidgetKit/adding-standby-and-carplay-support-to-your-widget">Adding StandBy and CarPlay support to your widget</a></p>
 
       
 
@@ -391,18 +393,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_247/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_209/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Xcode 的新功能
+          让游戏更上一层楼
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_227/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">完成后台任务</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_215/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">通过 Apple Games App 吸引玩家</div>
       <i class="icon-circle-right"></i>
     </a>
   

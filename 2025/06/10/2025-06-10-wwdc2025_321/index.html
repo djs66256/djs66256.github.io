@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 healthkit 中的全新 medications api。探索一个使用此全新 api 的示例 app，了解如何访问药品和剂量，并了解你的 app 如何管理此类新数据的授权。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9855/9855_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:26:21.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:26:21.158Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.341Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_321/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:26:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,87 +228,74 @@ var _hmt = _hmt || [];
       
         <p>了解 healthkit 中的全新 medications api。探索一个使用此全新 api 的示例 app，了解如何访问药品和剂量，并了解你的 app 如何管理此类新数据的授权。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9855/9855_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/321/">视频地址</a></p>
-<h1 id="HealthKit药物API全面解析：从数据读取到权限管理"><a href="#HealthKit药物API全面解析：从数据读取到权限管理" class="headerlink" title="HealthKit药物API全面解析：从数据读取到权限管理"></a>HealthKit药物API全面解析：从数据读取到权限管理</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着iOS 15引入药物追踪功能，Apple的HealthKit框架为开发者提供了全新的药物管理API。这些API不仅能让用户记录用药情况，更为健康类应用开发者开辟了创新空间。本文将深入解析这些新功能，并通过实际案例展示如何高效利用这些API。</p>
-<h2 id="药物数据存储机制"><a href="#药物数据存储机制" class="headerlink" title="药物数据存储机制"></a>药物数据存储机制</h2><p>自iOS 15起，健康App新增了完整的药物追踪功能。用户可以通过以下方式管理药物数据：</p>
-<ul>
-<li>在”搜索”标签页添加新药物</li>
-<li>设置个性化的服药提醒时间</li>
-<li>记录每次服药状态（包括”已服用”、”跳过”或”延迟”等）</li>
-</ul>
-<p>所有这些数据都安全存储在HealthKit中，为开发者提供了丰富的集成可能。</p>
-<h2 id="核心API解析"><a href="#核心API解析" class="headerlink" title="核心API解析"></a>核心API解析</h2><p>HealthKit新增了两类关键数据类型和对应的查询方式：</p>
-<h3 id="1-药物对象-HKUserAnnotatedMedication"><a href="#1-药物对象-HKUserAnnotatedMedication" class="headerlink" title="1. 药物对象(HKUserAnnotatedMedication)"></a>1. 药物对象(HKUserAnnotatedMedication)</h3><p>药物对象包含四个核心属性：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">isArchived <span class="comment">// 标记药物是否已停用</span></span><br><span class="line">hasSchedule <span class="comment">// 是否设置了服药提醒</span></span><br><span class="line">nickname <span class="comment">// 用户自定义的药物昵称</span></span><br><span class="line">medicationConcept <span class="comment">// 药物临床标识信息</span></span><br></pre></td></tr></table></figure></p>
-<p>其中<code>medicationConcept</code>尤为重要，它包含：</p>
-<ul>
-<li>唯一药物标识符</li>
-<li>标准显示名称（如”阿莫西林三水合物500mg口服片剂”）</li>
-<li>药物剂型（片剂/液体等）</li>
-<li>临床编码（如RxNorm代码308192）</li>
-</ul>
-<h3 id="2-剂量事件-HKMedicationDoseEvent"><a href="#2-剂量事件-HKMedicationDoseEvent" class="headerlink" title="2. 剂量事件(HKMedicationDoseEvent)"></a>2. 剂量事件(HKMedicationDoseEvent)</h3><p>作为新型<code>HKSample</code>，剂量事件记录：</p>
-<ul>
-<li>服药状态（已服/跳过）</li>
-<li>实际剂量与计划剂量的差异</li>
-<li>通过medicationConcept关联到特定药物</li>
-</ul>
-<h2 id="数据查询实践"><a href="#数据查询实践" class="headerlink" title="数据查询实践"></a>数据查询实践</h2><p>开发者可以通过以下方式查询药物数据：</p>
-<ol>
-<li><p><strong>基本查询</strong>：<br>使用<code>HKUserAnnotatedMedicationQueryDescriptor</code>和<code>HKUserAnnotatedMedicationQuery</code>获取授权药物列表</p>
-</li>
-<li><p><strong>条件查询</strong>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查询当日已服用的特定药物记录</span></span><br><span class="line"><span class="keyword">let</span> predicate <span class="operator">=</span> <span class="type">HKQuery</span>.predicateForSamples(</span><br><span class="line">    withStart: todayStart,</span><br><span class="line">    end: todayEnd,</span><br><span class="line">    options: .strictStartDate</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>锚定查询</strong>：<br>对于需要持续更新的数据（如服药趋势图表），推荐使用<code>HKAnchoredObjectQuery</code>，它能：</p>
-</li>
-</ol>
-<ul>
-<li>动态处理新增样本</li>
-<li>跟踪删除的对象</li>
-<li>兼容历史数据编辑</li>
-</ul>
-<h2 id="实战应用案例"><a href="#实战应用案例" class="headerlink" title="实战应用案例"></a>实战应用案例</h2><p>通过一个示例应用，我们展示了API的典型使用场景：</p>
-<ol>
-<li><p><strong>授权流程</strong>：<br>请求<code>HKUserAnnotatedMedicationType</code>读取权限后，应用自动获得关联剂量事件的访问权</p>
-</li>
-<li><p><strong>副作用分析</strong>：<br>利用RxNorm编码匹配预设的副作用模型（如头痛、恶心）</p>
-</li>
-<li><p><strong>症状记录</strong>：<br>使用表情符号表示症状强度，保存为<code>HKCategorySample</code></p>
-</li>
-<li><p><strong>数据可视化</strong>：<br>构建服药依从性趋势图表，帮助用户了解用药规律</p>
-</li>
-</ol>
-<h2 id="权限管理最佳实践"><a href="#权限管理最佳实践" class="headerlink" title="权限管理最佳实践"></a>权限管理最佳实践</h2><p>当用户在健康App添加新药物时：</p>
-<ol>
-<li>已请求药物权限的应用会出现在分享选项中</li>
-<li>用户可直接授权新药物，无需额外操作</li>
-<li>应用重新激活后即可立即访问新增药物数据</li>
-</ol>
-<p>特别提示：对于敏感数据，应考虑使用<code>requiresPerObjectAuthorization()</code>进行细粒度控制。</p>
-<h2 id="总结与下一步"><a href="#总结与下一步" class="headerlink" title="总结与下一步"></a>总结与下一步</h2><p>HealthKit药物API通过以下方式赋能健康应用开发：</p>
-<ul>
-<li>连接个性化用药数据与临床标准信息</li>
-<li>提供完整的用药记录生命周期管理</li>
-<li>支持丰富的用药分析和提醒功能</li>
-</ul>
-<p>建议开发者：</p>
-<ol>
-<li>下载官方示例应用研究实现细节</li>
-<li>深入了解RxNorm等临床编码系统</li>
-<li>查阅文档掌握剂量事件状态和查询谓词的使用</li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/322">使用iOS和iPadOS上的HealthKit跟踪体能训练</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10664">HealthKit入门讲座</a></li>
-</ul>
-<h2 id="文档参考"><a href="#文档参考" class="headerlink" title="文档参考"></a>文档参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/HealthKit/authorizing-access-to-health-data">健康数据访问授权</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/HealthKit/HKAnchoredObjectQuery">HKAnchoredObjectQuery文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/HealthKit/HKSampleQuery">HKSampleQuery文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/HealthKit/HKObjectType/requiresPerObjectAuthorization(">requiresPerObjectAuthorization()</a>)<blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="深度解析-HealthKit-药物-API：创新医疗数据管理方案"><a href="#深度解析-HealthKit-药物-API：创新医疗数据管理方案" class="headerlink" title="深度解析 HealthKit 药物 API：创新医疗数据管理方案"></a>深度解析 HealthKit 药物 API：创新医疗数据管理方案</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>苹果在 WWDC 上发布了 HealthKit 药物 API，为开发者提供了访问和管理药物数据的新工具。这一创新扩展了健康应用的开发边界，使开发者能够创建更全面、更个性化的健康管理体验。本文将详细解析药物 API 的技术实现、数据模型及其在实际应用中的表现。</p>
+<h2 id="药物数据存储机制"><a href="#药物数据存储机制" class="headerlink" title="药物数据存储机制"></a>药物数据存储机制</h2><h3 id="数据录入流程"><a href="#数据录入流程" class="headerlink" title="数据录入流程"></a>数据录入流程</h3><p>药物数据通过 iOS 健康应用的”药物”功能录入系统。用户可在”搜索”标签页中找到”药物”选项，通过”添加药物”流程完成数据录入。该系统具有三个关键特性：</p>
+<ol>
+<li><strong>药物识别</strong>：支持相同名称不同规格药物的精确识别</li>
+<li><strong>定制化设置</strong>：允许设置服药提醒时间和个性化备注</li>
+<li><strong>服药记录</strong>：提供多种记录选项（已服用、跳过、延后）</li>
+</ol>
+<p>所有录入的数据都将安全存储在 HealthKit 中，为第三方应用提供数据基础。</p>
+<h2 id="API-核心架构"><a href="#API-核心架构" class="headerlink" title="API 核心架构"></a>API 核心架构</h2><h3 id="数据模型设计"><a href="#数据模型设计" class="headerlink" title="数据模型设计"></a>数据模型设计</h3><p>药物 API 引入了两种核心数据类型：</p>
+<ol>
+<li><p><strong>HKUserAnnotatedMedication</strong>：代表用户自定义的药物对象</p>
+<ul>
+<li>包含四个关键属性</li>
+<li><code>isArchived</code> 表示药物停用状态</li>
+<li><code>hasSchedule</code> 显示提醒设置状态</li>
+<li><code>nickname</code> 提供用户友好别名</li>
+<li>关联具体药物引用</li>
 </ul>
+</li>
+<li><p><strong>HKMedicationDoseEvent</strong>：新型 HKSample 子类</p>
+<ul>
+<li>记录服药的实际剂量和时间</li>
+<li>包含剂量状态（服用/跳过）</li>
+<li>区分计划剂量与实际剂量</li>
+</ul>
+</li>
+</ol>
+<h3 id="药物概念模型"><a href="#药物概念模型" class="headerlink" title="药物概念模型"></a>药物概念模型</h3><p>HKMedicationConcept 提供标准化药物描述：</p>
+<ul>
+<li>唯一标识符保证数据准确性</li>
+<li>显示名称提供用户友好视图</li>
+<li>剂型分类（胶囊/片剂等）</li>
+<li>临床编码（如 RxNorm）确保系统互操作性</li>
+</ul>
+<h2 id="实际应用案例"><a href="#实际应用案例" class="headerlink" title="实际应用案例"></a>实际应用案例</h2><h3 id="数据查询示例"><a href="#数据查询示例" class="headerlink" title="数据查询示例"></a>数据查询示例</h3><p>以下展示了阿莫西林抗生素的典型数据结构：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 药物概念示例</span></span><br><span class="line">concept <span class="operator">=</span> <span class="type">HKMedicationConcept</span>(</span><br><span class="line">    identifier: <span class="string">&quot;308192&quot;</span>,</span><br><span class="line">    displayName: <span class="string">&quot;阿莫西林三水合物 500mg 口服片剂&quot;</span>,</span><br><span class="line">    dosageForm: .tablet,</span><br><span class="line">    codingSystem: .rxNorm</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 剂量事件示例</span></span><br><span class="line">doseEvent <span class="operator">=</span> <span class="type">HKMedicationDoseEvent</span>(</span><br><span class="line">    medicationConcept: concept,</span><br><span class="line">    status: .skipped,</span><br><span class="line">    dose: <span class="type">HKQuantity</span>(unit: .count(), doubleValue: <span class="number">0</span>),</span><br><span class="line">    scheduledDose: <span class="type">HKQuantity</span>(unit: .count(), doubleValue: <span class="number">1</span>),</span><br><span class="line">    scheduledTime: <span class="type">Date</span>()</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<h3 id="示例应用实现"><a href="#示例应用实现" class="headerlink" title="示例应用实现"></a>示例应用实现</h3><p>Srishti 开发的示范应用展示了 API 的典型用法：</p>
+<ol>
+<li><strong>药物列表视图</strong>：显示已授权药物</li>
+<li><strong>剂量详情</strong>：展示最近服药记录</li>
+<li><strong>副作用追踪</strong>：通过表情符号记录症状严重度</li>
+</ol>
+<p>授权流程采用对象级权限管理，确保数据访问的安全性。副作用数据通过 RxNorm 编码系统与药物关联，实现智能匹配。</p>
+<h2 id="高级查询技术"><a href="#高级查询技术" class="headerlink" title="高级查询技术"></a>高级查询技术</h2><h3 id="锚定对象查询实现"><a href="#锚定对象查询实现" class="headerlink" title="锚定对象查询实现"></a>锚定对象查询实现</h3><p>对于时间序列数据展示，推荐使用 HKAnchoredObjectQuery：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> query <span class="operator">=</span> <span class="type">HKAnchoredObjectQuery</span>(</span><br><span class="line">    type: <span class="type">HKMedicationDoseEvent</span>.sampleType,</span><br><span class="line">    predicate: predicate,</span><br><span class="line">    anchor: anchor,</span><br><span class="line">    limit: <span class="type">HKObjectQueryNoLimit</span></span><br><span class="line">) &#123; (query, samples, deletedObjects, newAnchor, error) <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// 处理新增和删除的样本</span></span><br><span class="line">    <span class="comment">// 更新界面展示</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关键实现要点：</p>
+<ul>
+<li>精确设置查询谓词限定范围</li>
+<li>正确处理删除的样本数据</li>
+<li>保持与健康应用数据同步</li>
+<li>充分利用 Swift 异步接口优势</li>
+</ul>
+<h2 id="权限管理系统"><a href="#权限管理系统" class="headerlink" title="权限管理系统"></a>权限管理系统</h2><h3 id="新增药物授权流程"><a href="#新增药物授权流程" class="headerlink" title="新增药物授权流程"></a>新增药物授权流程</h3><p>健康应用提供简化的共享授权：</p>
+<ol>
+<li>用户添加新药物时自动触发共享选项</li>
+<li>开发者无需额外实现授权逻辑</li>
+<li>系统自动管理权限边界</li>
+</ol>
+<p>这种设计既保证了用户隐私控制权，又简化了开发者的权限管理负担。</p>
+<h2 id="开发建议与资源"><a href="#开发建议与资源" class="headerlink" title="开发建议与资源"></a>开发建议与资源</h2><h3 id="实践指导"><a href="#实践指导" class="headerlink" title="实践指导"></a>实践指导</h3><ol>
+<li><strong>数据关联</strong>：利用药物概念与其他临床数据建立关联</li>
+<li><strong>编码系统</strong>：深入研究 RxNorm 等标准化系统</li>
+<li><strong>状态处理</strong>：全面理解不同记录状态的含义</li>
+</ol>
+<h3 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h3><p>相关视频：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/322">使用 iOS 和 iPadOS 上的 HealthKit 跟踪体能训练</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10664">HealthKit 入门讲座</a></p>
+<p>文档资源：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/HealthKit/authorizing-access-to-health-data">健康数据访问授权</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/HealthKit/HKAnchoredObjectQuery">HKAnchoredObjectQuery</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/HealthKit/HKSampleQuery">HKSampleQuery</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/HealthKit/HKObjectType/requiresPerObjectAuthorization(">requiresPerObjectAuthorization()</a>)</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>HealthKit 药物 API 为健康应用开发开辟了新维度。通过标准化的数据模型和灵活的查询接口，开发者可以构建从服药提醒到长期疗效追踪的各类创新应用。随着医疗健康领域的数字化发展，这类 API 将成为连接专业医疗数据与日常健康管理的重要桥梁。</p>
 
       
 
@@ -419,18 +406,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_328/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_312/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          App Store Connect 的新功能
+          优化 Swift 代码的内存使用和性能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_202/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">“钱包”的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_324/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">借助 App Store Connect API 实现开发流程自动化</div>
       <i class="icon-circle-right"></i>
     </a>
   

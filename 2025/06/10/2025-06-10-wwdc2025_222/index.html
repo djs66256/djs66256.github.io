@@ -16,8 +16,8 @@
 <meta property="og:description" content="为使用多种语言的用户打造顺畅体验。了解语言发现功能如何以用户偏好的语言优化你的 app。探索为从右至左显示的语言提供支持的最新进展，包括用来在双向文本中选择多个范围的自然选择。我们还将介绍在你的 app 中支持多语言场景的最佳实践。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9915/9915_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:33:27.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:33:27.652Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.851Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_222/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:33:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,44 +231,36 @@ var _hmt = _hmt || [];
       
         <p>为使用多种语言的用户打造顺畅体验。了解语言发现功能如何以用户偏好的语言优化你的 app。探索为从右至左显示的语言提供支持的最新进展，包括用来在双向文本中选择多个范围的自然选择。我们还将介绍在你的 app 中支持多语言场景的最佳实践。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9915/9915_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/222/">视频地址</a></p>
-<h1 id="提升应用多语言体验：iOS-26新功能全解析"><a href="#提升应用多语言体验：iOS-26新功能全解析" class="headerlink" title="提升应用多语言体验：iOS 26新功能全解析"></a>提升应用多语言体验：iOS 26新功能全解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在全球化的数字时代，打造优秀的应用需要考虑语言多样性。iOS 26带来了一系列强化多语言支持的新特性，让开发者能够为用户提供更自然的跨语言体验。本文将介绍语言自动识别、替代日历支持和双向文本处理三大核心改进，帮助您构建更具包容性的国际化应用。</p>
-<h2 id="语言自动识别：智能化多语言支持"><a href="#语言自动识别：智能化多语言支持" class="headerlink" title="语言自动识别：智能化多语言支持"></a>语言自动识别：智能化多语言支持</h2><p>在iOS 26中，系统可以智能识别用户的多语言使用习惯。新推出的Arabizi音译键盘和双语建议功能极大降低了阿拉伯语等语言的输入门槛。</p>
-<p>开发者在代码层面可以通过以下方式获取用户语言偏好：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> preferredLocales <span class="operator">=</span> <span class="type">Locale</span>.preferredLocales</span><br><span class="line"><span class="keyword">let</span> availableLocales <span class="operator">=</span> getAvailableLocalesForTranslatingFrom()</span><br><span class="line"><span class="keyword">var</span> matchedLocales: [<span class="type">Locale</span>] <span class="operator">=</span> []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> locale <span class="keyword">in</span> availableLocales &#123;</span><br><span class="line">    <span class="keyword">for</span> preferredLocale <span class="keyword">in</span> preferredLocales &#123;</span><br><span class="line">        <span class="keyword">if</span> locale.language.isEquivalent(to: preferredLocale.language) &#123;</span><br><span class="line">            matchedLocales.append(locale)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>新API <code>Locale.preferredLocales</code> 相比传统的 <code>Locale.preferredLanguages</code> 提供了更丰富的本地化数据，建议开发者尽快迁移使用。</p>
-<h2 id="更全面的替代日历支持"><a href="#更全面的替代日历支持" class="headerlink" title="更全面的替代日历支持"></a>更全面的替代日历支持</h2><p>iOS 26新增了11种替代日历，包括：</p>
-<ul>
-<li>古吉拉特语日历</li>
-<li>马拉地语日历</li>
-<li>韩语日历等</li>
-</ul>
-<p>目前Foundation框架的Calendar.Identifier共支持27种日历系统，让全球用户都能按自己的文化习惯查看日期。</p>
-<h2 id="革命性的双向文本处理"><a href="#革命性的双向文本处理" class="headerlink" title="革命性的双向文本处理"></a>革命性的双向文本处理</h2><p>双向文本(混合从左至右和从右至左文本)的处理在iOS 26中获得了重大改进：</p>
-<ol>
-<li><strong>自然选择技术</strong>：文本选择不再受存储顺序限制，实现了视觉连贯的跨语言选择体验</li>
-<li><strong>多选区支持</strong>：通过<code>selectedRanges</code>属性(将取代<code>selectedRange</code>)支持非连续选区</li>
-</ol>
-<p>需要文本编辑功能的开发者应调整代码如下：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ranges <span class="operator">=</span> textView.selectedRanges.reversed()</span><br><span class="line"><span class="keyword">for</span> range <span class="keyword">in</span> ranges &#123;</span><br><span class="line">    textView.textStorage.deleteCharacters(in: range)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>TextKit2是这些改进的基础，开发者应使用<code>textLayoutManager</code>而非<code>layoutManager</code>来保持完整功能。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>iOS 26的多语言增强特性让应用能够：</p>
-<ul>
-<li>更智能地适配用户语言偏好</li>
-<li>提供更多本地化日历选择</li>
-<li>更自然地处理双向文本</li>
-</ul>
-<p>开发者应尽快采用这些新技术，为全球用户打造更完美的使用体验。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/280">跟着视频学编程：使用 SwiftUI 和 AttributedString 精心打造富文本体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10185">构建支持多语言的 App</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10107">向左语言</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/right-to-left">人机交互指南：从右至左布局</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="iOS-26中的多语言体验全面升级"><a href="#iOS-26中的多语言体验全面升级" class="headerlink" title="iOS 26中的多语言体验全面升级"></a>iOS 26中的多语言体验全面升级</h1><p>苹果在WWDC上展示了iOS 26中一系列针对多语言体验的重要改进，这些新功能将帮助开发者构建更具包容性和全球化的应用。</p>
+<h2 id="语言发现与个性化体验"><a href="#语言发现与个性化体验" class="headerlink" title="语言发现与个性化体验"></a>语言发现与个性化体验</h2><p>iOS 26引入了革命性的语言发现功能，能够自动识别用户的多语言使用习惯。系统通过设备端智能分析用户在不同场景下的语言使用情况，如消息、音乐和新闻浏览等。开发者现在可以通过<code>Locale.preferredLocales</code>API获取包含丰富信息的Locale对象数组，取代原有的<code>Locale.preferredLanguages</code>字符串数组。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> preferredLocales <span class="operator">=</span> <span class="type">Locale</span>.preferredLocales</span><br><span class="line"><span class="keyword">let</span> preferredLanguages <span class="operator">=</span> <span class="type">Locale</span>.preferredLanguages</span><br></pre></td></tr></table></figure>
+<p>新API提供了更全面的语言和地区信息，包括数字系统、本地化名称等，使开发者能够更精确地匹配用户偏好。苹果已在翻译应用、日历和Apple Music等场景中应用了这一技术，显著提升了多语言用户的体验。</p>
+<h2 id="备选日历支持扩展"><a href="#备选日历支持扩展" class="headerlink" title="备选日历支持扩展"></a>备选日历支持扩展</h2><p>iOS 26新增了11种备选日历选项，包括古吉拉特语、马拉地语和韩语等。这些新日历在所有苹果平台上可用，开发者可以通过Foundation框架中的<code>Calendar.Identifier</code>访问。这一扩展为不同文化背景的用户提供了更符合其传统的日期显示方式。</p>
+<h2 id="双向文本的重大革新"><a href="#双向文本的重大革新" class="headerlink" title="双向文本的重大革新"></a>双向文本的重大革新</h2><p>iOS 26对双向文本处理进行了重大改进，其中最引人注目的是”自然选择”功能。新系统解决了在混合LTR(左至右)和RTL(右至左)文本中选择时的显示问题。开发者现在需要使用<code>selectedRanges</code>属性取代原有的<code>selectedRange</code>，以准确反映用户在双向文本中的多段选择。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> ranges <span class="operator">=</span> textView.selectedRanges.reversed()</span><br><span class="line"><span class="keyword">for</span> range <span class="keyword">in</span> ranges &#123;</span><br><span class="line">    textView.textStorage.deleteCharacters(in: range)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UITextViewDelegate协议也相应更新，新增了支持范围数组的方法。值得注意的是，要充分利用这些新功能，开发者必须使用TextKit2作为文本引擎。苹果还优化了书写方向的动态确定机制，使文本流向能够根据内容自动调整。</p>
+<h2 id="键盘与输入体验优化"><a href="#键盘与输入体验优化" class="headerlink" title="键盘与输入体验优化"></a>键盘与输入体验优化</h2><p>iOS 26为多语言用户提供了多项键盘改进：</p>
+<ul>
+<li>新增Arabizi音译键盘，支持拉丁字母输入阿拉伯语</li>
+<li>为印地语键盘加入双语建议功能</li>
+<li>推出阿拉伯语-英语双语多文字键盘</li>
+<li>为泰语用户新增24键布局键盘</li>
 </ul>
+<p>这些改进显著提升了多语言用户的输入体验，特别是经常需要在不同语言间切换的用户。</p>
+<h2 id="开发建议与最佳实践"><a href="#开发建议与最佳实践" class="headerlink" title="开发建议与最佳实践"></a>开发建议与最佳实践</h2><p>苹果建议开发者：</p>
+<ol>
+<li>及时迁移到<code>Locale.preferredLocales</code>API</li>
+<li>在文本处理中使用TextKit2而非TextKit1</li>
+<li>适配新的<code>selectedRanges</code>和代理方法</li>
+<li>利用新的备选日历选项</li>
+<li>遵循苹果的人机界面指南中的RTL规范</li>
+</ol>
+<p>这些改进共同构成了iOS 26强大的多语言支持体系，帮助开发者构建真正全球化的应用，为不同语言和文化背景的用户提供更自然、更贴心的体验。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/280">跟着视频学编程：使用 SwiftUI 和 AttributedString 精心打造富文本体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10185">构建支持多语言的 App</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10107">向左语言</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/right-to-left">Human Interface Guidelines: Right to left</a></p>
 
       
 
@@ -391,18 +383,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_268/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_221/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          采用 Swift 并发
+          AdAttributionKit 的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_310/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">使用全新设计系统构建 AppKit App</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_223/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">了解面向空间商务 App 的增强功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

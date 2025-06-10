@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 ios、ipados、macos 和 visionos 26 在通行密钥方面的增强功能。我们将探索的重要更新包括：简化注册流程的全新账户创建 api、确保通行密钥保持最新的措施、通过自动通行密钥升级和通行密钥管理端点驱动通行密钥升级的新方式，以及通行密钥的安全导入&#x2F;导出。了解这些改进如何提升用户体验和安全性，以及如何在 app 中实施这些更新以便提供更流畅、更安全的身份验证体验。为了充分从这">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9996/9996_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:53:48.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:53:48.799Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.821Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -221,7 +221,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_279/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:53:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -230,73 +230,45 @@ var _hmt = _hmt || [];
       
         <p>了解 ios、ipados、macos 和 visionos 26 在通行密钥方面的增强功能。我们将探索的重要更新包括：简化注册流程的全新账户创建 api、确保通行密钥保持最新的措施、通过自动通行密钥升级和通行密钥管理端点驱动通行密钥升级的新方式，以及通行密钥的安全导入/导出。了解这些改进如何提升用户体验和安全性，以及如何在 app 中实施这些更新以便提供更流畅、更安全的身份验证体验。为了充分从这个讲座中获益，请先观看 wwdc22 讲座“通行密钥简介”。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9996/9996_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/279/">视频地址</a></p>
-<h1 id="iOS-通行密钥全面升级：五大新功能深度解析"><a href="#iOS-通行密钥全面升级：五大新功能深度解析" class="headerlink" title="iOS 通行密钥全面升级：五大新功能深度解析"></a>iOS 通行密钥全面升级：五大新功能深度解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>密码时代正在终结！苹果在 iOS、iPadOS、macOS 和 visionOS 26 中为通行密钥带来五大创新功能，彻底重塑数字身份验证体验。本文将详解这些改变游戏规则的技术革新，从一键注册到安全迁移，带您全面了解如何打造更流畅、更安全的无密码未来。</p>
-<h2 id="核心功能解析"><a href="#核心功能解析" class="headerlink" title="核心功能解析"></a>核心功能解析</h2><h3 id="1-闪电注册：账户创建-API-革新"><a href="#1-闪电注册：账户创建-API-革新" class="headerlink" title="1. 闪电注册：账户创建 API 革新"></a>1. 闪电注册：账户创建 API 革新</h3><p>传统密码注册流程繁琐：</p>
-<ol>
-<li>填写邮箱/姓名表单</li>
-<li>设置复杂密码（或使用自动强密码）</li>
-<li>完成验证步骤</li>
-</ol>
-<p>新方案实现质的飞跃：</p>
-<ul>
-<li>预填可编辑的个人信息</li>
-<li>Face ID 瞬间完成认证</li>
-<li>全自动通行密钥生成</li>
-</ul>
-<p>技术实现关键点：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> provider <span class="operator">=</span> <span class="type">ASAuthorizationAccountCreationProvider</span>()</span><br><span class="line"><span class="keyword">let</span> request <span class="operator">=</span> provider.createPlatformPublicKeyCredentialRegistrationRequest(</span><br><span class="line">    acceptedContactIdentifiers: [.email, .phoneNumber],</span><br><span class="line">    shouldRequestName: <span class="literal">true</span>,</span><br><span class="line">    relyingPartyIdentifier: <span class="string">&quot;example.com&quot;</span>,</span><br><span class="line">    challenge: <span class="keyword">try</span> <span class="keyword">await</span> fetchChallenge(),</span><br><span class="line">    userID: <span class="keyword">try</span> <span class="keyword">await</span> fetchUserID()</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-实时同步：通行密钥更新机制"><a href="#2-实时同步：通行密钥更新机制" class="headerlink" title="2. 实时同步：通行密钥更新机制"></a>2. 实时同步：通行密钥更新机制</h3><p>当用户变更账户信息时，新的 Signal API 确保：</p>
-<ul>
-<li>邮箱/用户名变更实时同步</li>
-<li>被撤销的通行密钥立即失效</li>
-<li>密码应用永远显示准确信息</li>
-</ul>
-<p>开发者需实现的三种关键操作：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 更新用户名</span></span><br><span class="line">.reportPublicKeyCredentialUpdate(<span class="operator">...</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 撤销凭证</span></span><br><span class="line">.reportAllAcceptedPublicKeyCredentials(<span class="operator">...</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移除密码</span></span><br><span class="line">.reportUnusedPasswordCredential(<span class="operator">...</span>)</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-无缝升级：自动通行密钥转换"><a href="#3-无缝升级：自动通行密钥转换" class="headerlink" title="3. 无缝升级：自动通行密钥转换"></a>3. 无缝升级：自动通行密钥转换</h3><p>密码用户升级路径优化：</p>
-<ul>
-<li>登录后自动创建通行密钥</li>
-<li>零摩擦用户体验</li>
-<li>后台静默处理失败情况</li>
-</ul>
-<p>核心代码示例：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> request <span class="operator">=</span> provider.createCredentialRegistrationRequest(</span><br><span class="line">    challenge: <span class="keyword">try</span> <span class="keyword">await</span> fetchChallenge(),</span><br><span class="line">    name: accountDetails.userName,</span><br><span class="line">    userID: accountDetails.userID,</span><br><span class="line">    requestStyle: .conditional  <span class="comment">// 关键参数</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<h3 id="4-可视化管理：通行密钥端点"><a href="#4-可视化管理：通行密钥端点" class="headerlink" title="4. 可视化管理：通行密钥端点"></a>4. 可视化管理：通行密钥端点</h3><p>通过标准化 well-known URL 实现：</p>
-<ul>
-<li>直接跳转管理页面</li>
-<li>必须支持未经认证的访问</li>
-<li>JSON 响应格式要求：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;enroll&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://example.com/add-passkey&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;manage&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://example.com/manage-passkeys&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="5-安全迁移：导入导出功能"><a href="#5-安全迁移：导入导出功能" class="headerlink" title="5. 安全迁移：导入导出功能"></a>5. 安全迁移：导入导出功能</h3><p>突破性进步体现在：</p>
-<ul>
-<li>应用间直接传输</li>
-<li>强制本地生物认证</li>
-<li>FIDO Alliance 标准化格式</li>
-<li>彻底避免凭证文件泄露</li>
-</ul>
-<h2 id="实施路线图"><a href="#实施路线图" class="headerlink" title="实施路线图"></a>实施路线图</h2><ol>
-<li>优先采用账户创建 API 优化新用户注册</li>
-<li>集成 Signal API 保持凭证信息准确</li>
-<li>为密码用户启用自动升级通道</li>
-<li>部署 well-known URL 提升管理可见性</li>
-<li>教育用户使用安全迁移功能</li>
-</ol>
-<h2 id="行业数据印证"><a href="#行业数据印证" class="headerlink" title="行业数据印证"></a>行业数据印证</h2><ul>
-<li>69% 用户已拥有至少一个通行密钥（FIDO Alliance 2025）</li>
-<li>通行密钥登录成功率高达 97%（TikTok 实测）</li>
-<li>比传统密码成功率高 4 倍（Google 数据）</li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>通行密钥正在重塑数字身份验证的格局。通过实施这五大创新功能，开发者不仅能提供远超密码的安全保障，还能创造令人愉悦的用户体验。现在是时候全面拥抱无密码未来，让每一次登录都变得快速、简单且牢不可破。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10125">利用通行密钥升级和凭证管理器简化登录体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10092">通行密钥简介</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AuthenticationServices/ASCredentialExportManager">ASCredentialExportManager 文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AuthenticationServices/ASCredentialProviderViewController">ASCredentialProviderViewController 文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AuthenticationServices/performing-fast-account-creation-with-passkeys">快速账户创建指南</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="iOS、iPadOS、macOS-和-visionOS-26-中通行密钥的新功能"><a href="#iOS、iPadOS、macOS-和-visionOS-26-中通行密钥的新功能" class="headerlink" title="iOS、iPadOS、macOS 和 visionOS 26 中通行密钥的新功能"></a>iOS、iPadOS、macOS 和 visionOS 26 中通行密钥的新功能</h1><p>苹果公司在 WWDC24 上展示了 iOS、iPadOS、macOS 和 visionOS 26 中针对通行密钥的五大重要更新，旨在进一步提升身份认证的安全性和用户体验。</p>
+<h2 id="引言：迈向无密码未来"><a href="#引言：迈向无密码未来" class="headerlink" title="引言：迈向无密码未来"></a>引言：迈向无密码未来</h2><p>通行密钥作为密码的替代方案，从根本上解决了传统密码认证的安全性和可用性问题。根据 FIDO Alliance 2025年的研究，69%的受访者至少拥有一个通行密钥。Google的数据显示，使用通行密钥登录的成功率是密码的四倍，而TikTok更是达到了97%的成功率。</p>
+<p>随着行业向仅由不可钓鱼因素保护的身份认证转型，苹果在新系统中推出了五项关键改进，帮助开发者更轻松地实现这一目标。</p>
+<h2 id="1-账户创建-API：快速安全的注册体验"><a href="#1-账户创建-API：快速安全的注册体验" class="headerlink" title="1. 账户创建 API：快速安全的注册体验"></a>1. 账户创建 API：快速安全的注册体验</h2><p>全新的账户创建 API 彻底简化了用户注册流程。与传统需要填写复杂表格的方式不同，新API提供了预填信息的简化界面：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> provider <span class="operator">=</span> <span class="type">ASAuthorizationAccountCreationProvider</span>()</span><br><span class="line"><span class="keyword">let</span> request <span class="operator">=</span> provider.createPlatformPublicKeyCredentialRegistrationRequest(</span><br><span class="line">    acceptedContactIdentifiers: [.email, .phoneNumber],</span><br><span class="line">    shouldRequestName: <span class="literal">true</span>,</span><br><span class="line">    relyingPartyIdentifier: <span class="string">&quot;example.com&quot;</span>,</span><br><span class="line">    challenge: <span class="keyword">try</span> <span class="keyword">await</span> fetchChallenge(),</span><br><span class="line">    userID: <span class="keyword">try</span> <span class="keyword">await</span> fetchUserID()</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>这种注册方式消除了密码创建的步骤，整个过程快速、简单且安全。用户注册后，其通行密钥会自动保存在密码应用中，并在所有设备上可用。</p>
+<h2 id="2-保持通行密钥更新：确保信息准确性"><a href="#2-保持通行密钥更新：确保信息准确性" class="headerlink" title="2. 保持通行密钥更新：确保信息准确性"></a>2. 保持通行密钥更新：确保信息准确性</h2><p>账户信息会随时间变化，新的API允许应用通知凭证管理器这些变更：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 更新用户名</span></span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> <span class="type">ASCredentialUpdater</span>()</span><br><span class="line">    .reportPublicKeyCredentialUpdate(</span><br><span class="line">        relyingPartyIdentifier: <span class="string">&quot;example.com&quot;</span>,</span><br><span class="line">        userHandle: userHandle,</span><br><span class="line">        newName: <span class="string">&quot;new@example.com&quot;</span></span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 撤销通行密钥</span></span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> <span class="type">ASCredentialUpdater</span>()</span><br><span class="line">    .reportAllAcceptedPublicKeyCredentials(</span><br><span class="line">        relyingPartyIdentifier: <span class="string">&quot;example.com&quot;</span>,</span><br><span class="line">        userHandle: userHandle,</span><br><span class="line">        acceptedCredentialIDs: acceptedCredentialIDs</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<p>这些API确保凭证管理器显示的信息始终是最新的，防止因过时信息导致的登录问题。</p>
+<h2 id="3-自动通行密钥升级：无缝过渡到更安全认证"><a href="#3-自动通行密钥升级：无缝过渡到更安全认证" class="headerlink" title="3. 自动通行密钥升级：无缝过渡到更安全认证"></a>3. 自动通行密钥升级：无缝过渡到更安全认证</h2><p>对于仍使用密码的账户，系统提供了自动升级为通行密钥的无缝路径：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> request <span class="operator">=</span> provider.createCredentialRegistrationRequest(</span><br><span class="line">    challenge: <span class="keyword">try</span> <span class="keyword">await</span> fetchChallenge(),</span><br><span class="line">    name: accountDetails.userName,</span><br><span class="line">    userID: accountDetails.userID,</span><br><span class="line">    requestStyle: .conditional</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>当用户用密码登录后，如果账户没有通行密钥，系统会自动尝试创建，整个过程在后台完成，不会中断用户体验。</p>
+<h2 id="4-通行密钥管理端点：提升可发现性"><a href="#4-通行密钥管理端点：提升可发现性" class="headerlink" title="4. 通行密钥管理端点：提升可发现性"></a>4. 通行密钥管理端点：提升可发现性</h2><p>通过实现well-known URL端点，应用可以：</p>
+<ul>
+<li>提供通行密钥注册页面的链接</li>
+<li>让用户直接从凭证管理器升级到通行密钥</li>
+<li>不需要任何客户端代码修改</li>
 </ul>
+<p>这个标准化的方法适用于所有参与凭证管理器。</p>
+<h2 id="5-安全导入-导出通行密钥"><a href="#5-安全导入-导出通行密钥" class="headerlink" title="5. 安全导入/导出通行密钥"></a>5. 安全导入/导出通行密钥</h2><p>新系统允许通行密钥在参与凭证管理器之间安全传输：</p>
+<ul>
+<li>用户发起且受Face ID等本地认证保护</li>
+<li>不使用不安全的中介文件</li>
+<li>基于FIDO Alliance标准的数据格式</li>
+<li>无需应用做任何适配</li>
+</ul>
+<h2 id="结论：共同构建无密码未来"><a href="#结论：共同构建无密码未来" class="headerlink" title="结论：共同构建无密码未来"></a>结论：共同构建无密码未来</h2><p>这些改进使通行密钥更易于创建、使用和管理。开发者可以通过以下步骤改善用户体验：</p>
+<ol>
+<li>采用账户创建API简化注册</li>
+<li>使用信号API保持信息更新</li>
+<li>启用自动通行密钥升级</li>
+<li>提供通行密钥管理端点</li>
+</ol>
+<p>随着行业共同努力，无密码的未来正在成为现实。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10125">利用通行密钥升级和凭证管理器简化登录体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10092">通行密钥简介</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AuthenticationServices/ASCredentialExportManager">ASCredentialExportManager</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AuthenticationServices/ASCredentialProviderViewController">ASCredentialProviderViewController</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AuthenticationServices/performing-fast-account-creation-with-passkeys">Performing fast account creation with passkeys</a></p>
 
       
 
@@ -415,18 +387,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_302/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_276/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          打造丝滑的多画面播放体验
+          BNNS Graph 的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_246/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">将隐私保护融入开发流程</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_272/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用 Vision 框架读取文档</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何使用 cinematic video api，让你的 app 轻松拍摄大片感满屏的精彩视频。我们将介绍如何配置电影效果拍摄会话，并讲解构建视频拍摄 ui 的基本知识。我们还将探索高级电影效果功能，例如应用景深效果来实现动态跟踪拍摄和巧妙的焦点切换。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10068/10068_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:48:35.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:48:35.608Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.603Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_319/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:48:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,53 +227,61 @@ var _hmt = _hmt || [];
       
         <p>了解如何使用 cinematic video api，让你的 app 轻松拍摄大片感满屏的精彩视频。我们将介绍如何配置电影效果拍摄会话，并讲解构建视频拍摄 ui 的基本知识。我们还将探索高级电影效果功能，例如应用景深效果来实现动态跟踪拍摄和巧妙的焦点切换。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10068/10068_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/319/">视频地址</a></p>
-<h1 id="使用-Cinematic-Video-API-打造电影级视频拍摄体验"><a href="#使用-Cinematic-Video-API-打造电影级视频拍摄体验" class="headerlink" title="使用 Cinematic Video API 打造电影级视频拍摄体验"></a>使用 Cinematic Video API 打造电影级视频拍摄体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>电影效果视频是 iPhone 13 系列引入的突破性功能，它通过智能算法实现了专业电影中常见的焦点追踪和浅景深效果。如今，开发者可以通过全新的 Cinematic Video API 将这些强大的电影拍摄能力集成到自己的应用中，为用户带来专业级的视频创作体验。</p>
-<h2 id="电影效果视频的核心技术"><a href="#电影效果视频的核心技术" class="headerlink" title="电影效果视频的核心技术"></a>电影效果视频的核心技术</h2><p>电影效果视频的核心在于模拟传统电影的叙事工具：</p>
-<ul>
-<li><strong>定点对焦</strong>：将观众注意力集中到关键主体</li>
-<li><strong>追踪对焦</strong>：当主体移动时保持焦点清晰</li>
-<li><strong>智能切换</strong>：当主体移出画面时自动切换焦点</li>
-</ul>
-<p>这些原本需要专业跟焦员操作的技术，现在通过 Cinematic Video API 可以轻松实现。系统会自动检测画面主体，智能决定对焦策略，大幅降低了电影级视频的拍摄门槛。</p>
-<h2 id="配置电影效果拍摄会话"><a href="#配置电影效果拍摄会话" class="headerlink" title="配置电影效果拍摄会话"></a>配置电影效果拍摄会话</h2><p>在 iOS 26 中，启用电影效果视频拍摄变得异常简单：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> videoInput <span class="operator">=</span> <span class="keyword">try!</span> <span class="type">AVCaptureDeviceInput</span>(device: camera)</span><br><span class="line">captureSession.addInput(videoInput)</span><br><span class="line"><span class="keyword">if</span> videoInput.isCinematicVideoCaptureSupported &#123;</span><br><span class="line">    videoInput.isCinematicVideoCaptureEnabled <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>只需将 <code>isCinematicVideoCaptureEnabled</code> 设置为 true，系统就会自动配置以下输出：</p>
-<ol>
-<li><strong>电影文件输出</strong>：生成包含视差数据和元数据的 Cinematic 文件</li>
-<li><strong>视频数据输出</strong>：提供带有浅景深效果的帧数据</li>
-<li><strong>预览层</strong>：实时渲染虚化效果，构建取景器</li>
-</ol>
-<h2 id="构建完整的拍摄体验"><a href="#构建完整的拍摄体验" class="headerlink" title="构建完整的拍摄体验"></a>构建完整的拍摄体验</h2><p>我们通过 SwiftUI 构建了一个完整的电影效果拍摄界面：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MainActor</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">CameraView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">ZStack</span> &#123;</span><br><span class="line">            <span class="type">CameraPreviewView</span>()</span><br><span class="line">            <span class="type">CameraControlsView</span>()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="关键功能实现"><a href="#关键功能实现" class="headerlink" title="关键功能实现"></a>关键功能实现</h3><ol>
-<li><strong>设备与格式选择</strong>：选取支持电影效果的相机设备和格式</li>
-<li><strong>音频配置</strong>：启用空间音频增强体验</li>
-<li><strong>视频防抖</strong>：使用电影级增强防抖模式</li>
-<li><strong>元数据处理</strong>：获取人脸检测等元数据并可视化</li>
-</ol>
-<h2 id="高级控制功能"><a href="#高级控制功能" class="headerlink" title="高级控制功能"></a>高级控制功能</h2><p>API 提供了丰富的焦点控制方式：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 追踪特定对象</span></span><br><span class="line"><span class="keyword">open</span> <span class="keyword">func</span> <span class="title function_">setCinematicVideoTrackingFocus</span>(<span class="params">detectedObjectID</span>: <span class="type">Int</span>, <span class="params">focusMode</span>: <span class="type">AVCaptureDevice</span>.<span class="type">CinematicVideoFocusMode</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 追踪画面位置</span></span><br><span class="line"><span class="keyword">open</span> <span class="keyword">func</span> <span class="title function_">setCinematicVideoTrackingFocus</span>(<span class="params">at</span> <span class="params">point</span>: <span class="type">CGPoint</span>, <span class="params">focusMode</span>: <span class="type">AVCaptureDevice</span>.<span class="type">CinematicVideoFocusMode</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 固定焦点位置</span></span><br><span class="line"><span class="keyword">open</span> <span class="keyword">func</span> <span class="title function_">setCinematicVideoFixedFocus</span>(<span class="params">at</span> <span class="params">point</span>: <span class="type">CGPoint</span>, <span class="params">focusMode</span>: <span class="type">AVCaptureDevice</span>.<span class="type">CinematicVideoFocusMode</span>)</span><br></pre></td></tr></table></figure>
-<p>此外，开发者还可以：</p>
-<ul>
-<li>调整虚化强度</li>
-<li>检测光线不足场景</li>
-<li>获取拍摄状态监控</li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Cinematic Video API 将专业电影拍摄技术带到了移动应用开发中。通过简单的 API 调用，开发者就能为用户提供媲美专业电影制作的视频拍摄体验。期待看到更多应用利用这些功能，创造出令人惊艳的电影级视频作品。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/253">利用拍摄控件提升你的相机体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10204">打造出色的锁定屏幕相机拍摄体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10106">在 iPadOS App 中支持外部摄像头</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10105">打造更流畅的相机体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10256">探索 tvOS 连续互通相机</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVFoundation">AVFoundation</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Cinematic">Cinematic</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="在应用中录制电影效果视频：全面解析-Cinematic-Video-API"><a href="#在应用中录制电影效果视频：全面解析-Cinematic-Video-API" class="headerlink" title="在应用中录制电影效果视频：全面解析 Cinematic Video API"></a>在应用中录制电影效果视频：全面解析 Cinematic Video API</h1><p>电影效果视频已成为现代移动设备的重要拍摄功能，通过专业的浅景深效果和智能对焦技术，让普通用户也能拍摄出电影质感的视频。苹果在 WWDC 上发布的 Cinematic Video API 为开发者提供了将这些专业功能集成到应用中的机会。</p>
+<h2 id="电影效果视频的核心价值"><a href="#电影效果视频的核心价值" class="headerlink" title="电影效果视频的核心价值"></a>电影效果视频的核心价值</h2><p>电影效果视频的核心在于其模仿专业电影拍摄手法，特别是焦点转移和跟踪对焦技术的应用。通过浅景深效果，开发者可以将观众的注意力引导至场景中的关键主体，增强叙事感染力。传统上，这些对焦技术需要专业人员操作，而电影效果视频通过智能算法极大地简化了这一过程。</p>
+<p>电影效果视频的智能特性包括：</p>
+<ul>
+<li>自动识别进入画面的主体并跟踪对焦</li>
+<li>主体移开视线时自动转移焦点</li>
+<li>适时将焦点回归至原始主体</li>
 </ul>
+<h2 id="构建电影效果拍摄会话的完整流程"><a href="#构建电影效果拍摄会话的完整流程" class="headerlink" title="构建电影效果拍摄会话的完整流程"></a>构建电影效果拍摄会话的完整流程</h2><p>使用 Cinematic Video API 构建电影效果视频拍摄功能需要遵循特定的设置流程：</p>
+<h3 id="设备与格式选择"><a href="#设备与格式选择" class="headerlink" title="设备与格式选择"></a>设备与格式选择</h3><p>首先需要选择支持电影效果的设备。电影效果视频支持后置双广角摄像头和原深感摄像头，可以通过以下代码查找设备：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> deviceDiscoverySession <span class="operator">=</span> <span class="type">AVCaptureDevice</span>.<span class="type">DiscoverySession</span>(deviceTypes: [.builtInDualWideCamera], mediaType: .video, position: .back)</span><br></pre></td></tr></table></figure>
+<p>选择设备后，必须确保使用支持电影效果的格式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> format <span class="keyword">in</span> camera.formats &#123;</span><br><span class="line">    <span class="keyword">if</span> format.isCinematicVideoCaptureSupported &#123;</span><br><span class="line">       <span class="keyword">try!</span> camera.lockForConfiguration()</span><br><span class="line">       camera.activeFormat <span class="operator">=</span> format</span><br><span class="line">       camera.unlockForConfiguration()</span><br><span class="line">       <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="音频输入配置"><a href="#音频输入配置" class="headerlink" title="音频输入配置"></a>音频输入配置</h3><p>专业的视频拍摄离不开高质量的音频录制：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> audioDeviceDiscoverySession <span class="operator">=</span> <span class="type">AVCaptureDevice</span>.<span class="type">DiscoverySession</span>(deviceTypes [.microphone], mediaType: .audio, position: .unspecified)</span><br></pre></td></tr></table></figure>
+<h3 id="启用电影效果的关键步骤"><a href="#启用电影效果的关键步骤" class="headerlink" title="启用电影效果的关键步骤"></a>启用电影效果的关键步骤</h3><p>在输入配置中启用电影效果是核心步骤：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (videoInput.isCinematicVideoCaptureSupported) &#123;</span><br><span class="line">  videoInput.isCinematicVideoCaptureEnabled <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="输出与预览配置"><a href="#输出与预览配置" class="headerlink" title="输出与预览配置"></a>输出与预览配置</h3><p>配置输出时，可以考虑添加视频稳定功能：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> connection <span class="operator">=</span> movieFileOutput.connection(with: .video), </span><br><span class="line">    connection.isVideoStabilizationSupported &#123;</span><br><span class="line">    connection.preferredVideoStabilizationMode <span class="operator">=</span> .cinematicExtendedEnhanced</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>预览层的设置可以使用 SwiftUI 实现：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">CameraPreviewView</span>: <span class="title class_ inherited__">UIViewRepresentable</span> &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">makeUIView</span>(<span class="params">context</span>: <span class="type">Context</span>) -&gt; <span class="type">PreviewView</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="type">PreviewView</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="高级控制功能详解"><a href="#高级控制功能详解" class="headerlink" title="高级控制功能详解"></a>高级控制功能详解</h2><p>Cinematic Video API 提供了丰富的高级控制功能，让开发者能够精细调整拍摄效果。</p>
+<h3 id="虚化强度调整"><a href="#虚化强度调整" class="headerlink" title="虚化强度调整"></a>虚化强度调整</h3><p>通过 simulatedAperture 属性可以调整虚化强度：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="keyword">class</span> <span class="title class_">AVCaptureDeviceInput</span> : <span class="title class_ inherited__">AVCaptureInput</span> &#123;</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> simulatedAperture: <span class="type">Float</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="焦点控制方法"><a href="#焦点控制方法" class="headerlink" title="焦点控制方法"></a>焦点控制方法</h3><p>API 提供了三种手动对焦方式：</p>
+<ol>
+<li>按检测对象 ID 对焦</li>
+<li>按视图点对焦</li>
+<li>固定焦点对焦</li>
+</ol>
+<p>示例代码展示了如何按视图点对焦：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="keyword">func</span> <span class="title function_">setCinematicVideoTrackingFocus</span>(<span class="params">at</span> <span class="params">point</span>: <span class="type">CGPoint</span>, <span class="params">focusMode</span>: <span class="type">AVCaptureDevice</span>.<span class="type">CinematicVideoFocusMode</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="光线监测"><a href="#光线监测" class="headerlink" title="光线监测"></a>光线监测</h3><p>在低光环境下提供用户反馈十分重要：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">observation <span class="operator">=</span> camera.observe(\.cinematicVideoCaptureSceneMonitoringStatuses) &#123; <span class="keyword">_</span>, value <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> newStatuses <span class="operator">=</span> value.newValue &#123;</span><br><span class="line">        <span class="keyword">if</span> newStatuses.contains(.notEnoughLight) &#123;</span><br><span class="line">            <span class="comment">// 更新UI提示&quot;光线不足&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="应用场景与最佳实践"><a href="#应用场景与最佳实践" class="headerlink" title="应用场景与最佳实践"></a>应用场景与最佳实践</h2><p>开发者应考虑以下应用场景：</p>
+<ul>
+<li>专业视频拍摄应用</li>
+<li>社交媒体视频创作工具</li>
+<li>教育类视频录制应用</li>
+<li>企业视频会议增强功能</li>
+</ul>
+<p>最佳实践包括：</p>
+<ul>
+<li>提供虚化强度调整滑块</li>
+<li>在低光条件下提示用户</li>
+<li>实现多种对焦模式切换</li>
+<li>保存元数据以供后期编辑</li>
+</ul>
+<h2 id="未来展望与资源"><a href="#未来展望与资源" class="headerlink" title="未来展望与资源"></a>未来展望与资源</h2><p>随着 Cinematic Video API 的推出，开发者现在可以在应用中实现以往只有专业设备才能完成的电影效果视频拍摄。这一技术的开放将为移动视频创作带来更多可能性。</p>
+<p>开发者可以参考以下资源深入学习和应用这一技术：</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/253">利用拍摄控件提升你的相机体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10204">打造出色的锁定屏幕相机拍摄体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10106">在 iPadOS App 中支持外部摄像头</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10105">打造更流畅的相机体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10256">探索 tvOS 连续互通相机</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVFoundation">AVFoundation</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Cinematic">Cinematic</a></p>
 
       
 
@@ -380,18 +388,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_250/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_317/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          将结构化并发代码与 Network 框架搭配使用
+          visionOS 26 的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_234/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">借助 NetworkExtension 优化网络流量过滤和隧道</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_318/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">与附近用户共享 visionOS 体验</div>
       <i class="icon-circle-right"></i>
     </a>
   

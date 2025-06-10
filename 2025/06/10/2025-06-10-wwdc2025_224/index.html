@@ -16,8 +16,8 @@
 <meta property="og:description" content="在你的 app store 产品页面上使用辅助功能标签，以突出展示你的 app 支持的辅助功能。你将了解如何评估 app 的辅助功能 (如“旁白”、“更大字体”、“字幕”等)，并选择准确且描述性的辅助功能标签。你还将了解如何在整个设计阶段解决辅助功能问题。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9917/9917_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:52:28.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:52:28.733Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.794Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_224/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:52:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,90 +231,41 @@ var _hmt = _hmt || [];
       
         <p>在你的 app store 产品页面上使用辅助功能标签，以突出展示你的 app 支持的辅助功能。你将了解如何评估 app 的辅助功能 (如“旁白”、“更大字体”、“字幕”等)，并选择准确且描述性的辅助功能标签。你还将了解如何在整个设计阶段解决辅助功能问题。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9917/9917_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/224/">视频地址</a></p>
-<h1 id="为应用评估辅助功能标签：让科技惠及每个人"><a href="#为应用评估辅助功能标签：让科技惠及每个人" class="headerlink" title="为应用评估辅助功能标签：让科技惠及每个人"></a>为应用评估辅助功能标签：让科技惠及每个人</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在App Store上，辅助功能标签就像应用的无障碍”营养标签”，帮助用户了解应用是否满足他们的特殊需求。本文将带你系统评估应用的辅助功能支持情况，从设计原则到具体测试方法，教你如何准确标注这些关键信息。  </p>
-<h2 id="认识辅助功能营养标签"><a href="#认识辅助功能营养标签" class="headerlink" title="认识辅助功能营养标签"></a>认识辅助功能营养标签</h2><p>辅助功能营养标签是App Store展示应用无障碍特性的标准化方式。要正确标注：  </p>
-<ol>
-<li><strong>明确核心任务</strong>：用户下载应用的主要目的（如登录、购买等）  </li>
-<li><strong>全流程测试</strong>：用每项辅助功能验证所有核心任务  </li>
-<li><strong>多设备覆盖</strong>：包括iPhone、iPad、Mac等平台  </li>
-<li><strong>如实标注</strong>：仅声明完全支持的功能，无关功能不必标注  </li>
-</ol>
 <blockquote>
-<p>“没有我们的参与，就不要做关于我们的决定”——这是残障社群的核心信条。  </p>
-</blockquote>
-<h2 id="功能评估实战（以地标应用Landmarks为例）"><a href="#功能评估实战（以地标应用Landmarks为例）" class="headerlink" title="功能评估实战（以地标应用Landmarks为例）"></a>功能评估实战（以地标应用Landmarks为例）</h2><h3 id="视觉相关功能"><a href="#视觉相关功能" class="headerlink" title="视觉相关功能"></a>视觉相关功能</h3><ul>
-<li><p><strong>色彩对比</strong>  </p>
-<ul>
-<li>要求：前景/背景色有足够对比度（含深色模式）  </li>
-<li>案例：专门设计高对比配色，但需适配”增强对比度”设置  </li>
-</ul>
-</li>
-<li><p><strong>深色模式</strong>  </p>
-<ul>
-<li>验证智能反转颜色下的表现  </li>
-</ul>
-</li>
-<li><p><strong>大字号支持</strong>  </p>
-<ul>
-<li>最低要求：支持200%放大（理想情况更大）  </li>
-<li>问题发现：集合描述截断，文本框未动态扩展→暂不标注  </li>
-</ul>
-</li>
-</ul>
-<h3 id="交互设计原则"><a href="#交互设计原则" class="headerlink" title="交互设计原则"></a>交互设计原则</h3><ul>
-<li><p><strong>非色彩区分</strong>  </p>
-<ul>
-<li>禁止仅用颜色传达状态（如红/绿），需结合图标/文本  </li>
-<li>解决方案：为删除按钮等添加彩色图标  </li>
-</ul>
-</li>
-<li><p><strong>减弱动态效果</strong>  </p>
-<ul>
-<li>移除可能引发眩晕的动画/转场  </li>
-</ul>
-</li>
-</ul>
-<h3 id="辅助技术支持"><a href="#辅助技术支持" class="headerlink" title="辅助技术支持"></a>辅助技术支持</h3><ul>
-<li><p><strong>语音控制</strong>  </p>
-<ul>
-<li>关键：为所有可操作元素添加<code>accessibilityLabel</code>  </li>
-<li>测试：用纯语音命令完成核心流程  </li>
-</ul>
-</li>
-<li><p><strong>旁白（VoiceOver）</strong>  </p>
-<ul>
-<li>与视障用户共同测试导航结构  </li>
-<li>优化点：集合编辑界面的交互流程  </li>
-</ul>
-</li>
-</ul>
-<h3 id="媒体内容"><a href="#媒体内容" class="headerlink" title="媒体内容"></a>媒体内容</h3><ul>
-<li>无视频/音频内容的应用无需标注字幕/音频描述支持  </li>
-</ul>
-<h2 id="标注与发布"><a href="#标注与发布" class="headerlink" title="标注与发布"></a>标注与发布</h2><p>在App Store Connect中：  </p>
-<ol>
-<li>勾选已验证支持的功能（如深色模式、语音控制）  </li>
-<li>暂不标注未达标功能（如大字号）  </li>
-<li>关联详细说明页面  </li>
-</ol>
-<p>Landmarks最终标注支持：<br>✅ 色彩对比 ✅ 深色模式 ✅ 非色彩区分<br>✅ 减弱动态效果 ✅ 语音控制 ✅ 旁白  </p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>真正的无障碍设计需要：  </p>
-<ul>
-<li><strong>早期规划</strong>：从设计阶段考虑不同能力用户需求  </li>
-<li><strong>真实测试</strong>：邀请残障用户直接参与验证  </li>
-<li><strong>持续优化</strong>：通过营养标签透明展示进展  </li>
-</ul>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10074">动态字体体验入门</a>  </li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swiftui/view-accessibility">SwiftUI无障碍支持</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/accessibility">人机界面指南：无障碍</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/help/app-store-connect/manage-app-accessibility/overview-of-accessibility-nutrition-labels">辅助功能营养标签概述</a><blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="为你的应用评估辅助功能标签：全面指南"><a href="#为你的应用评估辅助功能标签：全面指南" class="headerlink" title="为你的应用评估辅助功能标签：全面指南"></a>为你的应用评估辅助功能标签：全面指南</h1><p>在当今数字时代，应用的可访问性已成为衡量产品质量的重要标准。Apple推出的辅助功能营养标签为开发者提供了展示应用包容性设计的绝佳机会，同时也帮助用户快速了解应用是否满足他们的特殊需求。</p>
+<h2 id="辅助功能营养标签的重要性"><a href="#辅助功能营养标签的重要性" class="headerlink" title="辅助功能营养标签的重要性"></a>辅助功能营养标签的重要性</h2><p>辅助功能营养标签在App Store产品页面上清晰展示应用支持的辅助功能，如”旁白”、”更大字体”、”字幕”等。这些标签不仅为用户提供了关键信息，也体现了开发者对包容性设计的重视。</p>
+<p>要准确评估应用的辅助功能支持情况，开发者首先需要明确应用的”常规任务”。这些任务包括用户下载应用的主要功能以及基础操作流程，如首次启动体验、登录、购买和设置等。只有确保用户能够无障碍地完成所有这些常规任务，才能标注应用对某项辅助功能的支持。</p>
+<h2 id="评估应用的无障碍性"><a href="#评估应用的无障碍性" class="headerlink" title="评估应用的无障碍性"></a>评估应用的无障碍性</h2><p>评估过程应遵循几个核心原则：</p>
+<ol>
+<li><p><strong>视觉设计优化</strong>：确保颜色对比度达标，支持深色模式，并避免仅通过颜色传递重要信息。Landmarks应用的案例表明，即使特意使用了高对比配色，仍可能发现某些颜色未达到最低对比标准，需要进行调整。</p>
 </li>
+<li><p><strong>文本可读性</strong>：应用至少应支持文本放大到默认大小的200%。使用Dynamic Type是实现这一目标的最佳方式。开发者需注意文本截断和对齐问题，确保信息获取无障碍。</p>
+</li>
+<li><p><strong>动效控制</strong>：为对动效敏感的用户提供支持，避免可能引起眩晕或恶心的动画效果。如果应用没有已知触发因素，可以标注支持”减弱动效”。</p>
+</li>
+<li><p><strong>辅助技术集成</strong>：</p>
+<ul>
+<li>语音控制：确保所有可触摸元素都有适当的可访问性元数据</li>
+<li>旁白支持：让用户无需看屏幕就能操作界面，准确描述元素并提供流畅的导航体验</li>
 </ul>
+</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：为按钮添加可访问性标签</span></span><br><span class="line"><span class="type">Button</span> &#123;</span><br><span class="line">&#125; label: &#123;</span><br><span class="line">    <span class="type">Image</span>(systemName: <span class="string">&quot;square.arrow.up&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line">.accessibilityLabel(<span class="string">&quot;分享&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="媒体内容无障碍性"><a href="#媒体内容无障碍性" class="headerlink" title="媒体内容无障碍性"></a>媒体内容无障碍性</h2><p>对于包含视频或音频内容的应用，需要提供：</p>
+<ul>
+<li>字幕：为听障用户提供对话和声音的文字描述</li>
+<li>音频描述：在媒体主音频的间隙描述视觉内容</li>
+</ul>
+<p>如果应用不包含这类媒体内容，则无需标注相关支持。</p>
+<h2 id="实施与标注"><a href="#实施与标注" class="headerlink" title="实施与标注"></a>实施与标注</h2><p>完成评估后，开发者可以在App Store Connect中为产品页面添加辅助功能营养标签，并链接到网站提供更多无障碍详情。Landmarks应用经过评估后，确认支持了足够对比度、深色界面、不依赖颜色区分、减弱动效、语音控制和旁白等功能。</p>
+<p>值得注意的是，与需要辅助功能的用户直接合作是了解应用可访问性的最有效方法之一。”没有我们的参与，就不要做关于我们的决定”这一残障社区的理念强调了用户参与测试的重要性。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>通过在设计中考虑无障碍性，使用辅助功能进行评估，并在产品页面上准确标注支持的功能，开发者可以创建更具包容性的应用。这不仅扩大了潜在用户群，也体现了对多元用户需求的尊重和关怀。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10074">动态字体体验入门</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/swiftui/view-accessibility">Accessibility</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/accessibility">Human Interface Guidelines: Accessibility</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/help/app-store-connect/manage-app-accessibility/overview-of-accessibility-nutrition-labels">Overview of Accessibility Nutrition Labels</a></p>
 
       
 
@@ -437,18 +388,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_229/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_215/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          让所有人都能更方便地使用你的 Mac App
+          通过 Apple Games App 吸引玩家
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_305/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">针对 visionOS 优化你的自定环境</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_227/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">完成后台任务</div>
       <i class="icon-circle-right"></i>
     </a>
   

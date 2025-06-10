@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 adattributionkit 的新功能，包括如何衡量重叠的重新吸引转化，以及如何为你的 app 自定广告归因规则。深入了解一个新的回传属性，你可以使用这个属性来衡量广告系列在各个国家和地区的实际效果。我们还将展示新的功能，以及用于测试 adattributionkit 实现情况的最佳做法。为了充分从这个讲座中获益，建议你先观看“了解 adattributionkit”。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9907/9907_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:26:16.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:26:16.773Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.340Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_221/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:26:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,93 +227,47 @@ var _hmt = _hmt || [];
       
         <p>了解 adattributionkit 的新功能，包括如何衡量重叠的重新吸引转化，以及如何为你的 app 自定广告归因规则。深入了解一个新的回传属性，你可以使用这个属性来衡量广告系列在各个国家和地区的实际效果。我们还将展示新的功能，以及用于测试 adattributionkit 实现情况的最佳做法。为了充分从这个讲座中获益，建议你先观看“了解 adattributionkit”。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9907/9907_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/221/">视频地址</a></p>
-<h1 id="AdAttributionKit-新功能全面解析：从重叠转化到地理数据"><a href="#AdAttributionKit-新功能全面解析：从重叠转化到地理数据" class="headerlink" title="AdAttributionKit 新功能全面解析：从重叠转化到地理数据"></a>AdAttributionKit 新功能全面解析：从重叠转化到地理数据</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 iOS 18.4 的发布，Apple 为开发者带来了 AdAttributionKit 的一系列重要更新。作为隐私优先的广告归因解决方案，这些新功能将帮助开发者更精准地衡量广告效果，同时保持对用户隐私的最高保护标准。本文将详细介绍这些新特性及其应用场景。</p>
-<h2 id="核心新功能"><a href="#核心新功能" class="headerlink" title="核心新功能"></a>核心新功能</h2><h3 id="1-重叠转化窗口测量"><a href="#1-重叠转化窗口测量" class="headerlink" title="1. 重叠转化窗口测量"></a>1. 重叠转化窗口测量</h3><p><strong>问题背景</strong>：以往同一时间只能有一个活跃的重新互动转化窗口，导致复杂用户路径难以准确追踪。</p>
-<p><strong>解决方案</strong>：</p>
-<ul>
-<li>引入转化标签（Conversion Tag）机制，类似书签功能</li>
-<li>允许同时追踪多个广告带来的转化行为</li>
-</ul>
-<p><strong>技术实现</strong>：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 Info.plist 中启用功能</span></span><br><span class="line"><span class="operator">&lt;</span>key<span class="operator">&gt;</span><span class="type">EligibleForAdAttributionKitOverlappingConversions</span>&lt;/key&gt;</span><br><span class="line"><span class="operator">&lt;</span><span class="literal">true</span><span class="operator">/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用更新API</span></span><br><span class="line"><span class="keyword">let</span> update <span class="operator">=</span> <span class="type">PostbackUpdate</span>(fineConversionValue: conversionValue,</span><br><span class="line">                          lockPostback: <span class="literal">false</span>,</span><br><span class="line">                          conversionTag: conversionTag)</span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> <span class="type">Postback</span>.updateConversionValue(update)</span><br></pre></td></tr></table></figure></p>
-<p><strong>应用场景</strong>：用户点击广告A浏览商品，几小时后点击广告B，但最终购买的是广告A的商品——现在可以准确归因。</p>
-<h3 id="2-自定义归因规则"><a href="#2-自定义归因规则" class="headerlink" title="2. 自定义归因规则"></a>2. 自定义归因规则</h3><p><strong>灵活配置选项</strong>：</p>
-<ol>
-<li><p><strong>归因窗口期自定义</strong></p>
-<ul>
-<li>默认值：点击广告30天，浏览广告1天</li>
-<li>可针对特定广告网络单独设置</li>
-<li>支持完全忽略某类互动（如仅追踪点击广告）</li>
-</ul>
-</li>
-<li><p><strong>冷却期设置</strong></p>
-<ul>
-<li>防止安装后短时间内重新互动的归因干扰</li>
-<li>可分别设置安装和重新互动的冷却时长</li>
-</ul>
-</li>
-</ol>
-<p><strong>配置示例</strong>（实际使用Info.plist，此处为示意JSON）：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;com.example.adNetwork&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;click&quot;</span><span class="punctuation">:</span> <span class="number">5</span><span class="punctuation">,</span>  <span class="comment">// 5天点击归因窗口</span></span><br><span class="line">    <span class="attr">&quot;view&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ignore&quot;</span>  <span class="comment">// 忽略浏览广告</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="3-回传地理数据"><a href="#3-回传地理数据" class="headerlink" title="3. 回传地理数据"></a>3. 回传地理数据</h3><p><strong>新增字段</strong>：国家代码（countryCode）</p>
-<p><strong>数据来源</strong>：</p>
-<ul>
-<li>App Store安装：用户账户国家/地区</li>
-<li>重新互动：沿用安装时的地理位置</li>
-<li>替代应用市场：通过安装验证令牌传递</li>
-</ul>
-<p><strong>隐私保护</strong>：</p>
-<ul>
-<li>采用群体匿名算法</li>
-<li>仅当同国家转化量达到阈值时才包含在回传中</li>
-<li>不影响现有数据聚合层级</li>
-</ul>
-<h3 id="4-开发者测试工具"><a href="#4-开发者测试工具" class="headerlink" title="4. 开发者测试工具"></a>4. 开发者测试工具</h3><p><strong>iOS 18.4新功能</strong>：</p>
-<ol>
-<li>进入设置 &gt; 开发者 &gt; 广告归因测试</li>
-<li>配置应用Bundle ID和测试服务器URL</li>
-<li>自定义回传属性（包括国家代码）</li>
-<li>手动触发测试回传</li>
-</ol>
-<p><strong>测试回传特征</strong>：</p>
-<ul>
-<li>使用特殊开发签名密钥（kid值不同）</li>
-<li>广告网络ID固定为<code>development.adattributionkit</code></li>
-<li>调试时应用ID可能显示为0</li>
-</ul>
-<h2 id="最佳实践建议"><a href="#最佳实践建议" class="headerlink" title="最佳实践建议"></a>最佳实践建议</h2><ol>
-<li><p><strong>立即行动项</strong>：</p>
-<ul>
-<li>评估现有归因策略，在Info.plist中配置新规则</li>
-<li>测试环境验证重叠转化功能</li>
-<li>SKAdNetwork用户应考虑迁移</li>
-</ul>
-</li>
-<li><p><strong>升级路径</strong>：</p>
-<ul>
-<li>先测试新功能再逐步部署到生产环境</li>
-<li>监控归因准确性和回传数据质量</li>
-</ul>
-</li>
-<li><p><strong>资源利用</strong>：</p>
-<ul>
-<li>充分利用新的测试工具缩短开发周期</li>
-<li>结合文档优化配置</li>
-</ul>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>AdAttributionKit 的这些增强功能代表了Apple在隐私保护广告技术领域的最新进展。通过更精细的转化追踪、灵活的规则配置和实用的测试工具，开发者现在能够在不牺牲用户隐私的前提下，获得更全面的广告效果洞察。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/246">将隐私保护融入开发流程</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10060">了解 AdAttributionKit</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AdAttributionKit">AdAttributionKit 主文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AdAttributionKit/configuring-attribution-rules-for-your-app">归因规则配置指南</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AdAttributionKit/creating-postbacks-in-developer-settings">开发者模式测试回传</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AdAttributionKit/conversion-tags">转化标签使用说明</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="AdAttributionKit-新特性：全面解析广告归因增强功能"><a href="#AdAttributionKit-新特性：全面解析广告归因增强功能" class="headerlink" title="AdAttributionKit 新特性：全面解析广告归因增强功能"></a>AdAttributionKit 新特性：全面解析广告归因增强功能</h1><p>Apple在WWDC24上为开发者带来了AdAttributionKit的一系列创新功能，旨在提升广告转化测量精度与灵活性，同时坚守隐私保护的核心理念。本文将深入解析这些新特性的技术实现与应用场景。</p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>AdAttributionKit作为Apple隐私优先的广告归因解决方案，自iOS 17.4推出以来不断完善。在iOS 18系列更新中，该系统新增了多项关键功能，包括重叠转化窗口测量、自定义归因规则配置、地理数据回传以及开发者测试工具增强。</p>
+<h2 id="重叠转化窗口测量"><a href="#重叠转化窗口测量" class="headerlink" title="重叠转化窗口测量"></a>重叠转化窗口测量</h2><p>iOS 18.4引入的突破性功能允许应用同时追踪多个再互动转化窗口，解决了以往只能有一个活跃窗口的限制。这项改进特别适用于同时运行多个促销活动的场景。</p>
+<p>技术实现要点：</p>
+<ol>
+<li>需在Info.plist中设置<code>EligibleForAdAttributionKitOverlappingConversions</code>为YES</li>
+<li>通过URL参数解析转化标签：<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">retrieveConversionTag</span>(<span class="params">fromURL</span> <span class="params">url</span>: <span class="type">URL</span>) -&gt; <span class="type">String</span>? &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> components <span class="operator">=</span> <span class="type">URLComponents</span>(url: url, resolvingAgainstBaseURL: <span class="literal">true</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;无法解析URL组件&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 其余解析代码...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>更新特定转化值时调用专用API：<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">updateConversionValue</span>(<span class="keyword">_</span> <span class="params">conversionValue</span>: <span class="type">Int</span>, <span class="params">conversionTag</span>: <span class="type">String</span>) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> update <span class="operator">=</span> <span class="type">PostbackUpdate</span>(fineConversionValue: conversionValue,</span><br><span class="line">                              lockPostback: <span class="literal">false</span>,</span><br><span class="line">                              conversionTag: conversionTag)</span><br><span class="line">    <span class="comment">// 执行更新...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
+</ol>
+<h2 id="自定义归因规则配置"><a href="#自定义归因规则配置" class="headerlink" title="自定义归因规则配置"></a>自定义归因规则配置</h2><p>开发者现在可以针对不同广告网络和互动类型灵活配置归因参数：</p>
+<ol>
+<li><strong>归因窗口定制</strong>：按网络和互动类型(点击/浏览)设置不同窗口时长</li>
+<li><strong>冷却期设置</strong>：避免安装后的短时互动覆盖原始转化价值</li>
+<li><strong>配置示例</strong>：<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;com.example.adNetwork&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;click&quot;</span><span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;view&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;global&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;view&quot;</span><span class="punctuation">:</span> <span class="number">3</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="回传地理数据增强"><a href="#回传地理数据增强" class="headerlink" title="回传地理数据增强"></a>回传地理数据增强</h2><p>新增的国家代码字段为广告主提供了地域维度的数据分析能力：</p>
+<ul>
+<li>App Store安装：采用用户账户的商店地区</li>
+<li>再互动转化：沿用安装时的地区</li>
+<li>替代市场：需在JWS令牌中提供已验证的国家代码</li>
+<li>隐私保护：遵循群体匿名算法，仅当转化量达标时才会包含该字段</li>
 </ul>
+<h2 id="开发者测试工具"><a href="#开发者测试工具" class="headerlink" title="开发者测试工具"></a>开发者测试工具</h2><p>iOS 18.4的设置应用新增了直接创建测试回传的功能：</p>
+<ol>
+<li>路径：开发者选项→”Ad Attribution Testing”→”Development Postbacks”</li>
+<li>可配置属性：包括测试国家代码、数据粒度等</li>
+<li>特殊标识：网络ID为”development.adattributionkit”，使用新签名密钥</li>
+</ol>
+<h2 id="总结与建议"><a href="#总结与建议" class="headerlink" title="总结与建议"></a>总结与建议</h2><p>AdAttributionKit的新特性为开发者提供了更精细的广告效果测量工具，同时保持了Apple对用户隐私的承诺。开发者应采取以下行动：</p>
+<ol>
+<li>在Info.plist中添加归因规则配置</li>
+<li>尽早利用测试功能验证实现</li>
+<li>从SKAdNetwork迁移至AdAttributionKit以获得完整功能</li>
+</ol>
+<p>这些增强功能体现了Apple在平衡广告效果测量与用户隐私保护方面的持续创新，为应用开发者提供了更强大的商业化工具。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/246">将隐私保护融入开发流程</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10060">了解 AdAttributionKit</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AdAttributionKit">AdAttributionKit 文档</a></p>
 
       
 
@@ -420,18 +374,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_233/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_219/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Safari 浏览器和 WebKit 的新功能
+          了解 Liquid Glass
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_291/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SwiftData：深入了解继承和架构迁移</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_222/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">提升 App 的多语言体验</div>
       <i class="icon-circle-right"></i>
     </a>
   

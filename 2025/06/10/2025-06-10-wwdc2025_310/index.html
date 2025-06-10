@@ -16,8 +16,8 @@
 <meta property="og:description" content="更新你的 appkit app，以便充分利用全新设计系统。我们将深入探索标签视图、分屏浏览、栏、演示文稿、搜索和控制项等方面的主要变化，并向你展示如何在自定 ui 中使用 liquid glass。为了充分从这个视频中获益，建议你先观看“了解全新设计系统”以获取一般性设计指导。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10015/10015_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:33:19.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:33:19.475Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.841Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="macos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_310/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:33:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,37 +226,145 @@ var _hmt = _hmt || [];
       
         <p>更新你的 appkit app，以便充分利用全新设计系统。我们将深入探索标签视图、分屏浏览、栏、演示文稿、搜索和控制项等方面的主要变化，并向你展示如何在自定 ui 中使用 liquid glass。为了充分从这个视频中获益，建议你先观看“了解全新设计系统”以获取一般性设计指导。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10015/10015_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/310/">视频地址</a></p>
-<h1 id="适配macOS全新设计系统：从玻璃材质到控件升级"><a href="#适配macOS全新设计系统：从玻璃材质到控件升级" class="headerlink" title="适配macOS全新设计系统：从玻璃材质到控件升级"></a>适配macOS全新设计系统：从玻璃材质到控件升级</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>macOS全新设计系统带来了视觉体系的全面革新，液态玻璃材质和重新设计的控件为Mac应用树立了新标准。本文将深入解析如何将您的AppKit应用升级至这一系统，涵盖工具栏、分屏布局、控件优化等关键变化，以及如何巧妙运用液态玻璃效果提升用户体验。</p>
-<h2 id="核心设计理念"><a href="#核心设计理念" class="headerlink" title="核心设计理念"></a>核心设计理念</h2><p>液态玻璃材质成为新系统的明星元素，其半透明特性能够动态反射和折射光线，赋予界面立体层次感。这种材质被广泛应用于窗口结构组件，如悬浮工具栏和边栏，创建出独具特色的视觉深度。</p>
-<h3 id="工具栏升级技巧"><a href="#工具栏升级技巧" class="headerlink" title="工具栏升级技巧"></a>工具栏升级技巧</h3><ol>
-<li><strong>自动分组逻辑</strong>：AppKit会根据控件类型自动将相关操作分组到同一玻璃面板</li>
-<li><strong>外观自适应</strong>：玻璃材质会根据下层内容智能调整浅色/深色主题</li>
-<li><strong>突出显示技术</strong>：<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用强调色突出重要操作</span></span><br><span class="line">toolbarItem.style <span class="operator">=</span> .prominent</span><br><span class="line"><span class="comment">// 自定义着色</span></span><br><span class="line">toolbarItem.backgroundTintColor <span class="operator">=</span> .systemGreen</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="窗口结构与布局优化"><a href="#窗口结构与布局优化" class="headerlink" title="窗口结构与布局优化"></a>窗口结构与布局优化</h2><p>新系统采用”同心圆嵌套”设计理念，窗口圆角半径与内部元素保持和谐比例关系。关键改进包括：</p>
-<h3 id="安全区域管理"><a href="#安全区域管理" class="headerlink" title="安全区域管理"></a>安全区域管理</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 避免内容与圆角重叠的布局示例</span></span><br><span class="line"><span class="keyword">let</span> safeArea <span class="operator">=</span> layoutGuide(for: .safeArea(cornerAdaptation: .horizontal))</span><br><span class="line"><span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">    safeArea.leadingAnchor.constraint(equalTo: button.leadingAnchor),</span><br><span class="line">    safeArea.trailingAnchor.constraint(greaterThanOrEqualTo: button.trailingAnchor)</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
-<h2 id="控件系统全面升级"><a href="#控件系统全面升级" class="headerlink" title="控件系统全面升级"></a>控件系统全面升级</h2><p>macOS Tahoe带来了焕然一新的控件家族：</p>
-<ol>
-<li><strong>尺寸阶梯扩展</strong>：新增超大尺寸，用于强调核心操作</li>
-<li><strong>形状自适应</strong>：从圆角矩形到胶囊形状的智能转换</li>
-<li><strong>突出度控制</strong>：通过tintProminence属性精细调整视觉权重<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置不同突出度级别</span></span><br><span class="line">shuffleButton.tintProminence <span class="operator">=</span> .secondary</span><br><span class="line">playButton.keyEquivalent <span class="operator">=</span> <span class="string">&quot;<span class="subst">\r</span>&quot;</span> <span class="comment">// 自动获取主要突出度</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="液态玻璃材质实践"><a href="#液态玻璃材质实践" class="headerlink" title="液态玻璃材质实践"></a>液态玻璃材质实践</h2><p>在自定义UI中应用玻璃效果时，需遵循”顶层悬浮”原则：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建玻璃效果视图的正确方式</span></span><br><span class="line"><span class="keyword">let</span> glassView <span class="operator">=</span> <span class="type">NSGlassEffectView</span>()</span><br><span class="line">glassView.contentView <span class="operator">=</span> customContentView</span><br><span class="line">glassView.cornerRadius <span class="operator">=</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 多个玻璃元素的组合技巧</span></span><br><span class="line"><span class="keyword">let</span> container <span class="operator">=</span> <span class="type">NSGlassEffectContainerView</span>()</span><br><span class="line">container.contentView <span class="operator">=</span> stackOfGlassViews</span><br></pre></td></tr></table></figure>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>升级到全新设计系统不仅是视觉焕新，更是提升用户体验的重要机遇。建议从工具栏改造开始，逐步应用无边滚动布局，最后为关键控件添加液态玻璃效果。记住：好的设计应当强化功能，而非分散注意力。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/219">了解液态玻璃</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/TechnologyOverviews/adopting-liquid-glass">Adopting Liquid Glass</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/Human-Interface-Guidelines/designing-for-macos">Human Interface Guidelines: Designing for macOS</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用全新设计系统构建-AppKit-应用"><a href="#使用全新设计系统构建-AppKit-应用" class="headerlink" title="使用全新设计系统构建 AppKit 应用"></a>使用全新设计系统构建 AppKit 应用</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>macOS 迎来了一次重大的视觉系统革新，全新设计系统为 Mac 应用带来了崭新的外观标准。Apple 框架工程经理 Jeff Nadeau 在 WWDC 2025 的演讲中详细介绍了如何利用这个新设计系统更新 AppKit 应用。此次变革的核心在于 Liquid Glass 材质的引入，它为界面元素带来了立体感和动态效果。</p>
+<h2 id="设计系统概述"><a href="#设计系统概述" class="headerlink" title="设计系统概述"></a>设计系统概述</h2><p>新设计系统带来了全方位的视觉更新，主要包括以下特点：</p>
+<ul>
+<li>采用 Liquid Glass 材质，具有半透明特性</li>
+<li>能够反射和折射光线，创造立体效果</li>
+<li>AppKit 提供了完整的工具支持</li>
+<li>涵盖了窗口结构、控件样式等多个方面</li>
 </ul>
+<h2 id="应用结构设计"><a href="#应用结构设计" class="headerlink" title="应用结构设计"></a>应用结构设计</h2><h3 id="窗口外观更新"><a href="#窗口外观更新" class="headerlink" title="窗口外观更新"></a>窗口外观更新</h3><p>新设计系统对 Mac 窗口的外观进行了重新设计：</p>
+<ol>
+<li><strong>窗口形状变化</strong>：采用了全新的几何形状设计</li>
+<li><strong>材质应用</strong>：主要结构区域使用玻璃材质</li>
+<li><strong>层级增强</strong>：工具栏元素悬浮于玻璃材质上，增强视觉层次</li>
+</ol>
+<h3 id="工具栏设计技巧"><a href="#工具栏设计技巧" class="headerlink" title="工具栏设计技巧"></a>工具栏设计技巧</h3><p>工具栏控件的分组逻辑也得到了改进：</p>
+<ul>
+<li>AppKit 会自动将同类工具栏按钮组合到同一玻璃块中</li>
+<li>不同类型控件(如分段控件、弹出按钮)会自动分隔显示</li>
+<li>开发者可以使用 NSToolbarItemGroup 手动分组或插入留白器进行分隔</li>
+</ul>
+<p>Liquid Glass 具有自适应特性：</p>
+<ul>
+<li>智能调整以匹配下层内容亮度</li>
+<li>工具栏玻璃会自动在深浅色外观间切换</li>
+<li>通过 NSAppearance 系统实现内容适配</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 移除工具栏项玻璃材质</span></span><br><span class="line">toolbarItem.isBordered <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用强调色为玻璃着色</span></span><br><span class="line">toolbarItem.style <span class="operator">=</span> .prominent</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用特定颜色为玻璃着色</span></span><br><span class="line">toolbarItem.backgroundTintColor <span class="operator">=</span> .systemGreen</span><br></pre></td></tr></table></figure>
+<h3 id="工具栏徽章系统"><a href="#工具栏徽章系统" class="headerlink" title="工具栏徽章系统"></a>工具栏徽章系统</h3><p>新设计系统引入了丰富的徽章样式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数字徽章</span></span><br><span class="line"><span class="type">NSItemBadge</span>.count(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 文字徽章</span></span><br><span class="line"><span class="type">NSItemBadge</span>.text(<span class="string">&quot;New&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指示器徽章</span></span><br><span class="line"><span class="type">NSItemBadge</span>.indicator</span><br></pre></td></tr></table></figure>
+<h2 id="分屏浏览布局优化"><a href="#分屏浏览布局优化" class="headerlink" title="分屏浏览布局优化"></a>分屏浏览布局优化</h2><p>边栏和检查器区域的设计有了显著变化：</p>
+<ul>
+<li>边栏显示为悬浮玻璃窗格</li>
+<li>检查器为无边玻璃区域</li>
+<li>使用 NSSplitViewController 自动获得玻璃材质</li>
+</ul>
+<p>适合悬浮显示的内容类型包括：</p>
+<ul>
+<li>水平滚动内容</li>
+<li>支持轻扫操作的列表</li>
+<li>地图/电影海报等丰富内容</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 允许内容扩展到边栏下方</span></span><br><span class="line">splitViewItem.automaticallyAdjustsSafeAreaInsets <span class="operator">=</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h3 id="窗口圆角处理"><a href="#窗口圆角处理" class="headerlink" title="窗口圆角处理"></a>窗口圆角处理</h3><p>窗口圆角半径也有了调整：</p>
+<ul>
+<li>带工具栏的窗口使用更大圆角半径</li>
+<li>仅标题栏的窗口保持较小圆角半径</li>
+<li>使用 NSView.LayoutRegion 避免内容被圆角裁剪</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 避开窗口角落</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">updateConstraints</span>() &#123;</span><br><span class="line">    <span class="keyword">guard</span> <span class="operator">!</span>installedButtonConstraints <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> safeArea <span class="operator">=</span> layoutGuide(for: .safeArea(cornerAdaptation: .horizontal))</span><br><span class="line"></span><br><span class="line">    <span class="type">NSLayoutConstraint</span>.activate([</span><br><span class="line">        safeArea.leadingAnchor.constraint(equalTo: button.leadingAnchor),</span><br><span class="line">        safeArea.trailingAnchor.constraint(greaterThanOrEqualTo: button.trailingAnchor),</span><br><span class="line">        safeArea.bottomAnchor.constraint(equalTo: button.bottomAnchor)</span><br><span class="line">    ])</span><br><span class="line">    installedButtonConstraints <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="滚动边缘效果"><a href="#滚动边缘效果" class="headerlink" title="滚动边缘效果"></a>滚动边缘效果</h2><p>新系统鼓励无边滚动内容设计：</p>
+<ul>
+<li><strong>软边缘样式</strong>：渐变透明+内容虚化</li>
+<li><strong>硬边缘样式</strong>：不透明背景+明显区分</li>
+</ul>
+<p>分屏浏览项目补充视图：</p>
+<ul>
+<li>类似标题栏补充视图，但局限于单个分屏</li>
+<li>可置于分屏顶部或底部边缘</li>
+</ul>
+<p>添加方法：</p>
+<ul>
+<li>addTopAlignedAccessoryViewController</li>
+<li>addBottomAlignedAccessoryViewController</li>
+</ul>
+<h2 id="控件更新与改进"><a href="#控件更新与改进" class="headerlink" title="控件更新与改进"></a>控件更新与改进</h2><p>macOS Tahoe 为控件带来了多项新特性：</p>
+<ol>
+<li><p><strong>尺寸变化</strong>：</p>
+<ul>
+<li>新增超大尺寸(强调主要操作)</li>
+<li>调整各尺寸高度(增大点击区域)</li>
+<li>prefersCompactControlSizeMetrics 兼容旧版布局</li>
+</ul>
+</li>
+<li><p><strong>形状变化</strong>：</p>
+<ul>
+<li>迷你至中号：圆角矩形</li>
+<li>大号和超大号：胶囊形状</li>
+<li>使用 borderShaped 属性自定义形状</li>
+</ul>
+</li>
+<li><p><strong>玻璃边框样式</strong>：</p>
+<ul>
+<li>使用 Liquid Glass 替代标准按钮背景</li>
+<li>兼容 bezelColor 着色属性</li>
+</ul>
+</li>
+<li><p><strong>突出等级系统</strong>：</p>
+<ul>
+<li>none：不着色/最浅</li>
+<li>secondary：柔和着色</li>
+<li>primary：最醒目着色</li>
+<li>automatic：自动选择</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 为随机播放和排队按钮设置次级突出</span></span><br><span class="line">shuffleButton.tintProminence <span class="operator">=</span> .secondary</span><br><span class="line">playNextButton.tintProminence <span class="operator">=</span> .secondary</span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认按钮自动使用主要突出</span></span><br><span class="line">playButton.keyEquivalent <span class="operator">=</span> <span class="string">&quot;<span class="subst">\r</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<p>其他控件改进：</p>
+<ul>
+<li>滑块增加 neutralValue 设置填充锚点</li>
+<li>支持轨道强调色填充</li>
+<li>菜单全面更新外观，增加图标使用</li>
+</ul>
+<h2 id="Liquid-Glass-材质应用"><a href="#Liquid-Glass-材质应用" class="headerlink" title="Liquid Glass 材质应用"></a>Liquid Glass 材质应用</h2><h3 id="设计意图"><a href="#设计意图" class="headerlink" title="设计意图"></a>设计意图</h3><p>Liquid Glass 材质的设计原则：</p>
+<ul>
+<li>悬浮在 UI 顶层</li>
+<li>仅用于最重要的元素</li>
+<li>提升控件和导航层级</li>
+</ul>
+<h3 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h3><p>使用 NSGlassEffectView 的要点：</p>
+<ul>
+<li>设置 contentView 显示内容</li>
+<li>避免作为子视图置于内容下方</li>
+<li>使用 cornerRadius 和 tintColor 自定义外观</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 采用 NSGlassEffectView</span></span><br><span class="line"><span class="keyword">let</span> userInfoView <span class="operator">=</span> <span class="type">UserInfoView</span>()</span><br><span class="line"><span class="keyword">let</span> activityPickerView <span class="operator">=</span> <span class="type">ActivityPickerView</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> userInfoGlass <span class="operator">=</span> <span class="type">NSGlassEffectView</span>()</span><br><span class="line">userInfoGlass.contentView <span class="operator">=</span> userInfoView</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> activityPickerGlass <span class="operator">=</span> <span class="type">NSGlassEffectView</span>()</span><br><span class="line">activityPickerGlass.contentView <span class="operator">=</span> activityPickerView</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> stack <span class="operator">=</span> <span class="type">NSStackView</span>(views: [userInfoGlass, </span><br><span class="line">                                activityPickerGlass])</span><br><span class="line">stack.orientation <span class="operator">=</span> .horizontal</span><br></pre></td></tr></table></figure>
+<p>NSGlassEffectContainerView 的优势：</p>
+<ul>
+<li>统一组内元素视觉效果</li>
+<li>支持液体融合效果</li>
+<li>确保采样区域一致</li>
+<li>提升渲染性能</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 采用玻璃效果容器视图</span></span><br><span class="line"><span class="keyword">let</span> userInfoView <span class="operator">=</span> <span class="type">UserInfoView</span>()</span><br><span class="line"><span class="keyword">let</span> activityPickerView <span class="operator">=</span> <span class="type">ActivityPickerView</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> userInfoGlass <span class="operator">=</span> <span class="type">NSGlassEffectView</span>()</span><br><span class="line">userInfoGlass.contentView <span class="operator">=</span> userInfoView</span><br><span class="line">userInfoGlass.cornerRadius <span class="operator">=</span> <span class="number">999</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> activityPickerGlass <span class="operator">=</span> <span class="type">NSGlassEffectView</span>()</span><br><span class="line">activityPickerGlass.contentView <span class="operator">=</span> activityPickerView</span><br><span class="line">activityPickerGlass.cornerRadius <span class="operator">=</span> <span class="number">999</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> stack <span class="operator">=</span> <span class="type">NSStackView</span>(views: [userInfoGlass, </span><br><span class="line">                                activityPickerGlass])</span><br><span class="line">stack.orientation <span class="operator">=</span> .horizontal</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> glassContainer <span class="operator">=</span> <span class="type">NSGlassEffectContainerView</span>()</span><br><span class="line">glassContainer.contentView <span class="operator">=</span> stack</span><br></pre></td></tr></table></figure>
+<h2 id="实施建议与总结"><a href="#实施建议与总结" class="headerlink" title="实施建议与总结"></a>实施建议与总结</h2><p>为了帮助开发者顺利过渡到新设计系统，演讲中提出了以下实施步骤：</p>
+<ol>
+<li>使用 Xcode 26 构建应用</li>
+<li>采用悬浮玻璃工具栏和边栏</li>
+<li>转向无边内容展示风格</li>
+<li>适配新控件尺寸</li>
+<li>检查硬编码高度问题</li>
+<li>使用符号图标优化菜单</li>
+<li>为重要元素应用 Liquid Glass</li>
+</ol>
+<p>新设计系统为 macOS 应用带来了全新的视觉体验，通过 Liquid Glass 材质和各种优化设计，开发者可以为用户创造更加精美、现代的界面效果。遵循这些设计原则和技术指导，将使应用完美融入 macOS 的视觉生态系统。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/219">了解 Liquid Glass</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/356">了解全新设计系统</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/TechnologyOverviews/adopting-liquid-glass">采用 Liquid Glass</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/Human-Interface-Guidelines/designing-for-macos">人机界面指南：macOS 设计</a></p>
 
       
 
@@ -359,18 +467,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_222/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_311/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          提升 App 的多语言体验
+          安全地混合使用 C、C ++ 和 Swift
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_278/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">小组件的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_313/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">将 Swift Charts 扩展成三维图表</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="认识一下 games app，这是一个全新的一站式平台，供玩家了解所玩游戏的最新动态、发现新游戏并与朋友一起玩。了解如何在 games app 中设置游戏以提升曝光度，如何整合 game center 以打造社交游戏，以及如何通过“app 内活动”来吸引玩家再次参与游戏。 为了充分从这个讲座中获益，我们还建议观看“开始使用 game center”。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9893/9893_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:38:33.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:38:33.576Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.122Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_215/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:38:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -229,74 +229,81 @@ var _hmt = _hmt || [];
         <p>认识一下 games app，这是一个全新的一站式平台，供玩家了解所玩游戏的最新动态、发现新游戏并与朋友一起玩。了解如何在 games app 中设置游戏以提升曝光度，如何整合 game center 以打造社交游戏，以及如何通过“app 内活动”来吸引玩家再次参与游戏。</p>
 <p>为了充分从这个讲座中获益，我们还建议观看“开始使用 game center”。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9893/9893_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/215/">视频地址</a></p>
-<h1 id="Apple-Games-App-全攻略：如何让您的游戏脱颖而出"><a href="#Apple-Games-App-全攻略：如何让您的游戏脱颖而出" class="headerlink" title="Apple Games App 全攻略：如何让您的游戏脱颖而出"></a>Apple Games App 全攻略：如何让您的游戏脱颖而出</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Apple 推出的 Games App 是一款革命性的游戏平台，它为玩家提供了全新的一站式游戏体验。作为开发者，了解如何充分利用这个平台的特性，将大大提升您游戏的曝光度和玩家参与度。本文将详细介绍如何配置游戏信息、整合 Game Center 功能以及使用 App 内活动来吸引和保持玩家。</p>
-<h2 id="Games-App-核心功能概览"><a href="#Games-App-核心功能概览" class="headerlink" title="Games App 核心功能概览"></a>Games App 核心功能概览</h2><p>Games App 预装在 iPhone、iPad 和 Mac 设备上，深度整合于操作系统，具有以下特点：</p>
-<ul>
-<li><strong>首页标签页</strong>：展示游戏内活动动态、好友游戏动态、Game Center 活动更新和精选游戏合集</li>
-<li><strong>专属游戏页面</strong>：包含游戏详情、成就进度、排行榜、挑战任务和多人活动</li>
-<li><strong>“一起玩”标签页</strong>：展示好友游戏动态和比分对比</li>
-<li><strong>“游戏库”</strong>：集中管理已安装游戏</li>
-<li><strong>“搜索”标签页</strong>：帮助玩家探索新游戏</li>
-</ul>
-<h2 id="如何配置游戏信息"><a href="#如何配置游戏信息" class="headerlink" title="如何配置游戏信息"></a>如何配置游戏信息</h2><p>要让您的游戏在 Games App 中拥有定制化页面，需要：</p>
-<ol>
-<li>在 App Store Connect 中将主/次类别设为”游戏”</li>
-<li>确保游戏图标、名称和副标题清晰醒目</li>
-<li>上传高质量的预览视频和截图</li>
-<li>设置详细的游戏描述和精准搜索关键词</li>
-</ol>
-<p><strong>特别提示</strong>：如果您的游戏支持控制器，记得在 Xcode 添加 Game Controller 功能，这样游戏会在 Games App 和 App Store 显示控制器徽章。</p>
-<h2 id="整合-Game-Center-功能"><a href="#整合-Game-Center-功能" class="headerlink" title="整合 Game Center 功能"></a>整合 Game Center 功能</h2><p>Game Center 是增强玩家参与度的强大工具，包含以下功能：</p>
-<h3 id="成就系统"><a href="#成就系统" class="headerlink" title="成就系统"></a>成就系统</h3><ul>
-<li>追踪游戏进度</li>
-<li>鼓励玩家完成所有目标</li>
-<li>支持与好友分享成就</li>
-</ul>
-<h3 id="排行榜"><a href="#排行榜" class="headerlink" title="排行榜"></a>排行榜</h3><ul>
-<li>让玩家衡量技能水平</li>
-<li>与好友较量</li>
-<li>激发竞争欲望</li>
-</ul>
-<h3 id="挑战任务"><a href="#挑战任务" class="headerlink" title="挑战任务"></a>挑战任务</h3><ul>
-<li>将单人游戏转化为社交体验</li>
-<li>玩家可与好友进行限时比分竞赛</li>
-<li>实时查看成绩并重赛</li>
-</ul>
-<h3 id="活动功能"><a href="#活动功能" class="headerlink" title="活动功能"></a>活动功能</h3><ul>
-<li>通过深度链接直达游戏特定场景</li>
-<li>特别适合多人体验发现</li>
-<li>可生成跨平台分享的派对码</li>
-</ul>
-<h2 id="用-App-内活动保持玩家参与度"><a href="#用-App-内活动保持玩家参与度" class="headerlink" title="用 App 内活动保持玩家参与度"></a>用 App 内活动保持玩家参与度</h2><p>App 内活动是保持游戏热度的关键策略：</p>
-<ul>
-<li>突出季节性内容和特殊促销</li>
-<li>营造紧迫感</li>
-<li>出现在首页、游戏库、搜索结果和游戏页面优先位置</li>
-<li>支持分享功能</li>
-</ul>
-<p><strong>实践建议</strong>：可以策划”即将开始”的活动，提前两周发布作为预热，使用深度链接指向活动并带参数标识。</p>
-<h2 id="总结与行动建议"><a href="#总结与行动建议" class="headerlink" title="总结与行动建议"></a>总结与行动建议</h2><p>要让您的游戏在 Games App 中获得最佳表现，您应该：</p>
-<ol>
-<li>检查 Games App 中的页面信息是否完整</li>
-<li>确保已启用 Game Center 并整合所有适用功能</li>
-<li>策划新活动保持游戏热度</li>
-<li>利用预购功能为即将发布的游戏造势</li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/214">开始使用 Game Center</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/209">让游戏更上一层楼</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10015">App Store 预定的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10081">利用虚拟和物理游戏手柄</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10171">认识 App Store 上的 app 内活动</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/GameKit/creating-activities-for-your-game">Creating activities for your game</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/GameKit/creating-engaging-challenges-from-leaderboards">Creating engaging challenges from leaderboards</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/game-center">Human Interface Guidelines: Game Center</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="通过-Apple-Games-App-吸引玩家：开发者指南"><a href="#通过-Apple-Games-App-吸引玩家：开发者指南" class="headerlink" title="通过 Apple Games App 吸引玩家：开发者指南"></a>通过 Apple Games App 吸引玩家：开发者指南</h1><p>Apple 在 WWDC 上隆重推出全新的 Games app，为游戏开发者提供了一个前所未有的平台来展示游戏、吸引玩家并维持用户参与度。本文将详细介绍如何充分利用这一全新平台的功能。</p>
+<h2 id="Games-App-概览"><a href="#Games-App-概览" class="headerlink" title="Games App 概览"></a>Games App 概览</h2><p>Games app 是 Apple 生态系统中的全新一体化游戏中心，预装于 iPhone、iPad 和 Mac 设备上。这一应用深度集成于操作系统，会出现在小组件、通知和 App Store 中，将成为玩家每日娱乐的枢纽。</p>
+<p>Games app 包含四个主要标签页：</p>
+<ul>
+<li><strong>首页</strong>：展示游戏中正在进行的活动、好友游戏动态、Game Center 好友动态和精选游戏合集</li>
+<li><strong>一起玩</strong>：查看好友游戏动态、比较分数记录、发起挑战</li>
+<li><strong>游戏库</strong>：管理已安装游戏和重新下载已购游戏</li>
+<li><strong>搜索</strong>：发现新游戏的起点</li>
 </ul>
+<h2 id="游戏信息设置"><a href="#游戏信息设置" class="headerlink" title="游戏信息设置"></a>游戏信息设置</h2><p>要使游戏出现在 Games app 中，开发者需要确保：</p>
+<ol>
+<li>将游戏的主类别或次类别设为”游戏”</li>
+<li>在 App Store Connect 中完善游戏信息，包括：<ul>
+<li>名称和副标题</li>
+<li>高质量图标（应用会自动生成背景）</li>
+<li>年龄分级和子类别（如动作类）</li>
+<li>支持手柄操作的需在 Xcode 添加 Game Controller 能力</li>
+</ul>
+</li>
+</ol>
+<p>示例代码（Swift）：</p>
+<p>let controllerCapability = GKControllerCapability()<br>controllerCapability.isSupported = true</p>
+<ol start="3">
+<li>上传吸引人的预览视频和截图</li>
+<li>设置精准搜索关键词</li>
+<li>考虑使用预购功能为未发布游戏造势</li>
+</ol>
+<h2 id="Game-Center-功能整合"><a href="#Game-Center-功能整合" class="headerlink" title="Game Center 功能整合"></a>Game Center 功能整合</h2><p>Game Center 是一套强大的工具，能够显著提升玩家参与度和游戏曝光度。主要功能包括：</p>
+<h3 id="成就系统"><a href="#成就系统" class="headerlink" title="成就系统"></a>成就系统</h3><ul>
+<li>追踪游戏进度</li>
+<li>鼓励玩家探索全部内容</li>
+<li>所有成就均可本地化</li>
+</ul>
+<h3 id="排行榜"><a href="#排行榜" class="headerlink" title="排行榜"></a>排行榜</h3><ul>
+<li>今年新增描述字段</li>
+<li>支持循环排行榜（显示重置倒计时）</li>
+<li>可使用分数后缀（如”pts”）</li>
+</ul>
+<h3 id="挑战赛"><a href="#挑战赛" class="headerlink" title="挑战赛"></a>挑战赛</h3><ul>
+<li>将单人游戏转化为社交体验</li>
+<li>支持设置尝试次数和持续时间</li>
+<li>可在游戏中内置邀请流程</li>
+</ul>
+<h3 id="活动功能"><a href="#活动功能" class="headerlink" title="活动功能"></a>活动功能</h3><ul>
+<li>定义游戏目的地并使用深度链接直达</li>
+<li>特别适合多人游戏体验</li>
+<li>支持生成跨平台分享的派对代码</li>
+</ul>
+<h2 id="保持玩家参与度的策略"><a href="#保持玩家参与度的策略" class="headerlink" title="保持玩家参与度的策略"></a>保持玩家参与度的策略</h2><p>长期维持玩家热情的关键在于：</p>
+<ol>
+<li><p><strong>App 内活动</strong>：突出限时内容、季节活动或特别促销</p>
+<ul>
+<li>会出现在首页、游戏库、搜索结果和游戏页面</li>
+<li>支持设置优先级和预定时间</li>
+<li>可使用深度链接直达游戏内活动</li>
+</ul>
+</li>
+<li><p><strong>定期更新内容</strong>：策划新活动和挑战来保持游戏新鲜感</p>
+</li>
+<li><p><strong>高质量视觉素材</strong>：上传循环展示的视频和高清艺术图</p>
+</li>
+</ol>
+<h2 id="开发者后续步骤"><a href="#开发者后续步骤" class="headerlink" title="开发者后续步骤"></a>开发者后续步骤</h2><p>已有游戏的开发者应：</p>
+<ul>
+<li>检查 Games app 中的展示信息</li>
+<li>确保启用 Game Center 并整合未添加的功能</li>
+<li>策划新活动来增添游戏活力</li>
+<li>考虑设置季节性内容和限时挑战</li>
+</ul>
+<p>新的 Games app 为开发者提供了前所未有的机会来展示游戏、吸引新玩家并维持现有玩家的参与度。通过合理利用 Game Center 功能和 app 内活动，开发者可以显著提升游戏的可见性和玩家留存率。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/214">开始使用 Game Center</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/209">让游戏更上一层楼</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10015">App Store 预定的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10081">利用虚拟和物理游戏手柄</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10171">认识 App Store 上的 app 内活动</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/GameKit/creating-activities-for-your-game">为游戏创建活动</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/GameKit/creating-engaging-challenges-from-leaderboards">从排行榜创建引人入胜的挑战</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/game-center">人机界面指南：Game Center</a></p>
 
       
 
@@ -407,18 +414,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_204/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_216/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          深入探索 MapKit
+          针对 CarPlay 车载优化你的 App
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_209/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">让游戏更上一层楼</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_224/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">针对辅助功能标签评估你的 App</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何借助 instruments 中的两个新硬件辅助工具，针对 apple 芯片来优化你的 app。我们将首先介绍如何分析你的 app，然后深入介绍通过 processor trace 调用的每个函数。此外，我们将讨论如何使用 cpu counters 的各个模式来分析代码中的 cpu 瓶颈问题。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10028/10028_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:41:14.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:41:14.402Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.122Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_308/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:41:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,81 +231,48 @@ var _hmt = _hmt || [];
       
         <p>了解如何借助 instruments 中的两个新硬件辅助工具，针对 apple 芯片来优化你的 app。我们将首先介绍如何分析你的 app，然后深入介绍通过 processor trace 调用的每个函数。此外，我们将讨论如何使用 cpu counters 的各个模式来分析代码中的 cpu 瓶颈问题。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10028/10028_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/308/">视频地址</a></p>
-<h1 id="使用-Instruments-优化-Apple-芯片-CPU-性能的完整指南"><a href="#使用-Instruments-优化-Apple-芯片-CPU-性能的完整指南" class="headerlink" title="使用 Instruments 优化 Apple 芯片 CPU 性能的完整指南"></a>使用 Instruments 优化 Apple 芯片 CPU 性能的完整指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在 Apple 硅芯片时代，充分利用 CPU 性能对应用流畅体验至关重要。本文将系统介绍如何利用 Instruments 中的高级工具分析并优化您的代码，从基础性能思维到处理器指令级的深度优化技巧。</p>
-<h2 id="性能优化方法论"><a href="#性能优化方法论" class="headerlink" title="性能优化方法论"></a>性能优化方法论</h2><p>性能调查需要科学的方法论：</p>
-<ul>
-<li><strong>保持开放心态</strong>：瓶颈可能出现在意想不到的地方</li>
-<li><strong>数据验证假设</strong>：不要依赖直觉判断</li>
-<li><strong>分阶段排查</strong>：从线程阻塞问题到算法效率逐层深入</li>
-</ul>
-<p>常用诊断工具组合：</p>
-<ul>
-<li>CPU 仪表盘：识别高负载时段</li>
-<li>System Trace：分析线程阻塞行为</li>
-<li>Hangs 工具：诊断主线程问题</li>
-</ul>
-<h2 id="Instruments-分析工具详解"><a href="#Instruments-分析工具详解" class="headerlink" title="Instruments 分析工具详解"></a>Instruments 分析工具详解</h2><h3 id="1-CPU-Profiler-工具"><a href="#1-CPU-Profiler-工具" class="headerlink" title="1. CPU Profiler 工具"></a>1. CPU Profiler 工具</h3><p>相比传统的 Time Profiler，CPU Profiler 提供两种模式：</p>
-<ul>
-<li>采样模式：常规性能分析</li>
-<li>延迟模式(deferred mode)：降低运行时开销</li>
-</ul>
-<p>典型使用场景：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 优化前的二分查找实现</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">binarySearch</span>(<span class="keyword">_</span> <span class="params">array</span>: [<span class="type">Int</span>], <span class="keyword">_</span> <span class="params">target</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> low <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> high <span class="operator">=</span> array.count <span class="operator">-</span> <span class="number">1</span></span><br><span class="line">    <span class="comment">// ...标准实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过聚焦子树功能，可以快速定位集合类型操作的开销。</p>
-<h3 id="2-Processor-Trace-技术"><a href="#2-Processor-Trace-技术" class="headerlink" title="2. Processor Trace 技术"></a>2. Processor Trace 技术</h3><p>(需要 Instruments 16.3+ 和 M4/A18 芯片)</p>
-<p>关键优势：</p>
-<ul>
-<li>完整记录用户空间所有指令</li>
-<li>精确测量软件抽象成本</li>
-<li>可视化时间线火焰图：<ul>
-<li>棕色：系统框架</li>
-<li>品红：Swift 运行时</li>
-<li>蓝色：应用代码</li>
-</ul>
-</li>
-</ul>
-<p>典型优化案例：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 优化后使用特化实现</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">binarySearch</span>&lt;<span class="type">S</span>: <span class="type">RandomAccessCollection</span>&gt;(<span class="keyword">_</span> <span class="params">array</span>: <span class="type">S</span>, <span class="keyword">_</span> <span class="params">target</span>: <span class="type">S</span>.<span class="type">Element</span>) -&gt; <span class="type">Int</span> </span><br><span class="line"><span class="keyword">where</span> <span class="type">S</span>.<span class="type">Element</span> <span class="operator">==</span> <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="comment">// ...特化实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="CPU-瓶颈分析与微优化"><a href="#CPU-瓶颈分析与微优化" class="headerlink" title="CPU 瓶颈分析与微优化"></a>CPU 瓶颈分析与微优化</h2><p>Apple 硅芯片的工作流程分为：</p>
-<ol>
-<li>指令交付阶段（取指/解码）</li>
-<li>指令处理阶段（执行）</li>
-</ol>
-<p>CPU Counters 工具的新预设模式：</p>
-<ul>
-<li>分支预测错误分析</li>
-<li>缓存命中率分析</li>
-<li>指令并行度分析</li>
-</ul>
-<p>高级优化技巧：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 无分支实现示例</span></span><br><span class="line"><span class="keyword">let</span> midValue <span class="operator">=</span> array[midIndex]</span><br><span class="line">low <span class="operator">=</span> condition <span class="operator">?</span> low : midIndex <span class="operator">+</span> <span class="number">1</span></span><br><span class="line">high <span class="operator">=</span> condition <span class="operator">?</span> midIndex <span class="operator">-</span> <span class="number">1</span> : high</span><br></pre></td></tr></table></figure></p>
-<p>最终采用 Eytzinger 布局优化内存访问模式，实现高达 25 倍的性能提升。</p>
-<h2 id="结论与最佳实践"><a href="#结论与最佳实践" class="headerlink" title="结论与最佳实践"></a>结论与最佳实践</h2><p>优化路径总结：</p>
-<ol>
-<li>用 CPU Profiler 识别集合类型开销</li>
-<li>用 Processor Trace 定位泛型特化问题</li>
-<li>通过瓶颈分析进行微优化</li>
-</ol>
-<p>推荐实践：</p>
-<ul>
-<li>建立性能测试基准</li>
-<li>优先考虑算法级优化</li>
-<li>谨慎使用微优化</li>
-</ul>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/312">优化 Swift 代码的内存使用和性能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/226">分析并优化 App 的功耗</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/306">通过 Instrument 优化 SwiftUI 性能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10217">探索 Swift 性能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10248">使用 Instruments 分析挂起</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/110350">Swift 并发的可视化与优化</a>  </li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/analyzing-cpu-usage-with-processor-trace">使用 Processor Trace 分析 CPU 使用率</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Apple-Silicon/cpu-optimization-guide">Apple 硅芯片 CPU 优化指南</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/performance-and-metrics">性能与指标</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Apple-Silicon/tuning-your-code-s-performance-for-apple-silicon">为 Apple 硅芯片调整代码性能</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用-Instruments-优化-CPU-性能：Apple-芯片的终极指南"><a href="#使用-Instruments-优化-CPU-性能：Apple-芯片的终极指南" class="headerlink" title="使用 Instruments 优化 CPU 性能：Apple 芯片的终极指南"></a>使用 Instruments 优化 CPU 性能：Apple 芯片的终极指南</h1><p>在当今追求极致性能的移动计算时代，如何充分利用 Apple 芯片的强大处理能力成为开发者面临的重要课题。本文将详细介绍如何利用 Instruments 中的新型硬件辅助工具，为 Apple 芯片进行深度 CPU 优化。</p>
+<h2 id="性能优化的核心挑战"><a href="#性能优化的核心挑战" class="headerlink" title="性能优化的核心挑战"></a>性能优化的核心挑战</h2><p>性能优化工作面临两大固有难题：首先，Swift 源代码与最终执行的机器指令之间存在多层抽象转换；其次，现代 CPU 执行指令的方式高度不确定。操作系统内核工程师 Matt 指出，保持开放心态至关重要，因为性能瓶颈往往出现在意想不到的地方。</p>
+<h2 id="工具选择与基础优化"><a href="#工具选择与基础优化" class="headerlink" title="工具选择与基础优化"></a>工具选择与基础优化</h2><p>Instruments 提供两种关键 CPU 分析工具：</p>
+<ul>
+<li><strong>传统 Time Profiler</strong>：基于定时采样</li>
+<li><strong>新型 CPU Profiler</strong>：基于时钟频率，避免了采样偏差</li>
 </ul>
+<p>实际案例显示，使用新型 Span 容器替代 Collection 协议后，二分搜索性能提升达四倍之多。Span 专为内存连续存储的数据结构设计，还能有效防止内存引用泄漏问题。</p>
+<h2 id="革命性的处理器追踪技术"><a href="#革命性的处理器追踪技术" class="headerlink" title="革命性的处理器追踪技术"></a>革命性的处理器追踪技术</h2><p>Instruments 16.3 引入的 Processor Trace 技术具有以下优势：</p>
+<ul>
+<li>完整记录用户空间所有指令执行</li>
+<li>彻底消除采样偏差</li>
+<li>性能影响仅约 1%</li>
+</ul>
+<p>需要注意的是，该技术需要 Mac、M4 iPad Pro 或 A18 iPhone 的专用 CPU 功能支持。</p>
+<h2 id="瓶颈分析与优化策略"><a href="#瓶颈分析与优化策略" class="headerlink" title="瓶颈分析与优化策略"></a>瓶颈分析与优化策略</h2><p>Apple 芯片采用先进的流水线设计和指令级并行技术。新版 CPU Counters 工具提供预设模式，通过科学的瓶颈分析方法逐步定位性能问题。典型案例中，二分搜索的分支预测错误问题通过改写为无分支版本，实现了两倍的性能提升。</p>
+<h2 id="内存访问优化技巧"><a href="#内存访问优化技巧" class="headerlink" title="内存访问优化技巧"></a>内存访问优化技巧</h2><p>CPU 多级缓存系统的特性：</p>
+<ul>
+<li>L1缓存：速度最快但容量最小</li>
+<li>L2缓存：容量较大</li>
+<li>主存访问：速度比缓存慢50倍</li>
+</ul>
+<p>采用 Eytzinger 布局（广度优先遍历的树状结构）重组数据，使搜索过程的前几步能共享缓存行，再次获得两倍的性能提升。</p>
+<h2 id="综合优化成果"><a href="#综合优化成果" class="headerlink" title="综合优化成果"></a>综合优化成果</h2><p>通过系统性的优化方法，最终实现了约25倍的性能飞跃：</p>
+<ol>
+<li>CPU Profiler 发现从 Collection 到 Span 的转换</li>
+<li>Processor Trace 揭示未特化泛型的开销</li>
+<li>瓶颈分析指导下的微架构级优化</li>
+</ol>
+<h2 id="持续学习资源"><a href="#持续学习资源" class="headerlink" title="持续学习资源"></a>持续学习资源</h2><p>开发者可通过以下途径深化性能优化技能：</p>
+<ul>
+<li>建立可靠的性能测试基准</li>
+<li>参与开发者论坛的技术交流</li>
+<li>观看 WWDC 相关专题视频</li>
+<li>研读《Apple Silicon CPU Optimization Guide》技术文档</li>
+</ul>
+<p>掌握这些工具和技术，开发者将能够充分发挥 Apple 芯片的计算潜力，打造极致流畅的用户体验。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/312">优化 Swift 代码的内存使用和性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/226">分析并优化 App 的功耗</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/306">通过 Instrument 优化 SwiftUI 性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10217">探索 Swift 性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10248">使用 Instruments 分析挂起</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/110350">Swift 并发的可视化与优化</a></p>
+<h1 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/analyzing-cpu-usage-with-processor-trace">使用 Processor Trace 分析 CPU 使用率</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Apple-Silicon/cpu-optimization-guide">Apple 芯片 CPU 优化指南</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/performance-and-metrics">性能与指标</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Apple-Silicon/tuning-your-code-s-performance-for-apple-silicon">为 Apple 芯片调整代码性能</a></p>
 
       
 
@@ -428,18 +395,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_359/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_304/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          设计基础：从创意到界面
+          探索 visionOS 的视频体验
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_214/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">开始使用 Game Center</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_315/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">开始使用适用于 Apple 芯片的 MLX</div>
       <i class="icon-circle-right"></i>
     </a>
   

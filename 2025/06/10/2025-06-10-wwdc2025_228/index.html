@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何使用 wi-fi aware 建立对等网络连接。我们还将介绍如何以带宽更高、延迟更低的网络连接性能实时共享视频、传输大文件，以及操控配件。此外，你将了解如何借助 devicediscoveryui、accessorysetupkit 和 network 框架，在自己的 app 中使用 wi-fi aware。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9922/9922_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:52:59.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:52:59.526Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.806Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_228/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:52:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,92 +231,63 @@ var _hmt = _hmt || [];
       
         <p>了解如何使用 wi-fi aware 建立对等网络连接。我们还将介绍如何以带宽更高、延迟更低的网络连接性能实时共享视频、传输大文件，以及操控配件。此外，你将了解如何借助 devicediscoveryui、accessorysetupkit 和 network 框架，在自己的 app 中使用 wi-fi aware。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9922/9922_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/228/">视频地址</a></p>
-<h1 id="使用-Wi-Fi-Aware-实现高效设备点对点连接"><a href="#使用-Wi-Fi-Aware-实现高效设备点对点连接" class="headerlink" title="使用 Wi-Fi Aware 实现高效设备点对点连接"></a>使用 Wi-Fi Aware 实现高效设备点对点连接</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在当今互联设备激增的时代，Wi-Fi Aware 技术为开发者提供了一种创新的点对点连接解决方案。这项技术允许设备直接通信，无需依赖传统路由器或中心服务器，特别适合需要高带宽、低延迟的应用场景。本文将全面介绍如何在 iOS 应用中集成 Wi-Fi Aware 功能，从基础概念到实际实现。</p>
-<h2 id="Wi-Fi-Aware-技术概览"><a href="#Wi-Fi-Aware-技术概览" class="headerlink" title="Wi-Fi Aware 技术概览"></a>Wi-Fi Aware 技术概览</h2><p>Wi-Fi Aware 实现了设备间的直接通信，具有以下核心优势：</p>
-<ul>
-<li><strong>动态连接建立</strong>：设备在运行时相互发现并形成安全链接</li>
-<li><strong>并行工作能力</strong>：可与常规 Wi-Fi 连接同时使用</li>
-<li><strong>全球标准</strong>：由 Wi-Fi 联盟维护，确保跨平台互操作性</li>
-</ul>
-<p>典型应用场景包括：</p>
-<ul>
-<li>高速文件传输</li>
-<li>实时媒体流传输</li>
-<li>配件控制</li>
-<li>屏幕共享</li>
-</ul>
-<h2 id="实现-Wi-Fi-Aware-的核心概念"><a href="#实现-Wi-Fi-Aware-的核心概念" class="headerlink" title="实现 Wi-Fi Aware 的核心概念"></a>实现 Wi-Fi Aware 的核心概念</h2><h3 id="服务配置"><a href="#服务配置" class="headerlink" title="服务配置"></a>服务配置</h3><p>Wi-Fi Aware 使用”服务”概念来发现和连接设备：</p>
-<ul>
-<li>服务名称规范：<ul>
-<li>仅含字母、数字和短划线</li>
-<li>不超过15个字符</li>
-<li>建议在 IANA 注册以避免命名冲突</li>
-</ul>
-</li>
-<li>服务角色：<ul>
-<li>发布者（服务器角色）</li>
-<li>订阅者（客户端角色）</li>
-</ul>
-</li>
-</ul>
-<p>在 Info.plist 中的配置示例：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>WiFiAwareServices<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>com.example.fileservice<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>WAPublishable<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>WASubscribable<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>com.example.drone<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>WASubscribable<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>设备兼容性检查：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> WiFiAware</span><br><span class="line"><span class="keyword">guard</span> <span class="type">WACapabilities</span>.supportedFeatures.contains(.wifiAware) <span class="keyword">else</span> &#123; </span><br><span class="line">    <span class="comment">// 处理设备不支持情况</span></span><br><span class="line">    <span class="keyword">return</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="设备配对流程"><a href="#设备配对流程" class="headerlink" title="设备配对流程"></a>设备配对流程</h2><p>Wi-Fi Aware 提供两种配对框架：</p>
-<ol>
-<li><strong>DeviceDiscoveryUI</strong>：<ul>
-<li>适用于应用间或应用对设备连接</li>
-<li>支持 Apple 和第三方设备</li>
-</ul>
-</li>
-<li><strong>AccessorySetupKit</strong>：<ul>
-<li>专为配件制造商设计</li>
-<li>推荐用于多传输配件</li>
-</ul>
-</li>
-</ol>
-<h3 id="使用-DeviceDiscoveryUI-的代码示例"><a href="#使用-DeviceDiscoveryUI-的代码示例" class="headerlink" title="使用 DeviceDiscoveryUI 的代码示例"></a>使用 DeviceDiscoveryUI 的代码示例</h3><p>发布方代码：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> pairingView <span class="operator">=</span> <span class="type">DevicePairingView</span>(</span><br><span class="line">    configuration: <span class="type">DevicePairingConfiguration</span>(</span><br><span class="line">        serviceIdentifier: <span class="string">&quot;com.example.fileservice&quot;</span>,</span><br><span class="line">        deviceName: <span class="string">&quot;My Device&quot;</span></span><br><span class="line">    )</span><br><span class="line">)</span><br><span class="line"><span class="comment">// 显示配对界面</span></span><br></pre></td></tr></table></figure></p>
-<p>订阅方代码：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> picker <span class="operator">=</span> <span class="type">DevicePicker</span>(</span><br><span class="line">    configuration: <span class="type">DevicePickerConfiguration</span>(</span><br><span class="line">        serviceIdentifier: <span class="string">&quot;com.example.fileservice&quot;</span></span><br><span class="line">    )</span><br><span class="line">)</span><br><span class="line"><span class="comment">// 显示设备选择界面</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h2><p>连接建立的三个关键步骤：</p>
-<ol>
-<li><p><strong>设备筛选</strong>：</p>
-<ul>
-<li>使用谓词筛选目标设备<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> predicate <span class="operator">=</span> <span class="type">NSPredicate</span>(format: <span class="string">&quot;name BEGINSWITH &#x27;iPhone&#x27;&quot;</span>)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p><strong>创建监听器/浏览器</strong>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> listener <span class="operator">=</span> <span class="keyword">try</span> <span class="type">NetworkListener</span>(</span><br><span class="line">    service: <span class="string">&quot;com.example.fileservice_tcp&quot;</span>,</span><br><span class="line">    devicePredicate: predicate</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>启动连接</strong>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">listener.start(queue: .main)</span><br><span class="line"><span class="comment">// 处理连接请求</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="性能优化技巧"><a href="#性能优化技巧" class="headerlink" title="性能优化技巧"></a>性能优化技巧</h2><ol>
-<li><p><strong>调整性能模式</strong>：</p>
-<ul>
-<li>批量模式：节能但延迟较高</li>
-<li>实时模式：低延迟但耗电较高</li>
-</ul>
-</li>
-<li><p><strong>设置服务等级</strong>：</p>
-<ul>
-<li>尽力服务(Best Effort)</li>
-<li>交互式视频(Interactive Video)</li>
-<li>语音(Voice)</li>
-</ul>
-</li>
-</ol>
-<p>性能监控示例：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">connection.currentPath<span class="operator">?</span>.performanceReport<span class="operator">?</span>.throughput</span><br><span class="line">connection.currentPath<span class="operator">?</span>.performanceReport<span class="operator">?</span>.latency</span><br></pre></td></tr></table></figure></p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Wi-Fi Aware 为开发者提供了强大的点对点连接能力，特别适合需要高带宽、低延迟的应用场景。通过合理配置服务和优化连接参数，您可以打造出色的用户体验。建议参考官方文档和示例代码进一步探索这项技术的潜力。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10203">了解 AccessorySetupKit</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WiFiAware">Wi-Fi Aware 官方文档</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="通过-Wi-Fi-Aware-实现高效设备间通信"><a href="#通过-Wi-Fi-Aware-实现高效设备间通信" class="headerlink" title="通过 Wi-Fi Aware 实现高效设备间通信"></a>通过 Wi-Fi Aware 实现高效设备间通信</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在 WWDC 演讲中，苹果详细介绍了其最新推出的 Wi-Fi Aware 框架，该技术为 iOS 设备间的点对点通信提供了全新的解决方案。Wi-Fi Aware 允许设备之间建立高带宽、低延迟的直接连接，无需依赖路由器或互联网接入点，同时保持高安全性标准。本文将深入剖析该技术的实现原理与应用场景。</p>
+<h2 id="技术特性"><a href="#技术特性" class="headerlink" title="技术特性"></a>技术特性</h2><p>Wi-Fi Aware 技术具有以下显著优势：</p>
+<ul>
+<li><strong>直接通信</strong>：设备间可建立点对点连接，不依赖任何中间设备</li>
+<li><strong>并行工作</strong>：可同时保持常规 Wi-Fi 网络连接</li>
+<li><strong>高安全性</strong>：全链路采用认证加密机制</li>
+<li><strong>高吞吐量</strong>：支持大文件快速传输</li>
+<li><strong>低延迟</strong>：适合实时媒体传输场景</li>
 </ul>
+<p>该技术基于 Wi-Fi 联盟制定的全球标准，确保不同厂商设备间的互操作性。典型应用场景包括媒体共享、配件控制、多人协作等，这些功能可同时运行而不相互干扰。</p>
+<h2 id="实现流程"><a href="#实现流程" class="headerlink" title="实现流程"></a>实现流程</h2><h3 id="服务配置"><a href="#服务配置" class="headerlink" title="服务配置"></a>服务配置</h3><p>Wi-Fi Aware 采用服务发现机制，每个服务由特定格式的名称标识：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">_</span>服务名.<span class="keyword">_</span>协议</span><br></pre></td></tr></table></figure>
+<p>开发者需要在应用的 Info.plist 文件中声明支持的服务类型，示例如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&lt;</span>key<span class="operator">&gt;</span><span class="type">WiFiAwareServices</span>&lt;/key&gt;</span><br><span class="line"><span class="operator">&lt;</span>dict<span class="operator">&gt;</span></span><br><span class="line">    <span class="operator">&lt;</span>key<span class="operator">&gt;</span>_file<span class="operator">-</span>service._tcp<span class="operator">&lt;/</span>key<span class="operator">&gt;</span></span><br><span class="line">    <span class="operator">&lt;</span>dict<span class="operator">&gt;</span></span><br><span class="line">        <span class="operator">&lt;</span>key<span class="operator">&gt;</span><span class="type">Publishable</span>&lt;/key&gt;</span><br><span class="line">        <span class="operator">&lt;</span><span class="literal">true</span><span class="operator">/&gt;</span></span><br><span class="line">        <span class="operator">&lt;</span>key<span class="operator">&gt;</span><span class="type">Subscribable</span>&lt;/key&gt;</span><br><span class="line">        <span class="operator">&lt;</span><span class="literal">true</span><span class="operator">/&gt;</span></span><br><span class="line">    <span class="operator">&lt;/</span>dict<span class="operator">&gt;</span></span><br><span class="line"><span class="operator">&lt;/</span>dict<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure>
+<p>服务名称需遵循特定规范：不超过15个字符，仅包含字母、数字和连字符。建议在IANA注册服务名称以避免冲突。</p>
+<h3 id="设备配对"><a href="#设备配对" class="headerlink" title="设备配对"></a>设备配对</h3><p>配对过程分为三个关键步骤：</p>
+<ol>
+<li>从周边设备列表中选择目标设备</li>
+<li>输入对方显示的PIN码进行授权</li>
+<li>系统自动完成安全配对流程</li>
+</ol>
+<p>苹果提供了两种配对方案：</p>
+<ul>
+<li><code>DeviceDiscoveryUI</code>：适用于应用间的连接场景</li>
+<li><code>AccessorySetupKit</code>：针对硬件配件优化的配对方案，支持多协议同时配对</li>
+</ul>
+<p>以下是使用DeviceDiscoveryUI的代码示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发布方</span></span><br><span class="line"><span class="type">DevicePairingView</span>(.wifiAware(.connecting(to: .fileService, from: .selected([])))) &#123;</span><br><span class="line">    <span class="comment">// 前置视图</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅方</span></span><br><span class="line"><span class="type">DevicePicker</span>(.wifiAware(.connecting(to: .selected([]), from: .fileService))) &#123; endpoint <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// 处理配对端点</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="连接建立"><a href="#连接建立" class="headerlink" title="连接建立"></a>连接建立</h3><p>完整的连接流程分为四个阶段：</p>
+<ol>
+<li>发布方启动监听服务</li>
+<li>订阅方扫描周边可用的服务设备</li>
+<li>系统提供可连接的端点信息</li>
+<li>应用建立实际的网络连接</li>
+</ol>
+<p>关键实现代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发布方监听</span></span><br><span class="line"><span class="keyword">let</span> listener <span class="operator">=</span> <span class="keyword">try</span> <span class="type">NetworkListener</span>(for: </span><br><span class="line">    .wifiAware(.connecting(to: .fileService, from: .matching(deviceFilter)))</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅方连接</span></span><br><span class="line"><span class="keyword">let</span> connection <span class="operator">=</span> <span class="type">NetworkConnection</span>(to: endpoint, using: .parameters &#123;</span><br><span class="line">    <span class="type">TLS</span>()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>Wi-Fi Aware 提供了精细的性能调节选项：</p>
+<h3 id="性能模式"><a href="#性能模式" class="headerlink" title="性能模式"></a>性能模式</h3><ul>
+<li><code>Bulk</code>：默认模式，以节能为主要目标</li>
+<li><code>Realtime</code>：优先保证低延迟</li>
+</ul>
+<h3 id="服务等级"><a href="#服务等级" class="headerlink" title="服务等级"></a>服务等级</h3><ul>
+<li><code>Background</code>：后台任务</li>
+<li><code>BestEffort</code>：默认平衡模式</li>
+<li><code>InteractiveVideo/Voice</code>：实时交互应用</li>
+</ul>
+<p>配置示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.wifiAware &#123; <span class="variable">$0</span>.performanceMode <span class="operator">=</span> .realtime &#125;</span><br><span class="line">.serviceClass(.interactiveVideo)</span><br></pre></td></tr></table></figure>
+<p>开发者可以获取性能报告来监控连接质量：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> report <span class="operator">=</span> connection.currentPath<span class="operator">?</span>.wifiAware<span class="operator">?</span>.performance</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Wi-Fi Aware 框架为 iOS 设备间的直接通信提供了标准化、高性能的解决方案。通过简单的API集成，开发者即可为应用添加高效的设备间通信能力。该技术特别适合需要高带宽、低延迟的实时交互场景，同时保证了通信过程的安全性和可靠性。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10203">了解 AccessorySetupKit</a></p>
+<h3 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WiFiAware">Wi-Fi Aware</a></p>
 
       
 
@@ -439,18 +410,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_246/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_227/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          将隐私保护融入开发流程
+          完成后台任务
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_317/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">visionOS 26 的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_225/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">跟着视频学编程：使用 Xcode 探索本地化</div>
       <i class="icon-circle-right"></i>
     </a>
   

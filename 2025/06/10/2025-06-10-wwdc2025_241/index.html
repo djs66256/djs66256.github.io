@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解最新的 storekit api 增强功能，它们有助于你为顾客提供出色的 app 内购买项目体验。我们将介绍 apptransaction、transaction 和 renewalinfo 中新增的字段，以及针对 app 内购买项目优惠代码所做的更新。我们还将介绍如何使用 app store server library 创建已签名的 app 内购买项目请求，以及如何使用 swiftui 来">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9940/9940_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:26:36.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:26:36.200Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.344Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_241/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:26:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,77 +231,52 @@ var _hmt = _hmt || [];
       
         <p>了解最新的 storekit api 增强功能，它们有助于你为顾客提供出色的 app 内购买项目体验。我们将介绍 apptransaction、transaction 和 renewalinfo 中新增的字段，以及针对 app 内购买项目优惠代码所做的更新。我们还将介绍如何使用 app store server library 创建已签名的 app 内购买项目请求，以及如何使用 swiftui 来更新陈列订阅项。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9940/9940_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/241/">视频地址</a></p>
-<h1 id="StoreKit-与-App-内购买新功能全面解析"><a href="#StoreKit-与-App-内购买新功能全面解析" class="headerlink" title="StoreKit 与 App 内购买新功能全面解析"></a>StoreKit 与 App 内购买新功能全面解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>苹果在最新的 StoreKit API 中引入了一系列增强功能，旨在帮助开发者提供更卓越的应用内购买体验。本文将详细介绍 AppTransaction、Transaction 和 RenewalInfo 的新增字段，解析优惠代码的使用更新，并演示如何利用 App Store Server Library 创建已签名的购买请求，以及如何使用 SwiftUI 优化订阅项展示。</p>
-<h2 id="核心框架新特性"><a href="#核心框架新特性" class="headerlink" title="核心框架新特性"></a>核心框架新特性</h2><h3 id="AppTransaction-更新"><a href="#AppTransaction-更新" class="headerlink" title="AppTransaction 更新"></a>AppTransaction 更新</h3><p>AppTransaction 提供应用原始购买的关键信息，包括：</p>
-<ul>
-<li>客户首次购买日期</li>
-<li>下载的应用版本号</li>
-<li>预购日期（如适用）</li>
-</ul>
-<p>新版本新增了两个重要字段：</p>
-<ol>
-<li><code>appTransactionID</code>（兼容iOS 15+）：每个Apple ID下载您应用的全局唯一标识符，支持家庭共享场景下的成员唯一识别</li>
-<li><code>originalPlatform</code>（iOS 18.4+）：显示客户最初购买应用的平台（iOS/macOS/tvOS/visionOS），帮助应对商业模型变更</li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取AppTransaction示例</span></span><br><span class="line"><span class="keyword">let</span> appTransaction <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> <span class="type">AppTransaction</span>.shared</span><br></pre></td></tr></table></figure>
-<h3 id="Transaction-更新"><a href="#Transaction-更新" class="headerlink" title="Transaction 更新"></a>Transaction 更新</h3><p>Transaction代表成功的应用内购买，新增：</p>
-<ul>
-<li><code>appTransactionID</code></li>
-<li><code>Offer Period</code>（优惠对应的订阅周期）</li>
-<li><code>advancedCommerceInfo</code>（适用于Advanced Commerce API）</li>
-</ul>
-<p>iOS 18.4用<code>currentEntitlements</code>API取代了旧的<code>productID</code>查询，能返回用户有权访问的所有交易记录。</p>
-<h3 id="RenewalInfo-更新"><a href="#RenewalInfo-更新" class="headerlink" title="RenewalInfo 更新"></a>RenewalInfo 更新</h3><p>专用于自动续订订阅，新增四个字段：</p>
-<ul>
-<li><code>appTransactionID</code></li>
-<li><code>Offer Period</code></li>
-<li><code>advancedCommerceInfo</code></li>
-<li><code>appAccountToken</code>（关联用户账户）</li>
-</ul>
-<h2 id="优惠码功能增强"><a href="#优惠码功能增强" class="headerlink" title="优惠码功能增强"></a>优惠码功能增强</h2><p>今年优惠码支持范围扩大至：</p>
-<ul>
-<li>消耗型商品</li>
-<li>非消耗型商品</li>
-<li>非续订订阅</li>
-</ul>
-<p>用户可通过<code>offerCodeRedemption</code>API在应用内兑换。自动续订订阅的优惠码兑换支持到iOS 14.2。新增<code>oneTime</code>支付模式（兼容iOS 17.2+）。</p>
-<h2 id="签署购买请求实践"><a href="#签署购买请求实践" class="headerlink" title="签署购买请求实践"></a>签署购买请求实践</h2><p>采用JSON签名的新API流程：</p>
-<ol>
-<li>从App Store Connect获取内购签名密钥</li>
-<li>初始化签名上下文</li>
-<li>调用创建签名函数</li>
-</ol>
-<p>推荐使用开源的App Store Server Library（支持Java/Python/Node.js/Swift）简化签名流程。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 促销优惠示例</span></span><br><span class="line"><span class="type">SubscriptionPromotionalOffer</span>(</span><br><span class="line">    offerID: <span class="string">&quot;special_offer&quot;</span>,</span><br><span class="line">    keyID: <span class="string">&quot;your_key_id&quot;</span>,</span><br><span class="line">    nonce: <span class="type">UUID</span>(),</span><br><span class="line">    signature: <span class="string">&quot;signature_data&quot;</span>,</span><br><span class="line">    timestamp: <span class="type">Date</span>().timeIntervalSince1970</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h2 id="订阅展示优化"><a href="#订阅展示优化" class="headerlink" title="订阅展示优化"></a>订阅展示优化</h2><p>新增SwiftUI视图<code>SubscriptionOfferView</code>，特点：</p>
-<ul>
-<li>支持通过产品ID或订阅组ID初始化</li>
-<li>可选App Store Connect预设图标或自定义图标</li>
-<li><code>visibleRelationship</code>参数控制展示关系（升级/降级/同级/当前/全部）</li>
-</ul>
-<p>实现建议：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">SubscriptionOfferView</span>(subscriptionGroupID: <span class="string">&quot;premium_group&quot;</span>) &#123;</span><br><span class="line">    <span class="comment">// 自定义内容</span></span><br><span class="line">&#125;</span><br><span class="line">.subscriptionOfferViewDetailAction &#123; product <span class="keyword">in</span></span><br><span class="line">    <span class="comment">// 处理详情点击</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="迁移建议"><a href="#迁移建议" class="headerlink" title="迁移建议"></a>迁移建议</h2><p>推荐开发者：</p>
-<ol>
-<li>采用StoreKit视图构建应用商店</li>
-<li>集成App Store Server Library简化签名</li>
-<li>利用新API优化订阅管理流程</li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/328">App Store Connect 的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10062">探索适用于 App 内购买项目的 App Store Server API</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10013">认识 StoreKit 与 SwiftUI</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10114">认识 StoreKit 2</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/in-app-purchase/advanced-commerce-api/">Advanced Commerce API</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/in-app-purchase">人机界面指南：应用内购买</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/help/app-store-connect/manage-subscriptions/set-up-offer-codes/">设置优惠码</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI/simplifying-your-implementation-by-using-the-app-store-server-library">App Store Server Library</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/StoreKit">StoreKit文档</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="StoreKit-与应用内购买新特性解析"><a href="#StoreKit-与应用内购买新特性解析" class="headerlink" title="StoreKit 与应用内购买新特性解析"></a>StoreKit 与应用内购买新特性解析</h1><p>苹果在最新的 WWDC 上公布了多项 StoreKit 与应用内购买的更新，这些改进将帮助开发者更好地管理应用内购买体验。本文将详细介绍这些新功能及其实现方式。</p>
+<h2 id="核心框架更新"><a href="#核心框架更新" class="headerlink" title="核心框架更新"></a>核心框架更新</h2><p>StoreKit 框架中的三个关键类型获得了重要升级，为开发者提供了更丰富的购买信息和管理能力。</p>
+<h3 id="AppTransaction-增强"><a href="#AppTransaction-增强" class="headerlink" title="AppTransaction 增强"></a>AppTransaction 增强</h3><p>AppTransaction 类型现在包含两个新字段：</p>
+<ul>
+<li><code>appTransactionID</code>: 这是一个全局唯一标识符，从 iOS 18.4 开始可用(支持回溯至 iOS 15)，每个下载应用的 Apple ID 账户都会获得独立 ID</li>
+<li><code>originalPlatform</code>: 表示用户原始购买设备的平台类型(AppStore.Platform)，包括 iOS、macOS、tvOS 和 visionOS</li>
 </ul>
+<p>这些字段特别适用于商业模式变更的场景，例如从付费应用转为含内购的免费应用时识别老用户权益。</p>
+<h3 id="Transaction-改进"><a href="#Transaction-改进" class="headerlink" title="Transaction 改进"></a>Transaction 改进</h3><p>Transaction 类型代表了成功的应用内购买，iOS 18.4 带来以下变化：</p>
+<ul>
+<li>废弃了 <code>Transaction.currentEntitlement for productID</code> API，改用新的 <code>Transaction.currentEntitlements</code> API</li>
+<li>新增三个字段：<code>appTransactionID</code>、<code>Offer Period</code>(关联订阅周期)和 <code>advancedCommerceInfo</code>(仅适用于高级商务 API 用户)</li>
+</ul>
+<h3 id="RenewalInfo-扩展"><a href="#RenewalInfo-扩展" class="headerlink" title="RenewalInfo 扩展"></a>RenewalInfo 扩展</h3><p>RenewalInfo 类型专用于管理自动续订订阅，新增内容包括：</p>
+<ul>
+<li>通过 Transaction ID 查询订阅状态的新 API</li>
+<li>四个新字段：<code>appTransactionID</code>、<code>Offer Period</code>、<code>advancedCommerceInfo</code> 和 <code>appAccountToken</code>(用于关联开发者服务中的用户账户)</li>
+</ul>
+<h2 id="优惠码功能扩展"><a href="#优惠码功能扩展" class="headerlink" title="优惠码功能扩展"></a>优惠码功能扩展</h2><p>优惠码支持范围得到了显著扩大：</p>
+<ul>
+<li>现已支持消耗型商品、非消耗型商品和非续订订阅的兑换(回溯至 iOS 16.3)</li>
+<li>自动续订订阅的优惠码支持可回溯至 iOS 14.2</li>
+<li>新增 <code>Transaction.Offer.PaymentMode</code> 类型来区分不同优惠的支付模式</li>
+</ul>
+<h2 id="请求签名新方法"><a href="#请求签名新方法" class="headerlink" title="请求签名新方法"></a>请求签名新方法</h2><p>从 iOS 18.2 开始，StoreKit 引入了需要 UI 上下文的购买方法。不同平台需要提供不同的上下文对象：</p>
+<ul>
+<li>iOS/macCatalyst/tvOS/visionOS：需要提供 UIViewController</li>
+<li>macOS：需要提供 NSWindow</li>
+<li>watchOS：不需要提供上下文</li>
+<li>在 SwiftUI 视图中，可以通过 <code>purchase</code> 环境值获取 <code>PurchaseAction</code> 实例</li>
+</ul>
+<h2 id="SwiftUI-订阅展示"><a href="#SwiftUI-订阅展示" class="headerlink" title="SwiftUI 订阅展示"></a>SwiftUI 订阅展示</h2><p>新推出的 <code>SubscriptionOfferView</code> 是 StoreKit 视图家族的新成员，专门用于展示自动续订订阅选项。开发者可以通过五种关系类型配置展示逻辑：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 升级选项展示</span></span><br><span class="line"><span class="type">SubscriptionOfferView</span>(relation: .upgrade)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 降级选项展示  </span></span><br><span class="line"><span class="type">SubscriptionOfferView</span>(relation: .downgrade)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同级最佳选项展示</span></span><br><span class="line"><span class="type">SubscriptionOfferView</span>(relation: .crossgrade)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当前方案展示(需配合优惠码)</span></span><br><span class="line"><span class="type">SubscriptionOfferView</span>(relation: .current) </span><br><span class="line"></span><br><span class="line"><span class="comment">// 展示组内全部方案</span></span><br><span class="line"><span class="type">SubscriptionOfferView</span>(relation: .all)</span><br></pre></td></tr></table></figure>
+<h2 id="总结与最佳实践"><a href="#总结与最佳实践" class="headerlink" title="总结与最佳实践"></a>总结与最佳实践</h2><p>这些 StoreKit 的增强功能为开发者提供了更强大的工具来构建优质的应用内购买体验。苹果建议开发者：</p>
+<ol>
+<li>全面采用 StoreKit 2 API</li>
+<li>利用 StoreKit 视图构建应用商店界面</li>
+<li>集成 App Store Server Library 简化请求签名流程</li>
+</ol>
+<p>通过合理运用这些新特性，开发者可以更高效地管理应用内购买流程，为用户提供更流畅的购买体验。</p>
+<p>相关视频和文档请参考以下资源。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/328">App Store Connect 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10062">探索适用于 App 内购买项目的 App Store Server API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10013">认识 StoreKit 与 SwiftUI</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10114">认识 StoreKit 2</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/in-app-purchase/advanced-commerce-api/">Advanced Commerce API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/in-app-purchase">Human Interface Guidelines: In-app purchase</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/help/app-store-connect/manage-subscriptions/set-up-offer-codes/">Set up offer codes</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI/simplifying-your-implementation-by-using-the-app-store-server-library">Simplifying your implementation by using the App Store Server Library</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/StoreKit">StoreKit</a></p>
 
       
 
@@ -424,18 +399,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_223/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_236/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          了解面向空间商务 App 的增强功能
+          使用 WebGPU 解锁 GPU 计算能力
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_328/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">App Store Connect 的新功能</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_249/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">深入探索适用于 App 内购买项目的 App Store Server API</div>
       <i class="icon-circle-right"></i>
     </a>
   

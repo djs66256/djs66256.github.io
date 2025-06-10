@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何为同一房间内佩戴 apple vision pro 的用户打造共享体验。我们将展示如何在你的 app 中整合同播共享并充分利用 arkit，介绍与附近 facetime 通话参与者共享窗口的流程有哪些更新，并介绍旨在实现流畅协作的全新 api。探索相关最佳实践，了解如何为身处同一空间的用户打造别具特色、易于发现且引人入胜的协作功能。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10055/10055_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:54:14.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:54:14.513Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.869Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_318/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:54:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,51 +226,57 @@ var _hmt = _hmt || [];
       
         <p>了解如何为同一房间内佩戴 apple vision pro 的用户打造共享体验。我们将展示如何在你的 app 中整合同播共享并充分利用 arkit，介绍与附近 facetime 通话参与者共享窗口的流程有哪些更新，并介绍旨在实现流畅协作的全新 api。探索相关最佳实践，了解如何为身处同一空间的用户打造别具特色、易于发现且引人入胜的协作功能。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10055/10055_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/318/">视频地址</a></p>
-<h1 id="在-visionOS-中实现同空间共享体验的完整指南"><a href="#在-visionOS-中实现同空间共享体验的完整指南" class="headerlink" title="在 visionOS 中实现同空间共享体验的完整指南"></a>在 visionOS 中实现同空间共享体验的完整指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>苹果 visionOS 26 引入了一项令人振奋的新功能——同空间共享体验。这项技术允许在同一物理空间内的多个 Vision Pro 用户共享应用内容，共同观看、聆听或协作使用应用。无论是家庭娱乐还是团队协作，这都将带来前所未有的沉浸式互动体验。</p>
-<h2 id="基础概念：附近共享机制"><a href="#基础概念：附近共享机制" class="headerlink" title="基础概念：附近共享机制"></a>基础概念：附近共享机制</h2><p>visionOS 26 重新设计了应用共享流程，使其更加直观：</p>
-<ul>
-<li>每个窗口右侧新增分享按钮</li>
-<li>点击后会显示附近用户列表</li>
-<li>共享窗口会精确出现在所有参与者的视野中同一位置</li>
-<li>窗口栏变为绿色表示正在共享状态</li>
-</ul>
-<p>系统确保所有参与者看到的窗口位置和尺寸完全同步，移动或调整窗口时会实时更新。</p>
-<h2 id="SharePlay-框架整合"><a href="#SharePlay-框架整合" class="headerlink" title="SharePlay 框架整合"></a>SharePlay 框架整合</h2><p>要实现交互式共享体验（而不仅仅是查看），需要使用 SharePlay 框架：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建群组活动示例</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">BoardGameActivity</span>: <span class="title class_ inherited__">GroupActivity</span>, <span class="title class_ inherited__">Transferable</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> metadata <span class="operator">=</span> <span class="type">GroupActivityMetadata</span>(title: <span class="string">&quot;一起玩&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>沉浸式空间应用开发者需要注意：</p>
-<ul>
-<li>保持非沉浸模式作为共享入口</li>
-<li>待所有人加入后再切换至沉浸模式</li>
-<li>可以使用自定义按钮触发 activate() 方法呼出共享菜单</li>
-</ul>
-<h2 id="高级功能实现"><a href="#高级功能实现" class="headerlink" title="高级功能实现"></a>高级功能实现</h2><h3 id="识别附近参与者"><a href="#识别附近参与者" class="headerlink" title="识别附近参与者"></a>识别附近参与者</h3><p>通过 GroupSession 的 activeParticipants 属性，结合 isNearbyWithLocalParticipant 标志：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">observeParticipants</span>(<span class="params">session</span>: <span class="type">GroupSession</span>&lt;<span class="type">BoardGameActivity</span>&gt;) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">await</span> activeParticipants <span class="keyword">in</span> session.<span class="variable">$activeParticipants</span>.values &#123;</span><br><span class="line">        <span class="keyword">let</span> nearbyPlayers <span class="operator">=</span> activeParticipants.filter &#123; <span class="variable">$0</span>.isNearbyWithLocalParticipant &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="基于位置的内容布局"><a href="#基于位置的内容布局" class="headerlink" title="基于位置的内容布局"></a>基于位置的内容布局</h3><p>使用 ParticipantState.pose 属性获取参与者在沉浸式空间中的位置信息，实现更智能的内容放置。</p>
-<h3 id="媒体同步播放"><a href="#媒体同步播放" class="headerlink" title="媒体同步播放"></a>媒体同步播放</h3><p>visionOS 26 中 AVPlayer 新增了对同空间用户的精准同步支持：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WindowGroup</span>(id: <span class="string">&quot;教学视频&quot;</span>) &#123;</span><br><span class="line">    <span class="type">InstructionalVideoView</span>()</span><br><span class="line">        .groupActivityAssociation(.primary(<span class="string">&quot;教学视频&quot;</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="ARKit-共享锚点"><a href="#ARKit-共享锚点" class="headerlink" title="ARKit 共享锚点"></a>ARKit 共享锚点</h2><p>ARKit 新增的共享世界锚点允许将虚拟内容固定在物理空间中的同一位置：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">WorldAnchor</span>(originFromAnchorTransform: transform, sharedWithNearbyParticipants: <span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
-<p>使用前需要检查 worldAnchorSharingAvailability 状态。</p>
-<h2 id="设计建议"><a href="#设计建议" class="headerlink" title="设计建议"></a>设计建议</h2><ul>
-<li>确保应用支持新的共享菜单</li>
-<li>设计时要兼顾附近与远程用户</li>
-<li>充分利用物理空间特性</li>
-<li>考虑使用非沉浸模式作为共享入口</li>
-</ul>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/223">了解面向空间商务 App 的增强功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10201">自定支持同播共享的空间自影像模板</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10070">打造出色的空间播放体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10087">构建空间同播共享体验</a></li>
-</ul>
-<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVFoundation/AVPlaybackCoordinator">AVPlaybackCoordinator</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/GroupActivities/configure-your-app-for-sharing-with-people-nearby">Configure your visionOS app for sharing with people nearby</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SwiftUI/View/groupActivityAssociation(_:">groupActivityAssociation(_:)</a>)<blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="与附近用户共享-visionOS-体验：构建无缝协作的空间应用"><a href="#与附近用户共享-visionOS-体验：构建无缝协作的空间应用" class="headerlink" title="与附近用户共享 visionOS 体验：构建无缝协作的空间应用"></a>与附近用户共享 visionOS 体验：构建无缝协作的空间应用</h1><p>Apple 在 visionOS 26 中引入了一项革命性的同空间共享功能，让开发者能够为用户打造前所未有的协作体验。这项技术将 SharePlay 框架与 ARKit 深度融合，实现了物理空间中的虚拟内容共享。</p>
+<h2 id="近距离共享的核心机制"><a href="#近距离共享的核心机制" class="headerlink" title="近距离共享的核心机制"></a>近距离共享的核心机制</h2><p>visionOS 26 的近距离共享功能通过窗口栏右侧的共享按钮实现一键分享。选择附近联系人后，所有参与者都会在相同位置看到共享窗口，窗口栏变为绿色标识共享状态。系统确保所有用户看到的窗口位置和尺寸完全一致，并支持以下交互特性：</p>
+<ul>
+<li>窗口移动同步给所有用户</li>
+<li>自动朝向人群调整方向</li>
+<li>共同调整应用尺寸或贴合环境</li>
+<li>数码表冠重新定位功能</li>
+<li>指向时内容淡出确保可见性</li>
 </ul>
+<h2 id="SharePlay-框架的深度整合"><a href="#SharePlay-框架的深度整合" class="headerlink" title="SharePlay 框架的深度整合"></a>SharePlay 框架的深度整合</h2><p>建立互动式共享体验的关键在于集成 SharePlay 框架。开发者需要：</p>
+<ol>
+<li>创建 GroupActivity 子类（如示例中的 BoardGameActivity）</li>
+<li>在 SwiftUI 中添加 ShareLink 暴露活动</li>
+<li>观察 GroupSession 处理会话状态</li>
+<li>配置 supportsGroupImmersiveSpace 支持沉浸空间</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">BoardGameView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="meta">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> activity <span class="operator">=</span> <span class="type">BoardGameActivity</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span> &#123;</span><br><span class="line">            <span class="comment">// 游戏UI内容</span></span><br><span class="line">            <span class="type">ShareLink</span>(item: activity) &#123; <span class="type">EmptyView</span>() &#125;.hidden()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="增强同空间体验的新API"><a href="#增强同空间体验的新API" class="headerlink" title="增强同空间体验的新API"></a>增强同空间体验的新API</h2><p>visionOS 26 为 SharePlay 引入了多项专为同空间用户设计的增强功能：</p>
+<h3 id="参与者检测"><a href="#参与者检测" class="headerlink" title="参与者检测"></a>参与者检测</h3><p>通过 GroupSession 的 activeParticipants 发布者和 isNearbyWithLocalParticipant 属性，可以精确识别附近参与者。</p>
+<h3 id="内容定位"><a href="#内容定位" class="headerlink" title="内容定位"></a>内容定位</h3><p>从 GroupSession 的系统协调器获取 localParticipantState 的 pose 属性，实现基于用户实际位置的智能内容放置。</p>
+<h3 id="媒体同步"><a href="#媒体同步" class="headerlink" title="媒体同步"></a>媒体同步</h3><p>AVPlayer 与 AVPlaybackCoordinator 的深度整合确保同空间用户的音视频播放完全同步。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> coordinator <span class="operator">=</span> <span class="type">AVPlayerPlaybackCoordinator</span>()</span><br><span class="line">coordinator.coordinateWithSession(groupSession)</span><br></pre></td></tr></table></figure>
+<h3 id="多窗口支持"><a href="#多窗口支持" class="headerlink" title="多窗口支持"></a>多窗口支持</h3><p>使用 .groupActivityAssociation 视图修饰符指定与 SharePlay 关联的 WindowGroup：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">VideoPlayerView</span>()</span><br><span class="line">    .groupActivityAssociation(.primary)</span><br></pre></td></tr></table></figure>
+<h2 id="ARKit-共享世界锚点技术"><a href="#ARKit-共享世界锚点技术" class="headerlink" title="ARKit 共享世界锚点技术"></a>ARKit 共享世界锚点技术</h2><p>ARKit 在 visionOS 26 中新增了共享世界锚点功能，使虚拟内容能够固定在相同的物理位置：</p>
+<ol>
+<li>检查 worldAnchorSharingAvailability 状态</li>
+<li>创建 WorldAnchor 时设置 sharedWithNearbyParticipants: true</li>
+<li>通过 anchorUpdates 序列接收共享锚点</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> anchor <span class="operator">=</span> <span class="type">WorldAnchor</span>(</span><br><span class="line">    originFromAnchorTransform: transform,</span><br><span class="line">    sharedWithNearbyParticipants: <span class="literal">true</span></span><br><span class="line">)</span><br><span class="line">worldTracking.addAnchor(anchor)</span><br></pre></td></tr></table></figure>
+<h2 id="设计最佳实践"><a href="#设计最佳实践" class="headerlink" title="设计最佳实践"></a>设计最佳实践</h2><p>构建出色的近距离共享体验应考虑以下原则：</p>
+<ol>
+<li><strong>易发现性</strong>：确保共享功能在系统UI中直观可见</li>
+<li><strong>多平台兼容</strong>：支持附近和远程参与者的混合体验</li>
+<li><strong>空间感知</strong>：充分利用物理空间增强临场感</li>
+<li><strong>渐进式体验</strong>：从简单窗口到沉浸空间的平滑过渡</li>
+</ol>
+<h2 id="应用场景展望"><a href="#应用场景展望" class="headerlink" title="应用场景展望"></a>应用场景展望</h2><p>这项技术开启了丰富的应用可能性：</p>
+<ul>
+<li>协作白板：实体墙上的虚拟协作空间</li>
+<li>社交游戏：客厅中的沉浸式多人游戏</li>
+<li>家庭影院：与朋友共享的电影之夜体验</li>
+<li>室内设计：多人实时协作的家具布置方案</li>
+</ul>
+<p>相关视频:<br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/223">了解面向空间商务 App 的增强功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10201">自定支持同播共享的空间自影像模板</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10070">打造出色的空间播放体验</a></p>
+<p>文档:<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVFoundation/AVPlaybackCoordinator">AVPlaybackCoordinator</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/GroupActivities/configure-your-app-for-sharing-with-people-nearby">Configure your visionOS app for sharing with people nearby</a></p>
+<p>visionOS 26 的近距离共享功能代表了空间计算领域的重要进步，为开发者提供了构建下一代社交体验的强大工具。通过合理运用这些API，应用将能够创造更具沉浸感和连接性的用户体验。</p>
 
       
 
@@ -373,18 +379,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_296/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_319/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          支持 visionOS App 播放沉浸视频
+          在你的 App 中录制电影效果视频
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_302/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">打造丝滑的多画面播放体验</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_323/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用全新设计系统构建 SwiftUI App</div>
       <i class="icon-circle-right"></i>
     </a>
   

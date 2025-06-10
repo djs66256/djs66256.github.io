@@ -16,8 +16,8 @@
 <meta property="og:description" content="让你的 app 在 ipados 上呈现出色观感。了解设计响应式布局的最佳实践，轻松创建可调整大小的窗口。熟悉窗口控件，并探索适配不同窗口控件的最佳方式。了解出色菜单栏的构建要素。此外，探索全新指针及其效果更新。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10046/10046_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:33:50.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:33:50.387Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.878Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ipados">
@@ -218,7 +218,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_208/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:33:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,60 +227,70 @@ var _hmt = _hmt || [];
       
         <p>让你的 app 在 ipados 上呈现出色观感。了解设计响应式布局的最佳实践，轻松创建可调整大小的窗口。熟悉窗口控件，并探索适配不同窗口控件的最佳方式。了解出色菜单栏的构建要素。此外，探索全新指针及其效果更新。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10046/10046_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/208/">视频地址</a></p>
-<h1 id="提升-iPad-应用设计体验：从导航到窗口系统的全面优化"><a href="#提升-iPad-应用设计体验：从导航到窗口系统的全面优化" class="headerlink" title="提升 iPad 应用设计体验：从导航到窗口系统的全面优化"></a>提升 iPad 应用设计体验：从导航到窗口系统的全面优化</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 iPadOS 26 的发布，Apple 为开发者带来了一系列强化应用设计的新特性。从流畅的多任务处理到精准的指针交互，这些改进让 iPad 应用能够呈现更专业的用户体验。本文将深入解析 iPad 应用设计的核心优化要点，帮助你打造更出色的应用。</p>
-<h2 id="导航设计的最佳实践"><a href="#导航设计的最佳实践" class="headerlink" title="导航设计的最佳实践"></a>导航设计的最佳实践</h2><p><strong>选择合适的导航模式</strong>是提升用户体验的第一步。iPad 提供了两种主要导航方案：</p>
-<ol>
-<li><strong>侧边栏</strong>：适合包含大量子视图或深层嵌套内容的应用（如邮件和音乐应用）</li>
-<li><strong>标签栏</strong>：更紧凑灵活的导航方案，能为内容展示留出更多空间</li>
-</ol>
-<p><strong>关键建议</strong>：</p>
-<ul>
-<li>优先考虑标签栏方案，它可以随时扩展为侧边栏</li>
-<li>确保导航系统能够适应不同屏幕尺寸</li>
-<li>通过”滚动边缘效果”扩展内容区域，充分利用屏幕空间</li>
-</ul>
-<h2 id="全新窗口系统解析"><a href="#全新窗口系统解析" class="headerlink" title="全新窗口系统解析"></a>全新窗口系统解析</h2><p>iPadOS 26 带来了<strong>革命性的窗口系统改进</strong>：</p>
-<ul>
-<li><strong>拖拽手柄</strong>：右下角的拖拽手柄让用户可以轻松创建浮动窗口</li>
-<li><strong>窗口控件</strong>：左上角的新型控件点击放大功能选项，长按则展开更多布局选择</li>
-<li><strong>增量式窗口</strong>：每个文档都会在独立窗口中开启，取代原有的”原位替换”逻辑</li>
-</ul>
-<p><strong>开发建议</strong>：</p>
-<ul>
-<li>让工具栏环绕窗口控件排列，避免预留安全区域</li>
-<li>为每个文档创建独立窗口</li>
-<li>为所有窗口设置描述性名称</li>
-</ul>
-<h2 id="指针交互的升级"><a href="#指针交互的升级" class="headerlink" title="指针交互的升级"></a>指针交互的升级</h2><p>iPadOS 26 的指针系统实现了<strong>质的飞跃</strong>：</p>
-<ul>
-<li><strong>1:1 输入跟踪</strong>：新型指针比前代更加精准跟手</li>
-<li><strong>“液态玻璃”高亮效果</strong>：悬停时会直接在控件上方显现，通过折射底层元素指示选中状态</li>
-<li><strong>无磁吸效应</strong>：新效果不再有磁吸特性，操作更加自然流畅</li>
-</ul>
-<p><strong>适配建议</strong>：全面测试应用与新指针的交互表现，确保最佳用户体验。</p>
-<h2 id="菜单栏设计指南"><a href="#菜单栏设计指南" class="headerlink" title="菜单栏设计指南"></a>菜单栏设计指南</h2><p>虽然菜单栏是 macOS 的经典元素，但 iPad 版有其独特性：</p>
-<ul>
-<li><strong>科学组织菜单项</strong>：按使用频率排序，关联操作分组显示</li>
-<li><strong>充实”查看”菜单</strong>：纳入标签页布局和侧边栏开关</li>
-<li><strong>保持一致性</strong>：为菜单项添加与应用内保持一致的图标</li>
-<li><strong>稳定性原则</strong>：永远不要隐藏菜单或菜单项，仅做淡化处理</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过整合这些设计元素，你的 iPad 应用将获得：</p>
-<ul>
-<li>更流畅的导航体验</li>
-<li>更强大的多任务处理能力</li>
-<li>更精准的指针交互</li>
-<li>更高效的菜单访问</li>
-</ul>
-<p>这些构建模块的组合将产生远超单个功能之和的价值，真正提升你的应用体验层次。</p>
-<h2 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/multitasking">人机界面指南：多任务处理</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/the-menu-bar">人机界面指南：菜单栏</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/windows">人机界面指南：窗口系统</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="提升-iPad-应用设计：WWDC-26-最新指南"><a href="#提升-iPad-应用设计：WWDC-26-最新指南" class="headerlink" title="提升 iPad 应用设计：WWDC 26 最新指南"></a>提升 iPad 应用设计：WWDC 26 最新指南</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>iPadOS 26 带来了一系列创新功能，旨在帮助开发者打造更强大、更流畅的 iPad 应用体验。本次 WWDC 演讲详细介绍了如何利用这些新特性优化应用设计，包括导航模式选择、窗口管理改进、指针增强以及菜单栏设计。</p>
+<h2 id="导航设计新范式"><a href="#导航设计新范式" class="headerlink" title="导航设计新范式"></a>导航设计新范式</h2><p>在 iPadOS 26 中，应用的导航设计获得了全新可能性。设计师 Rene Lee 展示了两种主要导航模式：</p>
+<p><strong>侧边栏导航</strong>非常适合内容层级复杂的应用，如邮件应用展示的示例。邮件应用利用侧边栏扁平化导航结构，将所有邮箱和账户一目了然地展示给用户。音乐应用则展示了侧边栏与选项卡栏之间的流畅转换：点击侧边栏中的按钮，导航可以无缝变形为更紧凑的选项卡栏。</p>
+<p><strong>选项卡栏导航</strong>作为更紧凑的选择，能够最大化内容展示空间，提供更沉浸式的体验。开发者可以从选项卡栏开始设计，因为它能轻松扩展为侧边栏，为应用未来的发展预留空间。</p>
+<p>演讲特别强调了导航在尺寸变化时的适应性表现：</p>
+<ul>
+<li>竖屏模式下，侧边栏可变形为选项卡栏</li>
+<li>布局变化应保持非破坏性</li>
+<li>尽可能恢复到初始状态</li>
 </ul>
+<p>Rene 还建议开发者充分利用”滚动边缘效果”，在工具栏下方扩展内容，创造更沉浸式的体验，这对于浮动窗口尤为重要。</p>
+<h2 id="窗口系统革新"><a href="#窗口系统革新" class="headerlink" title="窗口系统革新"></a>窗口系统革新</h2><p>iPadOS 26 引入了更简单强大的窗口系统：</p>
+<ul>
+<li>每个支持多任务处理的应用右下角新增了<strong>调整手柄</strong>，用户可轻松拖动调整窗口大小</li>
+<li>左上角的<strong>窗口控件</strong>点击时会放大显示功能，长按则提供快速创建各种窗口布局的快捷方式</li>
+</ul>
+<p>窗口控件的放置也有新规范：</p>
+<ul>
+<li>应环绕在工具栏前导边缘</li>
+<li>避免使用兼容性放置方式（在工具栏上方增加安全区域）</li>
+<li>正确放置可回收额外内容空间</li>
+</ul>
+<p>文档打开行为也有重要变化：</p>
+<ul>
+<li>每个新文档应在独立窗口中打开（而非”就地打开”）</li>
+<li>应用菜单新增窗口列表功能</li>
+<li>为每个窗口提供描述性名称至关重要</li>
+</ul>
+<h2 id="指针交互升级"><a href="#指针交互升级" class="headerlink" title="指针交互升级"></a>指针交互升级</h2><p>iPadOS 26 对指针系统进行了显著改进：</p>
+<ul>
+<li>新指针形状更精确，直接一对一跟踪输入</li>
+<li>悬停效果更新为”液态玻璃托盘”视觉反馈</li>
+<li>高亮效果会弯曲折射底层元素，清晰指示选中状态</li>
+<li>指针不再磁吸或橡皮筋式粘附，响应更直接</li>
+</ul>
+<p>开发者被建议全面测试应用与新指针的交互，确保体验流畅。</p>
+<h2 id="菜单栏设计规范"><a href="#菜单栏设计规范" class="headerlink" title="菜单栏设计规范"></a>菜单栏设计规范</h2><p>iPad 菜单栏设计需要特别注意：</p>
+<p><strong>自定义菜单设计准则</strong>：</p>
+<ul>
+<li>按使用频率而非字母顺序排列操作</li>
+<li>相关操作分组到独立部分</li>
+<li>次要操作可放入子菜单</li>
+<li>为项目分配匹配应用的符号</li>
+<li>常用操作设置键盘快捷键</li>
+</ul>
+<p><strong>视图菜单优化建议</strong>：</p>
+<ul>
+<li>包含应用选项卡作为菜单项</li>
+<li>为选项卡切换分配快捷键</li>
+<li>添加侧边栏切换器功能</li>
+</ul>
+<p><strong>重要注意事项</strong>：</p>
+<ul>
+<li>避免根据上下文隐藏菜单或项目</li>
+<li>非活动项目应变暗而非隐藏</li>
+<li>保持菜单内容静态以确保可预测性</li>
+<li>即使没有可操作项，也应显示完整菜单</li>
+</ul>
+<h2 id="总结与资源"><a href="#总结与资源" class="headerlink" title="总结与资源"></a>总结与资源</h2><p>iPadOS 26 为应用设计提供了丰富的新工具：从流畅的导航转换、优化的窗口管理，到精确的指针交互和结构化的菜单栏设计。开发者可以通过合理运用这些构建模块，显著提升 iPad 应用体验。</p>
+<p>更多详细信息可参考以下设计指南：</p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/multitasking">Human Interface Guidelines: Multitasking</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/the-menu-bar">Human Interface Guidelines: The menu bar</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/windows">Human Interface Guidelines: Windows</a></p>
 
       
 
@@ -387,18 +397,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_313/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_201/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          将 Swift Charts 扩展成三维图表
+          Apple Pay 的新功能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_268/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">采用 Swift 并发</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_220/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">了解焕然一新的 App 图标</div>
       <i class="icon-circle-right"></i>
     </a>
   

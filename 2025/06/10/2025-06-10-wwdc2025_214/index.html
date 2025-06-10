@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索 game center 的功能并了解如何开始使用。我们将展示实现成就、挑战、排行榜和活动的最佳实践，助你最大限度地提高游戏的曝光度、吸引新玩家并提升用户参与度。 为了充分从这个讲座中获益，我们还建议你观看“通过 apple games app 吸引玩家”。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9892/9892_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:40:46.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:40:46.526Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.238Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="macos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_214/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:40:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -227,134 +227,92 @@ var _hmt = _hmt || [];
         <p>探索 game center 的功能并了解如何开始使用。我们将展示实现成就、挑战、排行榜和活动的最佳实践，助你最大限度地提高游戏的曝光度、吸引新玩家并提升用户参与度。</p>
 <p>为了充分从这个讲座中获益，我们还建议你观看“通过 apple games app 吸引玩家”。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9892/9892_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/214/">视频地址</a></p>
-<h1 id="使用-Game-Center-提升游戏体验与玩家参与度"><a href="#使用-Game-Center-提升游戏体验与玩家参与度" class="headerlink" title="使用 Game Center 提升游戏体验与玩家参与度"></a>使用 Game Center 提升游戏体验与玩家参与度</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Game Center 是苹果提供的一套功能强大的游戏服务，它不仅能增强玩家参与度，还能帮助游戏获得更多曝光。通过集成成就、排行榜、挑战和活动等功能，开发者可以显著提升游戏的社交性和可玩性。本文将详细介绍如何快速集成 Game Center 并充分利用其功能优势。  </p>
-<h2 id="Game-Center-的核心功能"><a href="#Game-Center-的核心功能" class="headerlink" title="Game Center 的核心功能"></a>Game Center 的核心功能</h2><h3 id="为何使用-Game-Center"><a href="#为何使用-Game-Center" class="headerlink" title="为何使用 Game Center"></a>为何使用 Game Center</h3><p>Game Center 提供以下关键功能，帮助游戏脱颖而出：  </p>
-<ul>
-<li><strong>成就系统</strong>：奖励玩家达成重要里程碑  </li>
-<li><strong>排行榜与挑战</strong>：激发玩家间的竞争意识  </li>
-<li><strong>活动深度链接</strong>：将玩家直接引导至特定游戏内容  </li>
-</ul>
-<p>这些功能不仅能提高玩家留存率，还能通过 Apple Games 应用（预装在苹果设备上）增加游戏的可见性。  </p>
-<h3 id="提升游戏曝光"><a href="#提升游戏曝光" class="headerlink" title="提升游戏曝光"></a>提升游戏曝光</h3><p>Game Center 集成直接影响游戏在以下场景的展示机会：  </p>
-<ul>
-<li>App Store 的”热门游戏”排行榜  </li>
-<li>Games 应用的”好友在玩”推荐版块  </li>
-<li>好友超越玩家时的推送通知  </li>
-</ul>
-<h2 id="快速集成-Game-Center"><a href="#快速集成-Game-Center" class="headerlink" title="快速集成 Game Center"></a>快速集成 Game Center</h2><h3 id="项目设置步骤"><a href="#项目设置步骤" class="headerlink" title="项目设置步骤"></a>项目设置步骤</h3><p>只需两个简单步骤即可启用 Game Center：  </p>
-<ol>
-<li><p><strong>添加 Game Center 权限</strong>  </p>
-<ul>
-<li>在 Xcode 中：  <ul>
-<li>打开项目 → 导航至”Signing and Capabilities”标签页  </li>
-<li>点击”+ Capability” → 搜索并添加”Game Center”  </li>
-</ul>
-</li>
-<li>Unity 开发者：  <ul>
-<li>使用苹果提供的插件，自动生成包含正确权限的 Xcode 项目  </li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>初始化 GameKit 框架</strong><br>使用以下 Swift 代码进行初始化：  </p>
-</li>
-</ol>
-<pre><code class="swift"><span class="type">GKLocalPlayer</span>.local.authenticateHandler = &#123; <span class="number">_</span>, error <span class="keyword">in</span>
-    <span class="built_in">print</span>(<span class="string">"\(GKLocalPlayer.local.alias) 已准备好游玩！"</span>)
-&#125;
-</code></pre>
-<p><strong>最佳实践</strong>：  </p>
-<ul>
-<li>在游戏启动时尽早调用初始化（如标题屏幕出现时）  </li>
-<li>这将帮助游戏更快出现在推荐列表中  </li>
-</ul>
-<h2 id="配置游戏功能"><a href="#配置游戏功能" class="headerlink" title="配置游戏功能"></a>配置游戏功能</h2><p>Game Center 功能可以通过三种方式配置：  </p>
-<ol>
-<li><p><strong>Xcode 26 的 GameKit 包</strong>（推荐开发阶段使用）  </p>
-<ul>
-<li>直接在 Xcode 中测试成就/排行榜/活动  </li>
-<li>配置数据自动纳入版本管理  </li>
-</ul>
-</li>
-<li><p><strong>App Store Connect 网站</strong>  </p>
-<ul>
-<li>用于审核前的配置检查  </li>
-</ul>
-</li>
-<li><p><strong>App Store Connect API</strong>  </p>
-<ul>
-<li>适合自动化持续集成流程  </li>
-</ul>
-</li>
-</ol>
-<h3 id="创建排行榜示例"><a href="#创建排行榜示例" class="headerlink" title="创建排行榜示例"></a>创建排行榜示例</h3><p>以游戏《The Coast》中的”Cape Cod”关卡为例：  </p>
-<ol>
-<li>在 Xcode 中添加 GameKit 包  </li>
-<li>从 App Store Connect 同步现有配置  </li>
-<li>设置排行榜标识符和本地化名称  </li>
-</ol>
-<p><strong>注意</strong>：为支持的每种语言准备本地化内容，Game Center 会自动适配玩家语言。  </p>
-<h2 id="社交功能实现"><a href="#社交功能实现" class="headerlink" title="社交功能实现"></a>社交功能实现</h2><h3 id="挑战功能"><a href="#挑战功能" class="headerlink" title="挑战功能"></a>挑战功能</h3><p>无需额外代码即可将单机游戏转化为社交体验：  </p>
-<ul>
-<li>玩家可以邀请好友进行实时比拼  </li>
-<li>自定义比赛时长（1/3/7天）  </li>
-<li>限制参赛者或尝试次数  </li>
-</ul>
-<p><strong>实现示例</strong>：  </p>
-<pre><code class="swift"><span class="type">GKLeaderboard</span>.submitScore(points, 
-         context: <span class="number">0</span>, 
-         player: <span class="type">GKLocalPlayer</span>.local,
-         leaderboardIDs: [<span class="string">"thecoast.lb.capecod"</span>])
-</code></pre>
-<h3 id="活动深度链接"><a href="#活动深度链接" class="headerlink" title="活动深度链接"></a>活动深度链接</h3><p>将玩家直接带到特定内容：  </p>
-<pre><code class="swift"><span class="function"><span class="keyword">func</span> <span class="title">player</span><span class="params">(<span class="number">_</span> player: GKPlayer, wantsToPlay activity: GKGameActivity)</span></span> async -&gt; <span class="type">Bool</span> &#123;
-    <span class="keyword">if</span> activity.activityDefinition.identifier == <span class="string">"thecoast.activity"</span> &#123;
-        startCapeCod(activity)
-    &#125;
-    <span class="keyword">return</span> <span class="literal">true</span>
-&#125;
-</code></pre>
-<p><strong>多人活动提示</strong>：  </p>
-<ul>
-<li>启用”支持派对代码”选项  </li>
-<li>在游戏中展示当前派对代码  </li>
-<li>提供手动输入代码的功能  </li>
-</ul>
-<h2 id="测试与发布"><a href="#测试与发布" class="headerlink" title="测试与发布"></a>测试与发布</h2><h3 id="测试工具"><a href="#测试工具" class="headerlink" title="测试工具"></a>测试工具</h3><ol>
-<li>启用 Xcode 的 GameKit 调试模式  </li>
-<li>使用 Game Progress Manager 模拟分数提交  </li>
-<li>验证活动深度链接的正确性  </li>
-</ol>
-<h3 id="发布流程"><a href="#发布流程" class="headerlink" title="发布流程"></a>发布流程</h3><ol>
-<li>将 GameKit 包推送到 App Store Connect  </li>
-<li>审核时包含”未上线”的 Game Center 资源  </li>
-<li>审核通过后，将资源状态改为”已上线”  </li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过集成 Game Center，开发者可以：  </p>
-<ul>
-<li>显著提升玩家参与度和留存率  </li>
-<li>增加游戏在苹果生态系统的曝光机会  </li>
-<li>无需复杂开发即可实现丰富的社交功能  </li>
-</ul>
-<p>建议立即行动：  </p>
-<ol>
-<li>为项目添加 GameKit 包  </li>
-<li>初始化 GameKit 提升可见性  </li>
-<li>探索活动和挑战的社交潜力  </li>
-</ol>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/209">让游戏更上一层楼</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/215">通过 Apple Games App 吸引玩家</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10065">即插即用：向你的 Unity 游戏项目添加 Apple 框架</a>  </li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/GameKit/creating-activities-for-your-game">为游戏创建活动</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/GameKit/creating-engaging-challenges-from-leaderboards">从排行榜创建吸引人的挑战</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/game-center">人机界面指南：Game Center</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="开始使用-Game-Center：提升游戏曝光与玩家参与度"><a href="#开始使用-Game-Center：提升游戏曝光与玩家参与度" class="headerlink" title="开始使用 Game Center：提升游戏曝光与玩家参与度"></a>开始使用 Game Center：提升游戏曝光与玩家参与度</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Game Center 作为苹果生态系统中的重要组件，为游戏开发者提供了一套完整的社交和竞争功能解决方案。通过集成 Game Center 功能，开发者不仅能提升玩家参与度，还能显著增加游戏在苹果平台上的曝光机会。</p>
+<h2 id="Game-Center-的核心价值"><a href="#Game-Center-的核心价值" class="headerlink" title="Game Center 的核心价值"></a>Game Center 的核心价值</h2><p>Game Center 的核心功能包括成就系统、排行榜、挑战和活动。这些功能共同构建了一个完整的社交游戏生态系统：</p>
+<ol>
+<li><strong>成就系统</strong>：奖励玩家达成游戏里程碑，增加游戏成就感</li>
+<li><strong>排行榜</strong>：促进玩家间的竞争，提高游戏重玩价值</li>
+<li><strong>挑战功能</strong>：将单人游戏转化为社交体验</li>
+<li><strong>活动功能</strong>：提供深度链接，引导玩家进入特定游戏内容</li>
+</ol>
+<p>特别值得注意的是，从今年秋季开始预装在苹果设备上的新 Games 应用，将进一步放大 Game Center 的曝光优势。游戏在”最常玩游戏”排行榜和”朋友正在玩”版块的展示，都将显著提升发现率。</p>
+<h2 id="技术集成指南"><a href="#技术集成指南" class="headerlink" title="技术集成指南"></a>技术集成指南</h2><h3 id="项目初始配置"><a href="#项目初始配置" class="headerlink" title="项目初始配置"></a>项目初始配置</h3><p>集成 Game Center 只需两个关键步骤：</p>
+<ol>
+<li><p><strong>添加 Game Center 权限</strong>：</p>
+<ul>
+<li>在 Xcode 中通过”Signing and Capabilities”标签添加”Game Center”能力</li>
+<li>Unity 开发者可使用苹果提供的专用插件简化流程</li>
 </ul>
+</li>
+<li><p><strong>初始化 GameKit 框架</strong>：<br>通过简单的代码实现 Game Center 初始化：</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GKLocalPlayer.local.authenticateHandler = &#123; _, error in</span><br><span class="line">    print(&quot;\(GKLocalPlayer.local.alias) is ready to play!&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Unity 版本的初始化同样简洁：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var player = await GKLocalPlayer.Authenticate();</span><br><span class="line">Debug.Log($&quot;&#123;player.alias&#125; is ready to play!&quot;);</span><br></pre></td></tr></table></figure>
+<h3 id="功能开发与测试"><a href="#功能开发与测试" class="headerlink" title="功能开发与测试"></a>功能开发与测试</h3><p>Xcode 26 引入的 GameKit 包为开发者带来了显著便利：</p>
+<ol>
+<li><strong>本地测试能力</strong>：可直接在 Xcode 中测试成就、排行榜和活动</li>
+<li><strong>配置同步</strong>：与 App Store Connect 保持同步</li>
+<li><strong>版本控制友好</strong>：配置自动包含在代码审查和版本控制中</li>
+</ol>
+<p>以”The Coast”游戏为例，添加”Capecod”排行榜的流程展示了 GameKit 包的高效性：</p>
+<ol>
+<li>通过模板选择器创建 GameKit 包</li>
+<li>从 App Store Connect 拉取现有游戏信息</li>
+<li>添加新排行榜并配置相关参数</li>
+<li>设置多语言本地化支持</li>
+</ol>
+<h2 id="创新功能详解"><a href="#创新功能详解" class="headerlink" title="创新功能详解"></a>创新功能详解</h2><h3 id="挑战系统"><a href="#挑战系统" class="headerlink" title="挑战系统"></a>挑战系统</h3><p>挑战功能基于现有排行榜，无需额外代码即可实现：</p>
+<ol>
+<li><p><strong>特点</strong>：</p>
+<ul>
+<li>有时间限制的个性化竞赛</li>
+<li>可自定义参与者和尝试次数</li>
+<li>支持不同持续时间选项（1天、3天或1周）</li>
+</ul>
+</li>
+<li><p><strong>实现方式</strong>：<br>通过现有的 submitScore() API 自动支持挑战：</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GKLeaderboard.submitScore(points, </span><br><span class="line">         context: 0, </span><br><span class="line">         player: GKLocalPlayer.local,</span><br><span class="line">         leaderboardIDs: [&quot;thecoast.lb.capecod&quot;])</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><strong>最佳实践</strong>：<ul>
+<li>定期更新的排行榜可设为”不可重复”挑战</li>
+<li>应在游戏关卡结束时提交分数</li>
+<li>避免提交累计终身分数</li>
+</ul>
+</li>
+</ol>
+<h3 id="活动功能"><a href="#活动功能" class="headerlink" title="活动功能"></a>活动功能</h3><p>活动功能提供了深度链接能力，可直接将玩家引导至特定游戏内容：</p>
+<ol>
+<li><p><strong>应用场景</strong>：</p>
+<ul>
+<li>快速进入特定关卡</li>
+<li>直接跳转到成就相关场景</li>
+<li>精准定位游戏内活动</li>
+</ul>
+</li>
+<li><p><strong>实现优势</strong>：</p>
+<ul>
+<li>提升玩家参与效率</li>
+<li>增加特定内容的访问量</li>
+<li>与 Game Center 其他功能无缝集成</li>
+</ul>
+</li>
+</ol>
+<h2 id="总结与展望"><a href="#总结与展望" class="headerlink" title="总结与展望"></a>总结与展望</h2><p>Game Center 提供了一套完整的工具集，帮助开发者提升游戏社交性、竞争性和可发现性。通过合理配置成就、排行榜、挑战和活动功能，开发者可以：</p>
+<ol>
+<li>显著提升游戏在 App Store 和新 Games 应用中的曝光率</li>
+<li>增强玩家留存率和参与度</li>
+<li>创造更具吸引力的社交游戏体验</li>
+</ol>
+<p>随着苹果游戏生态的持续发展，Game Center 的功能和价值将进一步提升。开发者应充分利用这些工具，创造更具吸引力的游戏体验。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/101/">通过 Apple Games App 吸引玩家</a> </p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/gamekit">Game Center 开发者文档</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/appstoreconnectapi">App Store Connect API 文档</a></p>
 
       
 
@@ -457,18 +415,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_308/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_205/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          通过 Instruments 优化 CPU 性能
+          探索 Metal 4
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_112/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Platforms State of the Union (ASL)</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_209/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">让游戏更上一层楼</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何开始利用 metal 4 强大的新功能，让你的现有 metal app 更上一层楼。我们将介绍 metal 如何助你充分发挥 apple 芯片的优势，并以更高效的方式进行硬件编程。你还将了解如何借助 metal 4 的新功能，将机器学习整合到 metal 代码中。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9886/9886_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:37:51.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:37:51.789Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.104Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -221,7 +221,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_205/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:37:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -230,70 +230,60 @@ var _hmt = _hmt || [];
       
         <p>了解如何开始利用 metal 4 强大的新功能，让你的现有 metal app 更上一层楼。我们将介绍 metal 如何助你充分发挥 apple 芯片的优势，并以更高效的方式进行硬件编程。你还将了解如何借助 metal 4 的新功能，将机器学习整合到 metal 代码中。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9886/9886_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/205/">视频地址</a></p>
-<h1 id="Metal-4-全面解析：释放-Apple-芯片的图形与计算潜能"><a href="#Metal-4-全面解析：释放-Apple-芯片的图形与计算潜能" class="headerlink" title="Metal 4 全面解析：释放 Apple 芯片的图形与计算潜能"></a>Metal 4 全面解析：释放 Apple 芯片的图形与计算潜能</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Metal 作为 Apple 平台的低阶图形与计算 API，已成为开发者构建高性能应用的核心工具。随着 Metal 4 的推出，Apple 进一步提升了其能力，让开发者能够充分发挥 Apple 芯片的性能潜力。本文将深入探讨 Metal 4 的关键创新，包括指令编码、资源管理、着色器编译优化，以及机器学习的无缝集成。</p>
-<h2 id="指令编码革新"><a href="#指令编码革新" class="headerlink" title="指令编码革新"></a>指令编码革新</h2><p>Metal 4 引入了全新的指令编码模型，显著提升了编码效率：</p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="Metal-4：Apple-芯片性能的全面释放"><a href="#Metal-4：Apple-芯片性能的全面释放" class="headerlink" title="Metal 4：Apple 芯片性能的全面释放"></a>Metal 4：Apple 芯片性能的全面释放</h1><p>Metal 是 Apple 平台上核心的低阶图形与计算 API，经过十余年的演进，Metal 4 为开发者带来了前所未有的性能优化与功能增强。本文将系统介绍 Metal 4 的关键技术创新点，帮助开发者理解如何将现有 Metal 应用升级至新高度。</p>
+<h2 id="革命性的指令编码模型"><a href="#革命性的指令编码模型" class="headerlink" title="革命性的指令编码模型"></a>革命性的指令编码模型</h2><p>Metal 4 对指令编码系统进行了重新设计，引入了全新的 MTL4CommandQueue 和 MTL4CommandBuffer 架构。与旧版本不同，Metal 4 将命令缓冲区与队列解耦，使应用能够并行编码命令缓冲区，显著提升多线程环境下的编码效率。</p>
+<p>新的统一计算编码器整合了位块传输和加速结构命令编码功能，减少了编码器切换的开销。MTL4RenderCommandEncoder 则引入了附件映射功能，允许动态切换颜色附件，无需创建额外编码器。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 MTL4CommandQueue</span></span><br><span class="line"><span class="keyword">let</span> commandQueue <span class="operator">=</span> device.makeCommandQueue(type: .<span class="type">MTL4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建 MTL4CommandBuffer</span></span><br><span class="line"><span class="keyword">let</span> commandBuffer <span class="operator">=</span> commandQueue.makeCommandBuffer()</span><br></pre></td></tr></table></figure>
+<h2 id="高效资源管理机制"><a href="#高效资源管理机制" class="headerlink" title="高效资源管理机制"></a>高效资源管理机制</h2><p>现代图形应用使用的资源数量呈爆炸式增长，Metal 4 提供了全新的资源管理方案：</p>
 <ol>
-<li><strong>解耦设计</strong>：将指令缓冲区与队列解耦，使应用能够并行编码</li>
-<li><strong>统一编码器</strong>：整合了传统编码器类型，减少了所需编码器总数</li>
-<li><strong>附件映射</strong>：允许实时切换颜色附件配置，无需额外编码器</li>
-<li><strong>显式内存管理</strong>：通过 MTL4CommandAllocator 直接控制指令缓冲区内存</li>
+<li><strong>MTL4ArgumentTable</strong>：取代传统的固定资源绑定点，支持无绑定渲染模式，大幅减少CPU设置时间</li>
+<li><strong>Residency集</strong>：明确指定GPU需要访问的资源集合，优化内存使用</li>
+<li><strong>放置稀疏资源</strong>：允许动态控制资源的内存占用，支持更广泛的设备适配</li>
 </ol>
-<h2 id="先进的资源管理"><a href="#先进的资源管理" class="headerlink" title="先进的资源管理"></a>先进的资源管理</h2><p>面对现代应用日益增长的资源需求，Metal 4 提供了更精细的控制：</p>
+<p>《Control Ultimate Edition》的案例表明，合理使用Residency集可以显著降低内存管理开销和内存使用量。</p>
+<h2 id="着色器编译优化"><a href="#着色器编译优化" class="headerlink" title="着色器编译优化"></a>着色器编译优化</h2><p>Metal 4 引入了 MTL4Compiler 接口，使着色器编译过程更可控：</p>
 <ol>
-<li><strong>参数表(MTL4ArgumentTable)</strong>：简化无绑定模式下的资源绑定</li>
-<li><strong>驻留集(Residency Sets)</strong>：确保关键资源保持驻留，优化GPU访问</li>
-<li><strong>放置稀疏资源</strong>：动态控制资源内存使用，支持更广泛的设备适配</li>
-<li><strong>屏障同步</strong>：提供低开销的阶段间同步，与其他API中的屏障良好对应</li>
+<li>编译器与设备分离，允许明确的编译时间控制</li>
+<li>灵活渲染管线状态支持Metal IR重用，减少重复编译</li>
+<li>编译器服务质量继承，确保关键着色器优先编译</li>
 </ol>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：创建驻留集并添加到指令队列</span></span><br><span class="line">MTL4ResidencySet* residencySet = [device newResidencySet];</span><br><span class="line">[residencySet addResource:resource1];</span><br><span class="line">[residencySet addResource:resource2];</span><br><span class="line">[commandQueue addResidencySet:residencySet];</span><br></pre></td></tr></table></figure>
-<h2 id="着色器编译优化"><a href="#着色器编译优化" class="headerlink" title="着色器编译优化"></a>着色器编译优化</h2><p>Metal 4 通过以下改进大幅提升了着色器编译效率：</p>
-<ol>
-<li><strong>独立编译上下文</strong>：新的 MTL4Compiler 接口提供更明确的控制</li>
-<li><strong>QoS 继承</strong>：编译线程继承请求线程的服务质量优先级</li>
-<li><strong>灵活管线状态</strong>：重用 Metal IR 减少重复编译时间</li>
-<li><strong>简化管线配置收集</strong>：进一步消除设备上编译需求</li>
-</ol>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 MTL4Compiler</span></span><br><span class="line"><span class="keyword">let</span> compiler <span class="operator">=</span> device.makeCompiler()</span><br></pre></td></tr></table></figure>
 <h2 id="机器学习无缝集成"><a href="#机器学习无缝集成" class="headerlink" title="机器学习无缝集成"></a>机器学习无缝集成</h2><p>Metal 4 将机器学习能力深度整合到图形管线中：</p>
 <ol>
-<li><strong>原生张量支持</strong>：在多维数据处理上远超传统缓冲区/纹理</li>
-<li><strong>专用编码器</strong>：ML编码器与现有编码器类型协同工作</li>
-<li><strong>内核级集成</strong>：小网络可直接嵌入着色器使用</li>
-<li><strong>性能原语</strong>：优化的张量操作原语在Apple芯片上极速运行</li>
+<li><strong>张量支持</strong>：原生支持多维数据容器，简化机器学习数据结构处理</li>
+<li><strong>机器学习命令编码器</strong>：可直接执行CoreML转换的网络</li>
+<li><strong>Metal性能原语</strong>：提供优化的着色器原语，支持小型网络嵌入</li>
 </ol>
-<h2 id="MetalFX-增强功能"><a href="#MetalFX-增强功能" class="headerlink" title="MetalFX 增强功能"></a>MetalFX 增强功能</h2><p>Metal 4 配合 MetalFX 提供了多项生产就绪的解决方案：</p>
+<p>这使得神经材质评估、升频等先进技术可以高效实现。</p>
+<h2 id="MetalFX-性能加速套件"><a href="#MetalFX-性能加速套件" class="headerlink" title="MetalFX 性能加速套件"></a>MetalFX 性能加速套件</h2><p>MetalFX 是Metal 4配套的高性能解决方案：</p>
 <ol>
-<li><strong>升频技术</strong>：以低分辨率渲染+智能升频节省GPU时间</li>
-<li><strong>帧插值</strong>：生成中间帧实现更高刷新率</li>
-<li><strong>光线追踪降噪</strong>：去除少光线渲染的噪声，保持图像质量</li>
+<li><strong>升频技术</strong>：允许渲染低分辨率图像并智能放大，节省GPU时间</li>
+<li><strong>帧插值</strong>：生成中间帧实现更高帧率</li>
+<li><strong>光线追踪降噪</strong>：改善光线追踪效果</li>
 </ol>
-<h2 id="迁移与采用策略"><a href="#迁移与采用策略" class="headerlink" title="迁移与采用策略"></a>迁移与采用策略</h2><p>Metal 4 设计为模块化采用，开发者可分阶段集成：</p>
+<h2 id="升级路径与开发工具"><a href="#升级路径与开发工具" class="headerlink" title="升级路径与开发工具"></a>升级路径与开发工具</h2><p>Metal 4 采用模块化设计，开发者可以分阶段升级：</p>
 <ol>
-<li><strong>编译优化</strong>：先采用新的编译器接口</li>
-<li><strong>指令编码</strong>：逐步迁移到新的编码模型</li>
-<li><strong>机器学习</strong>：根据网络规模选择合适的集成方式</li>
-<li><strong>资源管理</strong>：最后采用驻留集等高级功能</li>
+<li>先从着色器编译优化开始</li>
+<li>逐步采用新的命令编码模型</li>
+<li>最后集成先进的资源管理功能</li>
 </ol>
-<h2 id="开发工具支持"><a href="#开发工具支持" class="headerlink" title="开发工具支持"></a>开发工具支持</h2><p>Xcode 26 提供了全面的 Metal 4 开发支持：</p>
-<ol>
-<li><strong>专用模板</strong>：新建项目可选择 Metal 4 游戏模板</li>
-<li><strong>调试工具</strong>：API验证、性能HUD和系统追踪</li>
-<li><strong>示例代码</strong>：快速上手的实用范例</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Metal 4 代表了 Apple 图形技术的重大飞跃，为开发者提供了前所未有的控制力和灵活性。无论是追求极致性能的游戏，还是需要复杂计算的专业应用，Metal 4 都能提供强大的支持。建议开发者从最符合自身需求的特性开始，逐步将应用迁移到 Metal 4，充分释放 Apple 芯片的潜能。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
+<p>Xcode 26 提供了新的Metal 4项目模板，Metal调试器和性能HUD等工具也全面支持Metal 4，为开发者提供完善的调试和优化支持。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>开发者可以参考以下资源深入了解Metal 4：</p>
+<p>相关视频：</p>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/262">实现 Metal 4 机器学习与图形应用程序的完美融合</a></li>
 <li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/254">探索 Metal 4 游戏</a></li>
 <li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/211">深入探索 Metal 4 游戏</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/294">用于打造沉浸式 App 的 Metal 渲染的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/209">让游戏更上一层楼</a></li>
 </ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
+<p>文档：</p>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Metal/understanding-the-metal-4-core-api">Understanding the Metal 4 core API</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Metal/using-the-metal-4-compilation-api">Using the Metal 4 compilation API</a><blockquote>
-<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
-</blockquote>
-</li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Metal/using-the-metal-4-compilation-api">Using the Metal 4 compilation API</a></li>
 </ul>
+<p>Metal 4 为Apple平台上的图形和计算应用开辟了新的可能性，开发者现在就可以开始在新项目或现有应用中采用这些先进功能。</p>
 
       
 
@@ -412,18 +402,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_209/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_204/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          让游戏更上一层楼
+          深入探索 MapKit
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_211/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">深入探索 Metal 4 游戏</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_214/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">开始使用 Game Center</div>
       <i class="icon-circle-right"></i>
     </a>
   

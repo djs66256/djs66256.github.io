@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解 digital credentials 如何增强在线身份验证流程。我们将介绍网站如何整合 digital credentials api，以便请求访问“钱包”中的身份证件所包含的信息。我们还将探讨 app 如何利用新的 identitydocumentservices 框架提供 app 内的身份证件进行在线验证。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9930/9930_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:27:27.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:27:27.324Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.349Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="ios">
@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_232/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:27:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -228,63 +228,58 @@ var _hmt = _hmt || [];
       
         <p>了解 digital credentials 如何增强在线身份验证流程。我们将介绍网站如何整合 digital credentials api，以便请求访问“钱包”中的身份证件所包含的信息。我们还将探讨 app 如何利用新的 identitydocumentservices 框架提供 app 内的身份证件进行在线验证。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9930/9930_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/232/">视频地址</a></p>
-<h1 id="数字身份证件验证：从网页到App的无缝体验"><a href="#数字身份证件验证：从网页到App的无缝体验" class="headerlink" title="数字身份证件验证：从网页到App的无缝体验"></a>数字身份证件验证：从网页到App的无缝体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着数字身份证件的普及，在线身份验证正迎来革命性变革。本文将带您了解如何通过W3C数字凭证API和IdentityDocumentServices框架，在网页和应用中实现安全高效的身份证件验证流程。无论是网站开发者希望集成验证功能，还是应用开发者需要提供证件服务，这些技术都能显著提升用户体验。  </p>
-<h2 id="数字身份证件的优势"><a href="#数字身份证件的优势" class="headerlink" title="数字身份证件的优势"></a>数字身份证件的优势</h2><h3 id="移动证件（mdoc）标准"><a href="#移动证件（mdoc）标准" class="headerlink" title="移动证件（mdoc）标准"></a>移动证件（mdoc）标准</h3><p>数字身份证件基于ISO 18013-5标准的mdoc格式，具有三大核心优势：  </p>
-<ol>
-<li><strong>跨平台互操作性</strong>：确保不同系统和设备间的兼容性  </li>
-<li><strong>隐私保护</strong>：仅共享必要信息（如仅验证年龄时无需暴露完整住址）  </li>
-<li><strong>安全可靠</strong>：所有数据均由签发机构数字签名认证，防伪能力远超纸质证件  </li>
-</ol>
-<p>Apple Wallet中的证件正是采用这一标准，目前已在美国部分机场、商户和Apple Store使用。  </p>
-<h2 id="技术实现方案"><a href="#技术实现方案" class="headerlink" title="技术实现方案"></a>技术实现方案</h2><h3 id="网页端集成（W3C数字凭证API）"><a href="#网页端集成（W3C数字凭证API）" class="headerlink" title="网页端集成（W3C数字凭证API）"></a>网页端集成（W3C数字凭证API）</h3><p>网站可通过三个步骤完成验证流程：  </p>
-<ol>
-<li><strong>构建请求</strong>：向服务器获取签名的文档请求  </li>
-<li><strong>传递请求</strong>：通过JavaScript调用数字凭证API  </li>
-<li><strong>验证响应</strong>：将加密结果传回服务器解密认证  </li>
-</ol>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：调用数字凭证API</span></span><br><span class="line"><span class="keyword">const</span> credential = <span class="keyword">await</span> navigator.<span class="property">credentials</span>.<span class="title function_">get</span>(&#123;</span><br><span class="line">  <span class="attr">identity</span>: &#123;</span><br><span class="line">    <span class="attr">providers</span>: [&#123;</span><br><span class="line">      <span class="attr">protocol</span>: <span class="string">&quot;iso18013-5&quot;</span>,</span><br><span class="line">      <span class="attr">request</span>: signedRequest <span class="comment">// 服务器生成的签名请求</span></span><br><span class="line">    &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p><strong>跨设备支持</strong>：  </p>
-<ul>
-<li>在Mac操作时，验证请求会推送到用户的iPhone完成  </li>
-<li>非Apple设备可通过扫描二维码使用iPhone存储的证件  </li>
-</ul>
-<h3 id="应用端集成（IdentityDocumentServices框架）"><a href="#应用端集成（IdentityDocumentServices框架）" class="headerlink" title="应用端集成（IdentityDocumentServices框架）"></a>应用端集成（IdentityDocumentServices框架）</h3><p>应用开发者需要：  </p>
-<ol>
-<li>注册可提供的证件类型  </li>
-<li>实现授权UI界面  </li>
-<li>处理验证请求并返回加密响应  </li>
-</ol>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注册证件提供者</span></span><br><span class="line"><span class="keyword">let</span> store <span class="operator">=</span> <span class="type">IDSDocumentProviderRegistrationStore</span>.shared</span><br><span class="line"><span class="keyword">try</span> <span class="keyword">await</span> store.registerDocumentProvider(</span><br><span class="line">  configuration: <span class="type">IDSDocumentProviderConfiguration</span>(</span><br><span class="line">    supportedDocumentTypes: [.driversLicense]</span><br><span class="line">  )</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h2 id="安全机制"><a href="#安全机制" class="headerlink" title="安全机制"></a>安全机制</h2><p>整个流程包含四层防护：  </p>
-<ol>
-<li><strong>请求认证</strong>：验证请求方合法身份  </li>
-<li><strong>响应加密</strong>：端到端数据传输加密  </li>
-<li><strong>签发认证</strong>：确认数据来源真实性  </li>
-<li><strong>mdoc认证</strong>：防止证件数据被复制冒用  </li>
-</ol>
-<h2 id="开发实践建议"><a href="#开发实践建议" class="headerlink" title="开发实践建议"></a>开发实践建议</h2><h3 id="网站开发者"><a href="#网站开发者" class="headerlink" title="网站开发者"></a>网站开发者</h3><ol>
-<li>通过Apple Business Connect获取开发者证书  </li>
-<li>遵循ISO 18013-5/7标准构建请求  </li>
-<li>实现W3C数字凭证API前端集成  </li>
-</ol>
-<h3 id="应用开发者"><a href="#应用开发者" class="headerlink" title="应用开发者"></a>应用开发者</h3><ol>
-<li>使用IdentityDocumentProviderRegistrationStore注册服务  </li>
-<li>添加身份文档提供者扩展目标  </li>
-<li>设计用户友好的授权界面  </li>
-</ol>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>数字身份证件验证技术正在重塑在线身份认证的体验。通过标准化API和框架，开发者可以构建更安全、更便捷的验证流程。现在就开始探索这些技术，为用户带来无缝的身份验证体验吧！  </p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/235">进一步了解声明式网页推送</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari浏览器和WebKit的新功能</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10041">钱包与Apple Pay的新功能</a>  </li>
-</ul>
-<h2 id="文档资料"><a href="#文档资料" class="headerlink" title="文档资料"></a>文档资料</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/IdentityDocumentServices/Implenting-as-an-identity-document-provider">Implementing as an identity document provider</a>  </li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/developer.apple.com/documentation/identitydocumentservices/requesting-a-mobile-document-on-the-web">Requesting a mobile document on the web</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="在网页上验证身份证件：数字凭证API与IdentityDocumentServices框架详解"><a href="#在网页上验证身份证件：数字凭证API与IdentityDocumentServices框架详解" class="headerlink" title="在网页上验证身份证件：数字凭证API与IdentityDocumentServices框架详解"></a>在网页上验证身份证件：数字凭证API与IdentityDocumentServices框架详解</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在当今数字化时代，身份验证流程的便捷性与安全性成为用户体验的关键环节。传统的实体证件验证方式存在诸多不便，而基于移动证件(mdoc)格式的数字身份证件正逐渐成为解决方案。苹果在WWDC演讲中展示了如何利用数字凭证API和IdentityDocumentServices框架优化在线身份验证流程，为开发者和用户带来更高效、安全的体验。</p>
+<h2 id="数字身份证件的优势"><a href="#数字身份证件的优势" class="headerlink" title="数字身份证件的优势"></a>数字身份证件的优势</h2><p>传统的实体证件在线验证方式要求用户拍摄证件照片上传，这种方式对用户体验和机构验证都带来挑战。相比之下，数字身份证件(mdoc)基于ISO 18013-5标准，具有三大核心优势：</p>
+<ol>
+<li><strong>跨平台互操作性</strong>：遵循国际标准确保在不同系统和平台间无缝工作</li>
+<li><strong>精准信息共享</strong>：用户仅需分享验证方必需的信息，而非全部证件内容</li>
+<li><strong>增强安全性</strong>：通过发行机构加密签名确保验证方收到的信息真实可靠</li>
+</ol>
+<p>苹果钱包中的身份证件功能正是基于mdoc格式构建的实例，目前已经在美国特定机场、商户和Apple Store等场景得到应用。</p>
+<h2 id="Web集成：数字凭证API详解"><a href="#Web集成：数字凭证API详解" class="headerlink" title="Web集成：数字凭证API详解"></a>Web集成：数字凭证API详解</h2><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>网站集成数字凭证API进行身份验证包含三个关键步骤：</p>
+<ol>
+<li><strong>请求构建</strong>：服务器生成并签署文档请求</li>
+<li><strong>浏览器传递</strong>：通过W3C数字凭证API将请求传递给浏览器</li>
+<li><strong>验证响应</strong>：服务器接收并解密加密响应</li>
+</ol>
+<p>以太空船租赁网站为例，请求包含设备请求和加密信息两部分：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = &#123;</span><br><span class="line">  <span class="attr">challenge</span>: crypto.<span class="title function_">getRandomValues</span>(<span class="keyword">new</span> <span class="title class_">Uint8Array</span>(<span class="number">32</span>)),</span><br><span class="line">  <span class="attr">documentRequest</span>: &#123;</span><br><span class="line">    <span class="attr">documents</span>: [ &#123;</span><br><span class="line">      <span class="attr">docType</span>: <span class="string">&quot;org.iso.18013.5.1.mDL&quot;</span>,</span><br><span class="line">      <span class="attr">elements</span>: [ <span class="string">&quot;org.iso.18013.5.1.given_name&quot;</span>,</span><br><span class="line">                 <span class="string">&quot;org.iso.18013.5.1.family_name&quot;</span>,</span><br><span class="line">                 <span class="string">&quot;org.iso.18013.5.1.birth_date&quot;</span> ]</span><br><span class="line">    &#125; ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">encryption</span>: &#123;</span><br><span class="line">    <span class="attr">scheme</span>: <span class="string">&quot;HPKE&quot;</span>,</span><br><span class="line">    <span class="attr">encapsulatedPublicKey</span>: <span class="keyword">new</span> <span class="title class_">Uint8Array</span>([...]),</span><br><span class="line">    <span class="attr">recipientPublicKey</span>: <span class="keyword">new</span> <span class="title class_">Uint8Array</span>([...])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="安全机制"><a href="#安全机制" class="headerlink" title="安全机制"></a>安全机制</h3><p>数字凭证API构建了四层安全防护体系：</p>
+<ol>
+<li><strong>请求认证</strong>：通过证书签名明确标识请求方身份</li>
+<li><strong>响应加密</strong>：采用HPKE标准(RFC-9180)实现端到端加密</li>
+<li><strong>发行方认证</strong>：验证数据签发者的可信度</li>
+<li><strong>mdoc认证</strong>：防止文档跨设备复制</li>
+</ol>
+<p>验证过程中需执行以下关键检查：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 验证文档签名证书链</span></span><br><span class="line"><span class="title function_">verifyCertificateChain</span>(documentSigningCertificate, trustedRoots);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过移动安全对象验证返回要素哈希摘要</span></span><br><span class="line"><span class="title function_">verifyMobileSecurityObject</span>(returnedElements, mso);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用设备公钥验证文档来源</span></span><br><span class="line"><span class="title function_">verifyDeviceKeySignature</span>(<span class="variable language_">document</span>, devicePublicKey);</span><br></pre></td></tr></table></figure>
+<h2 id="应用集成：IdentityDocumentServices框架"><a href="#应用集成：IdentityDocumentServices框架" class="headerlink" title="应用集成：IdentityDocumentServices框架"></a>应用集成：IdentityDocumentServices框架</h2><p>对于希望提供身份证件验证服务的应用开发者，苹果引入了IdentityDocumentServices框架。主要实施步骤包括：</p>
+<ol>
+<li><strong>注册扩展</strong>：通过IdentityDocumentProviderRegistrationStore注册文档类型和信任证书机构</li>
+<li><strong>构建UI</strong>：在扩展中创建授权界面展示请求方信息和所需要素</li>
+<li><strong>处理请求</strong>：验证原始请求签名并构建加密响应</li>
+<li><strong>提供取消选项</strong>：确保用户随时可以中止验证流程</li>
+</ol>
+<p>关键创新是”部分请求”机制，该系统先验证请求签名后才向应用扩展提供部分请求用于UI构建，用户授权后才会释放完整ISO 18013设备请求，有效防范未经用户交互的原始数据解析风险。</p>
+<h2 id="实施建议与资源"><a href="#实施建议与资源" class="headerlink" title="实施建议与资源"></a>实施建议与资源</h2><h3 id="网站开发者建议"><a href="#网站开发者建议" class="headerlink" title="网站开发者建议"></a>网站开发者建议</h3><ul>
+<li>注册Apple Business Connect获取必要证书</li>
+<li>遵循W3C数字凭证API标准实现请求流程</li>
+<li>对接不同证件提供应用时需满足各自特定要求</li>
 </ul>
+<h3 id="应用开发者建议"><a href="#应用开发者建议" class="headerlink" title="应用开发者建议"></a>应用开发者建议</h3><ul>
+<li>实现Identity Document Provider扩展目标</li>
+<li>深入研读ISO 18013系列相关标准文档</li>
+<li>正确实施请求验证和响应加密机制</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>数字凭证API和IdentityDocumentServices框架为在线身份验证提供了标准化、安全的解决方案。通过采用mdoc格式和ISO标准，这些技术既提升了用户体验，又增强了安全性。随着数字身份证件的普及，这些API将为各类身份验证场景提供更灵活的解决方案。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>开发者可进一步参考以下资源深入了解相关技术：</p>
+<p><strong>相关视频</strong></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/235">进一步了解声明式网页推送</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/233">Safari 浏览器和 WebKit 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10041">钱包与 Apple Pay 的新功能</a></p>
+<p><strong>文档资源</strong></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/IdentityDocumentServices/Implenting-as-an-identity-document-provider">作为身份文档提供者实施指南</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/developer.apple.com/documentation/identitydocumentservices/requesting-a-mobile-document-on-the-web">在网页上请求移动文档</a></p>
 
       
 
@@ -395,18 +390,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_293/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_231/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          使用 PermissionKit 增强儿童安全保护
+          了解适用于 SwiftUI 的 WebKit
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_285/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">了解 PaperKit</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_233/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Safari 浏览器和 WebKit 的新功能</div>
       <i class="icon-circle-right"></i>
     </a>
   

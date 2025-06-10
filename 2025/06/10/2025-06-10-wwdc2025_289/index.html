@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何将空间配件整合到你的 app 中。展示虚拟内容、与 app 进行交互、在空间中进行追踪，并获取有关交互效果的信息，进一步提升 visionos 上的虚拟体验。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10011/10011_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:36:49.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:36:49.449Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.104Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_289/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:36:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,75 +226,57 @@ var _hmt = _hmt || [];
       
         <p>了解如何将空间配件整合到你的 app 中。展示虚拟内容、与 app 进行交互、在空间中进行追踪，并获取有关交互效果的信息，进一步提升 visionos 上的虚拟体验。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10011/10011_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/289/">视频地址</a></p>
-<h1 id="在-visionOS-中集成空间配件：开发实践与设计指南"><a href="#在-visionOS-中集成空间配件：开发实践与设计指南" class="headerlink" title="在 visionOS 中集成空间配件：开发实践与设计指南"></a>在 visionOS 中集成空间配件：开发实践与设计指南</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 Apple Vision Pro 的推出，空间计算体验迎来了新的可能性。今年 WWDC 带来的空间配件支持功能，让开发者能够通过 PlayStation VR2 Sense 控制器和罗技 Muse 手写笔等设备，为用户提供更精确的输入控制和沉浸式反馈体验。本文将深入解析如何在 visionOS 应用中整合这些空间配件，从技术实现到设计考量，一网打尽。</p>
-<h2 id="空间配件概述"><a href="#空间配件概述" class="headerlink" title="空间配件概述"></a>空间配件概述</h2><p>visionOS 目前支持两类空间配件：</p>
-<ol>
-<li><p><strong>PlayStation VR2 Sense 控制器</strong></p>
-<ul>
-<li>专为游戏场景设计</li>
-<li>配备按钮、摇杆和扳机键</li>
-<li>支持标准手势操作</li>
-<li>高精度空间追踪，适合运动类游戏</li>
-</ul>
-</li>
-<li><p><strong>罗技 Muse 手写笔</strong></p>
-<ul>
-<li>专为生产力与创意应用设计</li>
-<li>力敏传感器提供变量输入</li>
-<li>侧键与笔尖支持</li>
-<li>强大的触觉反馈功能</li>
-</ul>
-</li>
-</ol>
-<p>这些配件通过 Apple Vision Pro 的摄像头与其内置传感器协同工作，实现精确的空间位置和旋转追踪。</p>
-<h2 id="开发实践：构建空间雕刻应用"><a href="#开发实践：构建空间雕刻应用" class="headerlink" title="开发实践：构建空间雕刻应用"></a>开发实践：构建空间雕刻应用</h2><h3 id="1-Xcode-基础配置"><a href="#1-Xcode-基础配置" class="headerlink" title="1. Xcode 基础配置"></a>1. Xcode 基础配置</h3><p>首先需要在项目中添加必要的配置：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 capabilities 编辑器中添加 Spatial Gamepad 支持</span></span><br><span class="line"><span class="comment">// 并在 Info.plist 中添加：</span></span><br><span class="line"><span class="comment">// Accessory Tracking Usage 描述: &quot;追踪配件移动以雕刻虚拟粘土&quot;</span></span><br></pre></td></tr></table></figure>
-<p>该描述会显示为系统权限提示，告知用户配件追踪的目的。</p>
-<h3 id="2-配件连接管理"><a href="#2-配件连接管理" class="headerlink" title="2. 配件连接管理"></a>2. 配件连接管理</h3><p>监听配件连接事件是关键步骤：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 检查空间配件支持</span></span><br><span class="line"><span class="type">NotificationCenter</span>.default.addObserver(forName: <span class="type">NSNotification</span>.<span class="type">Name</span>.<span class="type">GCControllerDidConnect</span>, </span><br><span class="line">                                     object: <span class="literal">nil</span>, </span><br><span class="line">                                     queue: <span class="literal">nil</span>) &#123; notification <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> controller <span class="operator">=</span> notification.object <span class="keyword">as?</span> <span class="type">GCController</span>,</span><br><span class="line">       controller.productCategory <span class="operator">==</span> <span class="type">GCProductCategorySpatialController</span> &#123;</span><br><span class="line">        <span class="comment">// 处理控制器连接</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对于手写笔的特殊处理</span></span><br><span class="line"><span class="type">NotificationCenter</span>.default.addObserver(forName: <span class="type">NSNotification</span>.<span class="type">Name</span>.<span class="type">GCStylusDidConnect</span>, </span><br><span class="line">                                     object: <span class="literal">nil</span>, </span><br><span class="line">                                     queue: <span class="literal">nil</span>) &#123; notification <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> stylus <span class="operator">=</span> notification.object <span class="keyword">as?</span> <span class="type">GCStylus</span>,</span><br><span class="line">       stylus.productCategory <span class="operator">==</span> <span class="type">GCProductCategorySpatialStylus</span> &#123;</span><br><span class="line">        <span class="comment">// 处理手写笔连接</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-虚拟内容锚定"><a href="#3-虚拟内容锚定" class="headerlink" title="3. 虚拟内容锚定"></a>3. 虚拟内容锚定</h3><p>使用 RealityKit 的锚点系统将虚拟内容与配件位置同步：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">setupSpatialAccessory</span>(<span class="params">device</span>: <span class="type">GCDevice</span>) <span class="keyword">async</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> source <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> <span class="type">AnchoringComponent</span>.<span class="type">AccessoryAnchoringSource</span>(device: device)</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> location <span class="operator">=</span> source.locationName(named: <span class="string">&quot;aim&quot;</span>) <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">    <span class="keyword">let</span> sculptingEntity <span class="operator">=</span> <span class="type">AnchorEntity</span>(.accessory(from: source, location: location), </span><br><span class="line">                                     trackingMode: .predicted)</span><br><span class="line">    <span class="comment">// 添加虚拟模型到 sculptingEntity</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>追踪模式说明：</p>
-<ul>
-<li><code>.predicted</code>: 低延迟渲染，适合快速响应需求</li>
-<li><code>.continuous</code>: 更高精度，适合精细操作</li>
-</ul>
-<h3 id="4-触觉反馈实现"><a href="#4-触觉反馈实现" class="headerlink" title="4. 触觉反馈实现"></a>4. 触觉反馈实现</h3><p>增强交互真实感的触觉反馈实现：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> stylus: <span class="type">GCStylus</span> <span class="operator">=</span> <span class="operator">...</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> haptics <span class="operator">=</span> stylus.haptics <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> hapticsEngine: <span class="type">CHHapticEngine</span> <span class="operator">=</span> haptics.createEngine(withLocality: .default) <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> hapticsEngine.start()</span><br><span class="line">    <span class="comment">// 在适当时机触发反馈</span></span><br><span class="line">    <span class="keyword">let</span> pattern <span class="operator">=</span> <span class="keyword">try</span> <span class="type">CHHapticPattern</span>(events: [<span class="operator">...</span>], parameters: [<span class="operator">...</span>])</span><br><span class="line">    <span class="keyword">let</span> player <span class="operator">=</span> <span class="keyword">try</span> hapticsEngine.makePlayer(with: pattern)</span><br><span class="line">    <span class="keyword">try</span> player.start(atTime: <span class="number">0</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;触觉反馈错误: <span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="ARKit直接追踪方案"><a href="#ARKit直接追踪方案" class="headerlink" title="ARKit直接追踪方案"></a>ARKit直接追踪方案</h2><p>对于需要更底层控制的场景，可以直接使用ARKit API：</p>
-<ol>
-<li>配置AccessoryTrackingProvider</li>
-<li>处理配件连接/断开事件</li>
-<li>选择适当的更新模式：<ul>
-<li>实时流式更新</li>
-<li>按需预测更新</li>
-</ul>
-</li>
-</ol>
-<p>示例项目《Tracking accessories in volumetric windows》展示了完整实现。</p>
-<h2 id="重要设计考量"><a href="#重要设计考量" class="headerlink" title="重要设计考量"></a>重要设计考量</h2><h3 id="1-输入兼容性"><a href="#1-输入兼容性" class="headerlink" title="1. 输入兼容性"></a>1. 输入兼容性</h3><p>确保应用同时支持手势和控制器输入：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ContentView</span>()</span><br><span class="line">    .receivesEventsInView(<span class="literal">true</span>)  <span class="comment">// 允许视图接收控制器输入</span></span><br></pre></td></tr></table></figure>
-<p>空间事件手势会自动获取控制器的左右手信息，实现无缝切换。</p>
-<h3 id="2-沉浸式体验优化"><a href="#2-沉浸式体验优化" class="headerlink" title="2. 沉浸式体验优化"></a>2. 沉浸式体验优化</h3><p>针对全空间应用的建议：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 隐藏Home指示器</span></span><br><span class="line">.persistentSystemOverlays(.hidden)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 隐藏上肢和配件模型</span></span><br><span class="line">.upperLimbVisibility(.hidden)</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-适配策略"><a href="#3-适配策略" class="headerlink" title="3. 适配策略"></a>3. 适配策略</h3><ul>
-<li>同时支持配件和手部输入</li>
-<li>在App Store中添加适当徽章：<ul>
-<li>“支持空间游戏控制器”</li>
-<li>如需必备配件则使用”需要空间游戏控制器”</li>
-</ul>
-</li>
-</ul>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>空间配件为visionOS应用带来了新的交互维度，从游戏到创意工具都有广阔的应用前景。通过GameController、RealityKit和ARKit的协同工作，开发者可以实现精细控制与沉浸式反馈的完美结合。期待看到更多充分利用这些特性的创新应用！</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/287">RealityKit 的新功能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10100">使用 ARKit 打造更出色的空间计算体验</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10104">使用 RealityKit 构建空间绘画 App</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10081">利用虚拟和物理游戏手柄</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10614">游戏控制器的进展</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="探索-visionOS-上的空间配件输入：打造沉浸式雕刻体验"><a href="#探索-visionOS-上的空间配件输入：打造沉浸式雕刻体验" class="headerlink" title="探索 visionOS 上的空间配件输入：打造沉浸式雕刻体验"></a>探索 visionOS 上的空间配件输入：打造沉浸式雕刻体验</h1><p>Apple 在 visionOS 中引入了空间配件支持功能，为开发者提供了全新的交互方式。本文将通过一个空间雕刻应用的开发实例，详细介绍如何利用 PlayStation VR2 Sense 控制器和罗技 Muse 等空间配件，在 visionOS 应用中实现精确的追踪和交互。</p>
+<h2 id="空间配件概述"><a href="#空间配件概述" class="headerlink" title="空间配件概述"></a>空间配件概述</h2><p>visionOS 原本采用”眼手优先”的输入范式，而新加入的空间配件支持则扩展了这一体验。目前支持两款空间配件：</p>
+<ul>
+<li>PlayStation VR2 Sense 控制器：具有按钮、摇杆、扳机键和精准空间追踪，非常适合游戏场景</li>
+<li>罗技 Muse：配备力传感器和触觉反馈，适用于生产力与创意应用</li>
 </ul>
+<p>这些配件可以用于全空间和共享空间应用，通过结合 Vision Pro 的摄像头和配件自身的传感器实现位置与旋转追踪。</p>
+<h2 id="应用开发基础"><a href="#应用开发基础" class="headerlink" title="应用开发基础"></a>应用开发基础</h2><h3 id="项目设置"><a href="#项目设置" class="headerlink" title="项目设置"></a>项目设置</h3><p>首先需要在 Xcode 项目中进行配置：</p>
+<ol>
+<li>在 plist 中添加”Spatial Gamepad”支持</li>
+<li>在”Accessory Tracking Usage”字段描述配件用途（如”追踪配件移动来雕刻虚拟粘土”）</li>
+</ol>
+<h3 id="配件连接管理"><a href="#配件连接管理" class="headerlink" title="配件连接管理"></a>配件连接管理</h3><p>使用 Game Controller 框架管理配件连接：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NotificationCenter</span>.default.addObserver(forName: <span class="type">NSNotification</span>.<span class="type">Name</span>.<span class="type">GCControllerDidConnect</span>, object: <span class="literal">nil</span>, queue: <span class="literal">nil</span>) &#123;</span><br><span class="line">  notification <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> controller <span class="operator">=</span> notification.object <span class="keyword">as?</span> <span class="type">GCController</span>,</span><br><span class="line">       controller.productCategory <span class="operator">==</span> <span class="type">GCProductCategorySpatialController</span> &#123;</span><br><span class="line">             </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要监听 GCControllerDidConnect 和 GCStylusDidConnect 通知来处理配件的连接和断开事件。</p>
+<h2 id="实现配件追踪与交互"><a href="#实现配件追踪与交互" class="headerlink" title="实现配件追踪与交互"></a>实现配件追踪与交互</h2><h3 id="锚定虚拟内容"><a href="#锚定虚拟内容" class="headerlink" title="锚定虚拟内容"></a>锚定虚拟内容</h3><p>在配件末端显示虚拟笔尖需要使用锚定技术。创建 AccessoryAnchoringSource 并锚定到配件的”aim”位置：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">setupSpatialAccessory</span>(<span class="params">device</span>: <span class="type">GCDevice</span>) <span class="keyword">async</span> <span class="keyword">throws</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> source <span class="operator">=</span> <span class="keyword">try</span> <span class="keyword">await</span> <span class="type">AnchoringComponent</span>.<span class="type">AccessoryAnchoringSource</span>(device: device)</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> location <span class="operator">=</span> source.locationName(named: <span class="string">&quot;aim&quot;</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> sculptingEntity <span class="operator">=</span> <span class="type">AnchorEntity</span>(.accessory(from: source, location: location),</span><br><span class="line">                                     trackingMode: .predicted)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>追踪模式可选择：</p>
+<ul>
+<li>predicted（预测）：响应速度快，适合渲染和低延迟交互</li>
+<li>continuous（连续）：精度高但延迟较高</li>
+</ul>
+<h3 id="获取变换矩阵"><a href="#获取变换矩阵" class="headerlink" title="获取变换矩阵"></a>获取变换矩阵</h3><p>使用 SpatialTrackingSession 获取配件 AnchorEntity 的变换：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> session <span class="operator">=</span> <span class="type">SpatialTrackingSession</span>()</span><br><span class="line"><span class="keyword">let</span> configuration <span class="operator">=</span> <span class="type">SpatialTrackingSession</span>.<span class="type">Configuration</span>(tracking: [.accessory])</span><br><span class="line"><span class="keyword">await</span> session.run(configuration)</span><br></pre></td></tr></table></figure>
+<h3 id="添加触觉反馈"><a href="#添加触觉反馈" class="headerlink" title="添加触觉反馈"></a>添加触觉反馈</h3><p>为增强沉浸感，可以为配件添加触觉反馈：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> stylus: <span class="type">GCStylus</span> <span class="operator">=</span> <span class="operator">...</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> haptics <span class="operator">=</span> stylus.haptics <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> hapticsEngine: <span class="type">CHHapticEngine</span> <span class="operator">=</span> haptics.createEngine(withLocality: .default) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">try?</span> hapticsEngine.start()</span><br></pre></td></tr></table></figure>
+<h2 id="高级功能实现"><a href="#高级功能实现" class="headerlink" title="高级功能实现"></a>高级功能实现</h2><h3 id="响应式工具栏"><a href="#响应式工具栏" class="headerlink" title="响应式工具栏"></a>响应式工具栏</h3><p>从 AnchorEntity 获取 ARKit 的 AccessoryAnchor 可实现响应式工具栏：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">getAccessoryAnchor</span>(<span class="params">entity</span>: <span class="type">AnchorEntity</span>) -&gt; <span class="type">AccessoryAnchor</span>? &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> component <span class="operator">=</span> entity.components[<span class="type">ARKitAnchorComponent</span>.<span class="keyword">self</span>],</span><br><span class="line">        <span class="keyword">return</span> accessoryAnchor</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>利用 handedness 属性决定工具栏显示位置：</p>
+<ul>
+<li>左手握持时显示在正X轴方向</li>
+<li>右手握持时显示在负X轴方向</li>
+</ul>
+<h3 id="纯-ARKit-实现"><a href="#纯-ARKit-实现" class="headerlink" title="纯 ARKit 实现"></a>纯 ARKit 实现</h3><p>对于自定义渲染的应用，可直接使用 ARKit API 追踪配件：</p>
+<ol>
+<li>创建 Accessory 对象</li>
+<li>使用 Accessory 追踪提供者</li>
+<li>处理配件连接/断开事件</li>
+</ol>
+<h2 id="设计考量"><a href="#设计考量" class="headerlink" title="设计考量"></a>设计考量</h2><p>开发空间配件应用时需注意：</p>
+<ol>
+<li>视图应同时接收手势和游戏控制器输入</li>
+<li>全空间应用可使用 .persistentSystemOverlays 和 .upperLimbVisibility 增强沉浸感</li>
+<li>应同时支持配件和手部输入</li>
+<li>应用商店可展示”支持空间游戏控制器”或”需要空间游戏控制器”徽章</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>空间配件为 visionOS 应用带来了精细输入控制和触觉反馈的新维度。通过 GameController、RealityKit 和 ARKit 的组合，开发者可以创造高度沉浸的交互体验。从游戏到创意工具，空间配件的应用潜力才刚刚开始显现。</p>
+<h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/287">RealityKit 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10100">使用 ARKit 打造更出色的空间计算体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10104">使用 RealityKit 构建空间绘画 App</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10081">利用虚拟和物理游戏控制器</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10614">游戏控制器的进展</a></p>
 
       
 
@@ -397,18 +379,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_294/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_282/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          用于打造沉浸式 App 的 Metal 渲染的新功能
+          让你的 UIKit App 更加灵活
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_254/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">探索 Metal 4 游戏</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_286/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">了解 Foundation Models 框架</div>
       <i class="icon-circle-right"></i>
     </a>
   

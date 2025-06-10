@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索全新的 swiftui instrument。我们将介绍 swiftui 如何更新视图、app 数据的变化对这些更新会产生什么影响，以及新的 instrument 如何帮助你以可视化方式了解相应的原因和效果。 为了充分从这个讲座中获益，建议你先熟悉一下如何用 swiftui 编写 app。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10024/10024_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:30:10.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:30:10.721Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.828Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="swift">
 <meta property="article:tag" content="wwdc2025">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_306/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:30:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -232,72 +232,43 @@ var _hmt = _hmt || [];
         <p>探索全新的 swiftui instrument。我们将介绍 swiftui 如何更新视图、app 数据的变化对这些更新会产生什么影响，以及新的 instrument 如何帮助你以可视化方式了解相应的原因和效果。</p>
 <p>为了充分从这个讲座中获益，建议你先熟悉一下如何用 swiftui 编写 app。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10024/10024_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/306/">视频地址</a></p>
-<h1 id="使用-Instrument-全面优化-SwiftUI-应用性能"><a href="#使用-Instrument-全面优化-SwiftUI-应用性能" class="headerlink" title="使用 Instrument 全面优化 SwiftUI 应用性能"></a>使用 Instrument 全面优化 SwiftUI 应用性能</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在 SwiftUI 开发中，性能优化是构建流畅用户体验的关键。随着 WWDC 2025 推出的 Instruments 26 全新版本，开发者现在拥有更强大的工具来分析并优化 SwiftUI 应用的性能问题。本文将带您深入了解如何利用这些新工具诊断和解决常见的 SwiftUI 性能瓶颈。</p>
-<h2 id="发现-SwiftUI-性能工具"><a href="#发现-SwiftUI-性能工具" class="headerlink" title="发现 SwiftUI 性能工具"></a>发现 SwiftUI 性能工具</h2><p>Instruments 26 为 SwiftUI 开发带来了革命性的分析工具：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例：可能导致性能问题的距离计算属性</span></span><br><span class="line"><span class="keyword">var</span> distance: <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> formatter <span class="operator">=</span> <span class="type">MeasurementFormatter</span>()</span><br><span class="line">    formatter.unitStyle <span class="operator">=</span> .short</span><br><span class="line">    <span class="keyword">return</span> formatter.string(from: <span class="type">Measurement</span>(value: landmark.distance, unit: <span class="type">UnitLength</span>.meters))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>新版模板包含三个核心组件：</p>
-<ul>
-<li><strong>SwiftUI 工具</strong>：可视化展示框架内部工作状态</li>
-<li><strong>Time Profiler</strong>：记录 CPU 负载情况</li>
-<li><strong>卡顿检测工具</strong>：识别界面响应延迟</li>
-</ul>
-<p>关键分析技巧：</p>
-<ol>
-<li>首先查看”Update Groups”轨道</li>
-<li>关注三种颜色标记的问题：<ul>
-<li>橙色/红色：视图 body 计算耗时过长</li>
-<li>蓝色：Representable 更新延迟</li>
-<li>紫色：其他类型延迟</li>
-</ul>
-</li>
-</ol>
-<h2 id="诊断与修复实战案例"><a href="#诊断与修复实战案例" class="headerlink" title="诊断与修复实战案例"></a>诊断与修复实战案例</h2><p>我们以 Landmarks 应用为例，演示完整优化流程：</p>
-<ol>
-<li><p><strong>发现问题</strong>：</p>
-<ul>
-<li>滚动列表时出现卡顿</li>
-<li>Instruments 显示”Long View Body Updates”轨道出现红色标记</li>
-<li>定位到 LandmarkListItemView 的距离计算属性</li>
-</ul>
-</li>
-<li><p><strong>优化方案</strong>：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 优化后的距离计算 - 预缓存格式化结果</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LocationFinder</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">let</span> formatter: <span class="type">MeasurementFormatter</span> <span class="operator">=</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> formatter <span class="operator">=</span> <span class="type">MeasurementFormatter</span>()</span><br><span class="line">        formatter.unitStyle <span class="operator">=</span> .short</span><br><span class="line">        <span class="keyword">return</span> formatter</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">formattedDistance</span>(<span class="params">for</span> <span class="params">landmark</span>: <span class="type">Landmark</span>) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> formatter.string(from: <span class="type">Measurement</span>(value: landmark.distance, unit: <span class="type">UnitLength</span>.meters))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>验证效果</strong>：</p>
-<ul>
-<li>重新分析后红色标记消失</li>
-<li>滚动流畅度显著提升</li>
-</ul>
-</li>
-</ol>
-<h2 id="深入理解-SwiftUI-更新机制"><a href="#深入理解-SwiftUI-更新机制" class="headerlink" title="深入理解 SwiftUI 更新机制"></a>深入理解 SwiftUI 更新机制</h2><p>SwiftUI 的声明式特性带来了独特的性能挑战：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 优化前的数据依赖 - 整个收藏数组</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">LandmarkListView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="meta">@State</span> <span class="keyword">private</span> <span class="keyword">var</span> favorites: <span class="type">Set</span>&lt;<span class="type">Int</span>&gt; <span class="operator">=</span> []</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">List</span>(landmarks) &#123; landmark <span class="keyword">in</span></span><br><span class="line">            <span class="type">LandmarkRow</span>(landmark: landmark, isFavorite: favorites.contains(landmark.id))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 优化后 - 使用独立 ViewModel</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LandmarkViewModel</span>: <span class="title class_ inherited__">ObservableObject</span> &#123;</span><br><span class="line">    <span class="meta">@Published</span> <span class="keyword">var</span> isFavorite: <span class="type">Bool</span></span><br><span class="line">    <span class="comment">// 仅包含必要数据</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">LandmarkRow</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="meta">@ObservedObject</span> <span class="keyword">var</span> viewModel: <span class="type">LandmarkViewModel</span></span><br><span class="line">    <span class="comment">// 只依赖自身数据</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>关键优化原则：</p>
-<ol>
-<li><strong>最小化数据依赖</strong>：使视图仅依赖其真正需要的数据</li>
-<li><strong>避免环境变量滥用</strong>：EnvironmentValues 变化会触发所有依赖视图更新</li>
-<li><strong>利用因果图</strong>：可视化追踪更新链条，定位不必要的更新源头</li>
-</ol>
-<h2 id="性能优化黄金法则"><a href="#性能优化黄金法则" class="headerlink" title="性能优化黄金法则"></a>性能优化黄金法则</h2><ol>
-<li><strong>保持视图 body 简洁高效</strong></li>
-<li><strong>精确控制数据依赖关系</strong></li>
-<li><strong>开发过程中持续使用 Instruments 分析</strong></li>
-<li><strong>确保视图只在必要时更新</strong></li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过合理运用 Instruments 26 的新工具，结合对 SwiftUI 更新机制的深入理解，开发者可以系统性地诊断和解决性能问题。记住，预防胜于治疗 - 在开发过程中定期进行性能分析，远比在用户反馈问题后再修复要高效得多。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/308">通过 Instruments 优化 CPU 性能</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10248">使用 Instruments 分析挂起</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10160">解密 SwiftUI 性能</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/understanding-and-improving-swiftui-performance">Understanding and improving SwiftUI performance</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/visionOS/analyzing-the-performance-of-your-visionOS-app">Analyzing the performance of your visionOS app</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/improving-app-responsiveness">Improving app responsiveness</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="使用-Instrument-优化-SwiftUI-性能"><a href="#使用-Instrument-优化-SwiftUI-性能" class="headerlink" title="使用 Instrument 优化 SwiftUI 性能"></a>使用 Instrument 优化 SwiftUI 性能</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在 WWDC 的主题演讲中，来自 Instruments 团队的 Jed 和 Apple Music 团队的 Steven 共同介绍了全新的 SwiftUI Instrument 工具，该工具旨在帮助开发者识别并解决 SwiftUI 应用中的性能瓶颈问题。性能问题通常表现为应用响应迟缓、卡顿、动画跳帧或滚动延迟等现象，这些都会严重影响用户体验。</p>
+<h2 id="全新-SwiftUI-Instrument-介绍"><a href="#全新-SwiftUI-Instrument-介绍" class="headerlink" title="全新 SwiftUI Instrument 介绍"></a>全新 SwiftUI Instrument 介绍</h2><p>Instruments 26 中引入了专为 SwiftUI 设计的分析工具，包含三个主要组成部分：</p>
+<ol>
+<li><strong>SwiftUI Instrument</strong>：核心工具，提供 SwiftUI 工作时段的可视化分析</li>
+<li><strong>Time Profiler</strong>：显示 CPU 工作负载情况</li>
+<li><strong>Hangs 和 Hitches 工具</strong>：追踪应用响应性问题</li>
+</ol>
+<p>SwiftUI Instrument 提供了多层级的性能分析视图：</p>
+<ul>
+<li>“Update Groups”显示 SwiftUI 的工作时段</li>
+<li>“Long View Body Updates”标记耗时过长的视图 body 更新</li>
+<li>“Long Representable Updates”标识视图控制器更新</li>
+<li>“Other Long Updates”显示其他长耗时工作</li>
 </ul>
+<p>其中，橙色和红色标记分别表示可能造成卡顿和严重性能问题的区域。</p>
+<h2 id="诊断长耗时视图-body-更新"><a href="#诊断长耗时视图-body-更新" class="headerlink" title="诊断长耗时视图 body 更新"></a>诊断长耗时视图 body 更新</h2><p>在 Landmarks 应用的案例研究中，Steven 展示了如何使用 SwiftUI Instrument 诊断滚动卡顿问题。通过分析发现，<code>LandmarkListItemView</code>中的<code>distance</code>计算属性频繁创建<code>MeasurementFormatter</code>和<code>NumberFormatter</code>实例，导致视图 body 更新耗时过长。</p>
+<p>Jed 解释了 SwiftUI 的渲染循环机制：每帧处理事件后更新 UI，所有工作必须在帧截止前完成。长耗时视图 body 可能导致错过截止时间，造成卡顿。</p>
+<p>优化方案是将距离字符串计算移至<code>LocationFinder</code>类中预计算并缓存：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 LocationFinder 中预计算距离</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> formatter <span class="operator">=</span> <span class="type">MeasurementFormatter</span>()</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">let</span> numberFormatter <span class="operator">=</span> <span class="type">NumberFormatter</span>()</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> distanceCache: [<span class="type">Landmark</span>.<span class="type">ID</span>: <span class="type">String</span>] <span class="operator">=</span> [:]</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">updateDistances</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> landmark <span class="keyword">in</span> landmarks &#123;</span><br><span class="line">        <span class="keyword">let</span> distance <span class="operator">=</span> calculateDistance(to: landmark)</span><br><span class="line">        distanceCache[landmark.id] <span class="operator">=</span> formatter.string(from: distance)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改后，视图只需通过<code>distance(from:)</code>方法获取缓存值，显著提高了滚动流畅度。</p>
+<h2 id="理解更新的因果关系"><a href="#理解更新的因果关系" class="headerlink" title="理解更新的因果关系"></a>理解更新的因果关系</h2><p>Steven 在添加收藏功能时发现，点击单个收藏按钮会导致多个列表项视图更新。通过 Cause &amp; Effect Graph 分析，发现原因是所有<code>LandmarkListItemView</code>都依赖完整的<code>favorites</code>数组。</p>
+<p>解决方案是为每个地标创建独立的 ViewModel 管理收藏状态：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LandmarkViewModel</span>: <span class="title class_ inherited__">ObservableObject</span> &#123;</span><br><span class="line">    <span class="meta">@Published</span> <span class="keyword">var</span> isFavorite: <span class="type">Bool</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">init</span>(<span class="params">isFavorite</span>: <span class="type">Bool</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.isFavorite <span class="operator">=</span> isFavorite</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">toggleFavorite</span>() &#123;</span><br><span class="line">        isFavorite.toggle()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每个视图拥有专属 ViewModel 实例，直接切换 ViewModel 状态而非操作全局数组。追踪数据显示优化后只有被点击的视图会更新。</p>
+<p>Jed 进一步解释了环境依赖的传播机制，强调环境值更新会通知所有依赖视图，但只有实际使用该值的视图需要重新运行 body。</p>
+<h2 id="性能优化要点总结"><a href="#性能优化要点总结" class="headerlink" title="性能优化要点总结"></a>性能优化要点总结</h2><ol>
+<li><strong>保持视图 body 快速执行</strong>：避免复杂计算和频繁对象创建</li>
+<li><strong>设计数据流仅触发必要更新</strong>：使用细粒度数据依赖</li>
+<li><strong>慎用高频变更的依赖项</strong>：考虑使用 ViewModel 或中间层</li>
+<li><strong>频繁使用 Instruments 分析</strong>：开发过程中持续监控性能</li>
+</ol>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/308">通过 Instruments 优化 CPU 性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10248">使用 Instruments 分析挂起</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10156">探索 SwiftUI 动画</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10160">解密 SwiftUI 性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10056">使用 SwiftUI 构建自定布局</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2021/10022">揭开 SwiftUI 的神秘面纱</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/tech-talks/10855">探索 UI 动画阻碍与渲染循环</a></p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/visionOS/analyzing-the-performance-of-your-visionOS-app">Analyzing the performance of your visionOS app</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/improving-app-responsiveness">Improving app responsiveness</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/measuring-your-app-s-power-use-with-power-profiler">Measuring your app’s power use with Power Profiler</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/performance-and-metrics">Performance and metrics</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Xcode/understanding-and-improving-swiftui-performance">Understanding and improving SwiftUI performance</a></p>
+<p>全新 SwiftUI Instrument 为开发者提供了强大的性能分析工具，结合这些优化原则和实践，可以帮助构建更加高效流畅的 SwiftUI 应用。</p>
 
       
 
@@ -420,18 +391,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_307/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_291/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          探索 Swift 和 Java 互操作性
+          SwiftData：深入了解继承和架构迁移
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_280/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">跟着视频学编程：使用 SwiftUI 和 AttributedString 精心打造富文本体验</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_307/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">探索 Swift 和 Java 互操作性</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -16,8 +16,8 @@
 <meta property="og:description" content="探索使用 swiftui 开发空间体验的新工具。了解 visionos 上 3d swiftui 视图的基本知识，借助深度对齐功能来自定现有布局，并使用修饰符在空间中旋转和放置视图。探索如何使用空间容器在同一 3d 空间中对齐视图，打造更沉浸、更引人入胜的 app。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9989/9989_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:50:53.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:50:53.130Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.736Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_273/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:50:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,31 +226,45 @@ var _hmt = _hmt || [];
       
         <p>探索使用 swiftui 开发空间体验的新工具。了解 visionos 上 3d swiftui 视图的基本知识，借助深度对齐功能来自定现有布局，并使用修饰符在空间中旋转和放置视图。探索如何使用空间容器在同一 3d 空间中对齐视图，打造更沉浸、更引人入胜的 app。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9989/9989_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/273/">视频地址</a></p>
-<h1 id="探索-SwiftUI-空间布局：打造沉浸式-3D-应用体验"><a href="#探索-SwiftUI-空间布局：打造沉浸式-3D-应用体验" class="headerlink" title="探索 SwiftUI 空间布局：打造沉浸式 3D 应用体验"></a>探索 SwiftUI 空间布局：打造沉浸式 3D 应用体验</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 visionOS 的推出，SwiftUI 迎来了全新的空间布局功能，让开发者能够轻松构建沉浸式的 3D 应用体验。本文将带你深入探索这些创新工具，从基础概念到高级应用，帮助你掌握 SwiftUI 在三维空间中的布局能力。</p>
-<h2 id="3D-视图基础"><a href="#3D-视图基础" class="headerlink" title="3D 视图基础"></a>3D 视图基础</h2><p>在 visionOS 中，SwiftUI 视图从二维扩展到了三维空间。布局系统现在不仅计算宽度、高度和 X/Y 位置，还增加了深度维度：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可视化 3D 框架的调试工具</span></span><br><span class="line"><span class="type">Model3D</span>(named: <span class="string">&quot;Robot&quot;</span>).debugBorder3D(.red)</span><br></pre></td></tr></table></figure>
-<p>值得注意的是：</p>
-<ul>
-<li>像 <code>Model3D</code> 这样的视图具有固定的三维尺寸</li>
-<li>传统 2D 视图（如 <code>Image</code> 和 <code>Text</code>）深度为零</li>
-<li><code>RealityView</code> 和可调整大小的 <code>Model3D</code> 会占据所有可用深度空间</li>
-</ul>
-<h2 id="深度对齐：定制-3D-布局"><a href="#深度对齐：定制-3D-布局" class="headerlink" title="深度对齐：定制 3D 布局"></a>深度对齐：定制 3D 布局</h2><p>深度对齐是 SwiftUI 为 3D 视图提供的新布局工具，类似于传统的垂直或水平对齐：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置前对齐的 VStack</span></span><br><span class="line"><span class="type">VStackLayout</span>().depthAlignment(.front) &#123;</span><br><span class="line">  <span class="type">ResizableRobotView</span>(asset: robot.model3DAsset)</span><br><span class="line">  <span class="type">RobotNameCard</span>(robot: robot)</span><br><span class="line">&#125;.frame(width: <span class="number">300</span>)</span><br></pre></td></tr></table></figure>
-<p>你还可以创建自定义深度对齐指南，实现更复杂的布局效果：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义深度对齐</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">DepthPodiumAlignment</span>: <span class="title class_ inherited__">DepthAlignmentID</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">defaultValue</span>(<span class="params">in</span> <span class="params">context</span>: <span class="type">ViewDimensions3D</span>) -&gt; <span class="type">CGFloat</span> &#123;</span><br><span class="line">    context[.front]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="旋转布局：改变视图框架"><a href="#旋转布局：改变视图框架" class="headerlink" title="旋转布局：改变视图框架"></a>旋转布局：改变视图框架</h2><p>新的 <code>rotation3DLayout</code> 修饰符不同于视觉效果的旋转，它实际上会改变视图在布局系统中的框架：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绕 Z 轴旋转 45 度</span></span><br><span class="line"><span class="type">Model3D</span>(named: <span class="string">&quot;ToyRocket&quot;</span>)</span><br><span class="line">  .rotation3DLayout(.degrees(isRotated <span class="operator">?</span> <span class="number">45</span> : <span class="number">0</span>), axis: .z)</span><br></pre></td></tr></table></figure>
-<p>这个功能特别适合创建轮播视图等复杂的 3D 布局。</p>
-<h2 id="空间容器：精确对齐"><a href="#空间容器：精确对齐" class="headerlink" title="空间容器：精确对齐"></a>空间容器：精确对齐</h2><p>对于需要精确对齐的场景，SwiftUI 提供了两个强大工具：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 spatialOverlay 添加选中状态高亮环</span></span><br><span class="line"><span class="type">ResizableRobotView</span>(asset: robot.model3DAsset)</span><br><span class="line">  .spatialOverlay(alignment: .bottom) &#123;</span><br><span class="line">    <span class="keyword">if</span> isSelected &#123; <span class="type">ResizableSelectionRingModel</span>() &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p><code>SpatialContainer</code> 则允许将多个视图对齐到同一 3D 空间，就像俄罗斯套娃一样精确嵌套。</p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>SwiftUI 的空间布局功能为 visionOS 应用开发带来了全新可能性。从基本的 3D 视图到复杂的深度对齐和旋转布局，这些工具让开发者能够轻松创建沉浸式体验。虽然某些高级场景仍需结合 RealityKit，但 SwiftUI 已经为大多数 3D 应用需求提供了完整的解决方案。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/274">搭配使用更出色：SwiftUI 和 RealityKit</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10056">使用 SwiftUI 构建自定布局</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2019/237">利用 SwiftUI 构建自定视图</a>  </p>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos">人机界面指南：visionOS 设计</a></p>
 <blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="探索-SwiftUI-空间布局：构建沉浸式3D体验的新工具"><a href="#探索-SwiftUI-空间布局：构建沉浸式3D体验的新工具" class="headerlink" title="探索 SwiftUI 空间布局：构建沉浸式3D体验的新工具"></a>探索 SwiftUI 空间布局：构建沉浸式3D体验的新工具</h1><p>在visionOS平台上，SwiftUI为开发者提供了一套全新的3D布局工具，让构建空间体验变得更加简单高效。本文将详细介绍这些新工具的功能和应用场景。</p>
+<h2 id="3D视图基础"><a href="#3D视图基础" class="headerlink" title="3D视图基础"></a>3D视图基础</h2><p>visionOS平台上的SwiftUI视图具备真正的三维特性。布局系统不仅计算视图的宽度、高度和X/Y位置，还会计算深度维度(Z轴)。视图可分为两类：</p>
+<ul>
+<li>深度为零的平面视图：如Image、Color和Text等传统2D元素</li>
+<li>具有实际深度的3D视图：如Model3D、RealityView和GeometryReader3D等</li>
+</ul>
+<p>开发者可以使用<code>scaledToFit3D</code>修饰符保持模型比例同时适应可用空间。值得注意的是，窗口内容和体积在深度提议上存在差异：</p>
+<ul>
+<li>窗口内容接收固定的根深度提议，超出深度的内容可能被裁剪</li>
+<li>体积提议则允许宽度、高度和深度调整</li>
+</ul>
+<h2 id="深度对齐定制"><a href="#深度对齐定制" class="headerlink" title="深度对齐定制"></a>深度对齐定制</h2><p>visionOS 26引入了自定义深度对齐功能。通过定义符合<code>DepthAlignmentID</code>协议的新结构体，开发者可以创建个性化的对齐方式。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">DepthPodiumAlignment</span>: <span class="title class_ inherited__">DepthAlignmentID</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">defaultValue</span>(<span class="params">in</span> <span class="params">dimensions</span>: <span class="type">ViewDimensions</span>) -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">        dimensions[.bottom]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种机制让开发者能够灵活控制视图在深度维度上的排列方式，比如让特定元素(如”最喜欢的机器人”)更加突出。</p>
+<h2 id="旋转布局技术"><a href="#旋转布局技术" class="headerlink" title="旋转布局技术"></a>旋转布局技术</h2><p>SwiftUI提供了两种不同的旋转机制：</p>
+<ol>
+<li><code>rotation3DEffect</code>修饰符：仅影响视觉呈现，不改变布局框架</li>
+<li><code>rotation3DLayout</code>修饰符：真正修改视图在3D空间中的布局框架</li>
+</ol>
+<p>开发者可以利用这些工具构建复杂的3D布局，如机器人旋转木马效果。实现步骤包括：</p>
+<ol>
+<li>使用<code>RadialLayout</code>圆型排列元素</li>
+<li>应用<code>rotation3DLayout</code>使元素水平展示</li>
+</ol>
+<h2 id="空间容器工具"><a href="#空间容器工具" class="headerlink" title="空间容器工具"></a>空间容器工具</h2><p>SwiftUI引入了两类新型3D布局容器：</p>
+<ol>
+<li><code>SpatialContainer</code>：允许多个视图共享相同的3D空间</li>
+<li><code>spatialOverlay</code>：在同一个3D空间上叠加单个视图</li>
+</ol>
+<p>这些工具特别适合创建沉浸式效果，如实现选中机器人的视觉反馈环，确保其与机器人底部完美对齐。</p>
+<h2 id="调试与可视化"><a href="#调试与可视化" class="headerlink" title="调试与可视化"></a>调试与可视化</h2><p>为帮助开发者理解3D布局，文中介绍了<code>debugBorder3D</code>修饰符的实现方法，该工具为视图添加可视边框，清晰展示其3D框架边界。</p>
+<h2 id="混合开发策略"><a href="#混合开发策略" class="headerlink" title="混合开发策略"></a>混合开发策略</h2><p>虽然SwiftUI在3D布局方面能力强大，但某些复杂场景(如物理模拟)仍需结合RealityKit使用。Apple鼓励开发者在同一应用中灵活搭配这两个框架，充分发挥各自优势。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>开发者可通过以下资源进一步学习：</p>
+<h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/274">搭配使用更出色：SwiftUI 和 RealityKit</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10056">使用 SwiftUI 构建自定布局</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2019/237">利用 SwiftUI 构建自定视图</a>  </p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos">Human Interface Guidelines: Designing for visionOS</a>  </p>
+<p>SwiftUI的空间布局工具为visionOS应用开发开辟了新的可能性，开发者现在可以用熟悉的声明式语法创建丰富的3D体验。随着这些技术的成熟，期待看到更多创新应用的诞生。</p>
 
       
 
@@ -353,18 +367,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_248/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_270/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          探索设备端基础模型的提示设计和安全
+          跟着视频学编程：使用 Swift 并发机制提升 App 性能
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_404/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">通过小小文字改动让 App 变得大不同</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_274/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">搭配使用更出色：SwiftUI 和 RealityKit</div>
       <i class="icon-circle-right"></i>
     </a>
   

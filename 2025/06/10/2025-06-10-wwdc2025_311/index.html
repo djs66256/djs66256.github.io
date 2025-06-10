@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解如何混合使用 c、c++ 和 swift，同时提高 app 的安全性。我们将介绍如何在 swift 代码中找到不安全的 c 和 c++ api 调用位置、如何更安全地调用这些 api，以及如何使 app 中的现有 c 和 c++ 代码默认处于更安全的状态。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10033/10033_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:29:50.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:29:50.958Z">
+<meta property="article:published_time" content="2025-06-10T13:46:47.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:47.767Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="swift">
 <meta property="article:tag" content="wwdc2025">
@@ -222,7 +222,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_311/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:29:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -231,51 +231,53 @@ var _hmt = _hmt || [];
       
         <p>了解如何混合使用 c、c++ 和 swift，同时提高 app 的安全性。我们将介绍如何在 swift 代码中找到不安全的 c 和 c++ api 调用位置、如何更安全地调用这些 api，以及如何使 app 中的现有 c 和 c++ 代码默认处于更安全的状态。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10033/10033_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/311/">视频地址</a></p>
-<h1 id="安全混合编程：如何让-Swift-与-C-C-安全共处"><a href="#安全混合编程：如何让-Swift-与-C-C-安全共处" class="headerlink" title="安全混合编程：如何让 Swift 与 C/C++ 安全共处"></a>安全混合编程：如何让 Swift 与 C/C++ 安全共处</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在现代应用开发中，混合使用 Swift 与 C/C++ 代码的情况十分常见。Swift 以其内存安全性著称，而 C/C++ 则因其高性能和不安全特性成为潜在的安全隐患。如何让这两种语言安全共存？本文将介绍 Apple 在 Swift 6.2 中引入的新技术，帮助你识别和消除跨语言调用的安全隐患。</p>
-<h2 id="问题根源：指针的不安全特性"><a href="#问题根源：指针的不安全特性" class="headerlink" title="问题根源：指针的不安全特性"></a>问题根源：指针的不安全特性</h2><p>C/C++ 中的原始指针缺乏安全防护机制，这导致了两大核心问题：</p>
-<ol>
-<li><strong>边界检查缺失</strong>：无法防止数组越界访问</li>
-<li><strong>生命周期管理缺失</strong>：可能导致”释放后使用”等严重漏洞</li>
-</ol>
-<p>在 Swift 中调用这些不安全函数时，编译器会将其导入为<code>UnsafeMutablePointer</code>等类型，但开发者往往难以察觉这些隐式的不安全操作。</p>
-<h2 id="定位安全隐患：严格内存安全模式"><a href="#定位安全隐患：严格内存安全模式" class="headerlink" title="定位安全隐患：严格内存安全模式"></a>定位安全隐患：严格内存安全模式</h2><p>Swift 6.2 引入的”严格内存安全模式”(Strict Memory Safety)能有效识别这些安全隐患：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 开启严格模式后会标记不安全操作</span></span><br><span class="line"><span class="keyword">var</span> imageData <span class="operator">=</span> [<span class="type">UInt8</span>](repeating: <span class="number">0</span>, count: imageDataSize)</span><br><span class="line">filterImage(<span class="operator">&amp;</span>imageData, imageData.count) <span class="comment">// 警告：不安全操作</span></span><br></pre></td></tr></table></figure>
-<p>在 Xcode 项目中开启该模式后，所有涉及不安全指针的操作都会被明确标记，帮助开发者发现潜在风险。</p>
-<h2 id="安全调用-C-C-API-的解决方案"><a href="#安全调用-C-C-API-的解决方案" class="headerlink" title="安全调用 C/C++ API 的解决方案"></a>安全调用 C/C++ API 的解决方案</h2><h3 id="1-处理指针参数函数"><a href="#1-处理指针参数函数" class="headerlink" title="1. 处理指针参数函数"></a>1. 处理指针参数函数</h3><p>对于接受原始指针的 C 函数，可以使用<code>__counted_by</code>注释明确指针与数组大小的关系：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">invertImage</span><span class="params">(<span class="type">uint8_t</span> *__counted_by(imageSize) imagePtr __noescape, <span class="type">size_t</span> imageSize)</span>;</span><br></pre></td></tr></table></figure>
-<p>这种注释让 Swift 编译器能将指针安全地转换为<code>MutableSpan</code>类型，自动处理边界检查。</p>
-<h3 id="2-处理-C-Span-类型"><a href="#2-处理-C-Span-类型" class="headerlink" title="2. 处理 C++ Span 类型"></a>2. 处理 C++ Span 类型</h3><p>C++的<code>std::span</code>虽然比原始指针更安全，但仍需<code>__noescape</code>注释来确保生命周期安全：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">applyGrayscale</span><span class="params">(CxxSpanOfByte imageView __noescape)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="3-处理返回指针的函数"><a href="#3-处理返回指针的函数" class="headerlink" title="3. 处理返回指针的函数"></a>3. 处理返回指针的函数</h3><p>对于返回视图的函数，使用<code>__lifetimebound</code>注释声明返回值的生命周期依赖：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CxxSpanOfByte <span class="title">scanImageRow</span><span class="params">(CxxSpanOfByte imageView __lifetimebound, <span class="type">size_t</span> width, <span class="type">size_t</span> rowIndex)</span></span>;</span><br></pre></td></tr></table></figure>
-<h2 id="安全导入自定义-C-类型"><a href="#安全导入自定义-C-类型" class="headerlink" title="安全导入自定义 C++ 类型"></a>安全导入自定义 C++ 类型</h2><p>不同类型的 C++ 结构体需要不同的注释策略：</p>
-<ol>
-<li><strong>视图类型</strong>：使用<code>SWIFT_NONESCAPABLE</code>标记</li>
-<li><strong>引用计数类型</strong>：配合保留/释放函数使用<code>SWIFT_SHARED_REFERENCE</code></li>
-</ol>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ImageBuffer</span> <span class="built_in">SWIFT_SHARED_REFERENCE</span>(retain_image_buffer, release_image_buffer);</span><br></pre></td></tr></table></figure>
-<h2 id="提升-C-C-代码安全性的额外措施"><a href="#提升-C-C-代码安全性的额外措施" class="headerlink" title="提升 C/C++ 代码安全性的额外措施"></a>提升 C/C++ 代码安全性的额外措施</h2><ol>
-<li>开启 C++标准库的边界检查</li>
-<li>强制使用 C++ Span 替代原始指针</li>
-<li>对 C 语言使用边界安全扩展(<code>__counted_by</code>)</li>
-</ol>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>实现 Swift 与 C/C++ 安全互操作的关键步骤：</p>
-<ol>
-<li>在 Swift 项目中启用严格内存安全模式</li>
-<li>为所有 C/C++ API 添加适当的安全注释</li>
-<li>启用 C/C++ 端的边界安全检查功能</li>
-</ol>
-<p>通过这些措施，你可以在保留 C/C++ 高性能优势的同时，享受 Swift 的内存安全保障。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/312">优化 Swift 代码的内存使用和性能</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/BoundsSafety.html">-fbounds-safety: Enforcing bounds safety for C</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.swift.org/documentation/cxx-interop/safe-interop/">Safely Mixing Swift and C++</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
+<h1 id="安全混合使用-C、C-与-Swift：实现跨语言安全互操作"><a href="#安全混合使用-C、C-与-Swift：实现跨语言安全互操作" class="headerlink" title="安全混合使用 C、C++ 与 Swift：实现跨语言安全互操作"></a>安全混合使用 C、C++ 与 Swift：实现跨语言安全互操作</h1><p>在现代应用开发中，混合使用 Swift 与 C/C++ 代码的情况十分常见。本文将详细介绍如何在保证安全性的前提下实现跨语言调用，帮助开发者避免常见的安全隐患。</p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着 Swift 在应用开发中的普及，许多开发者都会面临与现有 C/C++ 代码库互操作的需求。然而，这种混合编程方式可能带来严重的安全隐患，特别是当涉及到指针操作时。苹果安全语言扩展团队经理 Yeoul 在 WWDC 演讲中详细介绍了如何解决这些问题。</p>
+<h2 id="定位不安全调用"><a href="#定位不安全调用" class="headerlink" title="定位不安全调用"></a>定位不安全调用</h2><p>Swift 6.2 引入的”严格内存安全”编译模式可以帮助开发者识别潜在的 unsafe 调用。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> imageData <span class="operator">=</span> [<span class="type">UInt8</span>](repeating: <span class="number">0</span>, count: imageDataSize)</span><br><span class="line">filterImage(<span class="operator">&amp;</span>imageData, imageData.count)</span><br></pre></td></tr></table></figure>
+<p>在启用该模式后，编译器会明确警告这种不安全构造，提示开发者需要标记为”unsafe”。</p>
+<p>要在项目中启用严格内存安全模式，开发者需要在 Xcode 项目设置中进行手动配置。这种模式能够标记所有不安全代码并解释其原因，是发现混合编程安全问题的第一道防线。</p>
+<h2 id="安全调用-C-C-代码"><a href="#安全调用-C-C-代码" class="headerlink" title="安全调用 C/C++ 代码"></a>安全调用 C/C++ 代码</h2><h3 id="指针安全问题"><a href="#指针安全问题" class="headerlink" title="指针安全问题"></a>指针安全问题</h3><p>原始指针最大的安全挑战在于缺乏边界保护和生命周期管理。Swift 6.2 引入了新型安全指针 <code>Span</code> 和 <code>MutableSpan</code>，既保留了指针的高效性，又内置了安全防护。</p>
+<h3 id="添加安全注解"><a href="#添加安全注解" class="headerlink" title="添加安全注解"></a>添加安全注解</h3><p>开发者可以通过添加特定注解来提升指针安全性：</p>
+<ol>
+<li><p><strong>边界保护</strong>：使用 <code>__counted_by</code> 注解显式关联指针与元素数量</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">invertImage</span><span class="params">(<span class="type">uint8_t</span> *__counted_by(imageSize) imagePtr __noescape, <span class="type">size_t</span> imageSize)</span>;</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
+<li><p><strong>生命周期管理</strong>：使用 <code>__noescape</code> 声明参数不逃逸函数范围</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">applyGrayscale</span><span class="params">(CxxSpanOfByte imageView __noescape)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>返回值安全</strong>：使用 <code>__lifetimebound</code> 确保返回值的生命周期正确</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CxxSpanOfByte <span class="title">scanImageRow</span><span class="params">(CxxSpanOfByte imageView __lifetimebound, <span class="type">size_t</span> width, <span class="type">size_t</span> rowIndex)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="安全导入自定义-C-类型"><a href="#安全导入自定义-C-类型" class="headerlink" title="安全导入自定义 C++ 类型"></a>安全导入自定义 C++ 类型</h2><p>对于自定义的 C++ 类型，开发者可以通过特定的注解实现安全导入：</p>
+<ol>
+<li><p><strong>视图类型</strong>：使用 <code>SWIFT_NONESCAPABLE</code> 注解确保不超越所指内存的生命周期</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ImageView</span> &#123;</span><br><span class="line">  std::span&lt;<span class="type">uint8_t</span>&gt; pixelBytes;</span><br><span class="line">  <span class="type">int</span> width;</span><br><span class="line">  <span class="type">int</span> height;</span><br><span class="line">&#125; SWIFT_NONESCAPABLE;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>引用计数类型</strong>：使用 <code>SWIFT_SHARED_REFERENCE</code> 指定引用计数函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ImageBuffer</span> &#123;</span><br><span class="line">  std::vector&lt;<span class="type">uint8_t</span>&gt; data;</span><br><span class="line">  std::atomic&lt;<span class="type">unsigned</span>&gt; refCount;</span><br><span class="line">&#125; <span class="built_in">SWIFT_SHARED_REFERENCE</span>(retain_image_buffer, release_image_buffer);</span><br><span class="line"></span><br><span class="line"><span class="function">ImageBuffer* <span class="title">createImage</span><span class="params">()</span> SWIFT_RETURNS_RETAINED</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="提升-C-C-代码安全性"><a href="#提升-C-C-代码安全性" class="headerlink" title="提升 C/C++ 代码安全性"></a>提升 C/C++ 代码安全性</h2><p>虽然无法完全消除 C/C++ 的安全隐患，但开发者可以采取以下措施提升安全性：</p>
+<ol>
+<li>启用 C++标准库强化功能，对 <code>std::span</code> 等标准容器进行边界检查</li>
+<li>启用 C++不安全缓冲区错误检查，强制使用 <code>std::span</code> 代替原始指针</li>
+<li>使用 C边界安全扩展，通过 <code>__counted_by</code> 等注解为指针添加边界信息</li>
+</ol>
+<p>这些安全特性可以在 Xcode 的项目设置中统一启用。</p>
+<h2 id="总结与最佳实践"><a href="#总结与最佳实践" class="headerlink" title="总结与最佳实践"></a>总结与最佳实践</h2><p>为确保混合语言编程的安全性，开发者应当遵循以下最佳实践：</p>
+<ol>
+<li>在 Swift 项目中启用严格内存安全模式</li>
+<li>为所有 C/C++ API 添加适当的安全注解</li>
+<li>开启 C/C++ 的边界安全特性</li>
+</ol>
+<p>苹果正在与开源社区合作完善语言间的安全互操作机制，开发者可以参考以下资源了解更多信息：</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/312">优化 Swift 代码的内存使用和性能</a></p>
+<h1 id="文档资料"><a href="#文档资料" class="headerlink" title="文档资料"></a>文档资料</h1><p><a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/BoundsSafety.html">-fbounds-safety: Enforcing bounds safety for C</a><br><a target="_blank" rel="noopener" href="https://www.swift.org/documentation/cxx-interop/safe-interop/">Safely Mixing Swift and C++</a></p>
 
       
 
@@ -398,18 +400,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_344/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_307/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          录制、重播和查看：使用 Xcode 实现 UI 自动化
+          探索 Swift 和 Java 互操作性
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_235/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">进一步了解声明式网页推送</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_310/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用全新设计系统构建 AppKit App</div>
       <i class="icon-circle-right"></i>
     </a>
   

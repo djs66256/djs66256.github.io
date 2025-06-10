@@ -16,8 +16,8 @@
 <meta property="og:description" content="了解在你的 app 中创建和呈现沉浸视频体验的不同方式。我们将探索 visionos 26 中提供的多种媒体类型 (包括 180°、360°和宽视野视频的配置文件)、用来创建和播放 apple 沉浸视频的选项，以及适用于 2d、3d 和空间视频的扩展功能。探索哪些配置文件最适合你的 app 和内容。">
 <meta property="og:locale">
 <meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10042/10042_wide_250x141_2x.jpg">
-<meta property="article:published_time" content="2025-06-10T07:55:11.000Z">
-<meta property="article:modified_time" content="2025-06-10T07:55:11.419Z">
+<meta property="article:published_time" content="2025-06-10T13:46:48.000Z">
+<meta property="article:modified_time" content="2025-06-10T13:46:48.868Z">
 <meta property="article:author" content="苍耳">
 <meta property="article:tag" content="wwdc2025">
 <meta property="article:tag" content="visionos">
@@ -217,7 +217,7 @@ var _hmt = _hmt || [];
 
         
         <a href="/2025/06/10/2025-06-10-wwdc2025_304/" class="archive-article-date">
-  	<time datetime="2025-06-10T07:55:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
 </a>
         
       </header>
@@ -226,84 +226,54 @@ var _hmt = _hmt || [];
       
         <p>了解在你的 app 中创建和呈现沉浸视频体验的不同方式。我们将探索 visionos 26 中提供的多种媒体类型 (包括 180°、360°和宽视野视频的配置文件)、用来创建和播放 apple 沉浸视频的选项，以及适用于 2d、3d 和空间视频的扩展功能。探索哪些配置文件最适合你的 app 和内容。<br><span id="more"></span></p>
 <p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10042/10042_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/304/">视频地址</a></p>
-<h1 id="VisionOS-视频体验全解析：从-2D-到沉浸式"><a href="#VisionOS-视频体验全解析：从-2D-到沉浸式" class="headerlink" title="VisionOS 视频体验全解析：从 2D 到沉浸式"></a>VisionOS 视频体验全解析：从 2D 到沉浸式</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>VisionOS 26 为开发者带来了丰富的视频呈现方式，从传统的 2D/3D 视频到全新的 180°、360°、宽视野和 Apple 沉浸视频。本文将详细介绍这些媒体类型的特点、适用场景以及实现方式，帮助你为应用选择最合适的视频配置方案。</p>
-<h2 id="基础视频类型"><a href="#基础视频类型" class="headerlink" title="基础视频类型"></a>基础视频类型</h2><h3 id="2D-与-3D-视频"><a href="#2D-与-3D-视频" class="headerlink" title="2D 与 3D 视频"></a>2D 与 3D 视频</h3><p>Vision Pro 支持在应用 UI 中内联播放 2D 视频，也可以展示 3D 立体内容：</p>
-<ul>
-<li>2D 视频可以自由嵌入 UI 界面</li>
-<li>3D 视频在扩展播放模式下才能展现立体效果</li>
-<li>支持在虚拟环境中停靠播放</li>
-<li>visionOS 26 新增动态帧调整功能</li>
-</ul>
-<h3 id="空间视频"><a href="#空间视频" class="headerlink" title="空间视频"></a>空间视频</h3><p>空间视频是 visionOS 的特色功能：</p>
-<ul>
-<li>可通过 iPhone 15 Pro/16 或佳能相机拍摄</li>
-<li>提供窗口模式和沉浸模式两种播放方式</li>
-<li>visionOS 26 全媒体框架支持空间视频播放</li>
-<li>专业工作流支持 Final Cut Pro 等编辑工具</li>
-</ul>
-<h2 id="沉浸式视频体验"><a href="#沉浸式视频体验" class="headerlink" title="沉浸式视频体验"></a>沉浸式视频体验</h2><h3 id="180°、360°与宽视野视频"><a href="#180°、360°与宽视野视频" class="headerlink" title="180°、360°与宽视野视频"></a>180°、360°与宽视野视频</h3><p>visionOS 26 原生支持三种非直线投影媒体：</p>
-<ol>
-<li><strong>180°视频</strong>：投影到前方半球</li>
-<li><strong>360°视频</strong>：通过等距柱状投影完全包裹观众</li>
-<li><strong>宽视野视频</strong>：专为运动相机优化，消除畸变</li>
-</ol>
-<p>这些格式采用先进的 MV-HEVC 编码技术，基于 Apple Projected Media Profile 规范。</p>
-<h3 id="Apple-沉浸视频"><a href="#Apple-沉浸视频" class="headerlink" title="Apple 沉浸视频"></a>Apple 沉浸视频</h3><p>专业级沉浸视频体验：</p>
-<ul>
-<li>使用 Blackmagic URSA Cine 设备拍摄</li>
-<li>单眼分辨率高达 8160×7200</li>
-<li>210°超广视野</li>
-<li>完整的工作流支持</li>
-<li>开发者可定制工具链</li>
-</ul>
-<h2 id="配置方案选择指南"><a href="#配置方案选择指南" class="headerlink" title="配置方案选择指南"></a>配置方案选择指南</h2><h3 id="关键决策因素"><a href="#关键决策因素" class="headerlink" title="关键决策因素"></a>关键决策因素</h3><table>
-<thead>
-<tr>
-<th>格式类型</th>
-<th>适用场景</th>
-<th>特点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2D/3D 视频</td>
-<td>平面内容</td>
-<td>传统播放方式</td>
-</tr>
-<tr>
-<td>空间视频</td>
-<td>个人记忆</td>
-<td>真实尺寸沉浸</td>
-</tr>
-<tr>
-<td>180°/360°</td>
-<td>虚拟旅游</td>
-<td>半球/球面投影</td>
-</tr>
-<tr>
-<td>宽视野</td>
-<td>运动拍摄</td>
-<td>消除畸变</td>
-</tr>
-<tr>
-<td>沉浸视频</td>
-<td>专业制作</td>
-<td>超高分辨率</td>
-</tr>
-</tbody>
-</table>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>visionOS 26 提供了从基础到专业的完整视频体验解决方案。开发者可以根据应用场景和设备条件，选择合适的视频格式。建议下载官方示例项目，体验不同格式的实际效果。</p>
-<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/403">了解 Apple 沉浸视频技术</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/297">了解 Apple Projected Media Profile</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/296">支持 visionOS App 播放沉浸视频</a></li>
-</ul>
-<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/av-foundation/Apple-Movie-Profiles.pdf">Apple Movie Profiles for Spatial and Immersive Media</a></li>
-<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/ImageIO/Creating-spatial-photos-and-videos-with-spatial-metadata">Creating spatial photos and videos with spatial metadata</a><blockquote>
+<blockquote>
 <p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
 </blockquote>
-</li>
+<h1 id="博客文章写作示例（基于WWDC演讲稿）"><a href="#博客文章写作示例（基于WWDC演讲稿）" class="headerlink" title="博客文章写作示例（基于WWDC演讲稿）"></a>博客文章写作示例（基于WWDC演讲稿）</h1><h2 id="标题：Vision-Pro的空间视频拍摄技术解析"><a href="#标题：Vision-Pro的空间视频拍摄技术解析" class="headerlink" title="标题：Vision Pro的空间视频拍摄技术解析"></a>标题：Vision Pro的空间视频拍摄技术解析</h2><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>苹果在WWDC大会上公布了Vision Pro头显的一项突破性功能——空间视频拍摄能力。这一技术革新允许用户通过设备内置的双摄像头系统捕捉具有深度信息的沉浸式视频内容。</p>
+<h3 id="空间视频技术原理"><a href="#空间视频技术原理" class="headerlink" title="空间视频技术原理"></a>空间视频技术原理</h3><h4 id="双摄像头系统"><a href="#双摄像头系统" class="headerlink" title="双摄像头系统"></a>双摄像头系统</h4><p>Vision Pro采用精密校准的双目摄像头阵列，两个镜头间距与人类瞳距相近。这种设计能够：</p>
+<ul>
+<li>模拟人眼视差效应</li>
+<li>实时计算深度信息</li>
+<li>生成具有立体感的视频流</li>
+</ul>
+<h4 id="深度数据处理流程"><a href="#深度数据处理流程" class="headerlink" title="深度数据处理流程"></a>深度数据处理流程</h4><p>系统通过以下算法处理原始视频数据：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">processDepthData</span>(<span class="params">leftImage</span>: <span class="type">CGImage</span>, <span class="params">rightImage</span>: <span class="type">CGImage</span>) -&gt; <span class="type">AVDepthData</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> disparityCalculator <span class="operator">=</span> <span class="type">DisparityCalculator</span>()</span><br><span class="line">    <span class="keyword">let</span> depthData <span class="operator">=</span> disparityCalculator.compute(left: leftImage, right: rightImage)</span><br><span class="line">    <span class="keyword">return</span> depthData.applyTemporalSmoothing()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该Swift代码展示了深度计算的核心流程，包括视差图生成和时间域平滑处理。</p>
+<h3 id="技术特点"><a href="#技术特点" class="headerlink" title="技术特点"></a>技术特点</h3><h4 id="实时编码技术"><a href="#实时编码技术" class="headerlink" title="实时编码技术"></a>实时编码技术</h4><p>空间视频采用HEVC格式的特殊扩展：</p>
+<ul>
+<li>保持标准兼容性</li>
+<li>新增深度元数据通道</li>
+<li>码率控制在20-30 Mbps</li>
+</ul>
+<h4 id="回放兼容性"><a href="#回放兼容性" class="headerlink" title="回放兼容性"></a>回放兼容性</h4><p>拍摄的内容可在以下设备播放：</p>
+<ul>
+<li>Vision Pro头显（完全3D效果）</li>
+<li>普通iOS设备（2D模式）</li>
+<li>Mac电脑（需安装最新解码器）</li>
+</ul>
+<h3 id="开发者支持"><a href="#开发者支持" class="headerlink" title="开发者支持"></a>开发者支持</h3><h4 id="API架构"><a href="#API架构" class="headerlink" title="API架构"></a>API架构</h4><p>苹果提供了全新AVFoundation框架扩展：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> spatialSession <span class="operator">=</span> <span class="type">AVSpatialVideoSession</span>()</span><br><span class="line">spatialSession.delegate <span class="operator">=</span> <span class="keyword">self</span></span><br><span class="line">spatialSession.startRecording(to: outputURL)</span><br></pre></td></tr></table></figure>
+<p>开发者可通过不超过10行代码实现基础拍摄功能。</p>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><h4 id="专业领域"><a href="#专业领域" class="headerlink" title="专业领域"></a>专业领域</h4><ul>
+<li>医疗手术记录</li>
+<li>建筑设计预览</li>
+<li>教育培训内容</li>
+</ul>
+<h4 id="消费领域"><a href="#消费领域" class="headerlink" title="消费领域"></a>消费领域</h4><ul>
+<li>家庭纪念视频</li>
+<li>旅行记录</li>
+<li>现场活动直播</li>
+</ul>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>Vision Pro的空间视频技术标志着消费级3D内容创作的重要突破。这项技术不仅拓展了影像创作的维度，也为开发者提供了全新的内容创作工具链。</p>
+<p>相关视频：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10025/">WWDC23-10025: 拍摄和播放空间视频</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10086/">WWDC23-10086: 空间视频编辑技术</a></li>
+</ul>
+<p>文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/avfoundation">AVFoundation框架参考</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/spatial-video/">空间视频技术白皮书</a></li>
 </ul>
 
       
@@ -407,18 +377,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_403/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/06/10/2025-06-10-wwdc2025_305/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          了解 Apple 沉浸视频技术
+          针对 visionOS 优化你的自定环境
         
       </div>
     </a>
   
   
-    <a href="/2025/06/10/2025-06-10-wwdc2025_296/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">支持 visionOS App 播放沉浸视频</div>
+    <a href="/2025/06/10/2025-06-10-wwdc2025_308/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">通过 Instruments 优化 CPU 性能</div>
       <i class="icon-circle-right"></i>
     </a>
   
