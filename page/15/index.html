@@ -197,6 +197,168 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2018-03-29-内存栅栏问题简述" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/29/2018-03-29-%E5%86%85%E5%AD%98%E6%A0%85%E6%A0%8F%E9%97%AE%E9%A2%98%E7%AE%80%E8%BF%B0/">原子性内存栅栏问题简述</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/29/2018-03-29-%E5%86%85%E5%AD%98%E6%A0%85%E6%A0%8F%E9%97%AE%E9%A2%98%E7%AE%80%E8%BF%B0/" class="archive-article-date">
+  	<time datetime="2018-03-28T17:09:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>内存栅栏(Memory fence)，也称为内存屏障(Memory barrier)，以前碰到这类概念都是基于锁的理解，比如dispatch_barrier。在看bmalloc的源代码时，发现其在使用原子性(atomic)的时候，出现了一种<code>memory_order</code>的概念，所以这里来简单看看原子性方面的问题。</p>
+        
+          <a class="article-more-a" href="/2018/03/29/2018-03-29-%E5%86%85%E5%AD%98%E6%A0%85%E6%A0%8F%E9%97%AE%E9%A2%98%E7%AE%80%E8%BF%B0/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内存栅栏</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">内存屏障</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">fence</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">barrier</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/29/2018-03-29-%E5%86%85%E5%AD%98%E6%A0%85%E6%A0%8F%E9%97%AE%E9%A2%98%E7%AE%80%E8%BF%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-2018-03-20-如何判断block回调未被调用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/20/2018-03-20-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%ADblock%E5%9B%9E%E8%B0%83%E6%9C%AA%E8%A2%AB%E8%B0%83%E7%94%A8/">如何判断block回调未被调用</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/20/2018-03-20-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%ADblock%E5%9B%9E%E8%B0%83%E6%9C%AA%E8%A2%AB%E8%B0%83%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2018-03-20T14:44:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在处理异步过程中，我们经常会碰到这种情况，需要异步处理并异步回调completionHandler，但是有些场景下，如果你在处理完异步逻辑，而不回调completion的时候，会产生逻辑上的bug或者内存泄露问题，那么我们就需要知道调用方是否调用了completion。</p>
+        
+          <a class="article-more-a" href="/2018/03/20/2018-03-20-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%ADblock%E5%9B%9E%E8%B0%83%E6%9C%AA%E8%A2%AB%E8%B0%83%E7%94%A8/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">block</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/20/2018-03-20-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%ADblock%E5%9B%9E%E8%B0%83%E6%9C%AA%E8%A2%AB%E8%B0%83%E7%94%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-2018-03-04-C语言的动态调用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -782,160 +944,6 @@ var _hmt = _hmt || [];
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/11/19/2017-11-19-%E8%AE%A8%E8%AE%BAGif%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-2017-10-31-浅析GPUImage的设计思想" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/31/2017-10-31-%E6%B5%85%E6%9E%90GPUImage%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/">浅析GPUImage的设计思想</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/31/2017-10-31-%E6%B5%85%E6%9E%90GPUImage%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/" class="archive-article-date">
-  	<time datetime="2017-10-31T14:32:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在移动端图片处理时，往往因为大量的计算导致需要较长的时间，为了充分利用设备的潜能，所以产生了利用GPU来处理计算的方案。其中最有名的开源方案就是<a target="_blank" rel="noopener" href="https://github.com/BradLarson/GPUImage.git">GPUImage</a>。</p>
-        
-          <a class="article-more-a" href="/2017/10/31/2017-10-31-%E6%B5%85%E6%9E%90GPUImage%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">GPUImage</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">OpenGL es</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/31/2017-10-31-%E6%B5%85%E6%9E%90GPUImage%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
-    <article id="post-2017-10-11-被滥用的category" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/11/2017-10-11-%E8%A2%AB%E6%BB%A5%E7%94%A8%E7%9A%84category/">被滥用的category</a>
-    </h1>
-  
-
-        
-        <a href="/2017/10/11/2017-10-11-%E8%A2%AB%E6%BB%A5%E7%94%A8%E7%9A%84category/" class="archive-article-date">
-  	<time datetime="2017-10-10T17:26:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-10-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>objc的最大一个特性就是动态性，利用动态特性，我们可以做很多事情，包括对已有的类和对象添加替换方面属性。但是这也给我们带来了一些隐藏的风险，以及让人很不愉快的一些体验。</p>
-        
-          <a class="article-more-a" href="/2017/10/11/2017-10-11-%E8%A2%AB%E6%BB%A5%E7%94%A8%E7%9A%84category/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">category</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/iOS/" class="article-tag-list-link color4">iOS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/10/11/2017-10-11-%E8%A2%AB%E6%BB%A5%E7%94%A8%E7%9A%84category/">展开全文 >></a>
         </p>
       
 

@@ -6,15 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://djs66256.github.io">
-  <title>Tag: wwdc2025 | 苍耳的技术博客</title>
+  <title>支持 visionOS App 播放沉浸视频 | 苍耳的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="苍耳的技术博客">
-<meta property="og:url" content="http://djs66256.github.io/tags/wwdc2025/page/3/index.html">
+  <meta name="description" content="了解如何在 visionos app 中播放沉浸视频。我们将介绍各种沉浸感十足的渲染模式、查看支持这些模式的框架，并讲解如何在你的 app 中渲染沉浸视频。为了充分利用好本次视频，我们建议你先观看 wwdc25 讲座“探索 visionos 的视频体验”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="支持 visionOS App 播放沉浸视频">
+<meta property="og:url" content="http://djs66256.github.io/2025/06/10/2025-06-10-wwdc2025_296/index.html">
 <meta property="og:site_name" content="苍耳的技术博客">
+<meta property="og:description" content="了解如何在 visionos app 中播放沉浸视频。我们将介绍各种沉浸感十足的渲染模式、查看支持这些模式的框架，并讲解如何在你的 app 中渲染沉浸视频。为了充分利用好本次视频，我们建议你先观看 wwdc25 讲座“探索 visionos 的视频体验”。">
 <meta property="og:locale">
+<meta property="og:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10057/10057_wide_250x141_2x.jpg">
+<meta property="article:published_time" content="2025-06-10T15:54:00.000Z">
+<meta property="article:modified_time" content="2025-06-10T15:54:00.680Z">
 <meta property="article:author" content="苍耳">
+<meta property="article:tag" content="wwdc2025">
+<meta property="article:tag" content="visionos">
+<meta property="article:tag" content="音频和视频">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10057/10057_wide_250x141_2x.jpg">
   
     <link rel="alternative" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
   
@@ -195,592 +204,65 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-2025-06-10-wwdc2025_296" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      支持 visionOS App 播放沉浸视频
+    </h1>
+  
+
+        
+        <a href="/2025/06/10/2025-06-10-wwdc2025_296/" class="archive-article-date">
+  	<time datetime="2025-06-10T15:54:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>了解如何在 visionos app 中播放沉浸视频。我们将介绍各种沉浸感十足的渲染模式、查看支持这些模式的框架，并讲解如何在你的 app 中渲染沉浸视频。为了充分利用好本次视频，我们建议你先观看 wwdc25 讲座“探索 visionos 的视频体验”。<br><span id="more"></span></p>
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10057/10057_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/296/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="支持-visionOS-App-播放沉浸视频"><a href="#支持-visionOS-App-播放沉浸视频" class="headerlink" title="支持 visionOS App 播放沉浸视频"></a>支持 visionOS App 播放沉浸视频</h1><p>随着 visionOS 的不断发展，开发者现在可以利用多种框架在应用中实现沉浸式视频播放体验。本文将详细介绍如何在 visionOS 26 中通过 Quick Look、AVKit 和 RealityKit 支持沉浸式视频播放，并探讨相关技术实现和最佳实践。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在 visionOS 26 中，Apple 引入了多种新的沉浸式媒体配置文件，包括 Apple Projected Media Profile (APMP) 和 Apple 沉浸视频。这些新特性为开发者提供了丰富的工具集，以创建引人入胜的沉浸式视频体验。Quick Look、AVKit 和 RealityKit 是三个主要框架，它们各自适用于不同的场景需求：从快速预览到完全自定义的沉浸式播放。</p>
+<p>接下来的内容将分为几个部分：首先回顾支持的视频配置文件，然后逐步讲解如何使用 Quick Look 和 AVKit 实现沉浸式视频播放，最后深入探讨如何通过 RealityKit 创建高度定制化的沉浸体验。</p>
+<h2 id="visionOS-26-中支持的视频配置文件"><a href="#visionOS-26-中支持的视频配置文件" class="headerlink" title="visionOS 26 中支持的视频配置文件"></a>visionOS 26 中支持的视频配置文件</h2><p>visionOS 26 支持多种视频配置文件，涵盖了从传统的 2D 和 3D 视频到更具沉浸感的 Apple Projected Media Profile（包括 180°、360° 和宽视场视频）以及 Apple 沉浸视频。不同类型的视频配置文件各有特点，例如 APMP 提供了广泛的沉浸视角选择，而 Apple 沉浸视频则专注于极致的沉浸体验。</p>
+<p>为了充分利用这些视频配置文件，开发者需要根据应用的需求选择合适的框架。Quick Look 适合快速呈现媒体内容；AVKit 提供了一致且增强的播放控制功能；而 RealityKit 则专为需要高度定制化体验的应用设计，例如游戏环境中的视频播放。</p>
+<h2 id="Quick-Look-中的沉浸视频播放"><a href="#Quick-Look-中的沉浸视频播放" class="headerlink" title="Quick Look 中的沉浸视频播放"></a>Quick Look 中的沉浸视频播放</h2><p>Quick Look 在 visionOS 26 中得到了显著增强，能够支持空间照片和视频的展示。QLPreviewController API 可用于在一个应用程序窗口或模态展示风格中预览媒体，同时支持 Apple 沉浸视频和 APMP 配置文件。</p>
+<p>对于已经实现了 Quick Look API 的应用，所有新支持的沉浸式媒体配置文件将自动生效。开发者可以通过 WWDC 相关视频进一步了解如何实现 QLPreviewController 和 PreviewApplication API，从而提升应用的沉浸式媒体支持能力。</p>
+<h2 id="使用-AVKit-进行沉浸视频播放"><a href="#使用-AVKit-进行沉浸视频播放" class="headerlink" title="使用 AVKit 进行沉浸视频播放"></a>使用 AVKit 进行沉浸视频播放</h2><p>AVKit 在 visionOS 26 中新增了对沉浸式视频播放的支持，通过 AVExperienceController API 可以实现向新沉浸体验的过渡。开发者可以选择使用 Expanded 或 Immersive 体验模式来满足不同需求。</p>
+<h3 id="自动过渡与手动控制"><a href="#自动过渡与手动控制" class="headerlink" title="自动过渡与手动控制"></a>自动过渡与手动控制</h3><p>在 Expanded 模式下，<code>AutomaticTransitionToImmersive</code> 属性允许开发者控制是否自动切换到沉浸体验。以下代码展示了如何禁用自动过渡并手动管理沉浸体验：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AVKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> controller <span class="operator">=</span> <span class="type">AVPlayerViewController</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> experienceController <span class="operator">=</span> controller.experienceController</span><br><span class="line">experienceController.allowedExperiences <span class="operator">=</span> .recommended(including: [.expanded, .immersive])</span><br><span class="line"></span><br><span class="line">experienceController.configuration.expanded.automaticTransitionToImmersive <span class="operator">=</span> .none</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> experienceController.transition(to: .expanded)</span><br></pre></td></tr></table></figure>
+<h3 id="手动转换到沉浸模式"><a href="#手动转换到沉浸模式" class="headerlink" title="手动转换到沉浸模式"></a>手动转换到沉浸模式</h3><p>要显式地转换到沉浸模式，开发者可以使用 <code>configuration.placement</code> API 来指定沉浸式视频播放的位置。以下代码演示了如何通过指定目标窗口场景完成这一操作：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AVKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> controller <span class="operator">=</span> <span class="type">AVPlayerViewController</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> experienceController <span class="operator">=</span> controller.experienceController</span><br><span class="line">experienceController.allowedExperiences <span class="operator">=</span> .recommended(including: [.immersive])</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> myScene <span class="operator">=</span> getMyPreferredWindowUIScene()</span><br><span class="line">experienceController.configuration.placement <span class="operator">=</span> .over(scene: myScene)</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> experienceController.transition(to: .immersive)</span><br></pre></td></tr></table></figure>
+<p>此外，AVExperienceController 的委托协议提供了灵活的状态管理方法，例如 <code>didChangeAvailableExperiences</code> 和 <code>prepareForTransitionUsing</code>，使开发者能够精确控制沉浸式体验的过渡过程。</p>
+<h2 id="舒适缓解检测"><a href="#舒适缓解检测" class="headerlink" title="舒适缓解检测"></a>舒适缓解检测</h2><p>沉浸式视频可能会因显著的摄像机运动导致观众不适。为解决这一问题，visionOS 26 在 Quick Look 和 AVKit 中引入了舒适缓解检测功能，能够自动检测高运动并降低沉浸水平。用户还可以通过设置应用调整相关选项，确保播放行为符合个人偏好。</p>
+<h2 id="RealityKit-中的自定义播放"><a href="#RealityKit-中的自定义播放" class="headerlink" title="RealityKit 中的自定义播放"></a>RealityKit 中的自定义播放</h2><p>对于需要更高定制化程度的应用，RealityKit 提供了强大的工具集来渲染和管理沉浸式视频播放。其核心组件 VideoPlayerComponent 能够根据当前 AVPlayer 的内容动态生成网格和材质，从而简化开发流程。</p>
+<h3 id="渐进沉浸模式"><a href="#渐进沉浸模式" class="headerlink" title="渐进沉浸模式"></a>渐进沉浸模式</h3><p>在 RealityKit 中，渐进沉浸模式是一种全新的 API，允许用户通过数码表冠调整沉浸级别，从而在享受视频的同时保持与周围环境的联系。以下代码展示了如何在门户模式下渲染 180° 视频：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AVFoundation</span><br><span class="line"><span class="keyword">import</span> RealityKit</span><br><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PortalVideoView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">RealityView</span> &#123; content <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">guard</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">URL</span>(string: <span class="string">&quot;https://cdn.example.com/My180.m3u8&quot;</span>) <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">            <span class="keyword">let</span> player <span class="operator">=</span> <span class="type">AVPlayer</span>(playerItem: <span class="type">AVPlayerItem</span>(url: url))</span><br><span class="line">            <span class="keyword">let</span> videoEntity <span class="operator">=</span> <span class="type">Entity</span>()</span><br><span class="line">            <span class="keyword">var</span> videoPlayerComponent <span class="operator">=</span> <span class="type">VideoPlayerComponent</span>(avPlayer: player)</span><br><span class="line">            videoPlayerComponent.desiredImmersiveViewingMode <span class="operator">=</span> .portal</span><br><span class="line">            videoEntity.components.set(videoPlayerComponent)</span><br><span class="line">            videoEntity.scale <span class="operator">*=</span> <span class="number">0.4</span></span><br><span class="line">            content.add(videoEntity)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果希望切换到渐进沉浸模式，只需将 <code>desiredImmersiveViewingMode</code> 设置为 <code>.progressive</code>，并在 SwiftUI 场景中使用 <code>ImmersiveSpace</code> 包装视图：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AVFoundation</span><br><span class="line"><span class="keyword">import</span> RealityKit</span><br><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">@main</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">ImmersiveVideoApp</span>: <span class="title class_ inherited__">App</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">Scene</span> &#123;</span><br><span class="line">        <span class="type">ImmersiveSpace</span> &#123;</span><br><span class="line">            <span class="type">ProgressiveVideoView</span>()</span><br><span class="line">        &#125;</span><br><span class="line">        .immersionStyle(selection: .constant(.progressive(<span class="number">0.1</span><span class="operator">...</span><span class="number">1</span>, initialAmount: <span class="number">1.0</span>)), in: .progressive)    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="空间视频渲染"><a href="#空间视频渲染" class="headerlink" title="空间视频渲染"></a>空间视频渲染</h3><p>RealityKit 还支持空间视频的原生播放，并提供完全空间样式的渲染选项。通过设置 <code>desiredSpatialVideoMode</code> 属性，开发者可以灵活选择渲染方式。例如，以下代码展示了如何在门户模式下渲染空间视频：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AVFoundation</span><br><span class="line"><span class="keyword">import</span> RealityKit</span><br><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PortalSpatialVideoView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">RealityView</span> &#123; content <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">Bundle</span>.main.url(forResource: <span class="string">&quot;MySpatialVideo&quot;</span>, withExtension: <span class="string">&quot;mov&quot;</span>)<span class="operator">!</span></span><br><span class="line">            <span class="keyword">let</span> player <span class="operator">=</span> <span class="type">AVPlayer</span>(url: url)</span><br><span class="line">            <span class="keyword">let</span> videoEntity <span class="operator">=</span> <span class="type">Entity</span>()</span><br><span class="line">            <span class="keyword">var</span> videoPlayerComponent <span class="operator">=</span> <span class="type">VideoPlayerComponent</span>(avPlayer: player)</span><br><span class="line">            videoPlayerComponent.desiredViewingMode <span class="operator">=</span> .stereo</span><br><span class="line">            videoPlayerComponent.desiredSpatialVideoMode <span class="operator">=</span> .spatial</span><br><span class="line">            videoPlayerComponent.desiredImmersiveViewingMode <span class="operator">=</span> .portal</span><br><span class="line">            videoEntity.components.set(videoPlayerComponent)</span><br><span class="line">            videoEntity.scale <span class="operator">*=</span> <span class="number">0.4</span></span><br><span class="line">            content.add(videoEntity)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>若需进一步扩展视频至全沉浸模式，可将 <code>desiredImmersiveViewingMode</code> 设置为 <code>.full</code> 并移除缩放操作：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> AVFoundation</span><br><span class="line"><span class="keyword">import</span> RealityKit</span><br><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">PortalSpatialVideoView</span>: <span class="title class_ inherited__">View</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">RealityView</span> &#123; content <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">Bundle</span>.main.url(forResource: <span class="string">&quot;MySpatialVideo&quot;</span>, withExtension: <span class="string">&quot;mov&quot;</span>)<span class="operator">!</span></span><br><span class="line">            <span class="keyword">let</span> player <span class="operator">=</span> <span class="type">AVPlayer</span>(url: url)</span><br><span class="line">            <span class="keyword">let</span> videoEntity <span class="operator">=</span> <span class="type">Entity</span>()</span><br><span class="line">            <span class="keyword">var</span> videoPlayerComponent <span class="operator">=</span> <span class="type">VideoPlayerComponent</span>(avPlayer: player)</span><br><span class="line">            videoPlayerComponent.desiredViewingMode <span class="operator">=</span> .stereo</span><br><span class="line">            videoPlayerComponent.desiredSpatialVideoMode <span class="operator">=</span> .spatial</span><br><span class="line">            videoPlayerComponent.desiredImmersiveViewingMode <span class="operator">=</span> .full</span><br><span class="line">            videoEntity.position <span class="operator">=</span> [<span class="number">0</span>, <span class="number">1.5</span>, <span class="operator">-</span><span class="number">1</span>]</span><br><span class="line">            videoEntity.components.set(videoPlayerComponent)</span><br><span class="line">            content.add(videoEntity)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过 Quick Look、AVKit 和 RealityKit，开发者可以在 visionOS 应用中实现丰富多样的沉浸式视频播放体验。无论是快速预览还是深度定制，Apple 提供的工具集都为开发者创造了无限可能。建议开发者进一步探索相关文档和示例代码，以充分发挥这些框架的潜力。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/403">了解 Apple 沉浸视频技术</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/297">了解 Apple Projected Media Profile</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/304">探索 visionOS 的视频体验</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/237">空间网页的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10153">深入探究空间容器和沉浸式空间</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10081">使用 RealityKit 增强你的空间计算 App</a>  </p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVFoundation">AVFoundation</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AVKit">AVKit</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/streaming/examples/">HTTP Live Streaming Examples</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/RealityKit">RealityKit</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2025" class="archive-year">2025</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_243/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_243/">UIKit 的新功能</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">隐私与安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_238/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_238/">针对辅助访问自定 App</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">辅助功能和包容性</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_247/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_247/">Xcode 的新功能</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">macos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tvos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">visionos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">watchos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_245/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_245/">Swift 的新功能</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">macos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tvos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">visionos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">watchos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">开发者工具</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_248/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_248/">探索设备端基础模型的提示设计和安全</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">macos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">设计</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_246/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_246/">将隐私保护融入开发流程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">macos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tvos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">visionos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">watchos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">隐私与安全</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_250/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_250/">将结构化并发代码与 Network 框架搭配使用</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">macos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tvos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">visionos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">watchos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">系统服务</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_253/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_253/">利用拍摄控件提升你的相机体验</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">照片和相机</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_255/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_255/">针对 visionOS 设计小组件</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -794,13 +276,13 @@ var _hmt = _hmt || [];
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">空间计算</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">音频和视频</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -813,94 +295,102 @@ var _hmt = _hmt || [];
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://djs66256.github.io/2025/06/10/2025-06-10-wwdc2025_296/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/06/10/2025-06-10-wwdc2025_254/" class="archive-article-date">
-  	<time datetime="2025-06-10T13:46:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-06-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/06/10/2025-06-10-wwdc2025_254/">探索 Metal 4 游戏</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ios</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">ipados</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">macos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tvos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">visionos</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">图形和游戏</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/wwdc2025/" class="article-tag-list-link color4">wwdc2025</a>
-        		</li>
-      		
-		</ul>
-	</div>
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2025/06/10/2025-06-10-wwdc2025_211/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">深入探索 Metal 4 游戏</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
+
+
+
   
-  
-    </div></section>
+    <!-- <div class="duoshuo"></div> -->
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/tags/wwdc2025/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/tags/wwdc2025/">1</a><a class="page-number" href="/tags/wwdc2025/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/tags/wwdc2025/page/4/">4</a><a class="page-number" href="/tags/wwdc2025/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/tags/wwdc2025/page/12/">12</a><a class="extend next" rel="next" href="/tags/wwdc2025/page/4/">Next &amp;raquo;</a>
-    </nav>
-  
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'djs66256'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
 
 
           </div>
@@ -923,9 +413,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",

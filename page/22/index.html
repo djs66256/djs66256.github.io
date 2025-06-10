@@ -197,6 +197,134 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-code-snapshot" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/08/19/code-snapshot/">code-snapshot</a>
+    </h1>
+  
+
+        
+        <a href="/2012/08/19/code-snapshot/" class="archive-article-date">
+  	<time datetime="2012-08-19T10:50:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2012-08-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="Jailbroken"><a href="#Jailbroken" class="headerlink" title="Jailbroken"></a>Jailbroken</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">+ (BOOL)isJailBroken</span><br><span class="line">&#123;</span><br><span class="line">	static const char * __jb_apps[] =</span><br><span class="line">	&#123;</span><br><span class="line">		&quot;/Application/Cydia.app&quot;,</span><br><span class="line">		&quot;/Application/limera1n.app&quot;,</span><br><span class="line">		&quot;/Application/greenpois0n.app&quot;,</span><br><span class="line">		&quot;/Application/blackra1n.app&quot;,</span><br><span class="line">		&quot;/Application/blacksn0w.app&quot;,</span><br><span class="line">		&quot;/Application/redsn0w.app&quot;,</span><br><span class="line">		NULL</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	__jb_app = NULL;</span><br><span class="line"></span><br><span class="line">	// method 1</span><br><span class="line">    for ( int i = 0; __jb_apps[i]; ++i )</span><br><span class="line">    &#123;</span><br><span class="line">        if ( [[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithUTF8String:__jb_apps[i]]] )</span><br><span class="line">        &#123;</span><br><span class="line">			__jb_app = __jb_apps[i];</span><br><span class="line">			return YES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // method 2</span><br><span class="line">	if ( [[NSFileManager defaultManager] fileExistsAtPath:@&quot;/private/var/lib/apt/&quot;] )</span><br><span class="line">	&#123;</span><br><span class="line">		return YES;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// method 3</span><br><span class="line">	if ( 0 == system(&quot;ls&quot;) )</span><br><span class="line">	&#123;</span><br><span class="line">		return YES;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">  return NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Color-darkness-or-lightness"><a href="#Color-darkness-or-lightness" class="headerlink" title="Color darkness or lightness"></a>Color darkness or lightness</h2><p><a target="_blank" rel="noopener" href="https://www.w3.org/WAI/ER/WD-AERT/#color-contrast">https://www.w3.org/WAI/ER/WD-AERT/#color-contrast</a></p>
+<p><code>((Red value X 299) + (Green value X 587) + (Blue value X 114)) / 1000</code><br>Note: This algorithm is taken from a formula for converting RGB values to YIQ values. This brightness value gives a perceived brightness for a color.</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/temp/" class="article-tag-list-link color5">temp</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2012/08/19/code-snapshot/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
+    <article id="post-my-project" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2012/08/05/my-project/">我的项目</a>
+    </h1>
+  
+
+        
+        <a href="/2012/08/05/my-project/" class="archive-article-date">
+  	<time datetime="2012-08-05T15:23:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2012-08-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我的 Github 项目，欢迎给我提意见。</p>
+        
+          <a class="article-more-a" href="/2012/08/05/my-project/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/我的项目/" class="article-tag-list-link color5">我的项目</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2012/08/05/my-project/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-project" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
