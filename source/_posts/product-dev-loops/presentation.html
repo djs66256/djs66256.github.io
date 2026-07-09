@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Development · Nested Loops</title>
+<style>
+  :root {
+    --bg:        #070b14;
+    --surface:   #0f1525;
+    --border:    #1c2640;
+    --text:      #e4e8f0;
+    --text-sub:  #8899bb;
+    --text-dim:  #4e5d7c;
+
+    --blue:      #5b8def;
+    --blue-bg:   rgba(91,141,239,0.12);
+    --blue-glow: rgba(91,141,239,0.25);
+    --teal:      #2ec4b6;
+    --teal-bg:   rgba(46,196,182,0.12);
+    --teal-glow: rgba(46,196,182,0.25);
+    --amber:     #f0a040;
+    --amber-bg:  rgba(240,160,64,0.12);
+    --amber-glow:rgba(240,160,64,0.25);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    height: 100vh; width: 100vw;
+    overflow: hidden;
+    display: flex;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* ── Canvas fills left portion ───────────── */
+  .viz {
+    flex: 1 1 60%;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    min-width: 0;
+  }
+  canvas { display: block; }
+
+  /* ── Side panel ──────────────────────────── */
+  .side {
+    flex: 0 0 460px;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 80px 56px 80px 0;
+    z-index: 5;
+  }
+  .side .stage-label {
+    font-size: 15px; font-weight: 600; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--text-dim);
+    margin-bottom: 10px;
+    transition: color 0.5s;
+  }
+  .side .stage-title {
+    font-size: 38px; font-weight: 700; letter-spacing: -0.01em;
+    color: var(--text); line-height: 1.15;
+    transition: color 0.5s;
+  }
+  .side .stage-desc {
+    margin-top: 16px; font-size: 17px; color: var(--text-sub);
+    line-height: 1.7; max-width: 380px;
+    transition: color 0.5s;
+  }
+
+  .side .steps-list {
+    margin-top: 36px; display: flex; flex-direction: column; gap: 0;
+  }
+  .side .step-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 17px; font-weight: 500; color: var(--text);
+    transition: all 0.4s;
+  }
+  .side .step-row:last-child { border-bottom: none; }
+  .side .step-idx {
+    font-family: 'SF Mono','JetBrains Mono','Menlo',monospace;
+    font-size: 15px; font-weight: 700;
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.4s;
+  }
+  .side .step-name { flex: 1; font-size: 17px; }
+  .side .step-desc {
+    font-size: 13px; color: var(--text-sub); font-weight: 400;
+    margin-left: 46px; margin-top: -6px; padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    line-height: 1.5;
+    transition: all 0.4s;
+  }
+  .side .step-row.nest-step {
+    position: relative;
+  }
+  .side .step-row.nest-step::after {
+    content: '包含内层循环';
+    position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+    font-size: 12px; color: var(--text-dim);
+    padding: 3px 12px; border-radius: 20px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .side .nest-note {
+    margin-top: 28px; padding: 18px 22px;
+    background: var(--surface); border-radius: 14px;
+    border: 1px solid var(--border);
+    font-size: 15px; color: var(--text-sub); line-height: 1.7;
+  }
+  .side .nest-note em { font-style: normal; font-weight: 700; }
+
+  /* ── Clickable legend pills ────────────── */
+  .legend-pills {
+    position: fixed; bottom: 44px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 14px;
+    z-index: 20;
+  }
+  .legend-pill {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 26px;
+    border-radius: 40px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: all 0.4s;
+    font-size: 17px; font-weight: 600;
+    color: var(--text-sub);
+    letter-spacing: 0.02em;
+  }
+  .legend-pill:hover {
+    border-color: var(--text-dim);
+    color: var(--text);
+  }
+  .legend-pill .dot {
+    width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+    transition: box-shadow 0.4s;
+  }
+  .legend-pill.f0 .dot { background: var(--blue); }
+  .legend-pill.f1 .dot { background: var(--teal); }
+  .legend-pill.f2 .dot { background: var(--amber); }
+
+  .legend-pill.active {
+    color: #fff;
+    transform: scale(1.05);
+  }
+  .legend-pill.f0.active { border-color: var(--blue); background: rgba(91,141,239,0.15); box-shadow: 0 0 28px var(--blue-glow); }
+  .legend-pill.f1.active { border-color: var(--teal); background: rgba(46,196,182,0.15); box-shadow: 0 0 28px var(--teal-glow); }
+  .legend-pill.f2.active { border-color: var(--amber);background: rgba(240,160,64,0.15); box-shadow: 0 0 28px var(--amber-glow); }
+
+  .legend-pill .badge {
+    font-size: 12px; padding: 3px 12px; border-radius: 20px;
+    font-weight: 700;
+    opacity: 0.5; transition: opacity 0.4s;
+  }
+  .legend-pill.f0 .badge { background: var(--blue-bg); color: var(--blue); }
+  .legend-pill.f1 .badge { background: var(--teal-bg); color: var(--teal); }
+  .legend-pill.f2 .badge { background: var(--amber-bg);color: var(--amber); }
+  .legend-pill.active .badge { opacity: 1; }
+
+  /* ── Hint ──────────────────────────────── */
+  .click-hint {
+    position: fixed; bottom: 110px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px; color: var(--text-dim);
+    letter-spacing: 0.04em;
+    z-index: 15; pointer-events: none;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 1000px) {
+    body { flex-direction: column; }
+    .viz { flex: 1 1 50%; }
+    .side { flex: 0 0 auto; padding: 24px 24px 100px; align-items: flex-start; text-align: left; }
+    .side .stage-title { font-size: 28px; }
+    .side .stage-desc { font-size: 15px; max-width: none; }
+    .side .step-row { font-size: 15px; padding: 11px 0; }
+    .side .step-idx { width: 26px; height: 26px; font-size: 13px; }
+    .legend-pills { bottom: 20px; gap: 8px; }
+    .legend-pill { padding: 10px 18px; font-size: 14px; }
+    .click-hint { bottom: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="viz"><canvas id="c"></canvas></div>
+
+<div class="side" id="side">
+  <div class="stage-label" id="stageLabel">概览</div>
+  <div class="stage-title" id="stageTitle">三层循环模型</div>
+  <div class="stage-desc" id="stageDesc">大型项目中，产品研发由三个嵌套的反馈循环驱动——从业务战略到日常编码，层层递进。</div>
+  <div class="steps-list" id="stepsList"></div>
+  <div class="nest-note" id="nestNote"></div>
+</div>
+
+<div class="click-hint">点击轨道或下方标签聚焦</div>
+
+<div class="legend-pills">
+  <div class="legend-pill f0 active" data-focus="feature">
+    <span class="dot"></span> 需求循环 <span class="badge">3 步</span>
+  </div>
+  <div class="legend-pill f1" data-focus="develop">
+    <span class="dot"></span> 研发循环 <span class="badge">6 步</span>
+  </div>
+  <div class="legend-pill f2" data-focus="coding">
+    <span class="dot"></span> 编码循环 <span class="badge">3 步</span>
+  </div>
+</div>
+
+<script>
+(() => {
+
+const LOOPS = {
+  feature: {
+    id: 'feature', label: '需求循环',
+    color: '#5b8def', glow: 'rgba(91,141,239,0.12)', glowStrong: 'rgba(91,141,239,0.30)',
+    steps: ['需求提出', '需求开发上线', '数据验证'],
+    stepsDesc: [
+      'PM 收集用户需求，评估业务价值与可行性',
+      '完整研发交付流程，产出可上线功能',
+      '上线后观测核心指标，验证需求假设',
+    ],
+    desc: '业务视角的最外层循环。由 PM 驱动，关注「做什么」能带来用户价值和业务增长。',
+    contains: 'develop',
+    speed: 0.10, size: 8, width: 1.8,
+  },
+  develop: {
+    id: 'develop', label: '研发循环',
+    color: '#2ec4b6', glow: 'rgba(46,196,182,0.12)', glowStrong: 'rgba(46,196,182,0.30)',
+    steps: ['需求评审', '技术方案评审', '各职能开发', 'QA 验证', '上线发版', '监控'],
+    stepsDesc: [
+      'PM 与 Tech Lead 对齐需求细节与验收标准',
+      '技术方案设计，团队评审风险与技术选型',
+      '前后端 / 客户端 / 数据 并行协作开发',
+      '功能测试、回归测试、性能压测',
+      '灰度发布 → 全量上线，变更通知',
+      '线上数据巡检，及时响应异常与告警',
+    ],
+    desc: '工程团队的中层循环。由 Tech Lead 驱动，关注「怎么做」能高效、高质量地交付。',
+    contains: 'coding',
+    speed: 0.28, size: 7, width: 1.4,
+  },
+  coding: {
+    id: 'coding', label: '编码循环',
+    color: '#f0a040', glow: 'rgba(240,160,64,0.12)', glowStrong: 'rgba(240,160,64,0.30)',
+    steps: ['Task', 'Coding', 'Build / Lint / Test / Review'],
+    stepsDesc: [
+      '明确任务目标，拆解为可执行的编码单元',
+      '编写实现代码，覆盖边界条件与异常路径',
+      '编译检查、代码规范、单元测试、同行 Review 形成快速反馈',
+    ],
+    desc: '开发者日常的最内层循环。由工程师个体驱动，每分钟都在运转，是最基础的执行单元。',
+    contains: null,
+    speed: 0.70, size: 6, width: 1.1,
+  },
+};
+
+const LOOP_ORDER = ['feature', 'develop', 'coding'];
+
+// ── Canvas setup ──────────────────────────
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+let W, H, cx, cy, baseR;
+function resize() {
+  const viz = document.querySelector('.viz');
+  W = c.width  = viz.clientWidth;
+  H = c.height = viz.clientHeight;
+  cx = W / 2;
+  cy = H / 2;
+  baseR = Math.min(W, H) * 0.25;
+  LOOPS.feature.radius = baseR * 1.0;
+  LOOPS.develop.radius = baseR * 0.56;
+  LOOPS.coding.radius  = baseR * 0.22;
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ── State ─────────────────────────────────
+let focused = 'feature'; // null = overview, or 'feature'/'develop'/'coding'
+let angles = { feature: 0, develop: Math.PI*0.35, coding: Math.PI*0.72 };
+let ambientParticles = [];
+const MAX_PARTICLES = 80;
+
+// ── Ambient particles ─────────────────────
+class Particle {
+  constructor(key) {
+    const lp = LOOPS[key];
+    this.key = key; this.color = lp.color; this.radius = lp.radius;
+    this.angle = Math.random()*Math.PI*2;
+    this.speed = lp.speed * (0.5 + Math.random()*0.9);
+    this.life = 1;
+    this.decay = 0.003 + Math.random()*0.012;
+    this.size = 1.2 + Math.random()*1.8;
+    this.radialOff = (Math.random()-0.5)*12;
+  }
+  update(dt) { this.angle += this.speed * dt; this.life -= this.decay; }
+  draw(ctx) {
+    if (this.life<=0) return;
+    const r = this.radius + this.radialOff;
+    const x = cx + Math.cos(this.angle)*r, y = cy + Math.sin(this.angle)*r;
+    ctx.globalAlpha = this.life*0.35;
+    ctx.fillStyle = this.color;
+    ctx.beginPath(); ctx.arc(x, y, this.size, 0, Math.PI*2); ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  get dead() { return this.life<=0; }
+}
+
+function spawnParticles(key, n=1) {
+  for (let i=0; i<n; i++) ambientParticles.push(new Particle(key));
+}
+
+// ── Drawing ───────────────────────────────
+function drawBg() {
+  const grad = ctx.createRadialGradient(cx, cy, baseR*0.05, cx, cy, baseR*1.5);
+  grad.addColorStop(0, '#0d1528');
+  grad.addColorStop(1, '#050910');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function drawRing(key) {
+  const lp = LOOPS[key];
+  const isFocused = focused === key;
+  const alpha = focused ? (isFocused ? 1 : 0.15) : 0.55;
+  const { radius, color, glow, glowStrong, steps, size, width } = lp;
+
+  // Glow band
+  const bandGrad = ctx.createRadialGradient(cx, cy, radius-16, cx, cy, radius+16);
+  bandGrad.addColorStop(0, 'transparent');
+  bandGrad.addColorStop(0.3, isFocused ? glowStrong : glow);
+  bandGrad.addColorStop(0.7, isFocused ? glowStrong : glow);
+  bandGrad.addColorStop(1, 'transparent');
+  ctx.fillStyle = bandGrad;
+  ctx.globalAlpha = alpha * 0.6;
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius+16, 0, Math.PI*2);
+  ctx.arc(cx, cy, radius-16, Math.PI*2, 0, true);
+  ctx.fill();
+
+  // Orbit
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.globalAlpha = alpha * 0.5;
+  ctx.setLineDash([10, 26]);
+  ctx.lineDashOffset = -performance.now() * lp.speed * 0.18;
+  ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI*2); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Step nodes + enlarged labels
+  const N = steps.length;
+  const angle = angles[key];
+  const labelR = radius + 44;
+  const labelSize = isFocused ? 15 : 14;
+
+  for (let i = 0; i < N; i++) {
+    const a = angle + (i/N)*Math.PI*2;
+    const sx = cx + Math.cos(a)*radius;
+    const sy = cy + Math.sin(a)*radius;
+
+    // Bloom
+    const bloom = ctx.createRadialGradient(sx, sy, 0, sx, sy, size*4.5);
+    bloom.addColorStop(0, isFocused ? color : 'transparent');
+    bloom.addColorStop(0.18, isFocused ? glowStrong : glow);
+    bloom.addColorStop(1, 'transparent');
+    ctx.fillStyle = bloom;
+    ctx.globalAlpha = alpha;
+    ctx.beginPath(); ctx.arc(sx, sy, size*4.5, 0, Math.PI*2); ctx.fill();
+
+    // Core
+    ctx.fillStyle = color;
+    ctx.globalAlpha = alpha * 0.9;
+    ctx.beginPath(); ctx.arc(sx, sy, size, 0, Math.PI*2); ctx.fill();
+
+    // Label pill
+    const lx = cx + Math.cos(a)*labelR;
+    const ly = cy + Math.sin(a)*labelR;
+    const labelAlpha = isFocused ? 0.95 : (focused ? 0.18 : 0.55);
+    if (labelAlpha < 0.15) continue;
+
+    ctx.fillStyle = color;
+    ctx.globalAlpha = labelAlpha;
+    ctx.font = `600 ${labelSize}px -apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const m = ctx.measureText(steps[i]);
+    const pw = m.width + 24, ph = 30;
+
+    ctx.fillStyle = 'rgba(7,11,20,0.88)';
+    ctx.fillRect(lx-pw/2, ly-ph/2, pw, ph);
+    ctx.strokeStyle = color;
+    ctx.globalAlpha = labelAlpha * 0.45;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(lx-pw/2, ly-ph/2, pw, ph);
+
+    ctx.fillStyle = color;
+    ctx.globalAlpha = labelAlpha;
+    ctx.fillText(steps[i], lx, ly);
+
+    // Connector
+    ctx.strokeStyle = color;
+    ctx.globalAlpha = labelAlpha * 0.18;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(lx, ly); ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawCenter() {
+  const t = performance.now()*0.001;
+  for (let i=2; i>=0; i--) {
+    const pr = 10 + i*18 + Math.sin(t*2 + i*1.5)*7;
+    ctx.strokeStyle = '#fff';
+    ctx.globalAlpha = 0.05 - i*0.012;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.arc(cx, cy, pr, 0, Math.PI*2); ctx.stroke();
+  }
+  ctx.fillStyle = '#5a6a8a';
+  ctx.globalAlpha = 0.5;
+  ctx.beginPath(); ctx.arc(cx, cy, 3.5, 0, Math.PI*2); ctx.fill();
+  ctx.globalAlpha = 1;
+}
+
+function drawNesting() {
+  // Radial connector lines between rings
+  const t = performance.now()*0.00035;
+  for (let i=0; i<LOOP_ORDER.length-1; i++) {
+    const outer = LOOPS[LOOP_ORDER[i]];
+    const inner = LOOPS[LOOP_ORDER[i+1]];
+    const visible = !focused || focused === outer.id || focused === inner.id;
+    const alpha = visible ? 0.06 : 0.008;
+    for (let j=0; j<12; j++) {
+      const a = (j/12)*Math.PI*2 + t + i*0.6;
+      ctx.strokeStyle = outer.color;
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(a)*outer.radius, cy+Math.sin(a)*outer.radius);
+      ctx.lineTo(cx+Math.cos(a)*inner.radius, cy+Math.sin(a)*inner.radius);
+      ctx.stroke();
+    }
+  }
+  ctx.globalAlpha = 1;
+}
+
+// ── Click detection ───────────────────────
+function hitTest(ex, ey) {
+  const dx = ex - cx, dy = ey - cy;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  const results = [];
+  for (const key of LOOP_ORDER) {
+    const r = LOOPS[key].radius;
+    // Hit zone: ±40px from ring orbit, also capture label area
+    const ringHit = Math.abs(dist - r) < 42;
+    // Also check labels (further out from ring)
+    const labelHit = Math.abs(dist - (r + 44)) < 40;
+    if (ringHit || labelHit) results.push({ key, dist: Math.abs(dist - r) });
+  }
+  // Return closest ring
+  results.sort((a,b) => a.dist - b.dist);
+  return results[0]?.key || null;
+}
+
+c.addEventListener('click', e => {
+  const rect = c.getBoundingClientRect();
+  const ex = e.clientX - rect.left;
+  const ey = e.clientY - rect.top;
+  const hit = hitTest(ex, ey);
+  if (hit) setFocus(hit);
+});
+
+// Click on the canvas center (= go back to overview)
+c.addEventListener('dblclick', e => {
+  const rect = c.getBoundingClientRect();
+  const ex = e.clientX - rect.left;
+  const ey = e.clientY - rect.top;
+  const dx = ex - cx, dy = ey - cy;
+  if (Math.sqrt(dx*dx+dy*dy) < 30) setFocus(null);
+});
+
+// ── Legend pills ──────────────────────────
+document.querySelectorAll('.legend-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    const f = pill.dataset.focus;
+    setFocus(focused === f ? null : f);
+  });
+});
+
+// ── Side panel ────────────────────────────
+function updateSidePanel() {
+  const elLabel = document.getElementById('stageLabel');
+  const elTitle = document.getElementById('stageTitle');
+  const elDesc  = document.getElementById('stageDesc');
+  const elSteps = document.getElementById('stepsList');
+  const elNote  = document.getElementById('nestNote');
+
+  if (!focused) {
+    // Overview
+    elLabel.textContent = '概览';
+    elLabel.style.color = 'var(--text-dim)';
+    elTitle.textContent = '三层循环模型';
+    elTitle.style.color = 'var(--text)';
+    elDesc.textContent = '大型项目中，产品研发由三个嵌套的反馈循环驱动——从业务战略到日常编码，层层递进。';
+    elSteps.innerHTML = LOOPS.feature.steps.map((s,i) => `
+      <div class="step-row">
+        <span class="step-idx" style="background:var(--blue-bg);color:var(--blue)">${i+1}</span>
+        <span class="step-name">${s}</span>
+      </div>
+    `).join('') + LOOPS.develop.steps.map((s,i) => `
+      <div class="step-row" style="padding-left:28px">
+        <span class="step-idx" style="background:var(--teal-bg);color:var(--teal);width:26px;height:26px;font-size:13px">${i+1}</span>
+        <span class="step-name" style="font-size:15px">${s}</span>
+      </div>
+    `).join('') + LOOPS.coding.steps.map((s,i) => `
+      <div class="step-row" style="padding-left:56px">
+        <span class="step-idx" style="background:var(--amber-bg);color:var(--amber);width:22px;height:22px;font-size:11px">${i+1}</span>
+        <span class="step-name" style="font-size:12px">${s}</span>
+      </div>
+    `).join('');
+    elNote.innerHTML = '三层循环 <em>层层嵌套</em>。<br>« 需求循环 » 的「需求开发上线」包含了完整 « 研发循环 »；<br>« 研发循环 » 的「各职能开发」由无数 « 编码循环 » 构成。';
+  } else {
+    const lp = LOOPS[focused];
+    elLabel.textContent = lp.id === 'feature' ? '外环' : lp.id === 'develop' ? '中环' : '内环';
+    elLabel.style.color = lp.color;
+    elTitle.textContent = lp.label;
+    elTitle.style.color = lp.color;
+    elDesc.textContent = lp.desc;
+
+    elSteps.innerHTML = lp.steps.map((s,i) => {
+      const isNest = (lp.contains && s.includes('开发')) || (lp.id === 'develop' && s === '各职能开发');
+      const cls = isNest ? 'step-row nest-step' : 'step-row';
+      return `
+      <div class="${cls}">
+        <span class="step-idx" style="background:${lp.glow};color:${lp.color}">${i+1}</span>
+        <span class="step-name">${s}</span>
+      </div>
+      <div class="step-desc">${lp.stepsDesc[i]}</div>`;
+    }).join('');
+
+    if (lp.contains) {
+      const inner = LOOPS[lp.contains];
+      const nestStep = lp.steps.find(s => s.includes('开发'));
+      elNote.innerHTML = `<em style="color:${lp.color}">嵌套关系</em><br>「${nestStep}」这一步内部，<br>运行着完整的 <em style="color:${inner.color}">${inner.label}</em>。<br><span style="font-size:13px;color:var(--text-dim)">点击中心圆点或再次点击标签回到总览</span>`;
+    } else {
+      // innermost
+      const outer = LOOPS['develop'];
+      elNote.innerHTML = `<em style="color:${lp.color}">嵌套关系</em><br>这是 <em style="color:${outer.color}">${outer.label}</em> 中「各职能开发」的内部细节。<br>最内层循环——<em>每分钟都在运转</em>。<br><span style="font-size:13px;color:var(--text-dim)">点击中心圆点或再次点击标签回到总览</span>`;
+    }
+  }
+}
+
+// ── Set focus ─────────────────────────────
+function setFocus(f) {
+  focused = f;
+  // Update pills
+  document.querySelectorAll('.legend-pill').forEach(p => {
+    if (!f) p.classList.add('active');
+    else p.classList.toggle('active', p.dataset.focus === f);
+  });
+  updateSidePanel();
+}
+
+// ── Main loop ─────────────────────────────
+let lastT = 0;
+function frame(now) {
+  const dt = Math.min((now - lastT)/1000, 0.1);
+  lastT = now;
+
+  ctx.clearRect(0, 0, W, H);
+  drawBg();
+
+  for (const key of LOOP_ORDER) {
+    angles[key] += LOOPS[key].speed * dt;
+    if (angles[key] >= Math.PI*2) angles[key] -= Math.PI*2;
+  }
+
+  if (ambientParticles.length < MAX_PARTICLES && Math.random() < 0.4) {
+    spawnParticles(LOOP_ORDER[Math.floor(Math.random()*3)]);
+  }
+  for (const p of ambientParticles) p.update(dt);
+  ambientParticles = ambientParticles.filter(p => !p.dead);
+
+  drawNesting();
+  for (const p of ambientParticles) p.draw(ctx);
+  for (const key of LOOP_ORDER) drawRing(key);
+  drawCenter();
+
+  requestAnimationFrame(frame);
+}
+
+// Init
+updateSidePanel();
+lastT = performance.now();
+requestAnimationFrame(frame);
+
+})();
+</script>
+</body>
+</html>

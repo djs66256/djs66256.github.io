@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Development · Nested Loops</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg:       #080b10;
+    --surface:  #10151f;
+    --border:   #1c2333;
+    --text:     #d4d9e6;
+    --text-dim: #5e6983;
+    --text-sub: #8892a8;
+
+    --feature:    #5b9cf5;
+    --feature-bg: rgba(91, 156, 245, 0.10);
+    --feature-glow: rgba(91, 156, 245, 0.20);
+    --develop:    #34d3b5;
+    --develop-bg: rgba(52, 211, 181, 0.10);
+    --develop-glow: rgba(52, 211, 181, 0.20);
+    --coding:     #f5a623;
+    --coding-bg:  rgba(245, 166, 35, 0.10);
+    --coding-glow: rgba(245, 166, 35, 0.20);
+  }
+
+  * { margin:0;padding:0;box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  canvas { display: block; }
+
+  /* ── Top title ─────────────────────────── */
+  .header {
+    position: fixed; top: 28px; left: 50%; transform: translateX(-50%);
+    z-index: 10; text-align: center; pointer-events: none;
+  }
+  .header .title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.14em;
+    color: var(--text-dim); text-transform: uppercase;
+  }
+
+  /* ── Bottom panel ──────────────────────── */
+  .panel {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex; justify-content: center; gap: 0;
+    padding: 0 0 32px;
+  }
+  .panel-inner {
+    display: flex; gap: 2px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 6px;
+    backdrop-filter: blur(16px);
+  }
+  .loop-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 22px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.25s, box-shadow 0.25s;
+    position: relative;
+    border: 1px solid transparent;
+    min-width: 180px;
+  }
+  .loop-card:hover,
+  .loop-card.active {
+    background: var(--bg);
+    border-color: var(--border);
+  }
+  .loop-card.feature.active { box-shadow: 0 0 24px var(--feature-glow); }
+  .loop-card.develop.active { box-shadow: 0 0 24px var(--develop-glow); }
+  .loop-card.coding.active  { box-shadow: 0 0 24px var(--coding-glow); }
+
+  .loop-card .dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .loop-card.feature .dot { background: var(--feature); box-shadow: 0 0 10px var(--feature); }
+  .loop-card.develop .dot { background: var(--develop); box-shadow: 0 0 10px var(--develop); }
+  .loop-card.coding  .dot { background: var(--coding);  box-shadow: 0 0 10px var(--coding); }
+
+  .loop-card .info { display: flex; flex-direction: column; gap: 2px; }
+  .loop-card .name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--text);
+  }
+  .loop-card .sub {
+    font-size: 11px; color: var(--text-sub);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+
+  .loop-card .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 600;
+    padding: 2px 10px; border-radius: 20px;
+    letter-spacing: 0.04em;
+    opacity: 0; transform: translateX(-6px);
+    transition: all 0.3s;
+  }
+  .loop-card:hover .badge,
+  .loop-card.active .badge {
+    opacity: 1; transform: translateX(0);
+  }
+  .loop-card.feature .badge { background: var(--feature-bg); color: var(--feature); }
+  .loop-card.develop .badge { background: var(--develop-bg); color: var(--develop); }
+  .loop-card.coding  .badge { background: var(--coding-bg);  color: var(--coding); }
+
+  /* ── Detail overlay ────────────────────── */
+  .detail {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) translateY(10px);
+    z-index: 15;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 32px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    min-width: 320px;
+    backdrop-filter: blur(24px);
+  }
+  .detail.visible {
+    opacity: 1; transform: translate(-50%, -50%) translateY(0);
+  }
+  .detail .d-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .detail .d-steps {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .detail .d-step {
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    font-size: 14px; font-weight: 400; color: var(--text);
+    transition: color 0.2s;
+  }
+  .detail .d-step:last-child { border-bottom: none; }
+  .detail .d-step .idx {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 600;
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .detail .d-step .arrow {
+    margin-left: auto; font-size: 11px; color: var(--text-dim);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .detail .d-step:not(:last-child) .arrow { opacity: 0.4; }
+
+  .detail .d-note {
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 12px; color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .detail .d-note em {
+    font-style: normal; font-weight: 600;
+  }
+
+  /* ── Cycle counter ─────────────────────── */
+  .cycle-counter {
+    position: fixed; right: 40px; top: 50%; transform: translateY(-50%);
+    z-index: 10; pointer-events: none;
+    display: flex; flex-direction: column; gap: 16px;
+    opacity: 0.3; transition: opacity 0.4s;
+  }
+  .cycle-counter.visible { opacity: 0.7; }
+  .cycle-counter .c-item {
+    display: flex; align-items: flex-end; flex-direction: column; gap: 2px;
+  }
+  .cycle-counter .c-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px; font-weight: 600;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .cycle-counter .c-label {
+    font-size: 10px; color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Key hint ──────────────────────────── */
+  .hint {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.06em;
+    color: var(--text-dim); opacity: 0;
+    animation: hintIn 0.6s 0.8s forwards;
+    pointer-events: none; z-index: 5;
+  }
+  @keyframes hintIn {
+    0% { opacity: 0; }
+    100% { opacity: 0.5; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hint { animation: none; opacity: 0.5; }
+  }
+
+  @media (max-width: 768px) {
+    .panel-inner { flex-direction: column; gap: 4px; }
+    .loop-card { min-width: auto; padding: 10px 16px; }
+    .loop-card .badge { opacity: 1; }
+    .detail { left: 16px; right: 16px; transform: translate(0, -50%) translateY(10px); min-width: auto; }
+    .detail.visible { transform: translate(0, -50%) translateY(0); }
+    .cycle-counter { right: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header"><div class="title">Development Cycle Model</div></div>
+
+<canvas id="c"></canvas>
+
+<div class="hint" id="hint">HOVER A CARD OR RING</div>
+
+<div class="panel">
+  <div class="panel-inner" id="panel">
+    <div class="loop-card feature" data-loop="feature">
+      <span class="dot"></span>
+      <div class="info">
+        <span class="name">Feature Loop</span>
+        <span class="sub">需求 → 上线 → 验证</span>
+      </div>
+      <span class="badge">3 步</span>
+    </div>
+    <div class="loop-card develop" data-loop="develop">
+      <span class="dot"></span>
+      <div class="info">
+        <span class="name">Developing Loop</span>
+        <span class="sub">评审 → 开发 → QA → 发布 → 监控</span>
+      </div>
+      <span class="badge">6 步</span>
+    </div>
+    <div class="loop-card coding" data-loop="coding">
+      <span class="dot"></span>
+      <div class="info">
+        <span class="name">Coding Loop</span>
+        <span class="sub">Coding → Review → 验证</span>
+      </div>
+      <span class="badge">3 步</span>
+    </div>
+  </div>
+</div>
+
+<div class="detail" id="detail">
+  <div class="d-title" id="dTitle"></div>
+  <div class="d-steps" id="dSteps"></div>
+  <div class="d-note" id="dNote"></div>
+</div>
+
+<div class="cycle-counter" id="counter">
+  <div class="c-item">
+    <span class="c-val" style="color:var(--feature)" id="cFeature">0</span>
+    <span class="c-label">FEATURE</span>
+  </div>
+  <div class="c-item">
+    <span class="c-val" style="color:var(--develop)" id="cDevelop">0</span>
+    <span class="c-label">DEVELOP</span>
+  </div>
+  <div class="c-item">
+    <span class="c-val" style="color:var(--coding)" id="cCoding">0</span>
+    <span class="c-label">CODING</span>
+  </div>
+</div>
+
+<script>
+(() => {
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  const hint = document.getElementById('hint');
+  const detail = document.getElementById('detail');
+  const dTitle = document.getElementById('dTitle');
+  const dSteps = document.getElementById('dSteps');
+  const dNote  = document.getElementById('dNote');
+  const counter = document.getElementById('counter');
+  const cFeature = document.getElementById('cFeature');
+  const cDevelop = document.getElementById('cDevelop');
+  const cCoding  = document.getElementById('cCoding');
+
+  // ── Data ──────────────────────────────────────────
+  const loopDefs = {
+    feature: {
+      label: 'Feature Loop',
+      color: '#5b9cf5',
+      glow: 'rgba(91,156,245,0.12)',
+      glowStrong: 'rgba(91,156,245,0.30)',
+      steps: ['需求提出', '需求开发上线', '数据验证'],
+      stepsDesc: [
+        'PM 收集用户需求，评估业务价值',
+        '完整研发流程，交付可上线功能',
+        '上线后观测核心指标，验证假设',
+      ],
+      note: '外环驱动：<em>业务目标</em> 决定要做什么。<br>每完成一圈，产品向前迭代一个版本。',
+      speed: 0.10,
+      size: 6.5,
+      width: 1.4,
+    },
+    develop: {
+      label: 'Developing Loop',
+      color: '#34d3b5',
+      glow: 'rgba(52,211,181,0.12)',
+      glowStrong: 'rgba(52,211,181,0.30)',
+      steps: ['需求评审', '技术方案评审', '各职能开发', 'QA 验证', '上线发版', '监控'],
+      stepsDesc: [
+        'PM+TL 对齐需求细节与验收标准',
+        'TL 产出方案，团队评审风险点',
+        '前后端/客户端并行开发',
+        '功能测试、回归测试、性能测试',
+        '灰度 → 全量，变更周知',
+        '线上指标巡检，及时响应告警',
+      ],
+      note: '中层承载：<em>工程团队</em> 决定怎么做。<br>Feature Loop 「开发上线」阶段的核心实现。',
+      speed: 0.25,
+      size: 5.5,
+      width: 1.1,
+    },
+    coding: {
+      label: 'Coding Loop',
+      color: '#f5a623',
+      glow: 'rgba(245,166,35,0.12)',
+      glowStrong: 'rgba(245,166,35,0.30)',
+      steps: ['Coding', 'Code Review', '本地验证'],
+      stepsDesc: [
+        '编写实现代码 + 单元测试',
+        '同行评审，关注逻辑与风格',
+        '本地跑通用例，自测通过',
+      ],
+      note: '内环运转：<em>开发者</em> 的日常节奏。<br>Developing Loop 「各职能开发」的最小执行单元。',
+      speed: 0.70,
+      size: 4.5,
+      width: 0.9,
+    },
+  };
+
+  const loopOrder = ['feature', 'develop', 'coding'];
+
+  // ── State ─────────────────────────────────────────
+  let W, H, cx, cy, baseR;
+  let hovered = null;
+  let mouseX = -999, mouseY = -999;
+  let angles = { feature: 0, develop: Math.PI * 0.35, coding: Math.PI * 0.7 };
+  let cycleCounts = { feature: 0, develop: 0, coding: 0 };
+  let prevRadians = { ...angles };
+  let lastFrameTime = 0;
+  const TRAILS = [];
+
+  function resize() {
+    W = c.width  = window.innerWidth;
+    H = c.height = window.innerHeight;
+    cx = W / 2; cy = H / 2;
+    baseR = Math.min(W, H) * 0.28;
+    loopDefs.feature.radius = baseR;
+    loopDefs.develop.radius = baseR * 0.58;
+    loopDefs.coding.radius  = baseR * 0.25;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // ── Trail (motion blur on steps) ──────────────────
+  class Trail {
+    constructor(key, angle, r) {
+      this.key = key; this.angle = angle; this.r = r;
+      this.life = 1; this.decay = 0.025 + Math.random() * 0.04;
+    }
+    update() { this.life -= this.decay; }
+    draw(ctx) {
+      if (this.life <= 0) return;
+      const lp = loopDefs[this.key];
+      const x = cx + Math.cos(this.angle) * this.r;
+      const y = cy + Math.sin(this.angle) * this.r;
+      ctx.globalAlpha = this.life * 0.4;
+      ctx.fillStyle = lp.color;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.2 + Math.random() * 1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+    get dead() { return this.life <= 0; }
+  }
+
+  // ── Mouse → hover detection ───────────────────────
+  function findHovered() {
+    const dx = mouseX - cx, dy = mouseY - cy;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    for (let i = loopOrder.length - 1; i >= 0; i--) {
+      const key = loopOrder[i];
+      if (Math.abs(dist - loopDefs[key].radius) < 38) return key;
+    }
+    return null;
+  }
+
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    const found = findHovered();
+    setHovered(found);
+  });
+  window.addEventListener('mouseleave', () => { mouseX = -999; mouseY = -999; setHovered(null); });
+
+  // ── Card hover ────────────────────────────────────
+  document.querySelectorAll('.loop-card').forEach(card => {
+    card.addEventListener('mouseenter', () => setHovered(card.dataset.loop));
+    card.addEventListener('mouseleave', () => setHovered(findHovered()));
+  });
+
+  // ── Touch ─────────────────────────────────────────
+  window.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    mouseX = t.clientX; mouseY = t.clientY;
+    setHovered(findHovered());
+  }, {passive: true});
+  window.addEventListener('touchend', () => { setHovered(null); });
+
+  function setHovered(key) {
+    if (key === hovered) return;
+    hovered = key;
+    // Update UI
+    document.querySelectorAll('.loop-card').forEach(c => c.classList.toggle('active', c.dataset.loop === key));
+    hint.style.opacity = key ? '0' : '';
+
+    if (key) {
+      const lp = loopDefs[key];
+      dTitle.textContent = lp.label;
+      dTitle.style.color = lp.color;
+      dSteps.innerHTML = lp.steps.map((s, i) => `
+        <div class="d-step">
+          <span class="idx" style="background:${lp.glow};color:${lp.color}">${i+1}</span>
+          <span>${s}</span>
+          <span class="arrow">→</span>
+        </div>
+      `).join('');
+      dNote.innerHTML = lp.note;
+      detail.classList.add('visible');
+      counter.classList.add('visible');
+    } else {
+      detail.classList.remove('visible');
+      counter.classList.remove('visible');
+    }
+  }
+
+  // ── Draw ──────────────────────────────────────────
+  function drawBg() {
+    ctx.fillStyle = '#080b10';
+    ctx.fillRect(0, 0, W, H);
+
+    // Radial grid
+    ctx.strokeStyle = '#0e1420';
+    ctx.lineWidth = 0.5;
+    for (let r = baseR * 0.25; r <= baseR * 1.15; r += baseR * 0.25) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    // Crosshairs
+    for (let deg = 0; deg < 360; deg += 45) {
+      const rad = deg * Math.PI / 180;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(rad) * baseR*1.15, cy + Math.sin(rad) * baseR*1.15);
+      ctx.stroke();
+    }
+  }
+
+  function drawRing(key, angle, active) {
+    const lp = loopDefs[key];
+    const { radius, color, glow, glowStrong, steps, size, width } = lp;
+    const intensity = active ? 1 : 0.45;
+
+    // Ambient glow band
+    const grad = ctx.createRadialGradient(cx, cy, radius - 12, cx, cy, radius + 12);
+    grad.addColorStop(0, 'transparent');
+    grad.addColorStop(0.3, active ? glowStrong : glow);
+    grad.addColorStop(0.7, active ? glowStrong : glow);
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.globalAlpha = intensity;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius + 14, 0, Math.PI * 2);
+    ctx.arc(cx, cy, radius - 14, Math.PI * 2, 0, true);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Dashed orbit line
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.globalAlpha = active ? 0.9 : 0.35;
+    ctx.setLineDash([6, 18]);
+    ctx.lineDashOffset = active ? -performance.now() * 0.015 : 0;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Step nodes
+    const N = steps.length;
+    for (let i = 0; i < N; i++) {
+      const a = angle + (i / N) * Math.PI * 2;
+      const sx = cx + Math.cos(a) * radius;
+      const sy = cy + Math.sin(a) * radius;
+
+      // Glow bloom
+      const bg = ctx.createRadialGradient(sx, sy, 0, sx, sy, size * 3.5);
+      bg.addColorStop(0, active ? color : 'transparent');
+      bg.addColorStop(0.25, active ? glowStrong : glow);
+      bg.addColorStop(1, 'transparent');
+      ctx.fillStyle = bg;
+      ctx.globalAlpha = active ? 0.9 : 0.35;
+      ctx.beginPath();
+      ctx.arc(sx, sy, size * 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Core dot
+      ctx.fillStyle = color;
+      ctx.globalAlpha = active ? 1 : 0.6;
+      ctx.beginPath();
+      ctx.arc(sx, sy, size, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Step label (always faint, bright on hover)
+      if (active) {
+        const lr = radius + 30;
+        const lx = cx + Math.cos(a) * lr;
+        const ly = cy + Math.sin(a) * lr;
+
+        // Connector line
+        ctx.strokeStyle = color;
+        ctx.globalAlpha = 0.2;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(lx, ly);
+        ctx.stroke();
+
+        // Label
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.85;
+        ctx.font = '500 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Label bg
+        const m = ctx.measureText(steps[i]);
+        const pw = m.width + 16;
+        ctx.fillStyle = 'rgba(8,11,16,0.85)';
+        ctx.fillRect(lx - pw/2, ly - 10, pw, 20);
+        ctx.strokeStyle = color;
+        ctx.globalAlpha = 0.3;
+        ctx.lineWidth = 0.5;
+        ctx.strokeRect(lx - pw/2, ly - 10, pw, 20);
+
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.9;
+        ctx.fillText(steps[i], lx, ly);
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawCenter() {
+    const t = performance.now() * 0.001;
+
+    // Pulse rings
+    for (let i = 2; i >= 0; i--) {
+      const pr = 6 + i * 12 + Math.sin(t * 2 + i * 1.3) * 5;
+      ctx.strokeStyle = '#fff';
+      ctx.globalAlpha = 0.08 - i * 0.02;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, pr, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Core
+    const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 6);
+    coreGrad.addColorStop(0, '#4a5568');
+    coreGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = coreGrad;
+    ctx.globalAlpha = 0.6;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#8a9bb5';
+    ctx.globalAlpha = 0.8;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalAlpha = 1;
+  }
+
+  function drawNestingLines() {
+    // Show containment via faint radial lines connecting rings
+    const t = performance.now() * 0.0004;
+    for (let i = 0; i < loopOrder.length - 1; i++) {
+      const outer = loopDefs[loopOrder[i]];
+      const inner = loopDefs[loopOrder[i+1]];
+      const count = 8;
+      for (let j = 0; j < count; j++) {
+        const a = (j / count) * Math.PI * 2 + t + i;
+        const ax = cx + Math.cos(a) * outer.radius;
+        const ay = cy + Math.sin(a) * outer.radius;
+        const bx = cx + Math.cos(a) * inner.radius;
+        const by = cy + Math.sin(a) * inner.radius;
+
+        ctx.strokeStyle = outer.color;
+        ctx.globalAlpha = 0.04;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(ax, ay);
+        ctx.lineTo(bx, by);
+        ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  function drawTrails() {
+    for (const t of TRAILS) {
+      t.draw(ctx);
+    }
+  }
+
+  // ── Step sparks ───────────────────────────────────
+  function maybeEmitTrail(key, angle) {
+    const lp = loopDefs[key];
+    const N = lp.steps.length;
+    const slice = (Math.PI * 2) / N;
+    const a = ((angle % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
+    const i = Math.floor(a / slice) % N;
+    const centerA = (i + 0.5) * slice;
+    const dist = Math.abs(a - centerA);
+    // Emit when within 0.08 rad of step center
+    if (dist < 0.06 && Math.random() < 0.5) {
+      TRAILS.push(new Trail(key, angle, lp.radius + (Math.random()-0.5)*6));
+    }
+  }
+
+  // ── Main loop ─────────────────────────────────────
+  function frame(now) {
+    const dt = Math.min((now - lastFrameTime) / 1000, 0.1);
+    lastFrameTime = now;
+
+    ctx.clearRect(0, 0, W, H);
+    drawBg();
+
+    // Update angles & track cycle completions
+    for (const key of loopOrder) {
+      prevRadians[key] = angles[key];
+      angles[key] += loopDefs[key].speed * dt;
+      if (angles[key] >= Math.PI * 2) {
+        angles[key] -= Math.PI * 2;
+        cycleCounts[key]++;
+      }
+      maybeEmitTrail(key, angles[key]);
+    }
+
+    // Update trails
+    for (let i = TRAILS.length-1; i >= 0; i--) {
+      TRAILS[i].update();
+      if (TRAILS[i].dead) TRAILS.splice(i, 1);
+    }
+
+    drawNestingLines();
+    drawTrails();
+
+    // Draw rings (outer first so inner draws on top)
+    for (const key of loopOrder) {
+      drawRing(key, angles[key], hovered === key);
+    }
+    drawCenter();
+
+    // Update cycle counters
+    cFeature.textContent = cycleCounts.feature;
+    cDevelop.textContent = cycleCounts.develop;
+    cCoding.textContent  = cycleCounts.coding;
+
+    requestAnimationFrame(frame);
+  }
+
+  lastFrameTime = performance.now();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
