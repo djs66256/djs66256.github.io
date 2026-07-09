@@ -1,0 +1,77 @@
+# main menu navigation
+menu:
+  Home: /
+  About: /about
+  Archive: /archives
+
+widgets:
+  - tag
+  - archive
+  - recent_posts
+  - category
+  - profile
+
+# social config
+social:
+  zhihu:
+  twitter: /
+  facebook: /
+  linkedin:
+  instagram: /
+  github: djs66256
+
+user:
+  name: 苍耳
+  avatar: /images/avatar.png
+  location: 杭州
+  description: 无悔的人生
+  footnotes: 苍耳的技术博客
+
+# documents: https://github.com/utterance/utterances
+# API config: https://utteranc.es/
+comment_utteranc:
+  enable: false
+  repo: djs66256/djs66256.github.io # your blog repo
+
+
+# documents: https://valine.js.org/quickstart.html
+comment_valine:
+  enable: false
+  appId:
+  appKey:
+
+comment_disqus:
+    enable: true
+    url: https://djs66256.github.io/ # the url of your website main domain like this https://xxx.xxx/
+    name: djs66256 # the short name in disqus
+
+# dark
+# light
+# user-can-set
+appearance: auto # Default value is auto
+
+# Miscellaneous
+favicon: /favicon.png
+
+friend_links:
+  - title: Google
+    link: https://www.google.com/
+  - title: Github
+    link: https://www.github.com/
+  - title: V2EX
+    link: https://v2ex.com/
+  - title: 简书
+    link: https://www.jianshu.com/u/711179b62eca
+
+# Google Analytics
+ga_track_id:
+ga_domain:
+
+# Baidu Analytics
+ba_track_id: d75fe53e2fff778b91995ef2cf821fcd
+
+# picture of about page
+about_pic: about.png
+
+image_zoom:
+  enable: true
