@@ -1,0 +1,123 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>roadmap之objc</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="objc是iOS的首要开发语言，在很多厂还是以objc为主，所以我们需要对objc更深入的了解，这里主要分为3个难点进行总结，runtime，runloop和block。
+
+
+RuntimeObjc runtime是Objc运行的核心，我们都知道Objc是一门动态语言，为了实现其特性，必须需要一些动态的初始化。这里从几个方面进行介绍。
+概念首先我们在了解runtime之前，必须要知道几个objc中重要的概念，才能更好的理解接下来的一些内容。
+Class &amp;#x2F; Meta Class &amp;#x2F; isa在面向对象中，非常重要的一个概念就是类。在objc中，我们需要除了需要知道类的概念，还要知道元类的概念，以及他们之间的关系。
+Class代表着一个对象的原型，所有对象都是在此模板上“复制”出来的。
+而M.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">roadmap之objc</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Runtime"><span class="toc-text">Runtime</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-text">概念</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Class-Meta-Class-isa"><span class="toc-text">Class &#x2F; Meta Class &#x2F; isa</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#property"><span class="toc-text">property</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ivar"><span class="toc-text">ivar</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#selector"><span class="toc-text">selector</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#IMP"><span class="toc-text">IMP</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#tagged-point"><span class="toc-text">tagged point</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#objc-msgSend"><span class="toc-text">objc_msgSend</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E7%89%B9%E6%80%A7"><span class="toc-text">动态特性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7"><span class="toc-text">类的动态性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7"><span class="toc-text">方法的动态性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-text">应用</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#load-initialize"><span class="toc-text">load &#x2F; initialize</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#objc-init"><span class="toc-text">objc_init</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#message-forward"><span class="toc-text">message forward</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Runloop"><span class="toc-text">Runloop</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B"><span class="toc-text">线程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#runloopMode"><span class="toc-text">runloopMode</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#timer"><span class="toc-text">timer</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#autorelease-pool"><span class="toc-text">autorelease pool</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Block"><span class="toc-text">Block</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6"><span class="toc-text">进阶</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/runtime"><i class="tag post-item-tag">runtime</i></a><a href="/tags/block"><i class="tag post-item-tag">block</i></a><a href="/tags/objc"><i class="tag post-item-tag">objc</i></a><a href="/tags/runloop"><i class="tag post-item-tag">runloop</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">roadmap之objc</h1><time class="has-text-grey" datetime="2018-09-25T17:33:55.000Z">2018-09-26</time><article class="mt-2 post-content"><p>objc是iOS的首要开发语言，在很多厂还是以objc为主，所以我们需要对objc更深入的了解，这里主要分为3个难点进行总结，runtime，runloop和block。</p>
+<span id="more"></span>
+
+<h1 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h1><p>Objc runtime是Objc运行的核心，我们都知道Objc是一门动态语言，为了实现其特性，必须需要一些动态的初始化。这里从几个方面进行介绍。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>首先我们在了解runtime之前，必须要知道几个objc中重要的概念，才能更好的理解接下来的一些内容。</p>
+<h5 id="Class-Meta-Class-isa"><a href="#Class-Meta-Class-isa" class="headerlink" title="Class &#x2F; Meta Class &#x2F; isa"></a>Class &#x2F; Meta Class &#x2F; isa</h5><p>在面向对象中，非常重要的一个概念就是类。在objc中，我们需要除了需要知道类的概念，还要知道元类的概念，以及他们之间的关系。</p>
+<p>Class代表着一个对象的原型，所有对象都是在此模板上“复制”出来的。</p>
+<p>而Meta Class可以认为是Class的原型，而Meta Class的原型则是NSObject。为什么需要这么设计呢？主要为了区分实例方法和类方法，也就是<code>-</code>和<code>+</code>方法。所有的实例方法均取自Class中，而类方法均取自元类中。</p>
+<p>一个对象如何确定所属的类呢？是通过isa指针来实现的。在对象的第一个内存地址中就是isa指针，会指向其对应的类。而类中的isa指针则指向其元类。下图就能表示相互间的关系。</p>
+<p><img src="/images/2018/runtime/isa.png"></p>
+<h5 id="property"><a href="#property" class="headerlink" title="property"></a>property</h5><p>property一般代表的是一个类的成员，也有一些特殊情况，我们会重写他，但是其含义都是一样的，都表示了这是一个成员对象，并且拥有getter或者setter方法。同时property会拥有部分特殊含义的标识，比如assign&#x2F;strong&#x2F;weak, readonly, class, non&#x2F;atomic, setter&#x2F;getter等，编译器会根据其标识自动生成不同的代码。在老版本的objc中还需要自已去绑定其成员对象<code>@synchronize</code>，现在则会默认生成一个<code>_</code>开头的同名对象，或者可以通过该方法重新命名一个名字。</p>
+<p>在运行时，property也有一个对应的数组进行保存其名字与属性。</p>
+<h5 id="ivar"><a href="#ivar" class="headerlink" title="ivar"></a>ivar</h5><p>ivar在这里是真正的代表了一个成员对象的信息，包括其类型，大小，以及对应基址的偏移量。</p>
+<p>一个实例对象，可以认为就是一个struct，我们需要访问成员就必须知道其偏移量才行。ivar的作用，就是记录其偏移量。</p>
+<p>在我们访问成员变量的时候，并不是通过简单的<code>self+offset</code>来实现的，而是通过<code>self+ivar-&gt;offset</code>来实现的。这么做的原因是在objc中会有一个ivar rebase的过程，就是会通过父类的信息去重新推导出子类的偏移量。这样的好处是我们在编译上就不需要强依赖了，同时在升级过程中，也不会出现修改父类导致子类偏移量不对的问题了。</p>
+<h5 id="selector"><a href="#selector" class="headerlink" title="selector"></a>selector</h5><p>这是我们熟悉的方法对象，在实现上可以认为<code>SEL</code>就是常量字符串<code>const char *</code>，但是是由一个全局表所管理的字符串，其内容都是唯一的。所以我们再比较SEL的时候，是可以使用<code>==</code>来判断是否相等的，但是我们在传递SEL的时候不能简单的使用C字符串来表示。同时不同类上的同名方法也是指向了同一个地址的。</p>
+<h5 id="IMP"><a href="#IMP" class="headerlink" title="IMP"></a>IMP</h5><p>selector代表的是这个方法的名字，而IMP则是这个方法的函数指针（关于函数指针可以去了解下C语言）。</p>
+<p>在objc中方法名SEL和其具体实现IMP是分离的，也就是说我们是可以改变这两者的映射关系的。</p>
+<p>IMP我们也是可以直接调用的，但是由于其隐去了参数等信息，所以相对来说是比较危险的，不太符合我们强类型的一些要求。</p>
+<h5 id="tagged-point"><a href="#tagged-point" class="headerlink" title="tagged point"></a>tagged point</h5><p>在64位系统中，有一种优化的指针类型，叫做tagged point，这种指针不会申请新的内存，而是把数据保存在指针中。由于64位系统的指针范围非常大，而我们的设备物理内存远远达不到这个量级，所以会有很多位是永远空余出来的，为了充分利用这一部分内存，就会把小数据写入这部分空闲区域，最常见的就是短字符串了。这类指针的最高位为1，所以可以通过判断<code>&lt;0</code>来确定是否是tagged point。</p>
+<h5 id="objc-msgSend"><a href="#objc-msgSend" class="headerlink" title="objc_msgSend"></a>objc_msgSend</h5><p>这是objc种最核心的一个方法，是由汇编写成，为的是参数和返回值的透传，也可以去掉<code>objc_msgSend</code>的调用栈。</p>
+<p>这个方法还有一些神奇的内容，这里就不细究了，建议自己学习汇编和C abi来研读这段简短的代码，这里做一个简单的流程介绍。</p>
+<ol>
+<li>如果是nil，返回0</li>
+<li>通过SEL指针，在cache中查找。这里的cache是hash table，并且保留了一定的容量，hash key是指针值，所以查找速度还是很快的。</li>
+<li>如果没有找到，则到class的method_list中查找，这是一个数组的顺序遍历过程，所以会比较慢。这里可能会触发class的initialize。</li>
+<li>找到对应方法，会更新到缓存中，然后再返回，以方便下次缓存中就能命中。另外这个缓存是没有过期一说的，也就是说会越加越多。</li>
+<li>通过找到的这个函数指针，直接进行直接调用。</li>
+</ol>
+<h2 id="动态特性"><a href="#动态特性" class="headerlink" title="动态特性"></a>动态特性</h2><p>我们都说objc是一门动态语言，那么动态体现在什么地方呢？个人认为主要体现在2个地方，分别是类的动态性和方法的动态性。</p>
+<h5 id="类的动态性"><a href="#类的动态性" class="headerlink" title="类的动态性"></a>类的动态性</h5><p>一般来说，类的创建只能是在编译期就已经确定好的，但是由于objc的特性，类的创建其实是在动态库加载的时候，这个特性很像一些脚本语言。</p>
+<p>在全局有一个类的表保存着所有的类，如果我们导入一个动态库，那么libobjc会在其加载之后去读取其中的类的信息，并且创建一个类加入这个全局表中，这个加载过程我们之后再讨论，这里我们要知道objc的类并不是我们认知的那样，在编译的时候就固定了的。</p>
+<p>当然，我们也可以手动通过代码来动态的创建一个类，并且加入全局表中，比如KVO就是这样实现的。</p>
+<p>当然我们无法对已经存在的类进行修改，可以想象，一旦修改了会发生什么严重的后果。</p>
+<h5 id="方法的动态性"><a href="#方法的动态性" class="headerlink" title="方法的动态性"></a>方法的动态性</h5><p>方法的动态特性应该都很熟悉了，为什么会有这样特性，归功于objc_msgSend的机制，类并不会和函数指针绑定，而是通过SEL间接绑定的。</p>
+<h5 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h5><p>我们知道了objc的动态特性，也要知道他被应用于哪些地方。</p>
+<ul>
+<li>category</li>
+</ul>
+<p>category是一些面向对象语言的特例，很少有强类型语言是支持这种写法的。那么为什么objc可以这么写呢？这还是要归功于objc类的创建是在运行期的。在加载完类后，会去遍历该macho中的category，并找到所对应的类，将其方法拷贝到类的method_list头部，这也是为什么category方法会覆盖原始类中的方法的原因了。而不同category之间，由于其加载顺序的不确定，所以不能确保谁的方法优先级会更高。如果想要通过这种方法来重写原本的方法，是强烈不推荐的，至于原因也不用多说了。</p>
+<ul>
+<li>weak</li>
+</ul>
+<p>weak属性也是我们平时使用非常多的，weak属性虽然不在动态特性里，但是由于和associate非常相似，所以也拿出来说说。</p>
+<p>weak的实现方式是将该对象和weak属性的<code>指针</code>的<code>指针</code>加入一个全局weak表中（源码中是SlideTable），如果该对象释放了，则会去weak表中清除所有指针所指向的内容，也就是把该指针置为nil了。</p>
+<ul>
+<li>associate</li>
+</ul>
+<p>我们都奇怪，为什么category能够增加方法，却不能增加成员呢？这也是由objc的特性所导致的，一旦category可以增加成员，那么会导致一个类的大小和成员偏移量都是不固定的，一旦载入了某个动态库，导致这些信息发生改变，对已经存在的对象是无法处理的，所以无法对已经存在的类进行ivar相关的修改了。</p>
+<p>associate的实现和weak非常类似，也是在一个全局的表中，加入该对象，在释放的时候会去遍历该表，并将其内容进行释放清理。</p>
+<ul>
+<li>method swizzle</li>
+</ul>
+<p>这个应该是我们最先意识到其动态能力的功能了，很多库都用到了该实现。其原理也很简单，改变了SEL和IMP的映射关系而已。</p>
+<p>网上有很多人讨论是否需要使用该特性。个人的观点是能不用则不用。如果你是一个小团队开发，大家天天都能面对面讨论，那么这个问题不会特别大，但是如果这个项目庞大到必须进行模块拆分，很有可能就会给项目带来不可控因素。由于objc runtime是一个全局的东西，你无法把风险只控制在一个模块内，一旦出了问题就会非常严重。</p>
+<p>比如很多项目可能都会去改写<code>objectAtIndex:</code>，去除其越界的可能和NSNull对象，但是很有可能就因为表面上不会产生crash了，但是问题依旧存在，逻辑上的问题也依旧存在，如果这是一个支付功能，可能就会变成错误的金额导致严重的线上问题。</p>
+<ul>
+<li>KVO</li>
+</ul>
+<p>这是苹果后来新加入的一个特性，他会动态的为被观察对象创建一个子类，并且重新其观察属性的setter方法，并将该对象的isa指向新的子类。</p>
+<p>这个子类在使用过程中并没有被察觉是因为他还重写了他的<code>- class</code>方法，如果你使用objc runtime方法获取，则会得到其真正的类型。</p>
+<p>所以在setter方法中，我们就不需要再去写<code>willChangeValueForKey</code>了，写了反而会导致触发两次。</p>
+<ul>
+<li>JSPatch， RN</li>
+</ul>
+<p>这一类都是通过其方法的动态特性实现的，通过方法名来反射其真正的方法，这里就不在详细赘述了。</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>为了更加了解objc，就需要了解其整个加载与初始化的过程。以及<code>+load</code>和<code>+initialize</code>的调用时机。（<code>+load</code>方法苹果官方已经不推荐使用，个人认为主要有2个原因，1是影响启动时间，2是加载的顺序太早，也早于C&#x2F;C++的constructor方法，可能会导致一些初始化顺序上的错误。我们也尽量避免使用吧。）</p>
+<h5 id="load-initialize"><a href="#load-initialize" class="headerlink" title="load &#x2F; initialize"></a>load &#x2F; initialize</h5><p>我们要知道这两个方法被调用的条件是什么。</p>
+<p>load方法是类被初始化的时候调用，也就是在内存构建出全局类表之后，再统一调用其<code>+load</code>方法，当然，在加载依赖动态库的时候会先调用动态库的<code>+load</code>方法。</p>
+<p>initialize是类被实例化的时候会被调用，他和<code>+load</code>没有直接连接，也没有先后顺序关系。</p>
+<h5 id="objc-init"><a href="#objc-init" class="headerlink" title="objc_init"></a>objc_init</h5><p>这个是libSystem初始化objc runtime的入口，在这里比较重要的就是他会注册一个回调<code>_dyld_objc_notify_register(&amp;map_images, load_images, unmap_image);</code>。在动态库加载的生命周期中会进行objc类的初始化和<code>+load</code>方法的触发。值得注意的是这个回调的调用时机非常早。</p>
+<p>然后会遍历macho文件中的objc信息，读取Class信息，并且将创建好的Class加入全局类表中，读取注册所有的SEL，读取并注册所有的protocol。</p>
+<p>然后开始<code>realizeClass</code>，主要就是准备各种状态，基类元类信息和protocol，property等信息。</p>
+<p>然后开始读取category信息，并且将其方法列表拷贝到class的method_list头部。</p>
+<p>此后，开始调用<code>+load</code>方法</p>
+<h2 id="message-forward"><a href="#message-forward" class="headerlink" title="message forward"></a>message forward</h2><p>当objc接收到不存在的SEL的时候，这时候会触发message forward，也就是系统给予我们一次机会，重新定向消息，比如转发给第三者。有些实现就是利用这个特性实现其proxy的功能。</p>
+<p>除了发生不能响应消息会触发forward外，其实我们也能够直接手动通过<code>_objc_msgForward</code>来实现。</p>
+<p>forward转发需要生成invocation来实现，这会导致性能的大幅下降，所以尽量不要使用这种特性。也有些地方介绍将其导向到一个空方法来避免这类crash，但这也会带来一些不可预期的错误，比如返回值问题，可能会产生一些随机值，带来更大的影响，所以个人不太建议这种方式去处理奔溃率的问题，这就是一种偷懒的自欺欺人方式。</p>
+<h1 id="Runloop"><a href="#Runloop" class="headerlink" title="Runloop"></a>Runloop</h1><p>接下来我们来看看另一个非常重要的概念，runloop。runloop对于我们来说非常重要，可以说在我们刚入门的时候就已经在使用它了。</p>
+<p>runloop其实就是一个死循环，在新的任务进入前一直保持等待状态，同时保证加入的任务按照顺序执行，这个在其他平台也有对应的实现。其目的有3个：</p>
+<ul>
+<li>保证线程不会直接退出</li>
+<li>保证线程内的子任务按照顺序执行</li>
+<li>用于线程间通信，也就是异步调用</li>
+</ul>
+<h5 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h5><p>要了解runloop和线程之间的关系，两者并不是等同的，runloop并不属于多线程的技术，只是在一个线程内保持一个事件队列来保证线程等待。</p>
+<h5 id="runloopMode"><a href="#runloopMode" class="headerlink" title="runloopMode"></a>runloopMode</h5><p>需要理解不同mode对应的触发时机，什么时候需要使用不同的mode。</p>
+<h5 id="timer"><a href="#timer" class="headerlink" title="timer"></a>timer</h5><p>timer需要结合mode来理解和使用。</p>
+<h5 id="autorelease-pool"><a href="#autorelease-pool" class="headerlink" title="autorelease pool"></a>autorelease pool</h5><p>为什么要把autorelease pool放到这里说呢，主要是因为他触发的时机和runloop相关。他会注册两个observer在runloop中，分别为BeforeWaiting和Exit的时候，这能增加我们对于程序运行的理解，虽然现在arc很少碰到autorelease对象，但也要明白什么时候进行内存回收的。</p>
+<h1 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h1><p>Block内容比较简单，首先我们要知道我们平时所使用的block分为3种，也是从其内存所处位置来区分的：</p>
+<ul>
+<li>malloc block</li>
+<li>stack block</li>
+<li>global block</li>
+</ul>
+<p>了解上述几种类型的区分主要是为了能够更清楚的处理内存循环引用的问题，知道哪些情况下会出现循环引用。在arc中，一般很少存在stack block，因为一旦被赋值则会自动进行拷贝操作。</p>
+<p>strong和copy属性对于block来说其实都是一样的，最终转化为<code>_Block_copy</code>，但习惯和约定上我们都使用copy属性。</p>
+<p>block按照生命周期来看，可以分为逃逸型(ESCAPE)闭包和非逃逸(NONESCAPE)型闭包，逃逸型闭包往往会引发内存泄露问题。</p>
+<p>内存泄露特别需要注意隐式self的循环引用。</p>
+<p>需要了解__block, __weak, __strong之间的区别和作用。</p>
+<h5 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h5><p>block其实就是一个struct对象，其结构和objc对象布局类似，不过会有一个固定的<code>void (*invoke)(void *, ...);</code>成员，可以了解下这个方法的参数分别是什么，和objc_msgSend有什么类同和区别。</p>
+<p>然后会把所有捕获的参数拼在结构最后，也可以看看__block对象是如何实现其功能的，这里简单说一下，__block对象是直接在堆上生成的，所以不受栈的限制。</p>
+<p>既然是按照objc对象布局的，所以也就可以接收objc消息，和像objc对象一样使用了。</p>
+<p>具体实现可以自行研读libclosure源码。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>要了解这些基础知识非常建议自己去读读源码，而他需要很多的基础编程知识，才能够读通其源码。</p>
+<p>这里介绍了一些关键点，但并没有很详细的对每个点进行讨论，我仅仅作为抛砖引玉，个人还是建议亲自研读源码或者官方文档。</p>
+<p>可以前往<a target="_blank" rel="noopener" href="https://github.com/djs66256/iOS-developer-roadmap">github</a>查看其思维导图。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2018/11/24/2018-11-24-Objc%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD/" title="Objc类型推断"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: Objc类型推断</span></a><a class="button is-default" href="/2018/09/25/2018-09-25-iOS-roadmap%E4%B9%8B%E5%89%8D%E8%A8%80/" title="iOS-roadmap之前言"><span class="has-text-weight-semibold">下一页: iOS-roadmap之前言</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2018/09/26/2018-09-26-iOS-roadmap%E4%B9%8Bobjc/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

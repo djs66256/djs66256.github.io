@@ -1,0 +1,66 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>Objc类型推断</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="Objc是一门非常啰嗦的语言，而且历史悠久，背靠C语言，发展缓慢。自从苹果有了新宠swift，更是对他不管不顾了，所以有很多现代语言拥有的优秀特性，Objc都无法享受到。其中一项就是类型推断。
+
+
+每次我们在定义变量的时候，都需要先写类型，而Objc中类型名字又往往非常的长，所以很多时候一行初始化代码就让我们感到非常冗长。
+MYDoSomethingViewController *viewController = [[MYDoSomethingViewController alloc] init];
+
+而大部分时间，这些变量的含义相当明确，我们也并不需要去知道具体的类型，而我们却要每次去声明一次，显得非常多余。
+得益于C语言的发展，在2015年，GCC和LLVM都先后的支持了类型推断，这样我们可以用于日常开.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Objc类型推断</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile is-hidden"></div><div class="column is-9"><header class="my-4"><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Objc类型推断</h1><time class="has-text-grey" datetime="2018-11-24T15:42:04.000Z">2018-11-24</time><article class="mt-2 post-content"><p>Objc是一门非常啰嗦的语言，而且历史悠久，背靠C语言，发展缓慢。自从苹果有了新宠swift，更是对他不管不顾了，所以有很多现代语言拥有的优秀特性，Objc都无法享受到。其中一项就是类型推断。</p>
+<span id="more"></span>
+
+<p>每次我们在定义变量的时候，都需要先写类型，而Objc中类型名字又往往非常的长，所以很多时候一行初始化代码就让我们感到非常冗长。</p>
+<pre><code class="objc">MYDoSomethingViewController *viewController = [[MYDoSomethingViewController alloc] init];
+</code></pre>
+<p>而大部分时间，这些变量的含义相当明确，我们也并不需要去知道具体的类型，而我们却要每次去声明一次，显得非常多余。</p>
+<p>得益于C语言的发展，在2015年，GCC和LLVM都先后的支持了类型推断，这样我们可以用于日常开发来增加代码可读性和简洁性。</p>
+<p>首先我们定义两个类型推断关键字：</p>
+<pre><code class="objc">#define var __auto_type
+#define let __auto_type const
+</code></pre>
+<p>以下是两者的对比：</p>
+<pre><code class="objc">- (void)t &#123;
+    let view = [UIView new];
+    view.backgroundColor = UIColor.redColor;
+    
+    let dict = @&#123; @&quot;view&quot;: view &#125;;
+    
+    __weak let wself = self;
+    __block var num = 0;
+    let block = ^(UIView *view, NSDictionary *dict) &#123;
+        __strong let self = wself;
+        num = 1;
+        [self func];
+    &#125;;
+    block(view, dict);
+    
+    for (var i = 0; i &lt; 5; i++) &#123;
+        
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="objc">- (void)t &#123;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];;
+    view.backgroundColor = UIColor.redColor;
+    
+    NSDictionary *dict = @&#123; @&quot;view&quot;: view &#125;;
+    
+    __weak typeof(self) wself = self;
+    __block NSInteger num = 0;
+    void(^block)(UIView *view, NSDictionary *dict) = ^(UIView *view, NSDictionary *dict) &#123;
+        __strong typeof(wself) self = wself;
+        num = 1;
+        [self func];
+    &#125;;
+    block(view, dict);
+&#125;
+</code></pre>
+<p>遗憾的是，由于这个特性是C语言的特性，所以目前无法识别oc中的一些特定语法，比如forin和容器模板类型。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2019/01/29/2019-01-29-CPU%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/" title="CPU分支预测"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: CPU分支预测</span></a><a class="button is-default" href="/2018/09/26/2018-09-26-iOS-roadmap%E4%B9%8Bobjc/" title="roadmap之objc"><span class="has-text-weight-semibold">下一页: roadmap之objc</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2018/11/24/2018-11-24-Objc%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

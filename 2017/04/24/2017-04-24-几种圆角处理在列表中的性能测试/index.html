@@ -1,0 +1,60 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>几种圆角处理在列表中的性能测试</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="在平时开发中，圆角处理是一个非常常见的场景，光栅化是一个最简单的优化方法，但是你所使用的方法真的如你所愿的在生效吗？这里对几种比较常用的方法对比一下。
+
+
+首先按照最常用的几种方式设计了几个case，使用CollectionView来测试性能。Github
+
+1. 纯粹的设置layer属性方式self.layer.cornerRadius = frame.size.width/2;
+self.layer.borderColor = [UIColor blackColor].CGColor;
+self.layer.borderWidth = 1;
+self.clipsToBounds = YES;
+
+这里不考虑非clipsToBounds的情况，因为大部分场景是需要的，而且非clipsToBounds的话和其.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">几种圆角处理在列表中的性能测试</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%BA%AF%E7%B2%B9%E7%9A%84%E8%AE%BE%E7%BD%AElayer%E5%B1%9E%E6%80%A7%E6%96%B9%E5%BC%8F"><span class="toc-text">1. 纯粹的设置layer属性方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%A2%9E%E5%8A%A0%E5%85%89%E6%A0%85%E5%8C%96%E5%A4%84%E7%90%86"><span class="toc-text">2. 增加光栅化处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%BB%98%E5%88%B6Image"><span class="toc-text">3. 绘制Image</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E7%BB%98%E5%88%B6Image%E5%B9%B6%E4%B8%94%E5%8A%A0%E4%B8%8A%E7%BC%93%E5%AD%98"><span class="toc-text">4. 绘制Image并且加上缓存</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8B%E9%9D%A2%E6%98%AF%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E7%A9%BA%E7%9A%84view%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-text">下面是只有一个空的view的结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%82%A3%E4%B9%88%E6%88%91%E4%BB%AC%E5%9C%A8%E8%A7%86%E5%9B%BE%E4%B8%8A%E5%8A%A0%E4%B8%8A%E4%B8%80%E4%B8%AA%E8%A7%86%E5%9B%BE"><span class="toc-text">那么我们在视图上加上一个视图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%82%A3%E4%B9%88%E6%88%91%E4%BB%AC%E6%8A%8Alabel%E4%B8%8D%E8%A6%81%E6%94%BE%E5%9C%A8%E5%9C%86%E8%A7%92view%E4%B8%8A"><span class="toc-text">那么我们把label不要放在圆角view上</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E4%BB%A5%E9%97%AE%E9%A2%98%E6%9D%A5%E4%BA%86"><span class="toc-text">所以问题来了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HOW"><span class="toc-text">HOW</span></a></div><div class="column is-9"><header class="my-4"><a href="/tags/%E5%9C%86%E8%A7%92"><i class="tag post-item-tag">圆角</i></a><a href="/tags/cornerRadius"><i class="tag post-item-tag">cornerRadius</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">几种圆角处理在列表中的性能测试</h1><time class="has-text-grey" datetime="2017-04-24T15:41:56.000Z">2017-04-24</time><article class="mt-2 post-content"><p>在平时开发中，圆角处理是一个非常常见的场景，光栅化是一个最简单的优化方法，但是你所使用的方法真的如你所愿的在生效吗？这里对几种比较常用的方法对比一下。</p>
+<span id="more"></span>
+
+<p>首先按照最常用的几种方式设计了几个case，使用CollectionView来测试性能。<a target="_blank" rel="noopener" href="https://github.com/djs66256/corner-radius-test">Github</a></p>
+<p><img src="/images/2017/corner/snapshot.png"></p>
+<h4 id="1-纯粹的设置layer属性方式"><a href="#1-纯粹的设置layer属性方式" class="headerlink" title="1. 纯粹的设置layer属性方式"></a>1. 纯粹的设置layer属性方式</h4><pre><code class="objc">self.layer.cornerRadius = frame.size.width/2;
+self.layer.borderColor = [UIColor blackColor].CGColor;
+self.layer.borderWidth = 1;
+self.clipsToBounds = YES;
+</code></pre>
+<p>这里不考虑非clipsToBounds的情况，因为大部分场景是需要的，而且非clipsToBounds的话和其他case并不平等。</p>
+<h4 id="2-增加光栅化处理"><a href="#2-增加光栅化处理" class="headerlink" title="2. 增加光栅化处理"></a>2. 增加光栅化处理</h4><pre><code class="objc">self.layer.shouldRasterize = YES;
+self.layer.rasterizationScale = [UIScreen mainScreen].scale;
+</code></pre>
+<h4 id="3-绘制Image"><a href="#3-绘制Image" class="headerlink" title="3. 绘制Image"></a>3. 绘制Image</h4><pre><code class="objc">UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+[[UIColor blackColor] setStroke];
+UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0.5, 0.5, size.width - 1, size.height - 1) cornerRadius:size.width/2];
+path.lineWidth = 1;
+[path stroke];
+UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+UIGraphicsEndImageContext();
+</code></pre>
+<h4 id="4-绘制Image并且加上缓存"><a href="#4-绘制Image并且加上缓存" class="headerlink" title="4. 绘制Image并且加上缓存"></a>4. 绘制Image并且加上缓存</h4><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>以上case都是在init中就设置好了属性，不会产生reuse的性能问题。为了让效果更加明显，找了一个5s的设备进行测试。</p>
+<h4 id="下面是只有一个空的view的结果"><a href="#下面是只有一个空的view的结果" class="headerlink" title="下面是只有一个空的view的结果"></a>下面是只有一个空的view的结果</h4><p><img src="/images/2017/corner/only_view.png"></p>
+<p>从结果来看，似乎有点出乎意料，单纯的设置layer属性居然是表现最好的一个，而增加光栅化的表现明显最差，除去可能产生的误差，1和2的结果相差还是有点大。</p>
+<p>打开模拟器的Offscreen-Rendered功能，发现1由于没有子视图，所以clipsToBounds属性无效，并不会发生离线渲染，而一旦指定了光栅化，就会强制执行离屏渲染，导致性能急剧下降。</p>
+<h4 id="那么我们在视图上加上一个视图"><a href="#那么我们在视图上加上一个视图" class="headerlink" title="那么我们在视图上加上一个视图"></a>那么我们在视图上加上一个视图</h4><p><img src="/images/2017/corner/with_label.png"></p>
+<p>结果发生了戏剧性的变化。光栅化的视图直接接近0的帧率，而3和4除了初始化的时间有差别外其他基本符合预期，4高一点可能是用了同一份内存，拷贝到GPU的时候系统做了优化。</p>
+<h4 id="那么我们把label不要放在圆角view上"><a href="#那么我们把label不要放在圆角view上" class="headerlink" title="那么我们把label不要放在圆角view上"></a>那么我们把label不要放在圆角view上</h4><p>这时候1和2表现一致，应该都产生了离屏渲染。</p>
+<p><img src="/images/2017/corner/without_subview.png"></p>
+<h2 id="所以问题来了"><a href="#所以问题来了" class="headerlink" title="所以问题来了"></a>所以问题来了</h2><p>我们平时可能用到的光栅化为什么没用了。这要涉及到光栅化cache的策略了，我没有找到详细的官方文档，只找到一段话：</p>
+<pre><code>And if you start setting lots of views with shouldRasterize, you&#39;re going to overflow the cache and that ends up in a really, really bad situation, ends up being much worse than before because essentially you&#39;re rendering every single view that you set with shouldRasterize offscreen and the back on the screen and we just talked about how doing that in every frame can really, really hurt your animation performance.
+</code></pre>
+<p>大量的光栅化导致缓存溢出，所以每次还是需要离屏渲染。</p>
+<p>另外，该文章还说</p>
+<pre><code>So make sure you don&#39;t change anything during your view hierarchy while you have shouldRasterize on, otherwise you ended up rendering offscreen without great performance.
+</code></pre>
+<p>这就是我们平时说的“不能经常变动的视图”，但是注意的是，应该是整个视图树，而且是anything，这样的要求太过于严格。所以为什么很多时候的光栅化会让性能问题更加严重。</p>
+<h2 id="HOW"><a href="#HOW" class="headerlink" title="HOW"></a>HOW</h2><p>最好的方式当然是绘制圆角并缓存。</p>
+<p>另一种折中方案是使用blend，通过一张有透明通道的图片来遮盖实现圆角效果。</p>
+<p><code>当你觉得你需要的时候，才开始优化。</code>这才是最好的思路，不要做过早的优化。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/05/16/2017-05-16-Flex%E7%AE%B1%E5%9E%8B%E5%B8%83%E5%B1%80%E5%9C%A8%E7%A7%BB%E5%8A%A8%E7%AB%AF%E7%9A%84%E5%BA%94%E7%94%A8/" title="Flex箱型布局在移动端的应用"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: Flex箱型布局在移动端的应用</span></a><a class="button is-default" href="/2017/04/23/2017-04-23-web%E5%9B%BE%E7%89%87%E4%B8%8B%E8%BD%BD%E8%BD%AC%E4%B8%BAnative%E4%B8%8B%E8%BD%BD/" title="web图片下载转为native下载"><span class="has-text-weight-semibold">下一页: web图片下载转为native下载</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/04/24/2017-04-24-%E5%87%A0%E7%A7%8D%E5%9C%86%E8%A7%92%E5%A4%84%E7%90%86%E5%9C%A8%E5%88%97%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

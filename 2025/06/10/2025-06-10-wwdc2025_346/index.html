@@ -1,0 +1,88 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>了解 Containerization</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="认识一下 containerization，它是一个用 swift 编写的开源项目，用于在 mac 上创建和运行 linux 容器。了解 containerization 如何安全私密地对 linux 容器进行管理。探索开源 container cli 工具如何利用 containerization 软件包提供简单而强大的功能，以在 mac 上构建、运行和部署 linux 容器。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+探索Containerization：在macOS上运行Linux容器的Swift框架引言Linux容器已经成为现代软件开发中不可或缺的一部分，而苹果最新开源的Containerization框架为macOS用户带来了全新的容器体验.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">了解 Containerization</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2Containerization%EF%BC%9A%E5%9C%A8macOS%E4%B8%8A%E8%BF%90%E8%A1%8CLinux%E5%AE%B9%E5%99%A8%E7%9A%84Swift%E6%A1%86%E6%9E%B6"><span class="toc-text">探索Containerization：在macOS上运行Linux容器的Swift框架</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E6%8A%80%E6%9C%AF%E6%A6%82%E8%BF%B0"><span class="toc-text">容器技术概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Containerization%E6%A1%86%E6%9E%B6%E8%AE%BE%E8%AE%A1"><span class="toc-text">Containerization框架设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6"><span class="toc-text">镜像管理机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%BB%E9%87%8F%E7%BA%A7%E8%99%9A%E6%8B%9F%E5%8C%96%E6%9E%B6%E6%9E%84"><span class="toc-text">轻量级虚拟化架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E6%96%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B3%BB%E7%BB%9F"><span class="toc-text">创新初始化系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7"><span class="toc-text">容器命令行工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%89%8D%E6%99%AF%E4%B8%8E%E8%B5%84%E6%BA%90"><span class="toc-text">应用前景与资源</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7"><i class="tag post-item-tag">开发者工具</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">了解 Containerization</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>认识一下 containerization，它是一个用 swift 编写的开源项目，用于在 mac 上创建和运行 linux 容器。了解 containerization 如何安全私密地对 linux 容器进行管理。探索开源 container cli 工具如何利用 containerization 软件包提供简单而强大的功能，以在 mac 上构建、运行和部署 linux 容器。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10031/10031_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/346/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="探索Containerization：在macOS上运行Linux容器的Swift框架"><a href="#探索Containerization：在macOS上运行Linux容器的Swift框架" class="headerlink" title="探索Containerization：在macOS上运行Linux容器的Swift框架"></a>探索Containerization：在macOS上运行Linux容器的Swift框架</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Linux容器已经成为现代软件开发中不可或缺的一部分，而苹果最新开源的Containerization框架为macOS用户带来了全新的容器体验。这个基于Swift编写的开源项目不仅提供了高效安全的容器运行环境，还通过创新的架构设计解决了传统虚拟化方案的多项痛点。</p>
+<h2 id="容器技术概述"><a href="#容器技术概述" class="headerlink" title="容器技术概述"></a>容器技术概述</h2><p>Linux容器已成为构建、测试和部署服务器端应用程序的标准解决方案。容器技术通过隔离机制，允许开发者将应用程序及其所有依赖项打包到一个可部署单元中。这种打包方式使得容器可以拥有与主机机器完全不同的依赖版本，同时提供了运行时隔离环境：</p>
+<ul>
+<li>网络隔离：每个容器拥有独立的网络栈</li>
+<li>进程隔离：容器间无法相互查看进程信息</li>
+<li>资源隔离：CPU、内存和磁盘资源可独立分配</li>
+</ul>
+<p>传统macOS运行Linux容器的方式是通过启动大型虚拟机来托管多个容器，这种方案存在资源分配不灵活、共享目录权限控制粗糙等问题。</p>
+<h2 id="Containerization框架设计"><a href="#Containerization框架设计" class="headerlink" title="Containerization框架设计"></a>Containerization框架设计</h2><p>Containerization框架针对macOS环境特别优化，实现了三个核心设计目标：</p>
+<p><strong>安全性</strong>：通过轻量级虚拟机为每个容器提供与传统大型虚拟机相同的隔离级别，同时减少了核心工具和动态库的需求，显著降低了攻击面。</p>
+<p><strong>隐私性</strong>：实现了基于容器的精细目录访问控制，只有请求目录的容器才能访问相应内容。</p>
+<p><strong>性能</strong>：在保证安全隔离的同时，实现了亚秒级启动时间，并优化了资源使用效率。</p>
+<h2 id="镜像管理机制"><a href="#镜像管理机制" class="headerlink" title="镜像管理机制"></a>镜像管理机制</h2><p>Containerization提供了完整的镜像管理API，镜像作为容器模板包含文件系统内容和默认配置。框架采用创新的块设备方式提供高性能镜像访问：</p>
+<pre><code class="swift">// 从Registry获取镜像示例
+let registry = ContainerRegistry()
+try await registry.pullImage(named: &quot;alpine:latest&quot;)
+</code></pre>
+<p>镜像内容被格式化为EXT4文件系统，Containerization包含专门的Swift软件包来处理EXT4文件系统的格式化、目录创建和内容填充操作。</p>
+<h2 id="轻量级虚拟化架构"><a href="#轻量级虚拟化架构" class="headerlink" title="轻量级虚拟化架构"></a>轻量级虚拟化架构</h2><p>与传统方案不同，Containerization为每个容器启动独立的轻量级虚拟机，这种架构带来了多重优势：</p>
+<ul>
+<li>每个容器获得专用IP地址，无需端口映射</li>
+<li>精细的资源控制，不运行时零资源占用</li>
+<li>更严格的目录共享权限控制</li>
+</ul>
+<p>虚拟机启动后，会运行一个名为vminitd的特殊初始化进程，这个用Swift编写的进程负责网络配置、文件系统挂载和进程监督。</p>
+<h2 id="创新初始化系统"><a href="#创新初始化系统" class="headerlink" title="创新初始化系统"></a>创新初始化系统</h2><p>vminitd作为容器环境的核心组件，具有多项创新特点：</p>
+<ol>
+<li>采用Swift Static Linux SDK交叉编译为静态可执行文件</li>
+<li>基于musl libc实现，优化静态链接支持</li>
+<li>运行在高度精简的环境中，不包含传统Linux核心工具</li>
+<li>提供API用于从主机管理和控制容器进程</li>
+</ol>
+<p>这种设计大幅减少了容器运行时的攻击面，同时保持了高度可靠性。</p>
+<h2 id="容器命令行工具"><a href="#容器命令行工具" class="headerlink" title="容器命令行工具"></a>容器命令行工具</h2><p>Containerization配套提供了一个功能完整的命令行工具，下面展示基本使用流程：</p>
+<pre><code class="bash"># 拉取镜像
+container image pull alpine:latest
+
+# 运行容器
+container run -t -i alpine:latest sh
+</code></pre>
+<p>该工具构建在Containerization API之上，包含多个组件：</p>
+<ul>
+<li>CLI前端</li>
+<li>XPC服务层</li>
+<li>存储管理系统</li>
+<li>镜像管理服务</li>
+<li>网络服务（IP分配和DNS）</li>
+</ul>
+<h2 id="应用前景与资源"><a href="#应用前景与资源" class="headerlink" title="应用前景与资源"></a>应用前景与资源</h2><p>Containerization为macOS上的容器开发打开了新可能，适用于：</p>
+<ul>
+<li>本地开发环境搭建</li>
+<li>持续集成测试</li>
+<li>微服务架构部署</li>
+<li>教学与研究环境</li>
+</ul>
+<p>开发者可以通过GitHub获取项目源码、提交问题或参与贡献。框架文档中包含多个示例项目，展示了如何集成Containerization构建定制化容器解决方案。</p>
+<p><strong>相关视频</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10101/">WWDC Containerization 介绍视频</a></li>
+</ul>
+<p><strong>文档</strong>:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/apple/containerization">Containerization GitHub仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/apple/swift-static-linux-sdk">Swift Static Linux SDK文档</a></li>
+</ul>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_323/" title="使用全新设计系统构建 SwiftUI App"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 使用全新设计系统构建 SwiftUI App</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_334/" title="watchOS 26 的新功能"><span class="has-text-weight-semibold">下一页: watchOS 26 的新功能</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_346/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

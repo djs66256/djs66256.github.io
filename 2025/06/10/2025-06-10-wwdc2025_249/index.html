@@ -1,0 +1,67 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>深入探索适用于 App 内购买项目的 App Store Server API</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="了解 app store server api、app store 服务器通知以及 app store server 资源库如何帮助你直接在服务器上管理顾客购买数据，并提供卓越的 app 内购买项目体验。我们将介绍 appaccounttoken 和签名流程的最新更新、签名交易和续订信息的新字段，以及一些全新 api。然后，我们将展示如何在服务器上生成促销优惠签名，以及如何使用 send consumption information 端点。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+App 内购买项目的 App Store 服务器 API 深度解析引言每年 WWDC 都为我们带来 Apple 生态系统中各类技术的更新与改进。在 2025 年的 WW.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">深入探索适用于 App 内购买项目的 App Store Server API</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#App-%E5%86%85%E8%B4%AD%E4%B9%B0%E9%A1%B9%E7%9B%AE%E7%9A%84-App-Store-%E6%9C%8D%E5%8A%A1%E5%99%A8-API-%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90"><span class="toc-text">App 内购买项目的 App Store 服务器 API 深度解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%81%8C%E8%B4%A3%E6%A6%82%E8%BF%B0"><span class="toc-text">核心职责概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%A1%E7%90%86-App-%E5%86%85%E8%B4%AD%E4%B9%B0%E9%A1%B9%E7%9B%AE"><span class="toc-text">管理 App 内购买项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E8%B4%A6%E6%88%B7%E5%85%B3%E8%81%94"><span class="toc-text">客户账户关联</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E8%A7%A3%E6%9E%90"><span class="toc-text">数据结构解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JWSTransaction-%E5%AD%97%E6%AE%B5%E8%A7%A3%E6%9E%90"><span class="toc-text">JWSTransaction 字段解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-text">相关资源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E8%B5%84%E6%BA%90"><span class="toc-text">视频资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E8%B5%84%E6%BA%90"><span class="toc-text">文档资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/tvos"><i class="tag post-item-tag">tvos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/watchos"><i class="tag post-item-tag">watchos</i></a><a href="/tags/app-%E6%9C%8D%E5%8A%A1"><i class="tag post-item-tag">app-服务</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">深入探索适用于 App 内购买项目的 App Store Server API</h1><time class="has-text-grey" datetime="2025-06-10T13:46:47.000Z">2025-06-10</time><article class="mt-2 post-content"><p>了解 app store server api、app store 服务器通知以及 app store server 资源库如何帮助你直接在服务器上管理顾客购买数据，并提供卓越的 app 内购买项目体验。我们将介绍 appaccounttoken 和签名流程的最新更新、签名交易和续订信息的新字段，以及一些全新 api。然后，我们将展示如何在服务器上生成促销优惠签名，以及如何使用 send consumption information 端点。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9939/9939_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/249/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="App-内购买项目的-App-Store-服务器-API-深度解析"><a href="#App-内购买项目的-App-Store-服务器-API-深度解析" class="headerlink" title="App 内购买项目的 App Store 服务器 API 深度解析"></a>App 内购买项目的 App Store 服务器 API 深度解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>每年 WWDC 都为我们带来 Apple 生态系统中各类技术的更新与改进。在 2025 年的 WWDC 上，App Store 服务器团队展示了关于 App 内购买项目 API 的一系列重要更新。这些改进将帮助开发者更高效地管理应用内购买，优化服务器端流程，并提升用户体验。</p>
+<h2 id="核心职责概述"><a href="#核心职责概述" class="headerlink" title="核心职责概述"></a>核心职责概述</h2><p>应用服务器在 App 内购买生态系统中扮演着关键角色，主要有三大核心职责：</p>
+<ol>
+<li><strong>管理 App 内购买项目</strong>：包括将交易数据与客户账户关联，确保应用能够无缝提供内容和服务。</li>
+<li><strong>签名请求</strong>：生成签名以授权服务器向 App Store 发起的请求。</li>
+<li><strong>参与退款决策流程</strong>：通过分享消费数据帮助 App Store 做出明智的退款决策。</li>
+</ol>
+<h2 id="管理-App-内购买项目"><a href="#管理-App-内购买项目" class="headerlink" title="管理 App 内购买项目"></a>管理 App 内购买项目</h2><h3 id="客户账户关联"><a href="#客户账户关联" class="headerlink" title="客户账户关联"></a>客户账户关联</h3><p>有效处理客户账户是管理 App 内购买项目的首要任务。开发者通常会在系统中为每个客户分配唯一的账户 ID，从而在其账户与 App Store 交易之间建立明确关联。这种关联对于提供正确内容或个性化用户体验至关重要。</p>
+<h3 id="数据结构解析"><a href="#数据结构解析" class="headerlink" title="数据结构解析"></a>数据结构解析</h3><p>App Store 通过三种关键数据结构提供 App 内购买数据：</p>
+<ol>
+<li><strong>AppTransaction</strong>：包含应用级别的交易信息</li>
+<li><strong>JWSTransaction</strong>：代表已签名的交易对象</li>
+<li><strong>JWSRenewalInfo</strong>：包含订阅续订相关信息</li>
+</ol>
+<p>其中，<strong>JWSTransaction</strong> 是处理单个购买的核心数据结构。当客户完成 App 内购买时，App Store 会提供已签名的交易对象，服务器端可以使用 App Store 服务器库对其进行验证和解码。</p>
+<h3 id="JWSTransaction-字段解析"><a href="#JWSTransaction-字段解析" class="headerlink" title="JWSTransaction 字段解析"></a>JWSTransaction 字段解析</h3><p>解码后的 signedTransactionInfo 包含以下重要信息：</p>
+<p><strong>基础信息</strong>：</p>
+<ul>
+<li>应用相关信息</li>
+<li>App 内产品类型</li>
+</ul>
+<p><strong>购买元数据</strong>：</p>
+<ul>
+<li>购买数量</li>
+<li>价格信息</li>
+<li>货币类型</li>
+</ul>
+<p><strong>优惠信息</strong>（如果客户兑换了优惠）：</p>
+<ul>
+<li>offerType：优惠类型</li>
+<li>offerIdentifier：优惠标识符</li>
+<li>offerDiscountType：优惠折扣类型</li>
+</ul>
+<p><strong>新增字段</strong>：</p>
+<ul>
+<li>offerPeriod：采用 ISO 8601 持续时间格式表示兑换优惠的有效期（该字段也存在于 JWSRenewalInfo 中）</li>
+</ul>
+<p><strong>交易标识符</strong>：</p>
+<ul>
+<li>transactionId：交易的唯一标识符，适用于 App 内购买、恢复或订阅续订</li>
+</ul>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="视频资源"><a href="#视频资源" class="headerlink" title="视频资源"></a>视频资源</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/241">StoreKit 和 App 内购买项目的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10062">探索适用于 App 内购买项目的 App Store Server API</a></p>
+<h3 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/in-app-purchase/advanced-commerce-api/">高级商业 API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI">App Store 服务器 API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/appstoreservernotifications">App Store 服务器通知</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI/Set-App-Account-Token">设置应用账户令牌</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/AppStoreServerAPI/simplifying-your-implementation-by-using-the-app-store-server-library">使用 App Store 服务器库简化实现</a><br><a target="_blank" rel="noopener" href="http://feedbackassistant.apple.com/">提交反馈</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本次 WWDC 介绍的 App Store 服务器 API 更新为开发者提供了更强大的工具来管理应用内购买。通过优化交易标识符、简化签名流程以及增强退款决策参与机制，开发者将能够构建更加可靠和高效的应用内购买系统。建议开发者仔细研究相关文档和视频资源，充分利用这些新特性来提升用户体验和业务运营效率。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_241/" title="StoreKit 和 App 内购买项目的新功能"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: StoreKit 和 App 内购买项目的新功能</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_252/" title="使用“App 分析”优化盈利策略"><span class="has-text-weight-semibold">下一页: 使用“App 分析”优化盈利策略</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_249/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

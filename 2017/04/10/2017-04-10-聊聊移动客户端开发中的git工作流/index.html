@@ -1,0 +1,119 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>聊聊移动客户端开发中的git工作流</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="现在git已经是我们日常开发必备工具，那么在移动客户端的日常开发中，应该怎样去管理git分支呢，是否目前普遍的几种工作流就可以满足目前的情景呢？
+
+
+git flow最官方的流程，包含的主要分支有如下几个：
+
+master 也就是发布分支
+develop 也就是开发分支，上线的时候会把develop合并到master
+feature 特性开发分支，每一个功能都会拉一个分支出去开发，完成后合并到develop，并删除自己
+bug fix 日常的bug修复分支，这个是从master分支拉出来的，所以合并的时候要合到develop和master上，比较麻烦
+
+按照以上说法，流程也是比较清晰明确，大致如下
+            develop         master
+              *     .."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">聊聊移动客户端开发中的git工作流</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#git-flow"><span class="toc-text">git flow</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github-flow-%E5%92%8C-gitlab-flow"><span class="toc-text">github flow 和 gitlab flow</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E7%8E%B0%E7%8A%B6"><span class="toc-text">移动端现状</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E6%9D%A5%E5%88%86%E6%9E%90%E4%B8%8Bgit-flow%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E3%80%82"><span class="toc-text">首先来分析下git flow的应用场景。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%8D%E6%9D%A5%E7%9C%8B%E7%9C%8Bgithub-flow%E5%92%8Cgitlab-flow"><span class="toc-text">再来看看github flow和gitlab flow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E7%8A%B6%E5%86%B5"><span class="toc-text">目前状况</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/git"><i class="tag post-item-tag">git</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">聊聊移动客户端开发中的git工作流</h1><time class="has-text-grey" datetime="2017-04-10T14:03:34.000Z">2017-04-10</time><article class="mt-2 post-content"><p>现在git已经是我们日常开发必备工具，那么在移动客户端的日常开发中，应该怎样去管理git分支呢，是否目前普遍的几种工作流就可以满足目前的情景呢？</p>
+<span id="more"></span>
+
+<h2 id="git-flow"><a href="#git-flow" class="headerlink" title="git flow"></a>git flow</h2><p>最官方的流程，包含的主要分支有如下几个：</p>
+<ul>
+<li>master 也就是发布分支</li>
+<li>develop 也就是开发分支，上线的时候会把develop合并到master</li>
+<li>feature 特性开发分支，每一个功能都会拉一个分支出去开发，完成后合并到develop，并删除自己</li>
+<li>bug fix 日常的bug修复分支，这个是从master分支拉出来的，所以合并的时候要合到develop和master上，比较麻烦</li>
+</ul>
+<p>按照以上说法，流程也是比较清晰明确，大致如下</p>
+<pre><code class="c">            develop         master
+              *              |
+     ---------|              |
+   /          |              |
+  feature1    |              *        
+  |           |              |
+  *           |              *
+  |           *             /|
+  *         / |            / |
+  |  feature2 |      bug-fix |
+  *        |  |          |   |
+  |        *  |          *   |
+  |        *  |         / \  |
+  |         \ * -------/   \ |
+   \          *              *
+    --------- *              |
+              |\             |
+              | \----------- *  release
+              |              |
+</code></pre>
+<h2 id="github-flow-和-gitlab-flow"><a href="#github-flow-和-gitlab-flow" class="headerlink" title="github flow 和 gitlab flow"></a>github flow 和 gitlab flow</h2><p>git flow还是比较麻烦的，所以后来一些网站并没有推荐。</p>
+<p>这两个工作流都是持续集成的模式，大致包含的分支如下：</p>
+<ul>
+<li>master 主分支，但是作用相当于git flow里面的develop，github flow也是release的分支</li>
+<li>feature 或者说 merge request</li>
+<li>production 发布分支</li>
+</ul>
+<p>功能分支和bug fix都是从主分支上拉出来改，再合并回去。流程上比git flow更加简单。</p>
+<h2 id="移动端现状"><a href="#移动端现状" class="headerlink" title="移动端现状"></a>移动端现状</h2><p>但是以上几种真的适合目前我们的开发吗？</p>
+<h3 id="首先来分析下git-flow的应用场景。"><a href="#首先来分析下git-flow的应用场景。" class="headerlink" title="首先来分析下git flow的应用场景。"></a>首先来分析下git flow的应用场景。</h3><p>linux这种大型项目，人员分布于世界各地，而每一次发布的功能又非常的多，为了保证所有人的协同工作不会出现任何偏差，所以他们采用了git flow这种工作流。</p>
+<p>这类项目有着如下特点：</p>
+<ol>
+<li>每一次发布的周期很长，而且其中的bug fix会以单独的小版本或者补丁形式发布出来</li>
+<li>每一次发布所更新的功能并不是固定的，哪些feature完成了，才会考虑合并入系统，而没有完成的继续开发，会在下一次版本发布时再考虑</li>
+<li>每个feature之间的关系比较独立，相互间不会产生很大的影响</li>
+</ol>
+<p>linux为了解决自身庞大的系统的情况，在git flow外面再套了一层git flow，有着相当严格的代码审查制度，这个是后话了。可以看出如果是一个瀑布型开发场景，还是非常合适的，但是我们目前的移动开发几乎都是敏捷开发。</p>
+<h3 id="再来看看github-flow和gitlab-flow"><a href="#再来看看github-flow和gitlab-flow" class="headerlink" title="再来看看github flow和gitlab flow"></a>再来看看github flow和gitlab flow</h3><ol>
+<li>他们自身是一个开放的交流平台，为了增进大家的交流，就必须加快和简化发布，时刻让主分支保持最新</li>
+<li>为了给大家共同开发提供条件，发明了merge request，如果被采纳，需要尽快的合并到主分支上</li>
+<li>托管的项目大部分是小型项目，没有开发计划和排期要求，所以就很难有如此明确的版本，所以基本上是每个特性都会有一个发布，也就没有必要整一套严格的审查制度</li>
+</ol>
+<p>这个比较适合网站这类的开发，当完成新特性后，马上就可以展示给用户，并不需要卡时间点。</p>
+<h3 id="目前状况"><a href="#目前状况" class="headerlink" title="目前状况"></a>目前状况</h3><ul>
+<li>目前大家一般都是敏捷开发，最长一个月，最短2个星期就会有一个新版本</li>
+<li>每一期的新特性多，但是功能点却非常细小，而且会有很多的优化</li>
+<li>bug修改完以后一般不会立刻发小版本来专门修复bug，一般会在下一个版本中修复</li>
+</ul>
+<p>所以git flow对于现在的情况来说太慢了，而且导致分支间切换太频繁。但是其他几种又不能很好的区分版本，所以我们需要自己的工作流程。</p>
+<pre><code class="c">                              master
+              ---------------- *
+            /                  |
+          v1.0                 |
+            |          ------- *
+            *        /         |
+          / |     bugfix       |
+ feature-x  *       |          |
+         |  *       *          |
+         *  *      /           *
+          \ * ----           / |
+            *            v1.1  |
+       test *              |   |
+              \            |   |
+                -----------+-- *  release
+                           |   *
+                           * / |
+                      test *   |
+                            \  |
+                             - *  release
+</code></pre>
+<ul>
+<li>每个版本都从master上拉一个版本分支，此版本的所有改动都在这个分支上进行，此时这个分支就像是github flow的master，保持持续集成，如果功能点比较大，可以考虑在版本分支上拉功能分支进行开发。</li>
+<li>bugfix一般直接修改在版本分支上，也可以从master上拉分支，最后合并到版本分支上，这样做是考虑到版本交替的时候可以方便处理bug。</li>
+<li>测试和打包都在版本分支上，发布以后合并到master</li>
+</ul>
+<p>这样看上去似乎比其他几个复杂，但是实践下来应该说更加简单。</p>
+<ul>
+<li>我们很少存在并行开发的情况，所以每个版本几乎都是串行排列的，很少出现交叉的情况</li>
+<li>我们的功能点很小的时候没有必要拉一个新的分支，可以直接修改到版本分支上，不需要专人合并</li>
+<li>feture分支一般为个人开发分支，一个人来维护合并和删除，也会简单很多</li>
+<li>这样每个版本的代码分支完全独立开来，更直观的区分不同版本间的代码进度</li>
+<li>减少了日常工作中需要频繁切换分支的状况</li>
+<li>可以让CI系统直接对接版本分支，大家可以第一时间得到该版本的最新包</li>
+</ul>
+<p>所以正常的使用中，可见的分支为master和版本分支，会比上图简单很多。</p>
+<p>但是这样做的缺点是无法明确的区分feature，如果需要去掉某一个功能的时候会比较麻烦，基于每次的迭代都是相对明确，不太可能出现功能回退的情况，所以不存在这种问题。</p>
+<p>总的来说，适合的才是最好的。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/04/16/2017-04-15-AVFoundation%E7%9A%84%E4%B8%80%E4%BA%9B%E7%82%B9/" title="AVFoundation的一些点"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: AVFoundation的一些点</span></a><a class="button is-default" href="/2017/04/09/2017-04-09-%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9F%8B%E7%82%B9%E7%AE%A1%E7%90%86%E5%B0%8F%E5%B7%A5%E5%85%B7/" title="自己写的一个埋点管理小工具"><span class="has-text-weight-semibold">下一页: 自己写的一个埋点管理小工具</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/04/10/2017-04-10-%E8%81%8A%E8%81%8A%E7%A7%BB%E5%8A%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84git%E5%B7%A5%E4%BD%9C%E6%B5%81/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

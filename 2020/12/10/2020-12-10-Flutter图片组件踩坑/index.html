@@ -1,0 +1,207 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>Flutter 图片控件适配之路</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="背景目前大部分应用都会使用大量的图片，图片成为当前应用带宽占比最大的一种资源。在我们接入 Flutter 的时候，发现 Flutter 的图片控件缓存完全由自己管理，同时还没有提供磁盘缓存（1.22版本），所以在性能以及体验上均比较差，所以必须对其进一步优化。
+
+
+图片缓存在目前很多 CDN 实现上，所有资源都是拥有唯一 uri 的，所以很多的客户端实现，是忽略了 HTTP 协议中的 Caches 能力，而是直接将 uri 作为唯一标识符来判断图片资源是否唯一的。这样大大节省了向服务端确认 304 的时间与请求。
+而在客户端，一般都会存在至少内存和磁盘这两级缓存，而我们在接入 Flutter 图片库的时候，就希望能够将客户端的缓存与 Flutter 中的缓存进行打通，从而减少内存和网络的消耗。
+而目前复用缓.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Flutter 图片控件适配之路</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98"><span class="toc-text">图片缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%94%A8%E8%A7%86%E5%9B%BE"><span class="toc-text">复用视图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%94%A8%E7%A3%81%E7%9B%98%E7%BC%93%E5%AD%98"><span class="toc-text">复用磁盘缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%94%A8%E5%86%85%E5%AD%98%E7%BC%93%E5%AD%98"><span class="toc-text">复用内存缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Channel"><span class="toc-text">Channel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ffi"><span class="toc-text">ffi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Texture"><span class="toc-text">Texture</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E4%BC%98%E5%8C%96"><span class="toc-text">内存优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Size"><span class="toc-text">Size</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Flutter"><i class="tag post-item-tag">Flutter</i></a><a href="/tags/Image"><i class="tag post-item-tag">Image</i></a><a href="/tags/Texture"><i class="tag post-item-tag">Texture</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Flutter 图片控件适配之路</h1><time class="has-text-grey" datetime="2020-12-10T15:33:36.000Z">2020-12-10</time><article class="mt-2 post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>目前大部分应用都会使用大量的图片，图片成为当前应用带宽占比最大的一种资源。在我们接入 Flutter 的时候，发现 Flutter 的图片控件缓存完全由自己管理，同时还没有提供磁盘缓存（1.22版本），所以在性能以及体验上均比较差，所以必须对其进一步优化。</p>
+<span id="more"></span>
+
+<h2 id="图片缓存"><a href="#图片缓存" class="headerlink" title="图片缓存"></a>图片缓存</h2><p>在目前很多 CDN 实现上，所有资源都是拥有唯一 uri 的，所以很多的客户端实现，是忽略了 HTTP 协议中的 Caches 能力，而是直接将 uri 作为唯一标识符来判断图片资源是否唯一的。这样大大节省了向服务端确认 304 的时间与请求。</p>
+<p>而在客户端，一般都会存在至少<code>内存</code>和<code>磁盘</code>这两级缓存，而我们在接入 Flutter 图片库的时候，就希望能够将客户端的缓存与 Flutter 中的缓存进行打通，从而减少内存和网络的消耗。</p>
+<p>而目前复用缓存的方向大致有如下3种：</p>
+<ol>
+<li>复用视图，完全由客户端来提供 Flutter 的图片能力，就像 React Native 一样。</li>
+<li>复用磁盘缓存，不复用内存缓存，这种方案实现相对简单，但会导致内存中存在两份图片数据。</li>
+<li>复用内存缓存，由客户端从磁盘加载到内存，并由客户端来管理整个缓存的生命周期，比如和 SDWebImage 进行深度融合。该方案看似是最完美的复用，而且客户端有能力对整个应用的图片缓存大小进行精确的控制。</li>
+</ol>
+<p>那么下面我们来看看这几种方案的实现，哪些看似美好的方案，我们都踩了哪些坑。</p>
+<h2 id="复用视图"><a href="#复用视图" class="headerlink" title="复用视图"></a>复用视图</h2><p>Flutter 提供了一种和客户端原生视图进行无缝拼接的方案，原始的动机其实是为了像地图、WebView 这种场景，Flutter 不可能再去实现一套如此复杂的控件。那么如果我们用这个来做客户端图片桥接方案会怎么样呢？</p>
+<p>首先，我们要明白 PlatformView 是如何进行桥接的（以下讨论的都是iOS实现）。在 Widget 中插入一层客户端 View，此时并不是我们想的那样，将此 View 简单的<code>draw</code>到 Flutter Root Layer 上。因为 Flutter 的<code>draw call</code>并不是发生在主线程上的，而是发生在<code>raster</code>线程上的，如果我们想要将客户端的 View 绘制到 Flutter 上，则必须先光栅化为一张图片，然后再进行绘制，这中间的性能开销与延迟显而易见是不可接受的，同时每帧都需要这么做也是不现实的。</p>
+<p>所以，Flutter 采用了一种拆分 Flutter Layer 的形式。在插入一个客户端 View 后，Flutter 会自动将自己拆为2层：</p>
+<pre><code>|-----| Flutter Overlay View 2
+|-----| Native View
+|-----| Flutter Root View 1
+</code></pre>
+<p>客户端 View 就像夹心饼干一样被2个 Flutter view 夹住，此时位于 Platform View 上层以及后续的兄弟 Widget 都会被绘制到上层的 View 上，其他的依旧绘制在底层。这样虽然解决了客户端视图的接入，但也会导致一个问题，当上层视图发生位置等变更的时候，需要重新创建对应的 Overlay View，为了减少这种开销，Flutter 采用了一种比较 trick 的做法，即 Overlay View 会铺满屏幕，而通过移动上面的 mask 来进行控制展示区域。</p>
+<pre><code class="c">// The overlay view wrapper masks the overlay view.
+// This is required to keep the backing surface size unchanged between frames.
+//
+// Otherwise, changing the size of the overlay would require a new surface,
+// which can be very expensive.
+//
+// This is the case of an animation in which the overlay size is changing in every frame.
+//
+// +------------------------+
+// |   overlay_view         |
+// |    +--------------+    |              +--------------+
+// |    |    wrapper   |    |  == mask =&gt;  | overlay_view |
+// |    +--------------+    |              +--------------+
+// +------------------------+
+</code></pre>
+<p>目前已经解决了客户端视图接入 Flutter 的能力，但可以看到，当插入一张客户端 View，Flutter 需要额外创建2个 View 进行分区域绘制。当一个页面存在多张图片的时候，此时额外产生的开销显然也是不可接受的，性能更是不可接受。</p>
+<p>下面是 Flutter 官方在 Platform View 上描述的关于性能的考虑。</p>
+<pre><code>Platform views in Flutter come with performance trade-offs.
+
+For example, in a typical Flutter app, the Flutter UI is composed on a dedicated raster thread. This allows Flutter apps to be fast, as the main platform thread is rarely blocked.
+
+While a platform view is rendered with Hybrid composition, the Flutter UI is composed from the platform thread, which competes with other tasks like handling OS or plugin messages, etc.
+
+Prior to Android 10, Hybrid composition copies each Flutter frame out of the graphic memory into main memory, and then copies it back to a GPU texture. In Android 10 or above, the graphics memory is copied twice. As this copy happens per frame, the performance of the entire Flutter UI may be impacted.
+
+Virtual display, on the other hand, makes each pixel of the native view flow through additional intermediate graphic buffers, which cost graphic memory and drawing performance.
+</code></pre>
+<h2 id="复用磁盘缓存"><a href="#复用磁盘缓存" class="headerlink" title="复用磁盘缓存"></a>复用磁盘缓存</h2><p>让我们都退一步，我们首先解决网络带宽的问题，那么一个简单的方案便是复用磁盘缓存。</p>
+<p>复用磁盘缓存的方案相对可以做的非常简单，并且拥有极低的倾入性。我们只需要设计一套 channel 接口，来同步双方缓存的状态和缓存的地址。</p>
+<pre><code class="dart">getCacheInfo(&#123; 
+    String url,
+    double width,
+    double height,
+    double scale,
+    BoxFit fit&#125;) 
+-&gt; &#123;String path, bool exists&#125;
+</code></pre>
+<p>那么在使用的时候，我们仅需要定制一套新的 ImageProvider，将网络、本地两种 Provider 统一起来即可。</p>
+<pre><code class="dart">_CompositeImageStreamCompleter(&#123;
+    String url,
+    double width,
+    double height
+&#125;) &#123;
+    getCacheInfo(&#123;url: url, width: width, height:height&#125;)
+        .then((info) &#123;
+        if (info != null &amp;&amp; info.path != null &amp;&amp; info.path.length &gt; 0) &#123;
+        var imageProvider;
+        var decode = this.decode;
+        if (info.exists) &#123;
+            final imageFile = File(info.path);
+            imageProvider = FileImage(imageFile, scale: this.scale);
+        &#125; else &#123;
+            imageProvider = NetworkImage(info.fixUrl ?? this.url,
+                scale: this.scale, headers: this.headers);
+            decode = (Uint8List bytes,
+                &#123;int cacheWidth, int cacheHeight, bool allowUpscaling&#125;) &#123;
+            final cacheFile = File(info.path);
+            // 缓存到磁盘
+            cacheFile.writeAsBytes(bytes).then((value) =&gt; &#123; &#125;);
+            return this.decode(bytes,
+                cacheWidth: cacheWidth,
+                cacheHeight: cacheHeight,
+                allowUpscaling: allowUpscaling);
+            &#125;;
+        &#125;
+        _childCompleter = imageProvider.load(imageProvider, decode);
+        final listener =
+            ImageStreamListener(_onImage, onChunk: _onChunk, onError: _onError);
+        _childCompleter.addListener(listener);
+        &#125;
+    &#125;).catchError((err, stack) &#123;
+        print(err);
+    &#125;);
+&#125;
+</code></pre>
+<p>这里需要注意的是，当不存在磁盘缓存的时候，这里采用了 Flutter 来下载图片，此时需要我们手动将其保存到磁盘上，以保证磁盘缓存的一致性。</p>
+<h2 id="复用内存缓存"><a href="#复用内存缓存" class="headerlink" title="复用内存缓存"></a>复用内存缓存</h2><p>复用磁盘缓存是风险较低的一种改动，但是代价是无法复用内存缓存，不仅仅需要分别读取，同时会保存多份内存缓存，因为双方的内存缓存部分是完全独立存在的。</p>
+<p>那么如果我们想进一步优化，则需要采用复用内存缓存的方案，目前同步内存缓存大致有如下几种方案：</p>
+<ul>
+<li>利用 channel 通信，将内存传输给 Flutter</li>
+<li>利用新特性 ffi 通道，将内存直接传递给 Flutter</li>
+<li>利用 Texture 控件，从纹理层面进行复用</li>
+</ul>
+<h3 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h3><p>Flutter 官方稳定的消息通信方案，兼容性和稳定性都非常高。当我们需要展示缓存图片的时候，只需要将图片数据通过 BinaryMessenger 形式传递到 Flutter 即可。</p>
+<p>由于 Channel 本身就必须是异步过程，所以该方式通信会有一定开销。</p>
+<p>同时由于 Channel 在客户端是在主线程进行处理，所以也需要注意避免在主线程直接做加载与解码等耗时操作。</p>
+<p>而 Channel 在数据传递过程中，由于机制（从安全角度来看也必须这么做）原因，二进制数据必然会被拷贝一份，这样导致的结果是 Flutter 这边维护的内存缓存和客户端自身的缓存依然是两份，并没有完美的达到我们上述的复用效果。</p>
+<h3 id="ffi"><a href="#ffi" class="headerlink" title="ffi"></a>ffi</h3><p>从消息通信开销以及消息的内存拷贝问题来看，ffi 的出现似乎能够完美解决 Channel 中所有的问题。</p>
+<p>原理和实现过程与 Channel 完全一致，此时只需要替换为 ffi 通道即可。ffi 并没有像 Channel 那么长的通信过程，不需要进行消息序列化与解析，也不需要切换线程处理，就像一个 HTTP 请求和一个简单的 API 调用的区别一样。</p>
+<p>这里我们需要注意的是 ffi 接口是同步执行的，也就是说客户端执行的时候是处于 flutter.ui 线程，我们必须注意线程安全问题。而对于 Flutter 来说，由于是在 UI 线程执行，所以该方法必须尽量快的返回，不能执行一些耗时比较长的操作。</p>
+<p>但是我们采用 ffi 就真的能够解决上述问题吗？仔细研究发现，其实还是不能解决内存复用的根本性问题，下面可以看下 ffi 转换的过程。</p>
+<p>当我们把客户端图片加载到内存的时候，是通过 Buffer 的形式传递给 Flutter 的，比如是这样一个结构：</p>
+<pre><code class="c++">struct Buffer &#123;
+    int8    *ptr;
+    size_t  length;
+&#125;
+</code></pre>
+<p>而 Flutter 中图片解码过程会在 engine 层的 io 线程中执行，此时会进行一次图片数据拷贝。</p>
+<p>所以，从最终结果来看，并不比 Channel 有更高的缓存复用能力。</p>
+<h3 id="Texture"><a href="#Texture" class="headerlink" title="Texture"></a>Texture</h3><p>另一种是共享 PixelBuffer，也就是解码后的图片数据，在 Flutter 这里可以采用 Texture 来实现复用。</p>
+<p>具体实现方案阿里已经研究的非常透彻，这里就不再复述了，我们主要分析下其性能与复用能力。</p>
+<p>Texture 复用采用的是 TextureId，这是一个 int 值，所以在两端通信上不存在数据量上的性能开销。其主要过程是：</p>
+<ol>
+<li>客户端将纹理注册到 Flutter，同时会返回一个 id 作为唯一标识符（i++）。这个过程发生在 Platform 线程，也就是客户端主线程，而真正注册到 TextureRegistry 中则是在 raster 线程中完成的。</li>
+<li>在 flutter.ui 线程处理 paint 事件的时候，会将该 id 传递给 TextureLayer。</li>
+<li>并在 raster 线程，从 TextureRegistry 中取出并生成 draw call。</li>
+</ol>
+<p>从整体流程来看，Flutter 在中间流转过程全程只使用了 TextureId，并不会操作内存与纹理，并不存在多份缓存的问题。所以这种方案比较完美的解决了上述两个问题。</p>
+<h2 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h2><p>虽然从上述分析中，缓存利用率最高的是 Texture，但是从内存上来分析，则出现了一个意想不到的结果。</p>
+<p><img src="/images/2020/flutter-image/origin+10M.png"></p>
+<p>上图是使用 Flutter Image 控件，加载几张大图的一个内存图，总共增加了 10M 内存消耗。</p>
+<p>![](&#x2F;images&#x2F;2020&#x2F;flutter-image&#x2F;uncrop 55-18M.png)</p>
+<p>上图是使用 Texture 方案，加载同样图片所产生的内存消耗，达到了 37M，相差巨大。</p>
+<p>同时可以看到原生 Flutter 图片在初始阶段有一个比较大的波峰，同样纹理也有，但相对平缓一些。</p>
+<p>产生这样大的区别主要还是要从 Flutter Image 控件的渲染流程中说起。</p>
+<ol>
+<li>ImageProvider 将图片加载到内存后，首先会进行解码，而这个事情实在 flutter.io 线程完成的。</li>
+<li>图片数据解码之后，会造成一个非常大的内存消耗，因为此时的图片数据是以 pixel buffer 的形式存储的。而 Flutter 在这一过程会进行一个优化，此时解码的数据将不是 100% 大小的，而是会当前 widget size进行调整，计算出一个最优的大小，然后在这一大小上进行解码，所以原生的 Image 反而在内存占用这个方面会比客户端更优秀。</li>
+<li>在图片移除后，Flutter 会立刻回收解码后的内存，即 Flutter 仅对图片的原始压缩数据进行存储，并不缓存 pixel buffer。而我们客户端（SDWebImage）则会缓存解码后的全部数据，这也是另一个 Flutter 内存表现比客户端要优的地方。</li>
+</ol>
+<p>那么 Flutter 这种策略在内存占用上完胜客户端，是否就必然是好的呢？</p>
+<p>其实从渲染流程中看，Flutter 仅仅是用解码时间换取了内存空间。在实际 Demo 中，列表快速滑动时，Flutter Image 控件的图片展示会有明显的延迟，而采用 Texture 方案，肉眼几乎无法分辨。所以从整体的表现上来说，Texture 方案并不是没有优点。</p>
+<h2 id="Size"><a href="#Size" class="headerlink" title="Size"></a>Size</h2><p>从上述中可以看出来，Texture 方案在内存的表现上比较差，那么我们如何去进一步优化呢？</p>
+<p>对于很多场景，比如用户头像等，都是有一个固定大小的，那么我们可以将该大小作为参数，传给 CDN，在 CDN 上就进行裁剪成我们需要的大小，这样也会节省大量流量。</p>
+<p>但是同样有很多场景，我们是无法得到其控件大小的，比如充满容器大小这种场景。我们如何自动在所有图片上加上 Size 参数呢？</p>
+<p>从渲染过程中，<code>Layout</code>之后会触发<code>Paint</code>，而此时该控件的大小必然已经是完全确定的了，那么我们可以在这里做一个假的占位控件，在计算出大小后，再替换为真正的图片。</p>
+<pre><code class="dart">typedef ImageSizeResolve = void Function(Size size);
+
+class ImageSizeProxyWidget extends SingleChildRenderObjectWidget &#123;
+  const ImageSizeProxyWidget(&#123;Key key, Widget child, this.onResolve&#125;)
+      : super(key: key, child: child);
+
+  final ImageSizeResolve onResolve;
+
+  @override
+  ImageSizeProxyElement createElement() =&gt; ImageSizeProxyElement(this);
+
+  @override
+  ImageSizeRenderBox createRenderObject(BuildContext context) =&gt;
+      ImageSizeRenderBox(onResolve);
+
+  @override
+  void updateRenderObject(
+      BuildContext context, covariant ImageSizeRenderBox renderObject) &#123;
+    super.updateRenderObject(context, renderObject);
+    renderObject.onResolve = onResolve;
+  &#125;
+&#125;
+
+class ImageSizeProxyElement extends SingleChildRenderObjectElement &#123;
+  ImageSizeProxyElement(RenderObjectWidget widget) : super(widget);
+&#125;
+
+class ImageSizeRenderBox extends RenderProxyBox with RenderProxyBoxMixin &#123;
+  ImageSizeRenderBox(ImageSizeResolve onResolve, [RenderBox child])
+      : onResolve = onResolve,
+        super(child);
+
+  ImageSizeResolve onResolve;
+
+  @override
+  void paint(PaintingContext context, ui.Offset offset) &#123;
+    if (hasSize) &#123;
+      if (onResolve != null) onResolve(size);
+    &#125;
+    super.paint(context, offset);
+  &#125;
+&#125;
+</code></pre>
+<p>这样，我们就能强制所有图片都必须带上 Size 参数了。</p>
+<p><img src="/images/2020/flutter-image/crop+2M.png"></p>
+<p>经过这样的优化处理后，内存占用下降到了 2M 左右（由于我用的测试图都是高清图，所以效果看上去会比较明显）。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Flutter 的很多思路和策略和客户端有着明显的区别，从图片这一个能力来看，就可以从各个方面进行适配与优化，如果需要达到完美可用的一个状态，看来还是需要不断的投入与探索。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2021/04/03/2021-04-03-wakeup-in-XNU/" title="wakeup in XNU"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: wakeup in XNU</span></a><a class="button is-default" href="/2020/12/01/2020-12-1-%E8%B0%88%E8%B0%88Flutter%E4%B8%8EReact%E7%9A%84%E5%87%A0%E4%B8%AA%E5%8C%BA%E5%88%AB/" title="谈谈 Flutter、客户端、React 组件的几个区别"><span class="has-text-weight-semibold">下一页: 谈谈 Flutter、客户端、React 组件的几个区别</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2020/12/10/2020-12-10-Flutter%E5%9B%BE%E7%89%87%E7%BB%84%E4%BB%B6%E8%B8%A9%E5%9D%91/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

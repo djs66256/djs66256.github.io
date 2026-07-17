@@ -1,0 +1,52 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>原子性内存栅栏问题简述</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="内存栅栏(Memory fence)，也称为内存屏障(Memory barrier)，以前碰到这类概念都是基于锁的理解，比如dispatch_barrier。在看bmalloc的源代码时，发现其在使用原子性(atomic)的时候，出现了一种memory_order的概念，所以这里来简单看看原子性方面的问题。
+
+
+Atomic方法在iOS中，我们平时最常用的原子特性大部分来自于OSAtomic，可是当我打开这个文件的时候，却发现这些方法已经被弃用了。
+OSATOMIC_DEPRECATED_REPLACE_WITH(atomic_compare_exchange_strong)
+__OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0)
+bool OSAtomicCo.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">原子性内存栅栏问题简述</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Atomic%E6%96%B9%E6%B3%95"><span class="toc-text">Atomic方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Memory-Order"><span class="toc-text">Memory Order</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spin-lock"><span class="toc-text">Spin lock</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E5%86%85%E5%AD%98%E6%A0%85%E6%A0%8F"><i class="tag post-item-tag">内存栅栏</i></a><a href="/tags/%E5%86%85%E5%AD%98%E5%B1%8F%E9%9A%9C"><i class="tag post-item-tag">内存屏障</i></a><a href="/tags/fence"><i class="tag post-item-tag">fence</i></a><a href="/tags/barrier"><i class="tag post-item-tag">barrier</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">原子性内存栅栏问题简述</h1><time class="has-text-grey" datetime="2018-03-28T17:09:17.000Z">2018-03-29</time><article class="mt-2 post-content"><p>内存栅栏(Memory fence)，也称为内存屏障(Memory barrier)，以前碰到这类概念都是基于锁的理解，比如dispatch_barrier。在看bmalloc的源代码时，发现其在使用原子性(atomic)的时候，出现了一种<code>memory_order</code>的概念，所以这里来简单看看原子性方面的问题。</p>
+<span id="more"></span>
+
+<h2 id="Atomic方法"><a href="#Atomic方法" class="headerlink" title="Atomic方法"></a>Atomic方法</h2><p>在iOS中，我们平时最常用的原子特性大部分来自于<code>OSAtomic</code>，可是当我打开这个文件的时候，却发现这些方法已经被弃用了。</p>
+<pre><code class="c">OSATOMIC_DEPRECATED_REPLACE_WITH(atomic_compare_exchange_strong)
+__OSX_AVAILABLE_STARTING(__MAC_10_4, __IPHONE_2_0)
+bool OSAtomicCompareAndSwap32( int32_t __oldValue, int32_t __newValue, volatile int32_t *__theValue );
+</code></pre>
+<p>很好奇这个新的方法，它来自于C标注库<code>stdatomic.h</code>中，而这个头文件是<code>C11</code>才引入的，说明这是一个非常新的方法。而在C++11中，STL增强了C++的多线程编程能力，所以也是这个时候引入的<code>std::atomic</code>。</p>
+<p><code>atomic</code>和<code>volidate</code>，<code>atomic</code>是真正的原子性，而<code>volidate</code>则仅标记对象为易变，提交给编译器优化使用的，并不能确保原子性。</p>
+<h2 id="Memory-Order"><a href="#Memory-Order" class="headerlink" title="Memory Order"></a>Memory Order</h2><pre><code class="c">typedef enum memory_order &#123;
+  memory_order_relaxed = __ATOMIC_RELAXED,
+  memory_order_consume = __ATOMIC_CONSUME,
+  memory_order_acquire = __ATOMIC_ACQUIRE,
+  memory_order_release = __ATOMIC_RELEASE,
+  memory_order_acq_rel = __ATOMIC_ACQ_REL,
+  memory_order_seq_cst = __ATOMIC_SEQ_CST
+&#125; memory_order;
+</code></pre>
+<p>关于<code>memory_order</code>这个概念，非常的令人困惑。其关键就是atomic能够保证单个的操作的原子性，但不能保证两个原子操作之间的顺序，这涉及到CPU对缓存刷新时进行的顺序重排。这里看两个简单的例子就可以理解了：</p>
+<p><img src="/images/2018/fence/fence1.png"></p>
+<p><img src="/images/2018/fence/fence2.png"></p>
+<p>和我们平时的理解完全不一样，内存的修改顺序和实际的顺序居然可能不一致，这就是为什么会引入<code>memory_order</code>这个概念了。</p>
+<h2 id="Spin-lock"><a href="#Spin-lock" class="headerlink" title="Spin lock"></a>Spin lock</h2><p>最后再来看看SpinLock的实现，所有SpinLock都是基于原子操作进行的，目前我碰到的大致分为两种：</p>
+<ol>
+<li>比较无赖，强制for循环等待</li>
+<li>比较友善，在超过一定循环次数，会放弃当前时间片</li>
+</ol>
+<p>伪代码：</p>
+<pre><code>atomic flag
+while flag:
+    loop_count++
+    if loop_count &gt; MAX_LOOP_COUNT:
+        yield  // iOS中可以是thread_swtich
+</code></pre>
+<p>所以当某些调度算法，即使是在优先级高的线程中yield放弃时间片，依然不能分配给优先级低的线程，就会导致优先级反转而死锁。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://www.cl.cam.ac.uk/~pes20/ppc-supplemental/test7.pdf">A Tutorial Introduction to the ARM and POWER Relaxed Memory Models</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2018/04/04/2018-04-04-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" title="深入理解内存分配"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 深入理解内存分配</span></a><a class="button is-default" href="/2018/03/20/2018-03-20-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%ADblock%E5%9B%9E%E8%B0%83%E6%9C%AA%E8%A2%AB%E8%B0%83%E7%94%A8/" title="如何判断block回调未被调用"><span class="has-text-weight-semibold">下一页: 如何判断block回调未被调用</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2018/03/29/2018-03-29-%E5%86%85%E5%AD%98%E6%A0%85%E6%A0%8F%E9%97%AE%E9%A2%98%E7%AE%80%E8%BF%B0/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

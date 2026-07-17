@@ -1,0 +1,168 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>流程状态机架构</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="背景在现实的项目过程中，由于人员的更替，以及业务的发展，总是会导致一个问题，那就是流程细节的丢失，项目时间越久，这个问题越是严重。所以往往会出现产品在不知道这个功能的流程的情况下设计方案，开发在开发过程中才发现流程上的设计缺陷，这不仅仅导致了项目时间的推迟，更可能导致整个业务流程上出现漏洞而危害整个产品，如果是云音乐这种类型产生问题可能表现不大，但像考拉这种涉及到钱的项目严重的可能导致信任危机。
+
+
+要解决这个问题传统的做法就是详细业务文档，这需要：
+
+文档要求详细，并且在统一的地方维护
+人员交接的时候，文档需要完整交接
+多方（产品、开发、测试等）的信息同步
+
+遗憾的是，这么多年的工作中，我没有发现一个项目能够做到这一点的，遇到问题只能人肉阅读代码。在目前国内企业的环境来看，要写一份详细完整的文档，也是几乎.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">流程状态机架构</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%BF%B0"><span class="toc-text">简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%BB%93%E6%9E%84"><span class="toc-text">1. 结构</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-1-%E7%8A%B6%E6%80%81-State"><span class="toc-text">1.1 状态 State</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#1-2-%E8%A7%84%E5%88%99-Rule"><span class="toc-text">1.2 规则 Rule</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#1-3-%E7%BB%84%E5%90%88"><span class="toc-text">1.3 组合</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#1-4-%E7%BA%AF%E7%B2%B9%E6%80%A7-%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="toc-text">1.4 纯粹性&#x2F;原子性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%BE%93%E5%87%BA%E6%96%87%E6%A1%A3"><span class="toc-text">2. 输出文档</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%8A%B6%E6%80%81%E8%B7%9F%E8%B8%AA"><span class="toc-text">3. 状态跟踪</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%AE%8C%E6%95%B4%E6%80%A7%E6%A3%80%E6%9F%A5"><span class="toc-text">4. 完整性检查</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">流程状态机架构</h1><time class="has-text-grey" datetime="2019-05-30T15:24:20.000Z">2019-05-30</time><article class="mt-2 post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在现实的项目过程中，由于人员的更替，以及业务的发展，总是会导致一个问题，那就是流程细节的丢失，项目时间越久，这个问题越是严重。所以往往会出现产品在不知道这个功能的流程的情况下设计方案，开发在开发过程中才发现流程上的设计缺陷，这不仅仅导致了项目时间的推迟，更可能导致整个业务流程上出现漏洞而危害整个产品，如果是云音乐这种类型产生问题可能表现不大，但像考拉这种涉及到钱的项目严重的可能导致信任危机。</p>
+<span id="more"></span>
+
+<p>要解决这个问题传统的做法就是详细业务文档，这需要：</p>
+<ul>
+<li>文档要求详细，并且在统一的地方维护</li>
+<li>人员交接的时候，文档需要完整交接</li>
+<li>多方（产品、开发、测试等）的信息同步</li>
+</ul>
+<p>遗憾的是，这么多年的工作中，我没有发现一个项目能够做到这一点的，遇到问题只能人肉阅读代码。在目前国内企业的环境来看，要写一份详细完整的文档，也是几乎不现实的。</p>
+<p>无论在哪种问题下，产品不了解流程，或是视觉不知道中间的弹窗，或是多方出现理解分歧，最终都是由开发阅读老代码来判断以前的流程是怎么样的，所以代码中的逻辑一般是最准确和详细的。在需求变更后，最先更新的也往往是代码（上帝也不能保证产品会把变革更新到文档）。</p>
+<p>那么我们如果能从我们的代码逻辑中直接提取这个流程，并且通过流程图的形式展示出来，也就省去了很多一部分为别人服务的时间。而且拥有流程图之后我们也可以直观的检查我们的代码逻辑是是不是存在bug。</p>
+<p>markdown有一个流程图表的功能，很多markdown编辑器也已经支持了，这给了我一个开发一个能够解决流程问题的思路。</p>
+<pre><code>mermaid
+graph TD
+</code></pre>
+<h2 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h2><p>我们需要这个新的框架能够足够通用，能够适用于大部分场景。</p>
+<ul>
+<li><p>每个流程需要足够的独立，不能依赖太多的外部信息，能够复用和自由组合。</p>
+</li>
+<li><p>可以输出可读性强的流程信息，比如markdown等。</p>
+</li>
+<li><p>有一定的自检能力，保证整个流程的完整性和正确性。</p>
+</li>
+</ul>
+<p>这里我们用一个最简单的点赞流程来解决：</p>
+<p><img src="/images/2019/statement/praise.png"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h4 id="1-结构"><a href="#1-结构" class="headerlink" title="1. 结构"></a>1. 结构</h4><h6 id="1-1-状态-State"><a href="#1-1-状态-State" class="headerlink" title="1.1 状态 State"></a>1.1 状态 State</h6><p>我们在看流程图的时候，把一整个流程拆分为一个个节点的时候，可以看到每个节点（状态）都可以抽象为拥有一个输入，多个输出的结构：</p>
+<p><img src="/images/2019/statement/state.png"></p>
+<p>每个具体状态必须只做一件事情，每个条件分支也必须为一个独立的状态。</p>
+<pre><code class="c">if (isLogin) &#123;
+    // do login
+&#125;
+else &#123;
+    // do unlogin
+&#125;
+</code></pre>
+<p>需要抽象为：</p>
+<pre><code>StateIsLogin --&gt; |isLogin| login
+StateIsLogin --&gt; |!isLogin| unlogin
+</code></pre>
+<p>多个状态可以组合成为一个复杂的状态，这个复杂的状态其行为依然和最简单的状态一致。当我们最终组合而成的点赞功能，也应该是一个状态机，拥有一个输入和多个输出。</p>
+<h6 id="1-2-规则-Rule"><a href="#1-2-规则-Rule" class="headerlink" title="1.2 规则 Rule"></a>1.2 规则 Rule</h6><p>不同的状态之间，是通过某种规则进行连接。</p>
+<p>最简单的规则就是执行下一步，最普遍的规则就是匹配上一个状态输出的结果。</p>
+<p>为什么这里要加入个规则的概念，而不是直接建立状态直接的依赖关系？主要原因有：</p>
+<ul>
+<li>设计上更简单、明确，通用性更强，我可以自定义规则来实现一些多参数的匹配等</li>
+<li>条理更清晰，可以方便的转化、输出文档</li>
+<li>可以集中化管理，可以方便的跟踪当前状态的变更</li>
+</ul>
+<h6 id="1-3-组合"><a href="#1-3-组合" class="headerlink" title="1.3 组合"></a>1.3 组合</h6><p>这里演示为了代码的可读性，所以采用了c++，实际使用的时候语言并不是阻碍。</p>
+<p>所有的状态创建统一通过工厂创建：</p>
+<pre><code class="c++">auto b = Builder(ctx);
+
+auto checkNetwork = b.check(^BOOL(NSDictionary *params) &#123;
+    return ![self isOffline];
+&#125;).debugName(@&quot;网络连接&quot;);
+
+auto checkLogin = b.check(^BOOL(NSDictionary * _Nullable params) &#123;
+    return [self isLogin];
+&#125;).debugName(@&quot;用户登录&quot;);
+
+...
+</code></pre>
+<p>那么上述一个简单的点赞流程可以写作：</p>
+<pre><code class="c++">b.start()
+    &gt;&gt; checkNetwork;
+
+checkNetwork
+    &gt;&gt; Result::Yes &gt;&gt; checkLogin
+    &gt;&gt; Result::No &gt;&gt; b.end();
+
+checkLogin
+    &gt;&gt; Result::Yes &gt;&gt; praiseRequest
+    &gt;&gt; Result::No &gt;&gt; b.end();
+
+praiseRequest
+    &gt;&gt; Result::Success &gt;&gt; successToast
+    &gt;&gt; Result::Failure &gt;&gt; failureToast;
+
+successToast
+    &gt;&gt; b.end();
+
+failureToast
+    &gt;&gt; b.end();
+    
+auto praiseMachine = b.compositeMachine();
+</code></pre>
+<p>那么我们最终得到的状态机可以在需要的时候启动：</p>
+<pre><code class="objc">[praiseMachine startWithParams:@&#123;@&quot;test&quot;: @&quot;Test Value&quot;&#125;];
+</code></pre>
+<p>这里就不再描述具体结构了，详细可以看我的<a target="_blank" rel="noopener" href="https://github.com/djs66256/DDStateMachine">demo</a></p>
+<h6 id="1-4-纯粹性-原子性"><a href="#1-4-纯粹性-原子性" class="headerlink" title="1.4 纯粹性&#x2F;原子性"></a>1.4 纯粹性&#x2F;原子性</h6><p>一个状态在被使用过后，可能会产生很多垃圾，会污染了这个状态的内部。反之我们可以定义在执行前后不会发生变化的状态为纯状态。</p>
+<p>如果我们的子状态机都是纯状态，那么我们组合而成的状态机也必然是纯状态。</p>
+<p>纯状态的一个好处就是可以被反复使用，而不需要重新创建，减少创建的开销，以及提前创建流程状态机。</p>
+<h4 id="2-输出文档"><a href="#2-输出文档" class="headerlink" title="2. 输出文档"></a>2. 输出文档</h4><p>我们把结构改成状态机虽然能够在代码流程上更为清晰，但也会增加学习成本和代码量，单纯这么做的意义并不大，所以我们需要将这个流程以更可见的形式输出。</p>
+<p>某些markdown编辑器集成了流程图的语法，我们刚好可以借助这个功能。下面我们将我们的结构格式化后打印出来：</p>
+<pre><code class="objc">DDStateMachineMarkdownWriter *writer = [DDStateMachineMarkdownWriter new];
+[praiseMachine debugWriteMarkdownText:writer];
+NSLog(@&quot;%@&quot;, writer.markdownText);
+</code></pre>
+<p>打印结果是</p>
+<pre><code>```mermaid
+graph TD
+
+DDBlockStateMachine1(网络连接) --&gt; |YES| DDBlockStateMachine2(用户登录)
+DDBlockStateMachine1(网络连接) --&gt; |NO| DDContinueStateMachine1(End)
+DDBlockStateMachine3(点赞请求) --&gt; |success| DDBlockStateMachine4(提示)
+DDBlockStateMachine3(点赞请求) --&gt; |failure| DDBlockStateMachine5(提示)
+DDContinueStateMachine2(Start) --&gt; DDBlockStateMachine1(网络连接)
+DDBlockStateMachine5(提示) --&gt; DDContinueStateMachine1(End)
+DDBlockStateMachine2(用户登录) --&gt; |NO| DDContinueStateMachine1(End)
+DDBlockStateMachine2(用户登录) --&gt; |YES| DDBlockStateMachine3(点赞请求)
+DDBlockStateMachine4(提示) --&gt; DDContinueStateMachine1(End)
+
+```
+</code></pre>
+<p>复制到markdown编辑器中，可以转化为流程图：</p>
+<p><img src="/images/2019/statement/state_graph.png"></p>
+<p>当然这只是一种导出方式，我们可以自行设计更好的导出方式。</p>
+<p>我们可以通过比对流程图，来看我们修改的逻辑流程是否发生了正确的改动。</p>
+<p>甚至我们可以在自动化测试脚本中加入流程的验证，或者控制流程的走向。</p>
+<p>在线上我们也可以用于记录用户操作，是在什么环节出现了错误导致本次流程的失败或者撤销。</p>
+<h4 id="3-状态跟踪"><a href="#3-状态跟踪" class="headerlink" title="3. 状态跟踪"></a>3. 状态跟踪</h4><p>当我们把流程封装成一个状态后，就相当于一个黑盒系统了，我们无法在这个流程中插入一些额外的非流程内的东西了，比如统计埋点等。</p>
+<p>这里我们需要给外部系统提供一个状态跟踪的能力，当触发这个状态变更的时候给予外部一个信号或者执行一段代码，具体能力可以依据需要实现。这也是上述为什么要设计Rule这一结构的原因之一。</p>
+<p>以上的流程代码可改为：</p>
+<pre><code class="c++">checkLogin
+    &gt;&gt; Result::Yes &gt;&gt; Trace(@&quot;login&quot;) &gt;&gt; praiseRequest
+    &gt;&gt; Result::No &gt;&gt; b.end();
+</code></pre>
+<p>那么我们就可以去监听@”login”这个信号，在请求成功后就会自动触发。比如在这里增加一个埋点信息。（关于埋点，我们后续可以再讨论一篇）</p>
+<p>比如打印信息：<code>Machine (用户登录) will goto (点赞请求) with log (login)</code></p>
+<h4 id="4-完整性检查"><a href="#4-完整性检查" class="headerlink" title="4. 完整性检查"></a>4. 完整性检查</h4><p>另一个开发中比较容易出现的问题就是对异常和特殊情况的判断，这个问题在传统的开发中并没有什么特别有效的方法去避免，只能靠个人能力和测试的完备。</p>
+<p>一个简单的例子就是，我们会在请求之后判断成功而更新UI，但会比较容易忽略失败的场景，而对于某些场景我们还是需要去处理失败的。</p>
+<p>而在这种新的结构下，我们就比较容易做这个检查了。</p>
+<p>我们需要在强制检查的状态中指定可能会返回的结果：</p>
+<pre><code class="objc">machine.validResults = @[Result::Yes, Result::No];
+</code></pre>
+<p>然后去检查可能的结果是否都已被Rule处理了：</p>
+<pre><code class="objc">NSError *error = nil;
+[praiseMachine checkRuleCompleteWithError:&amp;error];
+if (error) &#123;
+    NSLog(@&quot;Error: %@&quot;, error.localizedDescription);
+&#125;
+</code></pre>
+<p>如果发现缺失，则会输出哪一个状态的哪一条规则缺失：<code>Error: &lt;DDBlockStateMachine&gt; 用户登录 do not obey result(YES);</code>。</p>
+<p>这样我们就可以强制开发者必须保证逻辑流程的完整性，以防止我们在不经意间引入一些问题。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上几个能力是我觉得在现实的场景中比较重要的，现实项目中，特别是大型项目，人员流动频繁，有些时候整个业务都可能会进入一个不可控的场景，这时候我们不能保证外部给我们信息是完整的，也不能保证内部人员足够的熟悉项目的细节，那么只能从架构上进行约束，将很多流程规范化，结构化，进行强校验才是解决这类问题的方法。</p>
+<p>采用新的架构也必然会导致整个学习成本的上升，同时也要求整体人员的水平能够从更高的角度去看待问题，能够去理解这么做的原因和原理。</p>
+<p>约束并不是目的，而是在约束下我们能更好的保证质量。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2019/06/01/2019-06-01-%E4%BB%8E%E5%93%8D%E5%BA%94%E9%93%BE%E6%94%B6%E9%9B%86%E6%89%8B%E5%8A%A8%E5%9F%8B%E7%82%B9/" title="从响应链收集手动埋点"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 从响应链收集手动埋点</span></a><a class="button is-default" href="/2019/04/07/2019-04-07-Corountines-%E7%9C%8B%E4%BC%BC%E7%BE%8E%E5%A5%BD%E5%8D%B4%E5%8D%B1%E9%99%A9%E9%87%8D%E9%87%8D/" title="Corountines 看似美好却危险重重"><span class="has-text-weight-semibold">下一页: Corountines 看似美好却危险重重</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2019/05/30/2019-05-30-%E6%B5%81%E7%A8%8B%E7%8A%B6%E6%80%81%E6%9C%BA%E6%9E%B6%E6%9E%84/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>持续重构</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="在这一年的开发过程中，从什么都没有到现在的稳定迭代，其中经历了多次的重构工作，这里来聊聊其中的一些看法。
+
+
+我们的模块，从开始的刚好能够满足需求，到后面能够胜任各种要求，再到最后，简单的调用就可以完美的胜任工作。这是持续根据实际情况思考，经过多次重构而得到的结果。
+为什么要重构从出发点来看：
+
+功能缺陷，已经很难修复或者修复导致代码更加混乱，希望通过重构能够彻底的解决问题
+功能越来越复杂，代码越来越多，导致维护成本非常大
+
+从最终点来看：
+
+统一结构，将类似的东西统一，模块化，避免重复代码和相同的bug
+细分功能，将一个复杂的功能细分，减少开发的复杂度，增加复用性
+最终的目的都是为了使用者更加简单可靠
+
+最佳时机这里我把重构最适合的时机概括为两种：
+
+功能爆炸期，当功能复杂化，代码单纯的大量叠加时，必然形.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">持续重构</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%87%8D%E6%9E%84"><span class="toc-text">为什么要重构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E6%97%B6%E6%9C%BA"><span class="toc-text">最佳时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E6%9E%84%E7%9B%AE%E7%9A%84"><span class="toc-text">重构目的</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E9%87%8D%E6%9E%84"><i class="tag post-item-tag">重构</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">持续重构</h1><time class="has-text-grey" datetime="2017-04-16T17:05:18.000Z">2017-04-17</time><article class="mt-2 post-content"><p>在这一年的开发过程中，从什么都没有到现在的稳定迭代，其中经历了多次的重构工作，这里来聊聊其中的一些看法。</p>
+<span id="more"></span>
+
+<p>我们的模块，从开始的刚好能够满足需求，到后面能够胜任各种要求，再到最后，简单的调用就可以完美的胜任工作。这是持续根据实际情况思考，经过多次重构而得到的结果。</p>
+<h2 id="为什么要重构"><a href="#为什么要重构" class="headerlink" title="为什么要重构"></a>为什么要重构</h2><p>从出发点来看：</p>
+<ul>
+<li>功能缺陷，已经很难修复或者修复导致代码更加混乱，希望通过重构能够彻底的解决问题</li>
+<li>功能越来越复杂，代码越来越多，导致维护成本非常大</li>
+</ul>
+<p>从最终点来看：</p>
+<ul>
+<li>统一结构，将类似的东西统一，模块化，避免重复代码和相同的bug</li>
+<li>细分功能，将一个复杂的功能细分，减少开发的复杂度，增加复用性</li>
+<li>最终的目的都是为了使用者更加简单可靠</li>
+</ul>
+<h2 id="最佳时机"><a href="#最佳时机" class="headerlink" title="最佳时机"></a>最佳时机</h2><p>这里我把重构最适合的时机概括为两种：</p>
+<ul>
+<li>功能爆炸期，当功能复杂化，代码单纯的大量叠加时，必然形成很多复杂逻辑，并且冗余的代码</li>
+<li>类爆炸期，当类似的功能经过一定的归类，导致每种类型的子类型随着项目进行而急剧增加的时候</li>
+</ul>
+<p>以我们的项目经验来看，在前几期的时候，由于时间紧张，功能的大量累加，导致一个复杂点的页面就有上千行的代码，此时每次改动都会花费大量时间，而且有部分bug不能从根本上解决。这时候我们开始了第一次的大规模重构，主要包含以下几点：</p>
+<ul>
+<li>提出组件化框架，拆分页面代码，并把之前的一些功能用组件化改写</li>
+<li>统一相似组件，把视觉相似的组件进行统一化，并且对代码结构进行重新归类</li>
+<li>归纳部分相似功能，比如导航栏、页面头部的交互变化，网络层重新整理</li>
+</ul>
+<p>经过这次的整理拆分后，已经是一个比较同一的整体了，能够很好的复用和修改。</p>
+<p>但是经过部多个版本之后，又出现了新的问题。每次对页面和功能的特例化，导致相同资源的组件或者功能越来越多，导致每次使用的时候都不太清楚用哪个组件比较好。而且每个组件的接口也有略微的差异，并不能无缝的切换。以及一些原来就存在的，还没有经过拆分的功能。</p>
+<p>这次主要做的主要是统一化工作，比如最简单的点赞按钮，在很多地方使用，同时因为历史原因，很多图标并不是同一个资源，逻辑规则也并不统一，接口也不统一。经过对整个项目的观察，发现其实目前项目中点赞按钮只有大小两种样式，那么使用抽象工厂的方式进行归纳，对外暴露的只有一个类型，那么这样使用者就不需要知道其中具体有几个组件了。</p>
+<pre><code class="objc">public class PraiseButton &#123;
++ (instanceType)buttonWithStyle:style;
+&#125;
+
+private class _SmallPraiseButton: PraiseButton;
+private class _BigPraiseButton: PraiseButton;
+</code></pre>
+<p>而其他组件和功能对同一个资源的描述目前也是比较分散，今后也会按照这样的方式，按照资源类型进行归类与统一。</p>
+<h2 id="重构目的"><a href="#重构目的" class="headerlink" title="重构目的"></a>重构目的</h2><p>目前来说两次重构的目的是：</p>
+<ol>
+<li>第一次</li>
+</ol>
+<p>拆分功能，让每个模块尽可能的简单，可复用；减少复杂度，减少隐藏的bug；能够给团队其他成员使用。</p>
+<ol start="2">
+<li>第二次</li>
+</ol>
+<p>合并和归纳功能；统一合并相同资源、功能的接口；减少对外暴露的实现细节；让使用者面对的只有一个对象，使用更加简单；减少理解沟通成本。</p>
+<p>犹如读书时候老师说的一件事，刚开始读书的时候，书是薄的；读的久了，书就变厚了；当你已经精通书中所有，书又变薄了。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/04/17/2017-04-18-%E7%96%AF%E7%8B%82%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" title="疯狂日志系统"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 疯狂日志系统</span></a><a class="button is-default" href="/2017/04/16/2017-04-16-%E6%A8%AA%E7%AB%96%E5%B1%8F%E7%9A%84%E4%B8%80%E4%B8%AA%E5%AE%B9%E6%98%93%E8%A2%AB%E9%81%97%E6%BC%8F%E7%9A%84%E7%82%B9/" title="横竖屏的一个容易被遗漏的点"><span class="has-text-weight-semibold">下一页: 横竖屏的一个容易被遗漏的点</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/04/17/2017-04-17-%E6%8C%81%E7%BB%AD%E9%87%8D%E6%9E%84/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>跟着视频学编程：使用 Swift 并发机制提升 App 性能</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="通过更新一个现有的示例 app，我们将向你介绍如何通过 swift 并发机制来优化 app 的用户体验。我们将从一个主 actor app 入手，然后根据需要逐步引入异步代码。我们将使用任务来优化主 actor 上运行的代码，并探索如何通过将工作转移到后台来实现代码并行运行。我们将探讨数据争用安全机制提供的功能，并讲解如何解读和修复数据争用安全错误。最后，我们将展示如何在 app 情境中充分利用结构化并发机制。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+利用 Swift 并发机制提升 App 性能：从主线程到结构化并发的演进之路本文将深入剖析如何运用 Swift 并发机制优化 App 性能，通过一个贴纸生成应用的实例，展示从单线程到结构化并发的完整演.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">跟着视频学编程：使用 Swift 并发机制提升 App 性能</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Swift-%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E6%8F%90%E5%8D%87-App-%E6%80%A7%E8%83%BD%EF%BC%9A%E4%BB%8E%E4%B8%BB%E7%BA%BF%E7%A8%8B%E5%88%B0%E7%BB%93%E6%9E%84%E5%8C%96%E5%B9%B6%E5%8F%91%E7%9A%84%E6%BC%94%E8%BF%9B%E4%B9%8B%E8%B7%AF"><span class="toc-text">利用 Swift 并发机制提升 App 性能：从主线程到结构化并发的演进之路</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E8%83%8C%E6%99%AF%E4%B8%8E%E6%9E%B6%E6%9E%84"><span class="toc-text">应用背景与架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%BC%94%E8%BF%9B%E8%B7%AF%E5%BE%84"><span class="toc-text">性能优化演进路径</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E9%97%AE%E9%A2%98%EF%BC%9A%E4%B8%BB%E7%BA%BF%E7%A8%8B%E9%98%BB%E5%A1%9E"><span class="toc-text">初始问题：主线程阻塞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E5%BC%82%E6%AD%A5%E5%8A%A0%E8%BD%BD%E7%85%A7%E7%89%87"><span class="toc-text">第一步：异步加载照片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E5%90%8E%E5%8F%B0%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86"><span class="toc-text">第二步：后台图像处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86%E4%BC%98%E5%8C%96"><span class="toc-text">第三步：并行处理优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E7%BB%93%E6%9E%84%E5%8C%96%E5%B9%B6%E5%8F%91%E4%B8%8E%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86"><span class="toc-text">第四步：结构化并发与批量处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">关键技术与最佳实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%88%90%E6%9E%9C"><span class="toc-text">性能优化成果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-text">相关资源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/tvos"><i class="tag post-item-tag">tvos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/watchos"><i class="tag post-item-tag">watchos</i></a><a href="/tags/%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7"><i class="tag post-item-tag">开发者工具</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">跟着视频学编程：使用 Swift 并发机制提升 App 性能</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>通过更新一个现有的示例 app，我们将向你介绍如何通过 swift 并发机制来优化 app 的用户体验。我们将从一个主 actor app 入手，然后根据需要逐步引入异步代码。我们将使用任务来优化主 actor 上运行的代码，并探索如何通过将工作转移到后台来实现代码并行运行。我们将探讨数据争用安全机制提供的功能，并讲解如何解读和修复数据争用安全错误。最后，我们将展示如何在 app 情境中充分利用结构化并发机制。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9949/9949_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/270/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="利用-Swift-并发机制提升-App-性能：从主线程到结构化并发的演进之路"><a href="#利用-Swift-并发机制提升-App-性能：从主线程到结构化并发的演进之路" class="headerlink" title="利用 Swift 并发机制提升 App 性能：从主线程到结构化并发的演进之路"></a>利用 Swift 并发机制提升 App 性能：从主线程到结构化并发的演进之路</h1><p>本文将深入剖析如何运用 Swift 并发机制优化 App 性能，通过一个贴纸生成应用的实例，展示从单线程到结构化并发的完整演进过程。</p>
+<h2 id="应用背景与架构"><a href="#应用背景与架构" class="headerlink" title="应用背景与架构"></a>应用背景与架构</h2><p>该示例应用是一个能将任意照片转为贴纸包的创意工具，包含两个核心组件：</p>
+<ul>
+<li>贴纸轮播视图（StickerCarousel）：展示带有渐变色背景的照片贴纸</li>
+<li>网格预览视图（StickerGrid）：提供贴纸包的导出分享功能</li>
+</ul>
+<p>应用的底层架构采用 PhotoProcessor 结构体处理照片，执行两项核心操作：</p>
+<ol>
+<li>从照片中提取贴纸图像</li>
+<li>计算照片的主色调（用于生成渐变色背景）</li>
+</ol>
+<h2 id="性能优化演进路径"><a href="#性能优化演进路径" class="headerlink" title="性能优化演进路径"></a>性能优化演进路径</h2><h3 id="初始问题：主线程阻塞"><a href="#初始问题：主线程阻塞" class="headerlink" title="初始问题：主线程阻塞"></a>初始问题：主线程阻塞</h3><p>最初的实现将所有逻辑放在主线程执行，导致以下问题：</p>
+<ul>
+<li>照片加载时界面冻结</li>
+<li>图像处理耗时超过10秒</li>
+<li>滚动体验卡顿</li>
+</ul>
+<pre><code class="swift">// 初始同步实现（导致主线程阻塞）
+struct PhotoProcessor &#123;
+    func process(data: Data) -&gt; ProcessedPhoto? &#123;
+        let sticker = extractSticker(from: data) // 耗时操作
+        let colors = extractColors(from: data)   // 耗时操作
+        return ProcessedPhoto(sticker: sticker, colorScheme: colors)
+    &#125;
+&#125;
+</code></pre>
+<h3 id="第一步：异步加载照片"><a href="#第一步：异步加载照片" class="headerlink" title="第一步：异步加载照片"></a>第一步：异步加载照片</h3><p>通过引入 async&#x2F;await 机制，将照片加载移至后台：</p>
+<pre><code class="swift">// 异步加载实现
+func loadPhoto(_ item: SelectedPhoto) async &#123;
+    var data: Data? = try? await item.loadTransferable(type: Data.self)
+    guard let data else &#123; return &#125;
+    processedPhotos[item.id] = Image(data: data)
+&#125;
+</code></pre>
+<p>在视图中使用 task 修饰符触发异步加载：</p>
+<pre><code class="swift">StickerPlaceholder()
+    .task &#123;
+        await viewModel.loadPhoto(selectedPhoto)
+    &#125;
+</code></pre>
+<h3 id="第二步：后台图像处理"><a href="#第二步：后台图像处理" class="headerlink" title="第二步：后台图像处理"></a>第二步：后台图像处理</h3><p>运用 Swift 6.1 的并发特性，将图像处理移至后台：</p>
+<pre><code class="swift">nonisolated struct PhotoProcessor &#123;
+    @concurrent
+    func process(data: Data) async -&gt; ProcessedPhoto? &#123;
+        // 后台执行的处理逻辑
+    &#125;
+&#125;
+</code></pre>
+<h3 id="第三步：并行处理优化"><a href="#第三步：并行处理优化" class="headerlink" title="第三步：并行处理优化"></a>第三步：并行处理优化</h3><p>通过 async let 并行执行相互独立的操作：</p>
+<pre><code class="swift">async let sticker = extractSticker(from: data)  // 并行执行
+async let colors = extractColors(from: data)    // 并行执行
+</code></pre>
+<p>处理数据竞争问题的方法：</p>
+<pre><code class="swift">private func extractColors(from data: Data) -&gt; PhotoColorScheme? &#123;
+    let colorExtractor = ColorExtractor()  // 每次创建新实例
+    return colorExtractor.extractColors(from: data)
+&#125;
+</code></pre>
+<h3 id="第四步：结构化并发与批量处理"><a href="#第四步：结构化并发与批量处理" class="headerlink" title="第四步：结构化并发与批量处理"></a>第四步：结构化并发与批量处理</h3><p>使用 TaskGroup 实现高效的批量照片处理：</p>
+<pre><code class="swift">func processAllPhotos() async &#123;
+    await withTaskGroup &#123; group in
+        for item in selection &#123;
+            group.addTask &#123;
+                // 并行处理每个照片
+            &#125;
+        &#125;
+        for await result in group &#123;
+            // 收集处理结果
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="关键技术与最佳实践"><a href="#关键技术与最佳实践" class="headerlink" title="关键技术与最佳实践"></a>关键技术与最佳实践</h2><ol>
+<li><p><strong>主线程优化策略</strong></p>
+<ul>
+<li>使用 await 创建暂停点</li>
+<li>通过 task 修饰符管理异步任务生命周期</li>
+</ul>
+</li>
+<li><p><strong>后台执行控制</strong></p>
+<ul>
+<li>nonisolated 标记脱离主线程</li>
+<li>@concurrent 确保方法在后台执行</li>
+</ul>
+</li>
+<li><p><strong>并行处理模式</strong></p>
+<ul>
+<li>async let 并行独立任务</li>
+<li>避免共享可变状态</li>
+</ul>
+</li>
+<li><p><strong>数据竞争防护</strong></p>
+<ul>
+<li>Swift 6 编译时检查</li>
+<li>采用 Sendable 值类型</li>
+<li>必要时隔离到主线程</li>
+</ul>
+</li>
+<li><p><strong>结构化并发</strong></p>
+<ul>
+<li>TaskGroup 批量任务管理</li>
+<li>结果有序收集机制</li>
+</ul>
+</li>
+</ol>
+<h2 id="性能优化成果"><a href="#性能优化成果" class="headerlink" title="性能优化成果"></a>性能优化成果</h2><p>经过上述优化步骤，应用实现了：</p>
+<ul>
+<li>主线程保持高响应性</li>
+<li>图像处理时间大幅缩短</li>
+<li>滚动体验流畅</li>
+<li>批量处理效率显著提升</li>
+</ul>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/266">探索 SwiftUI 中的并发机制</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/268">采用 Swift 并发</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10248">使用 Instruments 分析挂起</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10170">超越结构化并发的基础</a>  </p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://www.swift.org/migration/documentation/migrationguide/">Swift Migration Guide</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_262/" title="实现 Metal 4 机器学习与图形应用程序的完美融合"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 实现 Metal 4 机器学习与图形应用程序的完美融合</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_273/" title="了解 SwiftUI 空间布局"><span class="has-text-weight-semibold">下一页: 了解 SwiftUI 空间布局</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_270/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

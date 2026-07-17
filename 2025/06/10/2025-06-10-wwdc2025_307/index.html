@@ -1,0 +1,140 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>探索 Swift 和 Java 互操作性</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="了解如何在一个代码库中混合使用 swift 和 java。我们将介绍 swift-java 互操作性项目，该项目让你可以在 java 程序中使用 swift，反之亦然。我们将向你展示如何使用 swift-java 提供的工具和库来编写可在这两个运行时之间进行互操作的安全高效代码。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+探索 Swift 与 Java 的互操作性在现代软件开发中，跨语言互操作性变得越来越重要。Swift 语言团队推出的 Swift-Java 互操作性项目，为开发者提供了在单一代码库中混合使用 Swift 和 Java 的能力，无需进行大规模重写即可逐步引入新技术。
+项目背景与意义Swift-Java 互操作性项目旨在消除语言壁垒，允.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">探索 Swift 和 Java 互操作性</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2-Swift-%E4%B8%8E-Java-%E7%9A%84%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7"><span class="toc-text">探索 Swift 与 Java 的互操作性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF%E4%B8%8E%E6%84%8F%E4%B9%89"><span class="toc-text">项目背景与意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%9F%BA%E7%A1%80%EF%BC%9A%E8%BF%90%E8%A1%8C%E6%97%B6%E6%AF%94%E8%BE%83"><span class="toc-text">技术基础：运行时比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E5%8E%9F%E7%94%9F%E6%96%B9%E6%B3%95-JNI-%E9%9B%86%E6%88%90"><span class="toc-text">Java 原生方法 (JNI) 集成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SwiftJava-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">SwiftJava 解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%BB%84%E4%BB%B6"><span class="toc-text">主要组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E8%BF%9B%E7%9A%84-JNI-%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-text">改进的 JNI 工作流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E-Swift-%E8%B0%83%E7%94%A8-Java-%E5%BA%93"><span class="toc-text">从 Swift 调用 Java 库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E-Java-%E8%B0%83%E7%94%A8-Swift-%E5%BA%93"><span class="toc-text">从 Java 调用 Swift 库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%8E%B0%E7%8A%B6%E4%B8%8E%E6%9C%AA%E6%9D%A5"><span class="toc-text">项目现状与未来</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/swift"><i class="tag post-item-tag">swift</i></a><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/tvos"><i class="tag post-item-tag">tvos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/watchos"><i class="tag post-item-tag">watchos</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">探索 Swift 和 Java 互操作性</h1><time class="has-text-grey" datetime="2025-06-10T13:46:47.000Z">2025-06-10</time><article class="mt-2 post-content"><p>了解如何在一个代码库中混合使用 swift 和 java。我们将介绍 swift-java 互操作性项目，该项目让你可以在 java 程序中使用 swift，反之亦然。我们将向你展示如何使用 swift-java 提供的工具和库来编写可在这两个运行时之间进行互操作的安全高效代码。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10027/10027_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/307/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="探索-Swift-与-Java-的互操作性"><a href="#探索-Swift-与-Java-的互操作性" class="headerlink" title="探索 Swift 与 Java 的互操作性"></a>探索 Swift 与 Java 的互操作性</h1><p>在现代软件开发中，跨语言互操作性变得越来越重要。Swift 语言团队推出的 Swift-Java 互操作性项目，为开发者提供了在单一代码库中混合使用 Swift 和 Java 的能力，无需进行大规模重写即可逐步引入新技术。</p>
+<h2 id="项目背景与意义"><a href="#项目背景与意义" class="headerlink" title="项目背景与意义"></a>项目背景与意义</h2><p>Swift-Java 互操作性项目旨在消除语言壁垒，允许开发者：</p>
+<ul>
+<li>在 Java 程序中调用 Swift 代码</li>
+<li>在 Swift 程序中调用 Java 代码</li>
+<li>重用现有 Java 库</li>
+<li>将 Swift 库提供给 Java 项目使用</li>
+</ul>
+<p>这种互操作性支持渐进式迁移策略，开发者可以在不影响现有代码库的情况下，逐步用 Swift 替换或添加新功能。</p>
+<h2 id="技术基础：运行时比较"><a href="#技术基础：运行时比较" class="headerlink" title="技术基础：运行时比较"></a>技术基础：运行时比较</h2><p>尽管 Java 和 Swift 运行时有显著差异，但两者也存在诸多相似之处：</p>
+<ol>
+<li><strong>面向对象特性</strong>：都提供类和支持继承的面向对象模型</li>
+<li><strong>内存管理</strong>：均采用自动内存管理机制</li>
+<li><strong>泛型系统</strong>：具有相似的泛型系统（尽管运行时表现不同）</li>
+<li><strong>错误处理</strong>：Swift 错误和 Java 异常都可抛出处理</li>
+</ol>
+<p>这些相似点为互操作性奠定了良好基础。</p>
+<h2 id="Java-原生方法-JNI-集成"><a href="#Java-原生方法-JNI-集成" class="headerlink" title="Java 原生方法 (JNI) 集成"></a>Java 原生方法 (JNI) 集成</h2><p>Java 原生接口 (JNI) 是 Java 与原生代码互操作的传统方式。典型的 JNI 工作流程包括：</p>
+<ol>
+<li>在 Java 中定义原生方法</li>
+<li>使用 Java 编译器生成 C 头文件</li>
+<li>使用原生语言（如 Swift）实现函数</li>
+</ol>
+<p>然而，原始 JNI 存在诸多痛点：</p>
+<ul>
+<li>大量样板代码</li>
+<li>方法签名匹配容易出错</li>
+<li>对象生命周期管理复杂</li>
+<li>需要额外的构建步骤</li>
+</ul>
+<h2 id="SwiftJava-解决方案"><a href="#SwiftJava-解决方案" class="headerlink" title="SwiftJava 解决方案"></a>SwiftJava 解决方案</h2><p>SwiftJava 项目提供了一套完整的工具链来简化互操作：</p>
+<h3 id="主要组件"><a href="#主要组件" class="headerlink" title="主要组件"></a>主要组件</h3><ol>
+<li><strong>JavaKit</strong>：Swift 库，提供 JNI 处理宏和工具</li>
+<li><strong>SwiftKit</strong>：Java 库，帮助处理 Swift 对象</li>
+<li><strong>Swift-Java 命令行工具</strong>：自动化代码生成</li>
+<li><strong>构建系统集成</strong>：支持 SwiftPM 插件和 Gradle 集成</li>
+</ol>
+<h3 id="改进的-JNI-工作流"><a href="#改进的-JNI-工作流" class="headerlink" title="改进的 JNI 工作流"></a>改进的 JNI 工作流</h3><p>使用 SwiftJava 后，JNI 实现变得简洁高效：</p>
+<pre><code class="swift">@JavaImplementation
+extension JNIExample: JNIExampleNativeMethods &#123;
+    @JavaMethod
+    func compute(_ value: JavaInteger) -&gt; JavaInteger &#123;
+        // 业务逻辑实现
+    &#125;
+&#125;
+</code></pre>
+<p>SwiftJava 带来的优势：</p>
+<ul>
+<li>消除手动头文件生成</li>
+<li>自动处理方法签名</li>
+<li>改进的对象生命周期管理</li>
+<li>减少错误可能性</li>
+</ul>
+<h2 id="从-Swift-调用-Java-库"><a href="#从-Swift-调用-Java-库" class="headerlink" title="从 Swift 调用 Java 库"></a>从 Swift 调用 Java 库</h2><p>SwiftJava 支持导入完整的 Java 库而无需修改源代码。以 Apache Commons CSV 为例：</p>
+<ol>
+<li><strong>依赖管理</strong>：通过 Gradle 解析 Java 依赖</li>
+<li><strong>配置方式</strong>：<ul>
+<li>使用 SwiftPM 插件（需关闭安全沙箱）</li>
+<li>或使用命令行工具手动解析</li>
+</ul>
+</li>
+</ol>
+<pre><code class="swift">import JavaKit
+import JavaApacheCommonsCSV
+
+// 在 Swift 中启动 JVM 并直接使用 Java 库
+let fileReader = FileReader(&quot;data.csv&quot;)
+let parser = CSVParser(fileReader)
+for record in parser &#123;
+    // 处理 CSV 记录
+&#125;
+</code></pre>
+<p>关键特性：</p>
+<ul>
+<li>无缝处理 Java 集合（支持 Swift for-each）</li>
+<li>自动管理 Java 对象生命周期</li>
+<li>支持复杂的传递依赖解析</li>
+</ul>
+<h2 id="从-Java-调用-Swift-库"><a href="#从-Java-调用-Swift-库" class="headerlink" title="从 Java 调用 Swift 库"></a>从 Java 调用 Swift 库</h2><p>SwiftJava 还支持将整个 Swift 库包装为 Java 可用的形式：</p>
+<ol>
+<li><strong>使用 Foreign Function &amp; Memory API</strong>（Java 22+）</li>
+<li><strong>生成 Java 包装类</strong>：<ul>
+<li>实现 Swift 值类型接口</li>
+<li>包含原生内存指针</li>
+<li>映射所有公共方法和属性</li>
+</ul>
+</li>
+</ol>
+<pre><code class="java">// Java 中使用 Swift 结构体
+try (var arena = ConfinedArena.open()) &#123;
+    var business = new SwiftyBusiness(arena, 42);
+    business.doSomething();
+&#125; // 自动清理
+</code></pre>
+<p>内存管理最佳实践：</p>
+<ul>
+<li>优先使用 <code>ConfinedArena</code> 替代依赖 GC</li>
+<li>确保明确的生命周期管理</li>
+<li>避免大量对象终结带来的性能问题</li>
+</ul>
+<h2 id="项目现状与未来"><a href="#项目现状与未来" class="headerlink" title="项目现状与未来"></a>项目现状与未来</h2><p>SwiftJava 目前已经提供了：</p>
+<ul>
+<li>安全的互操作代码生成</li>
+<li>高效的内存管理</li>
+<li>与主流构建工具集成</li>
+</ul>
+<p>该项目完全开源，欢迎开发者参与贡献或通过 Swift 论坛提供反馈。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Swift-Java 互操作性为开发者提供了灵活的选择：</p>
+<ol>
+<li>在现有 Java 应用中逐步引入 Swift</li>
+<li>在 Swift 项目中复用 Java 生态</li>
+<li>将 Swift 库分享给 Java 团队使用</li>
+</ol>
+<p>随着项目发展，Swift 和 Java 之间的互操作将变得更加无缝和安全。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/312">优化 Swift 代码的内存使用和性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/311">安全地混合使用 C、C ++ 和 Swift</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/245">Swift 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10172">融合 Swift 和 C++</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://www.swift.org/">The Swift website</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_306/" title="通过 Instrument 优化 SwiftUI 性能"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 通过 Instrument 优化 SwiftUI 性能</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_310/" title="使用全新设计系统构建 AppKit App"><span class="has-text-weight-semibold">下一页: 使用全新设计系统构建 AppKit App</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_307/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

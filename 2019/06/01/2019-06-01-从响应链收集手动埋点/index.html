@@ -1,0 +1,143 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>从响应链收集手动埋点</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="背景手动埋点一直以来都是一个比较麻烦的行为，埋点不属于业务逻辑，而我们必须插入业务逻辑中，有可能就导致了我们不得不修改设计以满足埋点的需求。
+同时数据方很多时候会要求带上额外的数据，而这些额外的数据甚至和当前模块毫无关系，也就是破坏了我们的独立性和解耦原则。比如在事件点击中加入当前页面的pageId，当前cell的index等等。
+
+
+简介目前我们手动埋点的埋点信息可能包含的内容比较多，但也可以进行归类。
+不同类型的埋点信息都是在不同的层上收集的，比如我们需要pageId，那么这个必然是在当前VC上才有，如果我们要收集上个页面的pageId，那么只有navigationController上会有该信息，而如果我们需要收集cell的位置信息，那么我们需要在dataSource上进行收集。
+这给我们的埋点收集一.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">从响应链收集手动埋点</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-text">数据流</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%96%B9%E5%90%91"><span class="toc-text">数据方向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81-1"><span class="toc-text">数据流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89"><span class="toc-text">自定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">过滤器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E5%9E%8B%E5%9F%8B%E7%82%B9"><span class="toc-text">逻辑型埋点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/iOS"><i class="tag post-item-tag">iOS</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">从响应链收集手动埋点</h1><time class="has-text-grey" datetime="2019-06-01T09:49:06.000Z">2019-06-01</time><article class="mt-2 post-content"><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>手动埋点一直以来都是一个比较麻烦的行为，埋点不属于业务逻辑，而我们必须插入业务逻辑中，有可能就导致了我们不得不修改设计以满足埋点的需求。</p>
+<p>同时数据方很多时候会要求带上额外的数据，而这些额外的数据甚至和当前模块毫无关系，也就是破坏了我们的独立性和解耦原则。比如在事件点击中加入当前页面的pageId，当前cell的index等等。</p>
+<span id="more"></span>
+
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>目前我们手动埋点的埋点信息可能包含的内容比较多，但也可以进行归类。</p>
+<p>不同类型的埋点信息都是在不同的层上收集的，比如我们需要pageId，那么这个必然是在当前VC上才有，如果我们要收集上个页面的pageId，那么只有navigationController上会有该信息，而如果我们需要收集cell的位置信息，那么我们需要在dataSource上进行收集。</p>
+<p>这给我们的埋点收集一个思路，我们手动埋点的时候不要马上收集完所有数据上报，而是收集当前层存在的信息，并把这个埋点任务抛向上层。每一层都会往埋点任务里面写入自己层的信息，直到结束，这样我们就可以收集一个非常完整的埋点信息。</p>
+<p>当然这样做的缺点是埋点里面的信息比较多，比较冗余，但作为埋点信息来说，信息冗余并不是太大的问题。</p>
+<p>要建立这样一个结构，如果是一些新业务或者组织架构设计较好的业务来说，会比较简单，但是对于一个已经成型的，有很多复杂的业务却比较麻烦。这里需要去寻找一种方法，使改动量尽可能的小，并且组织灵活。</p>
+<h2 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h2><h4 id="数据方向"><a href="#数据方向" class="headerlink" title="数据方向"></a>数据方向</h4><p>首先我们来看看一般应用的页面结构。</p>
+<p><img src="/images/2019/trace/view_structure.png"></p>
+<pre><code>绿色：Application
+蓝色：View
+橘色：ViewController
+</code></pre>
+<p>我们更新页面的数据方向是这样的：</p>
+<p><img src="/images/2019/trace/data_flow.png"></p>
+<p>但是我们埋点触发，需要收集的数据却是这样的：</p>
+<p><img src="/images/2019/trace/trace_flow.png"></p>
+<p>我们更新数据和收集数据的方向是完全相反的，这也就是导致我们手动埋点总是会感觉很别扭的原因。</p>
+<p>而我们一般做埋点的方式，是将这个事件通过回调等方式一层层传递到ViewController上，然后进行统一埋点。</p>
+<p>但是对于一个复杂的VC，我们往往会继续拆分，成为多个独立组件的组合（可以看我之前的DDComponent），这样不仅能避免VC的无限膨胀，也能解耦业务。但是遇到埋点需求时，我们却不得不打破这个组织方式，因为有很多信息必须要在VC上才能获取到。</p>
+<h4 id="数据流-1"><a href="#数据流-1" class="headerlink" title="数据流"></a>数据流</h4><p>我们在上面了解到的埋点现状，可以抽象为一条数据流，在这个数据流上有多个节点，不同的节点可以收集必要的埋点信息。</p>
+<p><img src="/images/2019/trace/trace_node.png"></p>
+<p>而每一个节点，可以抽象为一个Stream。</p>
+<p>这里我们可以看到每一个节点同时也是响应链的一部分，那么我们是不是就可以依靠响应链来连接整个数据流呢？这样我们就不需要大量改动代码，从而达到建立这套系统了。</p>
+<pre><code class="objc">
+@interface UIResponder (TraceStream)
+
+@property (nonatomic, strong, readonly, null_resettable) TraceStream *trace;
+
+@end
+</code></pre>
+<p>这里我们还需要为这条数据流创建一个终点，也就是最终输出端，可以选择Application上的节点为输出节点。</p>
+<pre><code class="objc">@implementation UIApplication (TracePipeline)
+
+- (TraceStream *)trace &#123;
+    NSAssert([NSThread isMainThread], @&quot;Must call on main thread.&quot;);
+    TraceStream *stream = objc_getAssociatedObject(self, @selector(trace));
+    if (stream == nil) &#123;
+        TraceStream *stream = [[LoggerTraceStream alloc] init];
+        objc_setAssociatedObject(self, @selector(nm_trace), stream, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        return stream;
+    &#125;
+    return stream;
+&#125;
+
+@end
+</code></pre>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>这里我们举一个列表中点赞埋点的列子：</p>
+<p>在cell中的某个view中，触发了点赞：</p>
+<pre><code class="objc">- (void)onPriase:(id)sender &#123;
+    [self.trace addTraceInfoWithBuilder:^(TraceInfo * _Nonnull traceInfo) &#123;
+        traceInfo
+        .setAction(@&quot;praise&quot;)
+        .setId(self.video.videoId)
+        .setType(self.praised ? @&quot;1&quot; : @&quot;0&quot;);
+    &#125;];
+&#125;
+</code></pre>
+<p>但是我们还需要知道这个cell是位于列表中的位置，那么我们可以cell中加入该信息：</p>
+<pre><code class="objc">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath &#123;
+    UITableViewCell *cell = ...;
+    
+    [cell.trace.filter setFilterBlock:^BOOL(TraceInfo * _Nonnull traceInfo) &#123;
+        traceInfo.set(@&quot;index&quot;, @(indexPath.row).stringValue);
+        return YES;
+    &#125; forKey:@&quot;index&quot;];
+    
+    return cell;
+&#125;
+</code></pre>
+<p>然后我们还需要知道是在哪个页面中触发的，那么我们需要在vc中加入：</p>
+<pre><code class="objc">- (void)viewDidLoad &#123;
+    [super viewDidLoad];
+    [self.trace.filter setFilterBlock:^BOOL(TraceInfo * _Nonnull traceInfo) &#123;
+        traceInfo.setPage(@&quot;test&quot;);
+        return YES;
+    &#125; forKey:@&quot;addPage&quot;];
+&#125;
+</code></pre>
+<p>那么最后我们收集到的埋点信息就会包括了<code>praise</code>, <code>index</code>, <code>page</code>信息。</p>
+<h4 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h4><p>在开发过程中，我们可能还会有很多业务分割的部分，比如ViewModel，这些内容并不一定在响应链中，那么我们需要能够将这个数据流通过该组件来收集数据。</p>
+<p>这里我们可以在默认的数据流中插入一个自定义节点来解决。本身这个数据流和响应链其实并没有什么关系，我们只是利用了响应链的结构而已。</p>
+<pre><code class="objc">viewModel.view.trace.outStream = viewModel.trace;
+viewModel.trace.outStream = controller.trace;
+</code></pre>
+<p><img src="/images/2019/trace/custom_trace.png"></p>
+<p>这样我们就可以自定义数据节点了。</p>
+<h4 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h4><p>由于各种原因，我们的埋点并不能完全的通用，比如有时候，同样是点赞，有时候是<code>praise</code>，有时候是<code>like</code>。有时候我们又不希望触发某些埋点。</p>
+<p>我们需要在某些确定的节点要求能够过滤或者转换某些埋点，那么我们需要在每个节点上添加过滤器：</p>
+<pre><code class="objc">[self.trace.filter setFilterBlock:^BOOL(NMTraceInfo * _Nonnull traceInfo) &#123;
+    if ([traceInfo.action isEqual:@&quot;praise&quot;]) &#123;
+        traceInfo.setAction(@&quot;like&quot;);
+    &#125;
+    return YES;
+&#125; forKey:@&quot;addPage&quot;];
+</code></pre>
+<p><img src="/images/2019/trace/trace_filter.png"></p>
+<p>虽然这么做并不是特别好，但在一些无法抗拒的情况下还是能够给我们一个修改的机会。</p>
+<h4 id="逻辑型埋点"><a href="#逻辑型埋点" class="headerlink" title="逻辑型埋点"></a>逻辑型埋点</h4><p>另一种让我们所有人都头疼的就是逻辑型埋点。</p>
+<p>一般来说我们的埋点都是事件埋点，也就是触发一个方法，我们埋一次。但是有些需求要统计时长，比如用户点播放，和点暂停之前的时间间隔。按照原有方法埋点，那么我们可能需要在VC里增加一个成员，专门为了记录这个时间间隔。而这些成员和业务毫无关系，只服务于埋点信息，导致了业务的耦合增加。</p>
+<p>对于我们程序来说，事件的点是比较简单的，而这种逻辑型埋点则非常复杂。如果我们把逻辑型埋点都转化为事件埋点，那么就会减少很多复杂度。</p>
+<pre><code class="objc">__block NSDate *playTime = nil;
+[self.trace.filter setFilterBlock:^BOOL(NMTraceInfo * _Nonnull traceInfo) &#123;
+    if ([traceInfo.action isEqual:@&quot;play&quot;]) &#123;
+        playTime = [NSDate date];
+        return NO;
+    &#125;
+    else if ([traceInfo.action isEqual:@&quot;pause&quot;]) &#123;
+        // 得到两者之间的时间间隔
+        [self.trace addTraceInfoWithBuilder:^(TraceInfo * _Nonnull traceInfo) &#123;
+            traceInfo
+            .setAction(@&quot;play-pause&quot;)
+            .setTime([playTime timeIntervalSinceNow]);
+        &#125;];
+        playTime = nil;
+        return NO;
+    &#125;
+    return YES;
+&#125; forKey:@&quot;play-pause&quot;];
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这种方案虽然能够解决很大一部分的埋点痛点，但也依然存在一些缺陷。</p>
+<ul>
+<li>开发者必须要了解这种方案的原理，才能知道在什么节点收集埋点，以及如何插入自定义节点。</li>
+<li>埋点信息会比较冗余，会带上一些无用信息。</li>
+<li>埋点信息必须保证大部分是统一的，不然每个页面全部采用不同的key和埋点方式，也会让这个系统失去复用的能力。</li>
+</ul>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2019/11/30/2019-11-30-%E9%A1%B5%E9%9D%A2%E7%BB%84%E4%BB%B6%E5%8C%96%E8%AE%BE%E8%AE%A1%E6%B1%87%E6%80%BB/" title="页面组件化设计汇总"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 页面组件化设计汇总</span></a><a class="button is-default" href="/2019/05/30/2019-05-30-%E6%B5%81%E7%A8%8B%E7%8A%B6%E6%80%81%E6%9C%BA%E6%9E%B6%E6%9E%84/" title="流程状态机架构"><span class="has-text-weight-semibold">下一页: 流程状态机架构</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2019/06/01/2019-06-01-%E4%BB%8E%E5%93%8D%E5%BA%94%E9%93%BE%E6%94%B6%E9%9B%86%E6%89%8B%E5%8A%A8%E5%9F%8B%E7%82%B9/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

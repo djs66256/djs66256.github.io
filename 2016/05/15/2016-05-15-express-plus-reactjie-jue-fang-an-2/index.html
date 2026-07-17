@@ -1,0 +1,388 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>express+react解决方案 （二）</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="这里来谈谈rest api服务构建。
+
+
+ExpressExpress是node做http服务最有名的一个框架了，具体如何安装使用我不做介绍了，大家可以参考官方网站。
+ES6由于ES6的新特性实在是太棒了，所以我选择使用ES6。可是node目前版本v6.0.0对ES6的支持还不够好。还好有babel这个开源库。ES6 语法可以参考阮一峰的这本书 &amp;gt;&amp;gt;
+可以直接全局安装 npm install -g babel-cli ，启动时候把node替换为babel-node，就可以完全支持ES6了。
+我为了调试方便，所以在代码中启用支持。
+首先安装babel依赖库。
+&amp;quot;dependencies&amp;quot;: &amp;#123;
+    &amp;quot;babel-core&amp;quot;: &amp;quot;~6..."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">express+react解决方案 （二）</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Express"><span class="toc-text">Express</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES6"><span class="toc-text">ES6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySql"><span class="toc-text">MySql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis"><span class="toc-text">Redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-text">结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/node"><i class="tag post-item-tag">node</i></a><a href="/tags/express"><i class="tag post-item-tag">express</i></a><a href="/tags/%E6%9E%B6%E6%9E%84"><i class="tag post-item-tag">架构</i></a><a href="/tags/ES6"><i class="tag post-item-tag">ES6</i></a><a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8"><i class="tag post-item-tag">服务器</i></a><a href="/tags/mysql"><i class="tag post-item-tag">mysql</i></a><a href="/tags/redis"><i class="tag post-item-tag">redis</i></a><a href="/tags/sequelize"><i class="tag post-item-tag">sequelize</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">express+react解决方案 （二）</h1><time class="has-text-grey" datetime="2016-05-14T16:51:38.000Z">2016-05-15</time><article class="mt-2 post-content"><p>这里来谈谈rest api服务构建。</p>
+<span id="more"></span>
+
+<h2 id="Express"><a href="#Express" class="headerlink" title="Express"></a>Express</h2><p>Express是node做http服务最有名的一个框架了，具体如何安装使用我不做介绍了，大家可以参考<a target="_blank" rel="noopener" href="https://nodejs.org/">官方网站</a>。</p>
+<h2 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h2><p>由于ES6的新特性实在是太棒了，所以我选择使用ES6。可是node目前版本v6.0.0对ES6的支持还不够好。还好有babel这个开源库。<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/">ES6 语法可以参考阮一峰的这本书 &gt;&gt;</a></p>
+<p>可以直接全局安装 <code>npm install -g babel-cli</code> ，启动时候把node替换为babel-node，就可以完全支持ES6了。</p>
+<p>我为了调试方便，所以在代码中启用支持。</p>
+<p>首先安装babel依赖库。</p>
+<pre><code class="json">&quot;dependencies&quot;: &#123;
+    &quot;babel-core&quot;: &quot;~6.5.2&quot;,
+    &quot;babel-polyfill&quot;: &quot;~6.0.0&quot;,
+    &quot;babel-preset-es2015&quot;: &quot;~6.0.0&quot;,
+&#125;
+</code></pre>
+<p>然后在app启动的时候导入 ES6 运行环境。</p>
+<pre><code class="javascript">require(&quot;babel-core&quot;);
+require(&#39;babel-core/register&#39;)(&#123;
+    presets: [&quot;es2015&quot;],
+    ignore: [&quot;node_modules/&quot;, &quot;app.js&quot;],
+    extensions: [&quot;.js&quot;],
+    cache: true
+&#125;);
+require(&#39;babel-polyfill&#39;);
+</code></pre>
+<p>启动参数可以加上方法缓存 <code>BABEL_CACHE_PATH=./xxx</code>。</p>
+<p>好了我们的项目已经支持 ES6 了，只是启动的时候会有点慢，如果node能直接支持就好了，不过我相信很快就可以了。</p>
+<h2 id="MySql"><a href="#MySql" class="headerlink" title="MySql"></a>MySql</h2><p>支持 ES6 以后，我们需要添加数据库层，首先安装依赖组件。</p>
+<pre><code class="json">&quot;mysql&quot;: &quot;~2.10.2&quot;,
+&quot;sequelize&quot;: &quot;~3.0&quot;,
+</code></pre>
+<p>这里我经过比较采用了 <a target="_blank" rel="noopener" href="http://docs.sequelizejs.com/en/latest/"><code>sequelize</code></a> 这个ORM。</p>
+<p>在添加配置文件 <code>./bin/config.js</code>。最好的做法需要配置正式、开发等多套环境，这里我只做一套配置。</p>
+<pre><code class="javascript">const mysql = &#123;
+        host: &quot;localhost&quot;,
+        port: 3306,
+        database: &quot;db&quot;,
+        user: &quot;root&quot;,
+        password: &quot;&quot;
+    &#125;,
+
+export default mysql;
+</code></pre>
+<p>配置 <code>sequelize</code></p>
+<pre><code class="js">import Sequelize from &#39;sequelize&#39;;
+import &#123;mysql as config&#125; from &#39;../bin/config&#39;;
+
+var sequelize = new Sequelize(config.database, config.user, config.password, &#123;
+    host: config.host,
+    port: config.port,
+    dialect: &#39;mysql&#39;,
+    freezeTableName: true,
+
+    pool: &#123;
+        max: 5,
+        min: 0,
+        idle: 10000
+    &#125;
+&#125;);
+
+export default sequelize;
+</code></pre>
+<p>好了，我们的数据库服务配置完成。</p>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><p>同样，首先需要配置文件。这里我配置了2个分别作为数据缓存和 http 缓存使用。</p>
+<pre><code class="json">redisCache = &#123;
+    host: &quot;localhost&quot;,
+    port: 6379,
+    user: &quot;&quot;,
+    password: &quot;&quot;,
+    db: 2,
+    prefix: &quot;redis&quot;,
+    expire: 60*60
+&#125;,
+httpCache = &#123;
+    host: &quot;localhost&quot;,
+    port: 6379,
+    user: &quot;&quot;,
+    password: &quot;&quot;,
+    db: 3,
+    prefix: &quot;redis&quot;,
+    expire: 60*60
+&#125;;
+
+
+export &#123;redisCache, httpCache&#125;;
+</code></pre>
+<p>对数据缓存做一个简单的封装。使其支持<code>key-value</code>和<code>key-hashtable</code>这两种格式就够用了。在设置完后需要设置缓存时间<code>expire</code>。用于缓存token和验证码等服务。</p>
+<pre><code class="js">class Redis &#123;
+
+    constructor(config) &#123;
+        this._client = redis.createClient(config);
+        this._expire = config.expire || 60;
+    &#125;
+
+    expire(key, expire = this._expire) &#123;
+        let _client = this._client;
+        return new Promise((resolve, reject) =&gt; &#123;
+            _client.expire(key, expire, (err) =&gt; &#123;
+                if (err) reject(err);
+                else resolve();
+            &#125;)
+        &#125;)
+    &#125;
+
+    // set a hash table
+    hset(key, value = &#123;&#125;, &#123;expire=this._expire&#125;) &#123;
+        let _client = this._client;
+        let _expire = this.expire;
+        return new Promise((resolve, reject) =&gt; &#123;
+            let arr = [];
+            for (let [k, v] of value) &#123;
+                arr.push(k, v);
+            &#125;
+            if (arr.length == 0) &#123;
+                reject(new Error(&quot;value is empty&quot;));
+            &#125;
+            _client.hset(key, arr, (err) =&gt; &#123;
+                if (err) reject(err);
+                else _expire(key, expire).then(resolve).catch(reject)
+            &#125;);
+        &#125;);
+    &#125;
+
+    // get a hash table
+    hget(key) &#123;
+        let _client = this._client;
+        return new Promise((resolve, reject) =&gt; &#123;
+            _client.hgetall(key, (err, res) =&gt; &#123;
+                if (err) reject(err);
+                else resolve(res);
+            &#125;)
+        &#125;)
+    &#125;
+
+    set(key, value, &#123;expire=this.expire&#125;) &#123;
+        let _client = this._client;
+        let _expire = this.expire;
+        return new Promise((resolve, reject) =&gt; &#123;
+            _client.set(key, value, (err) =&gt; &#123;
+                if (err) reject(err);
+                else  _expire(key, expire).then(resolve).catch(reject)
+            &#125;)
+        &#125;)
+    &#125;
+
+    get(key) &#123;
+        let _client = this._client;
+        return new Promise((resolve, reject) =&gt; &#123;
+            _client.get(key, (err) =&gt; &#123;
+                if (err) reject(err);
+                else resolve();
+            &#125;)
+        &#125;)
+    &#125;
+&#125;
+
+export default Redis;
+</code></pre>
+<p>使用时只要创建一个具体对象就可以了。</p>
+<p>另外，再创建一个http缓存的中间件，用来缓存一些接口变化比较缓慢，实时性要求不高，但需要大量计算的数据。</p>
+<pre><code class="js">export default function(&#123;
+    expire=config.expire,
+    getKey=(req)=&gt;&#123; req.originalUrl &#125;
+&#125; = &#123;&#125;) &#123;
+    return function (req, res, next) &#123;
+        let key = getKey(req);
+        new Promise((resolve, reject) =&gt; &#123;
+            redis.hget(key).then((data) =&gt; &#123;
+                if (data &amp;&amp; data.length &gt; 0) &#123;
+                    // TODO: set header &#39;Content-Type&#39; ect.
+                    //res.setHeader()
+                    res.setHeader(&#39;Content-Length&#39;, data.body.length);
+                    res.send(data.body);
+                    resolve();
+                &#125;
+                else &#123;
+                    reject();
+                &#125;
+            &#125;).catch(reject);
+        &#125;).catch(() =&gt; &#123;
+            // there is no cache
+            next();
+
+            if (res.statusCode == 200 &amp;&amp; res.body.length &gt; 0) &#123;
+                // add body to cache
+                // TODO: validate res.body
+                redis.hset(key, &#123;
+                    &#39;Content-Type&#39;: res.getHeader(&#39;Content-Type&#39;),
+                    body: res.body
+                &#125;);
+            &#125;
+        &#125;);
+    &#125;
+&#125;
+</code></pre>
+<p>这是一个比较简单的实现，<code>key</code>默认使用url。当然也可以自定义。使用场景：</p>
+<pre><code class="js">router.get(&#39;/:id&#39;, httpCache(&#123;
+    expire:60,
+    getKey(req) &#123;
+        return &quot;POST:&quot; + req.path;
+    &#125;
+    &#125;), (req, res, next) =&gt; &#123;
+    ......
+&#125;);
+</code></pre>
+<p>这样，我们的数据层都已经配置完毕，接下来需要开始进入实践。</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>目录结构：</p>
+<pre><code>|\
+| \model   // 数据结构相关
+|\
+| \controller  // 真正的业务处理层，像Spring里的service层
+|\
+| \routes  // 路由控制，缓存以及行为控制
+</code></pre>
+<p>这里我为了简化，只把服务分为这些，来减少复杂度，同时又相对解耦。</p>
+<p>首先看看model层，这里定义了整个表的结构和数据模型</p>
+<pre><code class="js">let User = sequelize.define(&#39;user&#39;, &#123;
+   // name: Sequelize.STRING,
+    password: &#123;
+        type: Sequelize.STRING
+    &#125;,
+    salt: &#123;
+        type: Sequelize.STRING(16)
+    &#125;,
+    nickName: &#123;
+        type: Sequelize.STRING,
+        field: &#39;nick_name&#39;
+    &#125;,
+    email: &#123;
+        type: Sequelize.STRING,
+        validate: &#123;
+            isEmail: true
+        &#125;
+    &#125;,
+    birthday: Sequelize.DATE,
+    gender: Sequelize.INTEGER(8),
+    createTime: &#123;
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW(),
+        field: &#39;nick_name&#39;
+    &#125;,
+    updateTime: &#123;
+        type: Sequelize.DATE,
+        field: &#39;update_time&#39;
+    &#125;,
+    loginTime: &#123;
+        type: Sequelize.DATE,
+        field: &#39;login_time&#39;
+    &#125;
+&#125;, &#123;
+    timestamps: false,
+    freezeTableName: true,
+    defaultScope: &#123;
+        attributes: [&#39;nickName&#39;,&#39;email&#39;,&#39;birthday&#39;,&#39;gender&#39;,&#39;createTime&#39;,&#39;updateTime&#39;]
+    &#125;
+&#125;);
+
+// 这里提供给外部可以编辑的属性配置
+User.editableAttribute = [&#39;nickName&#39;, &#39;birthday&#39;, &#39;gender&#39;];
+
+// 这里我们可以选择让 sequelize 来建表
+if (process.env.SYNC_DATABASE) &#123;
+    User.sync();
+&#125;
+
+export default User;
+</code></pre>
+<p>controller定义所有的逻辑操作，提供包括验证的，但是独立的功能服务。</p>
+<pre><code class="js">let Controller = &#123;
+
+    create(&#123;email=null, password=null&#125; = &#123;&#125;) &#123;
+        return new Promise((resolve, reject) =&gt; &#123;
+            if (email &amp;&amp; password) &#123;
+                validatePassword(password).then(() =&gt; &#123;
+                    User.findOne(&#123;email: email&#125;).then((user) =&gt; &#123;
+                        if (user) return reject(&quot;您已经注册,请直接登录&quot;);
+                        else &#123;
+                            let salt = salt(email);
+                            let encryptPassword = encryptPassword(password, salt);
+                            User.create(&#123;
+                                email: email,
+                                password:encryptPassword,
+                                salt: salt
+                            &#125;).then(resolve).catch(reject(err));
+                        &#125;
+                    &#125;).catch(reject);
+
+                &#125;).catch(reject);
+            &#125;
+            else &#123;
+                reject(new Error(&quot;用户名或密码为空&quot;));
+            &#125;
+        &#125;);
+    &#125;,
+
+    update(user) &#123;
+        return new Promise((resolve, reject) =&gt; &#123;
+            if (user.id) &#123;
+                return reject(new Error(&quot;用户ID为空&quot;));
+            &#125;
+            if (user.password &amp;&amp; user.salt) &#123;
+                return reject(new Error(&quot;参数非法&quot;));
+            &#125;
+
+            User.update(filterValidateKey(user, User.editableAttribute), &#123;
+                where: &#123;
+                    id: user.id
+                &#125;
+            &#125;).then(resolve).catch(reject);
+        &#125;)
+    &#125;,
+
+    findByIds(ids = []) &#123;
+        return new Promise((resolve, reject) =&gt; &#123;
+            User.findAll(&#123;
+                where: &#123; id: &#123; $in: ids &#125; &#125;,
+                include: &#123;
+                    model: Tag,
+                    as: &#39;tags&#39;
+                &#125;
+            &#125;).then(resolve).catch(reject)
+        &#125;)
+    &#125;,
+
+    addTags(tagIds = []) &#123;
+
+    &#125;
+&#125;
+
+export default Controller;
+</code></pre>
+<p>最后，路由来组合其中不同的业务逻辑。</p>
+<pre><code class="js">router.get(&#39;/:id&#39;, (req, res, next) =&gt; &#123;
+    let id = req.params.id;
+    if (id) &#123;
+        UserController.findByIds([id]).then((users) =&gt; &#123;
+            if (users.length &gt; 0) &#123;
+                res.send(Success(users[0]));
+            &#125;
+            else &#123;
+                res.send(Fail(&#39;用户不存在&#39;));
+            &#125;
+        &#125;).catch((err) =&gt; &#123;
+            res.send(Fail(err.message));
+        &#125;)
+    &#125;
+    else &#123;
+        res.send(Fail(&quot;参数错误&quot;));
+    &#125;
+&#125;);
+</code></pre>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>很多场景，我们需要判断用户登录情况以及一些其他情况，如果在每个请求里面去做判断会是一种非常麻烦的事情，而且也会导致代码冗余和复杂性，这些功能可以做成中间件形式，使用时也会方便很多。</p>
+<pre><code class="js">// NeedLogin 伪代码
+function NeedLogin() &#123;
+    return function(req, res, next) &#123;
+        if (req.isLogin()) &#123;
+           next();
+       &#125;
+       else &#123;
+           res.send(Fail(&#39;need login&#39;);
+       &#125;
+    &#125;;
+&#125;;
+
+router.get(&#39;/:id&#39;, NeedLogin(), (req, res, next) =&gt; &#123;
+    ......
+&#125;)
+</code></pre>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>等待加入该模块</p>
+<hr>
+<p>下一篇，我们来看看react来构建web应用的框架。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2016/05/16/2016-05-15-express-plus-reactjie-jue-fang-an-3/" title="express+react解决方案 （三）"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: express+react解决方案 （三）</span></a><a class="button is-default" href="/2016/05/14/2016-05-14-express-plus-reactjie-jue-fang-an-1/" title="express+react解决方案 (一)"><span class="has-text-weight-semibold">下一页: express+react解决方案 (一)</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2016/05/15/2016-05-15-express-plus-reactjie-jue-fang-an-2/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

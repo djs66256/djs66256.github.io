@@ -1,0 +1,70 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>完备路由系统</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="现在很多应用都在内部跳转中使用了路由系统，这种从web搬过来的东西。但是功能却并不完善，就像比较有名的JLRouter和MGJRouter。这里就来聊聊更加完善的系统的几个部分。
+
+
+前言现在很多的应用都在一个非常大的量级了，已经不可能由几个人的小团队来开发了，那么模块化就非常必要了。相比很多人说的组件化（Component），我觉得模块化（Module）更为贴切一点。
+说到模块化，那么模块间的通信就非常重要了，如果仅仅是通过api来做通信，就不够灵活，而且可能会增加了集成成本。一旦涉及到接口变更就需要修改多个模块。这样路由系统便是页面间跳转的一个非常重要模块，可以说他承载了整个最核心的部分。一个好的，完善的路由系统可以让一个系统更加稳定和开发简单。而一个功能欠缺的路由系统则有可能将整个应用带入一个泥潭。
+.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">完备路由系统</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E5%A4%87%E8%B7%AF%E7%94%B1"><span class="toc-text">完备路由</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF-history"><span class="toc-text">回溯 history</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%9B%E5%85%A5%E9%80%80%E5%87%BA"><span class="toc-text">自定义进入退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E8%B7%AF%E7%94%B1"><span class="toc-text">子路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%91%E7%9B%92%E8%B7%AF%E7%94%B1"><span class="toc-text">黑盒路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-text">重定向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E4%BE%9D%E8%B5%96"><span class="toc-text">路径依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="toc-text">中间件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%83%AD%E6%8F%92%E4%BB%B6"><span class="toc-text">热插件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/Router"><i class="tag post-item-tag">Router</i></a><a href="/tags/%E8%B7%AF%E7%94%B1"><i class="tag post-item-tag">路由</i></a><a href="/tags/%E8%98%91%E8%8F%87%E8%A1%97"><i class="tag post-item-tag">蘑菇街</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">完备路由系统</h1><time class="has-text-grey" datetime="2017-07-30T12:58:58.000Z">2017-07-30</time><article class="mt-2 post-content"><p>现在很多应用都在内部跳转中使用了路由系统，这种从web搬过来的东西。但是功能却并不完善，就像比较有名的JLRouter和MGJRouter。这里就来聊聊更加完善的系统的几个部分。</p>
+<span id="more"></span>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现在很多的应用都在一个非常大的量级了，已经不可能由几个人的小团队来开发了，那么模块化就非常必要了。相比很多人说的组件化（Component），我觉得模块化（Module）更为贴切一点。</p>
+<p>说到模块化，那么模块间的通信就非常重要了，如果仅仅是通过api来做通信，就不够灵活，而且可能会增加了集成成本。一旦涉及到接口变更就需要修改多个模块。这样路由系统便是页面间跳转的一个非常重要模块，可以说他承载了整个最核心的部分。一个好的，完善的路由系统可以让一个系统更加稳定和开发简单。而一个功能欠缺的路由系统则有可能将整个应用带入一个泥潭。</p>
+<p>目前比较有名的几个实现，都非常简单，而且非常好用。但这是对一个整体的应用来说的，如果是一个多团队开发的应用，就有部分缺陷了。所以为了应对这种缺陷，蘑菇街和京东都开发了一个管理平台，来专门管理这些路由系统，解决这种缺陷。</p>
+<p>这些路由实现在目前已经基本满足需求了，但是在未来可能会进行的模块拆分，则需要功能更加强大的路由系统。所以我提出一种更加完备的路由系统。可能这里有过度设计的成分，但是作为未来的扩展性，我觉得还是有必要的。</p>
+<h2 id="完备路由"><a href="#完备路由" class="headerlink" title="完备路由"></a>完备路由</h2><p>既然我们是从web那里抄过来的想法，那么为什么不抄的完整一些呢？</p>
+<h3 id="回溯-history"><a href="#回溯-history" class="headerlink" title="回溯 history"></a>回溯 history</h3><p>目前的几个路由系统都没有提供这个功能，而这个功能我觉的是非常非常重要的一个功能。当我们需要判断上个页面是什么页面的时候，只能通过判断controller队列中的类型！这完全违背了黑箱这种原则。</p>
+<p>同时我们可能需要回退多个页面或者回退到某个页面的时候，没有历史记录的支持，在合作开发的时候绝对是个灾难。</p>
+<p>history给我们的功能好处也是非常多的。除了上述几个场景中特别需要以外，对我们的debug以及分析也是非常有帮助的。甚至我们可以记录和导出history来查看用户的操作流程，虽然不能代表所有的动作，但也可以展示用户的一系列行为，或者在crash分析中自动带上该信息。</p>
+<h3 id="自定义进入退出"><a href="#自定义进入退出" class="headerlink" title="自定义进入退出"></a>自定义进入退出</h3><p>我们的每个页面都不是固定的<code>push</code>的，也可能是<code>present</code>的，所以相应的返回也是不一样的，然而目前几个路由系统都只有进入的方式，并没有退出的方式。那么只能交给人来处理这种事情，当某个模块成为黑箱的时候，外部又怎么去判断呢？</p>
+<p>所以进入(<code>push</code>)和回退(<code>pop</code>)操作都需要有对应的行为，这就承接了上一个history的必要性了。这样我们同样是进入(<code>push</code>)和回退(<code>pop</code>)，当行为是<code>present</code>时，就对应为<code>present</code>和<code>dismiss</code>。</p>
+<p>甚至在内嵌的网页中也可以接入native的路由系统，那么这样的<code>push</code>和<code>pop</code>就对应了网页的跳转和返回了。同时这样也屏蔽了模块内部的具体行为，模块修改展示方式也不会影响外部的处理逻辑。更好的形成一个黑盒模块。</p>
+<h3 id="子路由"><a href="#子路由" class="headerlink" title="子路由"></a>子路由</h3><p>这个在web中是不存在的，但是在native的app中我觉得有必要。每个模块，或者内嵌的网页都应该是个子路由系统。</p>
+<p>为什么需要子路由系统呢？这里举一个例子：</p>
+<pre><code>Root --[push]-&gt; VC
+                |
+            [present]
+                \
+                 --&gt; VC2 --[push]-&gt; VC3 --&gt;...
+</code></pre>
+<p>当我们需要去完成一个系列的完整动作的时候，往往会present出一个新的navigation来处理这一系列动作，而这些行为在任意一个节点都可能会返回，同时又可能在任意的一个地方present出来。那么如果要满足这种情景又需要人为的去处理很多逻辑，这就埋下了隐患。</p>
+<p>如果我们把present出来的这一系列行为定义为子路由，那么如果需要返回时，只需要退出子路由中所有的history就可以了。</p>
+<h3 id="黑盒路由"><a href="#黑盒路由" class="headerlink" title="黑盒路由"></a>黑盒路由</h3><p>如果项目变大以后，可能就会存在上百个路由，那么这些路由中实际有效的（其他模块可用，或者公开的）路由又有多少呢？我觉得应该会很少吧，因为外部进入一个其他模块的入口基本是固定的，所以我们为什么需要暴露这么多不必要的路由给外部呢。蘑菇街和京东为了管理这些路由干脆搞了一个管理系统，来防止路由冲突。那么为什么我们不让一个模块内的路由成为一个黑箱呢，只暴露外部需要的路由，而其他路由都经过保护不能随意访问。这样也防止外部访问不该访问的功能。</p>
+<p>这个功能是承接子路由的实现，我们保持每个子路由内部的黑盒，可以减少我们的错误。</p>
+<p>保持子路由的黑盒性的一个简单做法就是base url。依照restful来设计路由，不同子路由系统给与一个base url，比如登录模块的路由可以增加base url <code>/auth</code>。那么内部和外部的行为可以概括为：</p>
+<pre><code class="c">// 外部
+push(&quot;/auth&quot;)
+push(&quot;/auth/password&quot;)
+// 内部
+push(&quot;~&quot;)
+push(&quot;~/phone&quot;)
+push(&quot;~/verify&quot;)
+push(&quot;~/password&quot;)
+// 退出整个模块
+pop(&quot;~&quot;)
+</code></pre>
+<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><p>有些页面在某些条件下是不能进入的，这时候需要重定向去特定模块来完成这个条件，完成后再次进入该模块。所以我们需要重定向的功能，否则就会增加很多依赖项，导致不能真正的模块分离。</p>
+<p>比如某个功能需要登录模块，在我们没有集成登录模块的时候就难以完成功能，而集成了登录模块又会导致模块化仅仅只是个表面上的分离了，可能在真正开发的时候还是把一大堆其他模块给搞进工程，那么这样的模块化有什么意义？如果拥有重定向就可以伪造一个重定向，让他自动放回需要的结果就可以了。这样就可以排除其他模块的干扰了和依赖了。</p>
+<h3 id="路径依赖"><a href="#路径依赖" class="headerlink" title="路径依赖"></a>路径依赖</h3><p>这个其实时承接上个需求的，可以相当于一个语法糖。</p>
+<p>按照上个场景，我们如何去注册一个需要重定向的路由呢。那么我们可以引入一个路由依赖的功能，可以标记每个路由的依赖选项。比如登录的<code>@requireLogin</code>。</p>
+<p>这算是一个扩展的功能吧。</p>
+<h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><p>目前主流的几个路由还有一个非常欠缺的功能就是中间件。我们无法去从路由系统内部知道我们经过了哪些操作，是否需要过滤某些操作。</p>
+<p>这个话题其实也关系着黑盒路由和重定向的问题。依照服务端的中间件设计方式，我们应该需要为路由系统留出控制以及debug的入口。</p>
+<p>拥有了中间件我们可以做什么？</p>
+<ul>
+<li>debug，打印所有的入口和出口，完善我们的日志</li>
+<li>分模块开发的时候，可以mock其他有依赖的模块</li>
+<li>监视，是否调用了非法的接口或者使用了非法的参数</li>
+</ul>
+<p>个人觉得中间件是一个系统所必须的功能，可以提供外部实现更多的功能和更灵活的控制。</p>
+<h3 id="热插件"><a href="#热插件" class="headerlink" title="热插件"></a>热插件</h3><p>这是一个额外的话题。由于我们的路由注册基本上是在<code>+load</code>方法里面做的，所以当我们的路由越来越多的时候，启动性能也会越来越差，那么提供热插拔的功能是最好的。同时热插拔功能也相对应的提高了路由的黑盒性。</p>
+<p>做成热插件的形式还有一些好处。比如abtest的时候，可以加载不同的插件来进入不同的页面。又或者在某个页面出了线上问题，需要降级为web来实现，也可以通过替换插件来替换不同的页面。</p>
+<p>这是一个锦上添花的功能，所以我把他列到了最后。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上说的几个点可能给我们的编码增加一些复杂度，而且还需要去理解这些概念才能很好的运用。但这里的规划完全是以模块化为前提的，并且独立为一个系统，不去依赖<code>UIKit</code>。所以从长远来看这样的实现是绝对有好处的，如果有时间可以把这个想法实现出来。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/08/06/2017-08-06-%E8%B0%88%E8%B0%88%E7%A8%8B%E5%BA%8F%E5%91%98/" title="谈谈程序员"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 谈谈程序员</span></a><a class="button is-default" href="/2017/07/28/2017-07-28-%E5%8D%95%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81%E4%B9%8B%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E7%BB%9F%E8%AE%A1/" title="单向数据流之用户行为统计"><span class="has-text-weight-semibold">下一页: 单向数据流之用户行为统计</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/07/30/2017-07-30-%E5%AE%8C%E5%A4%87%E8%B7%AF%E7%94%B1%E7%B3%BB%E7%BB%9F/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

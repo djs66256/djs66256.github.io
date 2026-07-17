@@ -1,0 +1,78 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>SwiftUI 的新功能</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="了解 swiftui 中用于为任一 apple 平台打造出色 app 的新功能。我们将探索如何通过 liquid glass 为你的 app 提供焕然一新的外观和风格。了解如何通过框架增强功能和新的 instrument 来提升性能，以及如何整合网页内容和多信息文本编辑等先进功能。我们还将向你展示 swiftui 如何扩充自身的应用范围，包括在三维空间中布局视图。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+SwiftUI 新特性深度解析：从设计革新到功能扩展苹果在最新 WWDC 大会上展示了 SwiftUI 框架的一系列重大更新，从视觉设计革新到底层性能优化，再到功能范围的扩展，为开发者构建跨平台应用提供了更强大的工具。
+全新视觉设计系统本次更新最引.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">SwiftUI 的新功能</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SwiftUI-%E6%96%B0%E7%89%B9%E6%80%A7%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90%EF%BC%9A%E4%BB%8E%E8%AE%BE%E8%AE%A1%E9%9D%A9%E6%96%B0%E5%88%B0%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95"><span class="toc-text">SwiftUI 新特性深度解析：从设计革新到功能扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E6%96%B0%E8%A7%86%E8%A7%89%E8%AE%BE%E8%AE%A1%E7%B3%BB%E7%BB%9F"><span class="toc-text">全新视觉设计系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%B8%8E%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84%E5%A2%9E%E5%BC%BA"><span class="toc-text">性能与基础架构增强</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%BB%B4%E7%A9%BA%E9%97%B4%E5%B8%83%E5%B1%80%E4%B8%8E-visionOS-%E6%94%AF%E6%8C%81"><span class="toc-text">三维空间布局与 visionOS 支持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%86%E5%9B%BE%E5%8A%9F%E8%83%BD%E6%89%A9%E5%B1%95%E4%B8%8E%E7%B3%BB%E7%BB%9F%E6%95%B4%E5%90%88"><span class="toc-text">视图功能扩展与系统整合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90%E4%B8%8E%E5%90%8E%E7%BB%AD%E6%AD%A5%E9%AA%A4"><span class="toc-text">学习资源与后续步骤</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/tvos"><i class="tag post-item-tag">tvos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/watchos"><i class="tag post-item-tag">watchos</i></a><a href="/tags/%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7"><i class="tag post-item-tag">开发者工具</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">SwiftUI 的新功能</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>了解 swiftui 中用于为任一 apple 平台打造出色 app 的新功能。我们将探索如何通过 liquid glass 为你的 app 提供焕然一新的外观和风格。了解如何通过框架增强功能和新的 instrument 来提升性能，以及如何整合网页内容和多信息文本编辑等先进功能。我们还将向你展示 swiftui 如何扩充自身的应用范围，包括在三维空间中布局视图。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9883/9883_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/256/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="SwiftUI-新特性深度解析：从设计革新到功能扩展"><a href="#SwiftUI-新特性深度解析：从设计革新到功能扩展" class="headerlink" title="SwiftUI 新特性深度解析：从设计革新到功能扩展"></a>SwiftUI 新特性深度解析：从设计革新到功能扩展</h1><p>苹果在最新 WWDC 大会上展示了 SwiftUI 框架的一系列重大更新，从视觉设计革新到底层性能优化，再到功能范围的扩展，为开发者构建跨平台应用提供了更强大的工具。</p>
+<h2 id="全新视觉设计系统"><a href="#全新视觉设计系统" class="headerlink" title="全新视觉设计系统"></a>全新视觉设计系统</h2><p>本次更新最引人注目的变化之一是全新的设计语言——Liquid Glass（液态玻璃）。这种设计风格在所有 Apple 平台上实现了明亮流畅的一致体验，为应用界面带来焕然一新的视觉效果。</p>
+<p>在 iPad 和 macOS 上，侧边栏现在呈现玻璃质感，能够反射周围内容；在 iPhone 上，工具栏项目采用了更紧凑的新外观。开发人员可以使用新的 <code>glassEffect()</code> 修饰符为自定义视图添加玻璃反射效果：</p>
+<pre><code class="swift">.glassEffect()
+</code></pre>
+<p>工具栏布局也得到了改进，新增的 <code>ToolbarSpacer</code> API 允许开发者灵活调整工具栏项目间的间距：</p>
+<pre><code class="swift">ToolbarSpacer(.fixed, placement: .primaryAction)
+</code></pre>
+<p>搜索功能的人机交互体验也得到优化，在 iPhone 上搜索栏现在位于屏幕底部更符合人体工学的位置，而开发者无需修改原有代码即可获得这一改进：</p>
+<pre><code class="swift">.searchable(
+    text: $query,
+    prompt: &quot;What are you looking for?&quot;
+)
+</code></pre>
+<h2 id="性能与基础架构增强"><a href="#性能与基础架构增强" class="headerlink" title="性能与基础架构增强"></a>性能与基础架构增强</h2><p>SwiftUI 在性能方面进行了多方面的优化，特别是在列表处理、滚动体验和分析工具方面：</p>
+<ul>
+<li>macOS 列表性能显著提升，加载 10 万+项目的列表速度提升 6 倍，更新速度提升最高达 16 倍</li>
+<li>滚动性能改进降低了丢帧概率，保持高帧率流畅滚动</li>
+<li>新增 Xcode 性能工具帮助开发者快速定位视图更新或平台视图问题</li>
+</ul>
+<p>在动画方面，新引入的 <code>@Animatable</code> 宏简化了动画属性的定义过程：</p>
+<pre><code class="swift">@Animatable
+struct LoadingArc: Shape &#123;
+    @AnimatableIgnored var drawPathClockwise: Bool
+&#125;
+</code></pre>
+<h2 id="三维空间布局与-visionOS-支持"><a href="#三维空间布局与-visionOS-支持" class="headerlink" title="三维空间布局与 visionOS 支持"></a>三维空间布局与 visionOS 支持</h2><p>SwiftUI 首次将布局能力扩展到了三维空间，为 visionOS 开发提供了强大支持。新增的 <code>Alignment3D</code> 类型和 <code>spatialOverlay</code> 修饰符允许开发者在三维空间中精确定位视图：</p>
+<pre><code class="swift">.spatialOverlay(
+    alignment: timeAlignment
+) &#123;
+    Sun()
+&#125;
+</code></pre>
+<p>对于 visionOS 中的物体交互，新的 <code>manipulable()</code> 修饰符配合场景吸附 API 实现了自然的物理交互体验：</p>
+<pre><code class="swift">.manipulable()
+.opacity(
+    snappingInfo.classification == .table ? 1.0 : 0.0)
+</code></pre>
+<h2 id="视图功能扩展与系统整合"><a href="#视图功能扩展与系统整合" class="headerlink" title="视图功能扩展与系统整合"></a>视图功能扩展与系统整合</h2><p>SwiftUI 在功能扩展方面也取得了重大进展：</p>
+<ul>
+<li>新增 <code>WebView</code> 组件为应用提供了完整的网页浏览能力</li>
+<li>Swift Charts 现在支持 3D 图表，可用于展示地形等三维数据</li>
+<li><code>TextEditor</code> 增强了对 <code>AttributedString</code> 的支持，实现了富文本编辑功能</li>
+</ul>
+<p>在系统整合方面，SwiftUI 的场景支持得到了扩展：</p>
+<ul>
+<li>新增 <code>RemoteImmersiveSpace</code> 场景用于 Vision Pro 的立体内容渲染</li>
+<li>辅助访问场景类型帮助认知障碍用户使用应用</li>
+<li>小组件现在支持 visionOS 和 CarPlay 平台</li>
+</ul>
+<h2 id="学习资源与后续步骤"><a href="#学习资源与后续步骤" class="headerlink" title="学习资源与后续步骤"></a>学习资源与后续步骤</h2><p>开发者可以通过以下官方资源深入了解这些新特性：</p>
+<p>相关视频：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/273">了解 SwiftUI 空间布局</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/231">了解适用于 SwiftUI 的 WebKit</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/323">使用全新设计系统构建 SwiftUI 应用</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/290">借助 SwiftUI 在 visionOS 中设置场景</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/313">将 Swift Charts 扩展成三维图表</a>  </p>
+<p>文档资源：<br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/TechnologyOverviews/adopting-liquid-glass">采用 Liquid Glass</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/SwiftUI/View/draggable(_:)">拖放操作 API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines">人机界面指南</a>  </p>
+<p>这些新特性为开发者提供了更强大的工具来构建跨 Apple 平台的卓越应用，从视觉设计到性能表现，再到功能范围，SwiftUI 正变得越来越成熟和完善。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_257/" title="使用 EnergyKit 优化家庭用电量"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 使用 EnergyKit 优化家庭用电量</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_259/" title="跟着视频学编程：使用 Foundation Models 框架将设备端 AI 引入你的 App"><span class="has-text-weight-semibold">下一页: 跟着视频学编程：使用 Foundation Models 框架将设备端 AI 引入你的 App</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_256/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

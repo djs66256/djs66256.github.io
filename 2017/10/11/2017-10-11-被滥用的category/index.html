@@ -1,0 +1,89 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>被滥用的category</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="objc的最大一个特性就是动态性，利用动态特性，我们可以做很多事情，包括对已有的类和对象添加替换方面属性。但是这也给我们带来了一些隐藏的风险，以及让人很不愉快的一些体验。
+
+
+绝对不能做的事情假如我们定义一个category，如下面：
+@interface UIView (My)
+@end
+
+@implementation UIView (My)
+- (void)setFrame:(CGRect)frame &amp;#123;
+
+&amp;#125;
+@end
+
+那么会发生什么事情？
+系统方法会被替换。这是什么原因呢？是因为主类被先加载，然后才会去加载category，然后会导致原来的方法被替换。
+那么我们是不是可以利用这种特性来屏蔽一些我们不能修改的类的方法呢？答案是绝对不能这么做。首先，我们替换了方法，可能会导致一些.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">被滥用的category</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9D%E5%AF%B9%E4%B8%8D%E8%83%BD%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85"><span class="toc-text">绝对不能做的事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E8%97%8F%E7%9A%84%E9%A3%8E%E9%99%A9"><span class="toc-text">隐藏的风险</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%A7%A3%E6%80%A7%E4%B8%8B%E9%99%8D"><span class="toc-text">理解性下降</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E9%99%8D%E4%BD%8E"><span class="toc-text">性能降低</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%91%E9%99%8B%E7%9A%84api"><span class="toc-text">丑陋的api</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%94%B9%E5%96%84"><span class="toc-text">改善</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E5%B8%AE%E5%8A%A9%E7%B1%BB"><span class="toc-text">第三方帮助类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E6%89%A9%E5%B1%95"><span class="toc-text">属性扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E6%8C%81%E7%A7%81%E6%9C%89%E5%8C%96"><span class="toc-text">保持私有化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-text">最后</span></a></div><div class="column is-9"><header class="my-4"><a href="/tags/category"><i class="tag post-item-tag">category</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">被滥用的category</h1><time class="has-text-grey" datetime="2017-10-10T17:26:16.000Z">2017-10-11</time><article class="mt-2 post-content"><p>objc的最大一个特性就是动态性，利用动态特性，我们可以做很多事情，包括对已有的类和对象添加替换方面属性。但是这也给我们带来了一些隐藏的风险，以及让人很不愉快的一些体验。</p>
+<span id="more"></span>
+
+<h2 id="绝对不能做的事情"><a href="#绝对不能做的事情" class="headerlink" title="绝对不能做的事情"></a>绝对不能做的事情</h2><p>假如我们定义一个category，如下面：</p>
+<pre><code class="objc">@interface UIView (My)
+@end
+
+@implementation UIView (My)
+- (void)setFrame:(CGRect)frame &#123;
+
+&#125;
+@end
+</code></pre>
+<p>那么会发生什么事情？</p>
+<p>系统方法会被替换。这是什么原因呢？是因为主类被先加载，然后才会去加载category，然后会导致原来的方法被替换。</p>
+<p>那么我们是不是可以利用这种特性来屏蔽一些我们不能修改的类的方法呢？答案是绝对不能这么做。首先，我们替换了方法，可能会导致一些未知的问题。其次，这种替换是不能保证顺序的，在另一个地方也做了这样的处理，我们无法预知最后是哪一个方法。</p>
+<p>所以我们绝对不能使用category来替换原有的方法，真的要替换可以使用method_exchange。</p>
+<h2 id="隐藏的风险"><a href="#隐藏的风险" class="headerlink" title="隐藏的风险"></a>隐藏的风险</h2><p>有些时候在使用category给第三方类增加方法时，也有可能不小心替换了原有的私有方法，从而导致了一些未知的问题。所以也就是为什么大家提倡在方法名前面增加扩展，以最大可能的避免重名。</p>
+<h2 id="理解性下降"><a href="#理解性下降" class="headerlink" title="理解性下降"></a>理解性下降</h2><p>越多的扩展就会引入越多的概念，很多api并非系统api，可能会产生一些意义相近，但是有细微区别的情况，这些都会对我们的理解产生不好的影响。</p>
+<p>当我们大量引入这类文件的时候，会产生一大串扩展的方法。特别是当我们把这类util方法作为pch文件全局引入的时候。</p>
+<h2 id="性能降低"><a href="#性能降低" class="headerlink" title="性能降低"></a>性能降低</h2><p>越多的category，会让一个类的方法变多，使方法调用所产生开销也会越大，缓存命中失效的概率也会变大。虽然这些多余的开销微不足道，但是在比较常用的对象上，比如UIView，就会累积。当然这些性能都不是问题。</p>
+<h2 id="丑陋的api"><a href="#丑陋的api" class="headerlink" title="丑陋的api"></a>丑陋的api</h2><p>方法名前加前缀的确是一种解决方案，至少尽可能的减少了冲突的可能，但并不代表不会冲突。</p>
+<p>然而这种api却是极其丑陋。</p>
+<pre><code class="objc">- (id)my_property;
+- (void)my_setProperty;
+</code></pre>
+<p>同时这种api使用KeyPath也会非常的麻烦。</p>
+<p>甚至可能会出现这样的情况，大家都为同一个功能添加了一个方法：</p>
+<pre><code class="objc">- (CGFloat)my_height;
+- (CGFloat)daniel_height;
+- (CGFloat)jack_height;
+</code></pre>
+<h1 id="改善"><a href="#改善" class="headerlink" title="改善"></a>改善</h1><p>那么我们就要讨论如何改善这种情况了。</p>
+<h2 id="第三方帮助类"><a href="#第三方帮助类" class="headerlink" title="第三方帮助类"></a>第三方帮助类</h2><p>这种方式可以说是最优雅的，虽然有点破坏面向对象。</p>
+<p>其中系统就提供了几种关于frame的帮助方法：</p>
+<pre><code class="c">CGRectGetHeight()
+CGRectGetMaxY()
+</code></pre>
+<p>其中React Native中应用了比较多的转换类：</p>
+<pre><code class="objc">[Convert stringValue:obj];
+[Convert integerValue:obj];
+</code></pre>
+<p>这样就避免了在原有类中添加方法了。实际情况是，很多场景我们也不应该把这些方法加入到扩展中，因为从逻辑上来说，某些方法也不应该出现在这个类中，我们不要单纯的因为方便给一个内容引入太多概念。</p>
+<h2 id="属性扩展"><a href="#属性扩展" class="headerlink" title="属性扩展"></a>属性扩展</h2><p>另一种方式是通过第三方对象转换到自身的方法。比如上面height属性可以改为：</p>
+<pre><code class="objc">view.my.height
+view.daniel.height
+view.jack.height
+</code></pre>
+<p>这样也会带来一些优点，比如可以按照功能设计不同的第三方对象：</p>
+<pre><code class="objc">obj.convertor.stringValue()
+obj.builder.string(@&quot;a&quot;).integer(1)
+</code></pre>
+<p>同时这样做还有一个好处就是可以动态的替换第三方转换对象，从而实现更灵活的控制：</p>
+<pre><code class="swift">protocol Convertable &#123;
+  stringValue()
+&#125;
+
+date.convertor.stringValue()
+</code></pre>
+<p>只要我们把上面的convertor替换掉，就可以更换时间的format方式了。</p>
+<p>这样做的缺点是增加了一个对象的生成，但这并不会产生太多的负面影响。</p>
+<h2 id="保持私有化"><a href="#保持私有化" class="headerlink" title="保持私有化"></a>保持私有化</h2><p>如果你真的需要使用扩展方法，那么尽量的保持这类方法的私有化，特别是对一些第三方库来说。</p>
+<p>然后通过import来部分载入我们所需要的方法。如果一开始就让这些方法暴露在外，那么会形成比较恶性的情况。</p>
+<p>比如我们在NSObject上添加了一个关于model的方法，然而我们在UIView上也将会看到，并可以使用了，我们需要尽量去避免这样的设计。</p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>说了这么多，是想建议第三方库的作者不要仅仅为了方便从而滥用category，好好的思考如何才能更好的表达意义。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/10/31/2017-10-31-%E6%B5%85%E6%9E%90GPUImage%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3/" title="浅析GPUImage的设计思想"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 浅析GPUImage的设计思想</span></a><a class="button is-default" href="/2017/10/04/2017-10-04-KVO%E7%9A%84%E4%B8%80%E4%BA%9B%E9%94%99%E8%AF%AF%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F/" title="自定义KVO的一些错误使用方式"><span class="has-text-weight-semibold">下一页: 自定义KVO的一些错误使用方式</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/10/11/2017-10-11-%E8%A2%AB%E6%BB%A5%E7%94%A8%E7%9A%84category/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

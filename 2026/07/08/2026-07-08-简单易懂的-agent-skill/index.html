@@ -1,0 +1,656 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>用 Skill 给 Claude Code 装上&quot;肌肉记忆&quot;</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="skill 介绍先对齐一个认知：skill 不是 prompt 模板，也不是命令行脚本，它是一段”按需加载的规程”。
+平时我们把规范、流程塞进 CLAUDE.md，结果每次对话都带着一坨上下文跑。skill 的关键区别在于——
+
+CLAUDE.md：常驻上下文，每次都在
+skill：描述常驻（很便宜），正文只在被触发时才进上下文
+
+一句话总结：你反复粘贴同一段指令&amp;#x2F;检查清单&amp;#x2F;多步流程时，就该把它写成 skill 了。
+官方原话也印证这点：
+
+Create a skill when you keep pasting the same instructions, checklist, or multi-step procedure into chat, or when a section o.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">用 Skill 给 Claude Code 装上&quot;肌肉记忆&quot;</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#skill-%E4%BB%8B%E7%BB%8D"><span class="toc-text">skill 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#skill-%E5%92%8C-CLAUDE-md-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">skill 和 CLAUDE.md 的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%81%E8%83%BD%E8%A7%A6%E5%8F%91%E5%AE%83"><span class="toc-text">谁能触发它</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E7%BB%93%E6%9E%84"><span class="toc-text">路径结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-text">三级作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA-skill-%E7%9B%AE%E5%BD%95%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7"><span class="toc-text">一个 skill 目录长什么样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%90%8D%E4%BB%8E%E5%93%AA%E6%9D%A5"><span class="toc-text">命令名从哪来</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#yaml-header-%E5%AD%97%E6%AE%B5"><span class="toc-text">yaml header 字段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#name-%E2%80%94%E2%80%94-%E6%98%BE%E7%A4%BA%E5%90%8D"><span class="toc-text">name —— 显示名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#description-%E2%80%94%E2%80%94-%E5%91%BD%E4%B8%AD%E7%9A%84%E5%85%B3%E9%94%AE"><span class="toc-text">description —— 命中的关键</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AE%B9"><span class="toc-text">内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E6%AD%A3%E6%96%87%E5%BD%A2%E6%80%81"><span class="toc-text">两种正文形态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E6%96%87-checklist"><span class="toc-text">正文 checklist</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A5%E6%BA%90"><span class="toc-text">来源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E6%96%87%E6%A1%A3"><span class="toc-text">业务文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%BA%93"><span class="toc-text">基础库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%9A%E8%AF%9D%E6%8F%90%E7%82%BC"><span class="toc-text">会话提炼</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#skill-creator-%E5%A6%82%E4%BD%95%E7%94%A8-AI-%E8%87%AA%E5%B7%B1%E5%86%99-skill"><span class="toc-text">skill-creator 如何用 AI 自己写 skill</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%83%E8%83%BD%E5%B8%AE%E4%BD%A0%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%88%E5%AE%98%E6%96%B9%E5%AE%9E%E9%99%85%E6%B5%81%E7%A8%8B%EF%BC%89"><span class="toc-text">它能帮你做什么（官方实际流程）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8-AI-%E5%86%99-skill-%E7%9A%84%E8%A6%81%E7%82%B9"><span class="toc-text">用 AI 写 skill 的要点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-%E9%AA%8C%E8%AF%81%E9%9B%86%E8%AE%BE%E8%AE%A1"><span class="toc-text">测试-验证集设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%BF%83%E6%B3%95%EF%BC%9A%E8%A7%A6%E5%8F%91-%E2%89%A0-%E6%9C%89%E6%95%88"><span class="toc-text">核心心法：触发 ≠ 有效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%85%E9%A1%BB%E7%94%A8%E6%96%B0%E4%BC%9A%E8%AF%9D"><span class="toc-text">为什么必须用新会话</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E9%9B%86%E6%80%8E%E4%B9%88%E6%90%AD"><span class="toc-text">验证集怎么搭</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%BA%BF%E5%AF%B9%E6%AF%94%E6%B5%81%E7%A8%8B"><span class="toc-text">基线对比流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-query-%E5%BF%85%E9%A1%BB%E5%A4%9F%E2%80%9D%E6%9C%89%E5%88%86%E9%87%8F%E2%80%9D"><span class="toc-text">测试 query 必须够”有分量”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%84%E5%88%A4%E4%BA%A7%E5%87%BA"><span class="toc-text">评判产出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#skill-%E4%BC%98%E5%8C%96%E8%AE%BE%E8%AE%A1"><span class="toc-text">skill 优化设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E4%BC%98%E5%8C%96"><span class="toc-text">内容优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91"><span class="toc-text">优化方向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99%E6%AD%A3%E6%96%87%E7%9A%84%E5%87%A0%E6%9D%A1%E7%A1%AC%E8%A7%84%E7%9F%A9"><span class="toc-text">写正文的几条硬规矩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E5%BE%AA%E7%8E%AF"><span class="toc-text">优化循环</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#description-%E5%91%BD%E4%B8%AD%E4%BC%98%E5%8C%96"><span class="toc-text">description 命中优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%B8%AD%E6%9C%BA%E5%88%B6"><span class="toc-text">命中机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%99-description%EF%BC%9A%E8%A6%81%E2%80%9D%E7%A8%8D%E5%BE%AE-pushy-%E4%B8%80%E7%82%B9%E2%80%9D"><span class="toc-text">写 description：要”稍微 pushy 一点”</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B0%83%E4%BC%98-checklist%EF%BC%88%E6%89%8B%E5%8A%A8%E6%8E%92%E6%9F%A5%EF%BC%89"><span class="toc-text">调优 checklist（手动排查）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%A8-skill-creator-%E8%87%AA%E5%8A%A8%E8%B0%83%E4%BC%98-description%EF%BC%88%E5%AE%98%E6%96%B9%E6%B5%81%E7%A8%8B%EF%BC%89"><span class="toc-text">用 skill-creator 自动调优 description（官方流程）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%B8%AD%E4%BC%98%E5%8C%96%E7%9A%84%E9%97%AD%E7%8E%AF"><span class="toc-text">命中优化的闭环</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%9B%86%E6%88%90%E5%88%B0-agent-%E6%A1%86%E6%9E%B6"><span class="toc-text">如何集成到 agent 框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%88%E8%AE%A4%E8%AF%86%E4%B8%80%E4%B8%AA%E6%9C%80%E7%AE%80-agent%EF%BC%9Aapi-%E2%86%92-ReAct-%E2%86%92-loop"><span class="toc-text">先认识一个最简 agent：api → ReAct → loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#skill-%E7%9A%84%E6%B3%A8%E5%85%A5%E5%8E%9F%E7%90%86%EF%BC%9Aprogressive-disclosure"><span class="toc-text">skill 的注入原理：progressive disclosure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E5%AE%83%E6%8E%A5%E8%BF%9B-agent-loop"><span class="toc-text">把它接进 agent loop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%B7%A5%E7%A8%8B%E8%A6%81%E7%82%B9"><span class="toc-text">三个工程要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-text">参考资源</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/AI"><i class="tag post-item-tag">AI</i></a><a href="/tags/Claude"><i class="tag post-item-tag">Claude</i></a><a href="/tags/skill"><i class="tag post-item-tag">skill</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">用 Skill 给 Claude Code 装上&quot;肌肉记忆&quot;</h1><time class="has-text-grey" datetime="2026-07-08T08:30:15.000Z">2026-07-08</time><article class="mt-2 post-content"><h2 id="skill-介绍"><a href="#skill-介绍" class="headerlink" title="skill 介绍"></a>skill 介绍</h2><p>先对齐一个认知：<strong>skill 不是 prompt 模板，也不是命令行脚本，它是一段”按需加载的规程”。</strong></p>
+<p>平时我们把规范、流程塞进 <code>CLAUDE.md</code>，结果每次对话都带着一坨上下文跑。skill 的关键区别在于——</p>
+<ul>
+<li><code>CLAUDE.md</code>：<strong>常驻</strong>上下文，每次都在</li>
+<li>skill：<strong>描述</strong>常驻（很便宜），<strong>正文</strong>只在被触发时才进上下文</li>
+</ul>
+<p>一句话总结：<strong>你反复粘贴同一段指令&#x2F;检查清单&#x2F;多步流程时，就该把它写成 skill 了。</strong></p>
+<p>官方原话也印证这点：</p>
+<blockquote>
+<p>Create a skill when you keep pasting the same instructions, checklist, or multi-step procedure into chat, or when a section of CLAUDE.md has grown into a procedure rather than a fact.</p>
+</blockquote>
+<h3 id="skill-和-CLAUDE-md-的关系"><a href="#skill-和-CLAUDE-md-的关系" class="headerlink" title="skill 和 CLAUDE.md 的关系"></a>skill 和 CLAUDE.md 的关系</h3><table>
+<thead>
+<tr>
+<th align="left">形态</th>
+<th align="left">何时加载</th>
+<th align="left">适合放什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>CLAUDE.md</code></td>
+<td align="left"><strong>常驻</strong>上下文</td>
+<td align="left">事实、约定（facts）</td>
+</tr>
+<tr>
+<td align="left"><code>.claude/skills/*/SKILL.md</code></td>
+<td align="left">描述常驻，<strong>正文按需加载</strong></td>
+<td align="left">规程、流程、多步任务</td>
+</tr>
+</tbody></table>
+<p>一句话区分：**<code>CLAUDE.md</code> 放”是什么”，skill 放”怎么做”**。当 CLAUDE.md 里某一节开始”像流程而不是事实”了，就说明它该被抽成 skill。</p>
+<h3 id="谁能触发它"><a href="#谁能触发它" class="headerlink" title="谁能触发它"></a>谁能触发它</h3><pre><code>              你敲 /skill-name        模型自己判断该用
+                   │                        │
+                   ▼                        ▼
+        (user-invocable)            (disable-model-invocation)
+            默认 true                     默认 false
+</code></pre>
+<p>两个开关组合出三种策略：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><code>disable-model-invocation</code></th>
+<th align="left"><code>user-invocable</code></th>
+<th align="left">效果</th>
+<th align="left">例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">false（默认）</td>
+<td align="left">true（默认）</td>
+<td align="left">你和模型都能触发</td>
+<td align="left"><code>summarize-changes</code></td>
+</tr>
+<tr>
+<td align="left"><strong>true</strong></td>
+<td align="left">true</td>
+<td align="left">只能你手动触发，模型不会自作主张</td>
+<td align="left"><code>deploy</code> &#x2F; <code>commit</code></td>
+</tr>
+<tr>
+<td align="left">false</td>
+<td align="left"><strong>false</strong></td>
+<td align="left">模型自动用，<code>/</code> 菜单里看不到</td>
+<td align="left">老系统的背景知识</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>经验：有副作用、有外发动作的（部署、发消息、提交）一律 <code>disable-model-invocation: true</code>，别让模型看代码”觉得差不多了”就帮你上线。</p>
+</blockquote>
+<hr>
+<h2 id="路径结构"><a href="#路径结构" class="headerlink" title="路径结构"></a>路径结构</h2><p>skill 的”命令名”完全由<strong>它放在哪</strong>决定，而不是 frontmatter 里的 <code>name</code>（<code>name</code> 只是显示名）。</p>
+<h3 id="三级作用域"><a href="#三级作用域" class="headerlink" title="三级作用域"></a>三级作用域</h3><table>
+<thead>
+<tr>
+<th align="left">位置</th>
+<th align="left">路径</th>
+<th align="left">谁能用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">个人级</td>
+<td align="left"><code>~/.claude/skills/&lt;name&gt;/SKILL.md</code></td>
+<td align="left">你的所有项目</td>
+</tr>
+<tr>
+<td align="left">项目级</td>
+<td align="left"><code>.claude/skills/&lt;name&gt;/SKILL.md</code></td>
+<td align="left">仅本项目</td>
+</tr>
+<tr>
+<td align="left">插件级</td>
+<td align="left"><code>&lt;plugin&gt;/skills/&lt;name&gt;/SKILL.md</code></td>
+<td align="left">启用该插件处</td>
+</tr>
+</tbody></table>
+<h3 id="一个-skill-目录长什么样"><a href="#一个-skill-目录长什么样" class="headerlink" title="一个 skill 目录长什么样"></a>一个 skill 目录长什么样</h3><p>以 skill-creator 的标准约定为准——一个 <code>SKILL.md</code> 入口 + 三个可选的资源目录，各有职责：</p>
+<pre><code>my-skill/
+├── SKILL.md           # 入口，必需（概览 + 导航）
+└── （按需的附属资源）
+    ├── scripts/       # 可执行代码（确定性/重复任务）
+    │   └── validate.sh
+    ├── references/    # 按需加载进上下文的文档
+    │   └── api.md
+    └── assets/        # 输出用的文件（模板、图标、字体）
+        └── template.md
+</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left">目录</th>
+<th align="left">装什么</th>
+<th align="left">怎么用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>scripts/</code></td>
+<td align="left">确定性、可重复的脚本</td>
+<td align="left">执行，不进上下文（用 <code>$&#123;CLAUDE_SKILL_DIR&#125;/scripts/xxx</code> 引用）</td>
+</tr>
+<tr>
+<td align="left"><code>references/</code></td>
+<td align="left">完整 API、详细参考</td>
+<td align="left">按需读进上下文</td>
+</tr>
+<tr>
+<td align="left"><code>assets/</code></td>
+<td align="left">模板、图标、字体等</td>
+<td align="left">输出时引用</td>
+</tr>
+</tbody></table>
+<p>关键原则：**<code>SKILL.md</code> 只放概览和导航，大段参考材料拆到 <code>references/</code>**。官方建议 <code>SKILL.md</code> 控制在 <strong>500 行以内</strong>，大参考文件（&gt;300 行）内部加目录。</p>
+<blockquote>
+<p>⚠️ 附属文件不会自动进上下文，要在 <code>SKILL.md</code> 里引用它，并写清”什么时候该去读它”，模型才会按需加载。多领域变体时按域拆文件（如 <code>references/aws.md</code> &#x2F; <code>gcp.md</code> &#x2F; <code>azure.md</code>），模型只读相关那一份。</p>
+</blockquote>
+<h3 id="命令名从哪来"><a href="#命令名从哪来" class="headerlink" title="命令名从哪来"></a>命令名从哪来</h3><table>
+<thead>
+<tr>
+<th align="left">skill 位置</th>
+<th align="left">命令名来源</th>
+<th align="left">例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>~/.claude/skills/</code> 或项目 <code>.claude/skills/</code> 下</td>
+<td align="left"><strong>目录名</strong></td>
+<td align="left"><code>skills/deploy-staging/</code> → <code>/deploy-staging</code></td>
+</tr>
+<tr>
+<td align="left">嵌套且重名</td>
+<td align="left">子目录路径 + 目录名</td>
+<td align="left"><code>apps/web/.claude/skills/deploy/</code> → <code>/apps/web:deploy</code></td>
+</tr>
+<tr>
+<td align="left">插件</td>
+<td align="left">插件名:目录名</td>
+<td align="left"><code>my-plugin/skills/review/</code> → <code>/my-plugin:review</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>易错点：改 frontmatter 的 <code>name</code> 字段<strong>不会</strong>改变你敲的命令名（插件根目录是唯一例外）。</p>
+</blockquote>
+<hr>
+<h2 id="yaml-header-字段"><a href="#yaml-header-字段" class="headerlink" title="yaml header 字段"></a>yaml header 字段</h2><p><code>SKILL.md</code> 顶部用 <code>---</code> 包裹的 YAML frontmatter，核心就两个字段：</p>
+<pre><code class="yaml">---
+name: my-skill
+description: 这个 skill 做什么、什么时候用
+---
+</code></pre>
+<h3 id="name-——-显示名"><a href="#name-——-显示名" class="headerlink" title="name —— 显示名"></a><code>name</code> —— 显示名</h3><p>列表里展示的名字。<strong>默认取目录名</strong>，所以一般不用写——你敲的命令名由目录决定，不是由 <code>name</code> 决定。</p>
+<h3 id="description-——-命中的关键"><a href="#description-——-命中的关键" class="headerlink" title="description —— 命中的关键"></a><code>description</code> —— 命中的关键</h3><p><strong>模型判断”要不要用这个 skill”的唯一依据</strong>。强烈推荐写，不写就用正文第一段顶上，但那样命中率不可控。</p>
+<p>写法上，skill-creator 给了两个明确指引：</p>
+<ol>
+<li><p><strong>要稍微”pushy”一点</strong>——Claude 倾向于 <strong>undertrigger</strong>（该用而不用）。所以别写得太谦虚，要主动覆盖各种触发场景：</p>
+<blockquote>
+<p>❌ “How to build a simple fast dashboard to display internal data.”</p>
+<p>✅ “How to build a simple fast dashboard to display internal data. <strong>Use this whenever the user mentions dashboards, data visualization, internal metrics, or wants to display any kind of company data, even if they don’t explicitly ask for a ‘dashboard.’</strong>“</p>
+</blockquote>
+</li>
+<li><p><strong>what + when 都放进来</strong>——所有”何时使用”的信息都进 description，不放进正文 body。</p>
+</li>
+</ol>
+<blockquote>
+<p>关于 description 命中优化的完整机制（列表字符预算、1536 上限、<code>run_loop</code> 自动调优），见后面「description 命中优化」一节。</p>
+</blockquote>
+<hr>
+<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><blockquote>
+<p>简介内容该如何写</p>
+</blockquote>
+<p>正文（body）的写法，核心是两条：<strong>说要做什么，并解释为什么。</strong></p>
+<p>官方 skill-creator 的原话很明确——“explain the why behind everything you’re asking the model to do”，并告诫：<strong>当你忍不住想写 <code>ALWAYS</code> &#x2F; <code>NEVER</code> 这种大写死板结构时，这是黄牌警告</strong>，更好的做法是把理由讲清楚，让模型理解这件事为什么重要。今天的模型很聪明，给它”为什么”比给它”铁律”更有力、也更通用。</p>
+<p>另一面，正文一旦被触发，会<strong>常驻整个会话的上下文</strong>，每一行都是反复出现的 token 成本。所以原则是：<strong>精简但不偷懒</strong>——删掉没起作用的废话，但别为了短而砍掉解释 why 的部分。</p>
+<h3 id="两种正文形态"><a href="#两种正文形态" class="headerlink" title="两种正文形态"></a>两种正文形态</h3><p><strong>参考型（Reference）</strong> —— 注入知识，inline 跑，和对话上下文一起用：</p>
+<pre><code class="yaml">---
+name: api-conventions
+description: API design patterns for this codebase
+---
+写 API 时：
+- RESTful 命名
+- 统一错误格式
+- 入参校验
+</code></pre>
+<p><strong>任务型（Task）</strong> —— 一步步动作，通常手动 <code>/触发</code>：</p>
+<pre><code class="yaml">---
+name: deploy
+description: Deploy the application to production
+context: fork
+disable-model-invocation: true
+---
+部署流程：
+1. 跑测试
+2. 构建
+3. 推到部署目标
+</code></pre>
+<h3 id="正文-checklist"><a href="#正文-checklist" class="headerlink" title="正文 checklist"></a>正文 checklist</h3><ul>
+<li>✅ 写”做什么”，并<strong>讲清为什么</strong>——给模型理由，胜过堆 <code>MUST</code> &#x2F; <code>ALWAYS</code></li>
+<li>✅ 大段参考材料拆到附属文件，主文件只放导航</li>
+<li>✅ 指令写成<strong>持续生效</strong>的陈述，而不是”一次性步骤”（模型不会每轮重读 skill 文件）</li>
+<li>✅ 想要更深推理，正文里任意位置写 <code>ultrathink</code></li>
+<li>❌ 别用大写死板结构（<code>ALWAYS</code>&#x2F;<code>NEVER</code>）——这是黄牌，改成讲理</li>
+<li>❌ 别塞无助于结果的废话，但别为短而砍掉 why</li>
+<li>❌ 别依赖”第一轮生效后续失效”——内容其实在，是模型选择了别的工具；想强约束用 <strong>hooks</strong> 而不是更长的 prompt</li>
+</ul>
+<hr>
+<h2 id="来源"><a href="#来源" class="headerlink" title="来源"></a>来源</h2><p>skill 的内容从哪来？团队里基本是这三条线：</p>
+<h3 id="业务文档"><a href="#业务文档" class="headerlink" title="业务文档"></a>业务文档</h3><p>把团队 wiki &#x2F; 设计文档里”反复要遵守的规程”沉淀成 skill。例如埋点规范、发布 checklist、代码评审标准。</p>
+<ul>
+<li>优势：<strong>事实型材料，正中 skill 的靶心</strong></li>
+<li>注意：文档会更新，skill 要跟着维护；可以把权威文档作为附属文件引用，正文只放稳定部分</li>
+</ul>
+<h3 id="基础库"><a href="#基础库" class="headerlink" title="基础库"></a>基础库</h3><p>某个 SDK &#x2F; 内部库的使用范式、踩坑清单、最佳实践。</p>
+<pre><code class="text">sdk-best-practice/
+├── SKILL.md          # 核心范式 + 何时读 references
+└── references/
+    └── api.md       # 完整 API
+</code></pre>
+<ul>
+<li>配合 <code>paths: **/*.sdk相关文件</code> 让它只在编辑相关文件时自动激活，避免污染无关对话</li>
+</ul>
+<h3 id="会话提炼"><a href="#会话提炼" class="headerlink" title="会话提炼"></a>会话提炼</h3><p>最有价值的一条线：<strong>某次对话里反复粘贴、调试好的 prompt，提炼成 skill。</strong></p>
+<p>典型信号：</p>
+<ul>
+<li>你这周已经第三次粘同一段指令</li>
+<li>一段 prompt 越调越长，但每次都得手动带</li>
+<li>CLAUDE.md 里有一节开始”像流程而不是事实”了</li>
+</ul>
+<blockquote>
+<p>官方原话正是在描述这个场景。会话提炼是 skill 最大的日常价值来源——把”调好的肌肉记忆”固化下来，下次自动复用。</p>
+</blockquote>
+<hr>
+<h2 id="skill-creator-如何用-AI-自己写-skill"><a href="#skill-creator-如何用-AI-自己写-skill" class="headerlink" title="skill-creator 如何用 AI 自己写 skill"></a>skill-creator 如何用 AI 自己写 skill</h2><p>官方提供了 <code>skill-creator</code> 插件，能让你<strong>用 AI 写 skill、用 AI 评 skill</strong>。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><pre><code class="text">/plugin install skill-creator@claude-plugins-official
+</code></pre>
+<p>装完 <code>/reload-plugins</code>，然后：</p>
+<pre><code class="text">evaluate my summarize-changes skill with skill-creator
+</code></pre>
+<h3 id="它能帮你做什么（官方实际流程）"><a href="#它能帮你做什么（官方实际流程）" class="headerlink" title="它能帮你做什么（官方实际流程）"></a>它能帮你做什么（官方实际流程）</h3><pre><code> ① 起草 skill
+      │
+ ② 写 2~3 个真实测试 prompt ──► evals/evals.json
+      │                          （这步只写 prompt，先不写断言）
+      │
+ ③ 同一轮里把所有 run 一起起 ──► 每个用例起「两个」subagent：
+      │                          with_skill  +  baseline
+      │                          ┌─ 新建 skill：baseline = 无 skill
+      │                          └─ 改进 skill：baseline = 旧版本快照
+      │
+ ④ 趁 run 在跑，起草断言 ──► 断言要客观可判、命名清晰；
+      │                     主观类 skill（文风、设计）跳过断言，走人工评审
+      │
+ ⑤ 每个 run 完成时立即记 timing.json（total_tokens / duration_ms）
+      │                     —— 这数据只在任务通知里出现一次，别攒着批处理
+      │
+ ⑥ 打分 ──► grading.json（字段固定为 text / passed / evidence）
+      │        能脚本判的就写脚本，比肉眼快且可复用
+      │
+ ⑦ 汇总 ──► python -m scripts.aggregate_benchmark
+      │        → benchmark.json + benchmark.md（pass_rate / time / tokens，mean±stddev + delta）
+      │
+ ⑧ 分析 ──► analyzer：揪出永真断言（无区分度）、高方差用例（flaky）、时间/token 权衡
+      │
+ ⑨ 评审 ──► generate_review.py 开浏览器：Outputs 标签逐条看 + Benchmark 标签看量化
+      │        人工留反馈 → feedback.json（空反馈 = 觉得没问题）
+      │
+ ⑩ 读反馈 → 改 skill → 新一轮 iteration-N+1 → 循环到满意
+      │
+ ⑪ （可选）盲测 A/B ──► 给独立 agent 两个不标版本的输出，让它判优劣
+      │                    官方：可选，多数人不需要，人工评审通常已够
+      │
+ ⑫ 描述调优（skill 定稿后单独跑）──► 见「description 命中优化」
+</code></pre>
+<blockquote>
+<p>⚠️ 别用 <code>/skill-test</code> 之类的测试 skill，skill-creator 自己就是测试工具。</p>
+</blockquote>
+<h3 id="用-AI-写-skill-的要点"><a href="#用-AI-写-skill-的要点" class="headerlink" title="用 AI 写 skill 的要点"></a>用 AI 写 skill 的要点</h3><ol>
+<li><strong>先给 AI 看真实输入输出样例</strong>，而不是只描述需求——few-shot 比需求描述靠谱</li>
+<li>让 AI 起草后，<strong>立刻进 eval 循环</strong>：写 2~3 个真实 prompt 当测试集（先只写 prompt，断言等 run 跑起来再补）</li>
+<li><strong>基线要选对</strong>：新建 skill 对照”无 skill”，改进已有 skill 对照”旧版本快照”——不是把 skill 禁用了当基线</li>
+<li><strong>靠人工评审 + 量化基准迭代</strong>，直到反馈全空或不再有实质进步就停；盲测 A&#x2F;B 是可选的加严手段，不是必过门槛</li>
+<li>description 单独拿出来调——它决定”被不被触发”，和”内容写得好不好”是两件事，分开测、分开改</li>
+</ol>
+<blockquote>
+<p>详细格式见 <a target="_blank" rel="noopener" href="https://agentskills.io/skill-creation/evaluating-skills">agentskills.io - evaluating-skills</a>。</p>
+</blockquote>
+<hr>
+<h2 id="测试-验证集设计"><a href="#测试-验证集设计" class="headerlink" title="测试-验证集设计"></a>测试-验证集设计</h2><p>这一节是把上面”skill-creator 怎么用”落到我们团队的执行规范。</p>
+<h3 id="核心心法：触发-≠-有效"><a href="#核心心法：触发-≠-有效" class="headerlink" title="核心心法：触发 ≠ 有效"></a>核心心法：触发 ≠ 有效</h3><blockquote>
+<p>官方原话：**”Seeing a skill trigger tells you Claude found it, not that it did what you intended.”**</p>
+</blockquote>
+<p>所以要<strong>分开测两件事</strong>：</p>
+<table>
+<thead>
+<tr>
+<th align="left">测什么</th>
+<th align="left">怎么测</th>
+<th align="left">指标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>是否被触发</strong></td>
+<td align="left">准备一批”该触发”的 prompt，新会话里看命中率</td>
+<td align="left">命中率</td>
+</tr>
+<tr>
+<td align="left"><strong>输出是否对</strong></td>
+<td align="left">触发后，逐条断言核对输出</td>
+<td align="left">通过率</td>
+</tr>
+</tbody></table>
+<h3 id="为什么必须用新会话"><a href="#为什么必须用新会话" class="headerlink" title="为什么必须用新会话"></a>为什么必须用新会话</h3><p>写 skill 时残留的上下文会<strong>掩盖正文的漏洞</strong>——你调 skill 的过程里，模型其实记住了你的意图。换一个干净会话，才知道光靠正文写得够不够。</p>
+<h3 id="验证集怎么搭"><a href="#验证集怎么搭" class="headerlink" title="验证集怎么搭"></a>验证集怎么搭</h3><pre><code>evals/
+└── evals.json    # 每条 = &#123; prompt, 输入文件, 期望行为/断言 &#125;
+</code></pre>
+<p>设计验证集的几条原则：</p>
+<ol>
+<li><strong>真实优先</strong>：用团队里真实会问的话，别自己编”理想 prompt”</li>
+<li><strong>正负样本都要</strong>：<ul>
+<li>should-trigger：该用这个 skill 的 prompt</li>
+<li>should-not-trigger：看着像、但不该触发的 prompt（防误触发）</li>
+</ul>
+</li>
+<li><strong>覆盖边界</strong>：空输入、超长输入、参数缺失、多 skill 候选冲突的场景</li>
+<li><strong>断言可判定</strong>：期望行为写成”输出包含 X””未调用 Y 工具””格式符合 Z”这类机器能判的，别写”质量好”</li>
+</ol>
+<h3 id="基线对比流程"><a href="#基线对比流程" class="headerlink" title="基线对比流程"></a>基线对比流程</h3><pre><code>对每个测试 prompt，同一轮里起两个 subagent：
+  ├─ with_skill ──► 跑一次，记录 (输出, token, 耗时)
+  └─ baseline   ──► 跑一次，记录 (输出, token, 耗时)
+       ├─ 新建 skill：baseline = 无 skill
+       └─ 改进 skill：baseline = 旧版本快照（改之前先 cp -r 备份）
+        │
+        ▼
+   对比 benchmark.json：通过率提升 vs token/耗时增加（mean±stddev + delta）
+</code></pre>
+<blockquote>
+<p>关键：with_skill 和 baseline 要<strong>同一轮一起起</strong>，别先跑完 with_skill 再回头补 baseline——一起起才能差不多同时拿到结果。baseline 选错（比如把 skill 禁用而非”无 skill &#x2F; 旧版本”）会让对比失去意义。</p>
+</blockquote>
+<h3 id="测试-query-必须够”有分量”"><a href="#测试-query-必须够”有分量”" class="headerlink" title="测试 query 必须够”有分量”"></a>测试 query 必须够”有分量”</h3><p>官方点出一个反直觉的点：<strong>模型只对它自己搞不定的任务才会去查 skill</strong>。简单一步任务（如”读一下这个 PDF”）即使 description 完全匹配，也可能不触发——因为模型用基础工具就能搞定。</p>
+<p>所以测试 prompt 不能是 <code>&quot;读文件 X&quot;</code> 这种过简单的，要<strong>足够具体、有细节、像真人会打的</strong>：</p>
+<pre><code>❌  &quot;Format this data&quot;  /  &quot;Create a chart&quot;
+✅  &quot;我老板发了个 xlsx（downloads 里那个 Q4 sales final FINAL v2.xlsx），
+    要我加一列算利润率百分比，收入在 C 列成本在 D 列&quot;
+</code></pre>
+<p>带文件路径、背景、列名、口语化、有错别字——这种 query 才会让模型真的”需要”这个 skill。</p>
+<h3 id="评判产出"><a href="#评判产出" class="headerlink" title="评判产出"></a>评判产出</h3><ul>
+<li><code>grading.json</code>：每条断言的 <code>text</code> &#x2F; <code>passed</code> &#x2F; <code>evidence</code>（字段名固定，viewer 依赖它）</li>
+<li><code>benchmark.json</code> + <code>benchmark.md</code>：汇总通过率、耗时、token，with_skill vs baseline 对比</li>
+<li><code>generate_review.py</code> 生成的 HTML 评审器：Outputs 标签逐条看输出、Benchmark 标签看量化，人工留反馈写进 <code>feedback.json</code>（空反馈 &#x3D; 觉得没问题）</li>
+</ul>
+<blockquote>
+<p>迭代纪律：<strong>靠人工评审 + 量化基准循环</strong>，直到反馈全空或不再有实质进步就停。盲测 A&#x2F;B（给独立 agent 两个不标版本的输出判优劣）是<strong>可选</strong>的加严手段，多数人不需要，人工评审通常已够。</p>
+</blockquote>
+<hr>
+<h2 id="skill-优化设计"><a href="#skill-优化设计" class="headerlink" title="skill 优化设计"></a>skill 优化设计</h2><h3 id="内容优化"><a href="#内容优化" class="headerlink" title="内容优化"></a>内容优化</h3><p>正文已经能被触发、但输出不够好——这时候优化<strong>内容</strong>。</p>
+<h4 id="优化方向"><a href="#优化方向" class="headerlink" title="优化方向"></a>优化方向</h4><table>
+<thead>
+<tr>
+<th align="left">现象</th>
+<th align="left">优化动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">输出正确但啰嗦&#x2F;跑偏</td>
+<td align="left">正文太长 → 拆附属文件，主文件留导航</td>
+</tr>
+<tr>
+<td align="left">模型没遵循某条指令</td>
+<td align="left">指令写成<strong>持续生效陈述</strong>而非”第一步…第二步…”；要强约束上 <strong>hooks</strong></td>
+</tr>
+<tr>
+<td align="left">第一轮对、后续失效</td>
+<td align="left">内容其实在，是模型选了别的路；强化 description + 指令措辞，或压缩后重新触发</td>
+</tr>
+<tr>
+<td align="left">大段参考材料污染上下文</td>
+<td align="left">移到 <code>references/</code>，正文写”需要完整 API 时读 references&#x2F;xxx.md”</td>
+</tr>
+<tr>
+<td align="left">复杂多步任务占太多上下文</td>
+<td align="left">加 <code>context: fork</code> 跑在子代理里，主上下文只看结果</td>
+</tr>
+</tbody></table>
+<h4 id="写正文的几条硬规矩"><a href="#写正文的几条硬规矩" class="headerlink" title="写正文的几条硬规矩"></a>写正文的几条硬规矩</h4><ol>
+<li><strong>说要做什么，并解释为什么</strong>——给模型理由，胜过 <code>MUST</code>&#x2F;<code>ALWAYS</code> 大写死板结构</li>
+<li><strong>主文件 ≤ 500 行</strong>，超了就拆；大参考文件（&gt;300 行）加目录</li>
+<li><strong>指令是 standing instructions</strong>（持续生效），因为模型不会每轮重读文件</li>
+<li>附属文件必须在主文件里<strong>被引用并说明何时加载</strong>，否则等于不存在</li>
+<li>想要更深思考，正文里任意位置塞 <code>ultrathink</code></li>
+<li>别为局部用例加”过拟合”的小修小补——要从模式&#x2F;隐喻层面泛化，skill 要能服务海量场景</li>
+</ol>
+<h4 id="优化循环"><a href="#优化循环" class="headerlink" title="优化循环"></a>优化循环</h4><pre><code> 跑 eval ──► 看 grading.json + benchmark.json 定位失败用例
+    │         （也读 transcript，看模型是否在浪费时间做无用功）
+    ▼
+ 改正文（拆文件 / 讲清 why / 泛化 / 加 hooks）
+    │         （留意：多个用例各自重写了相似脚本 → 把它收进 scripts/）
+    ▼
+ 重新跑一轮 iteration-N+1（with_skill + baseline 一起起）
+    │
+    ▼
+ 人工评审 feedback.json + 看量化对比
+    │
+    ├─ 反馈全空 / 不再有实质进步 ──► 定稿
+    └─ 还有问题                       ──► 继续改
+</code></pre>
+<blockquote>
+<p>盲测 A&#x2F;B 是可选加严项，不是必过门槛。</p>
+</blockquote>
+<hr>
+<h3 id="description-命中优化"><a href="#description-命中优化" class="headerlink" title="description 命中优化"></a>description 命中优化</h3><p>skill 写得再好，<strong>模型没在正确时机触发它，等于白写</strong>。<code>description</code> 是命中优化的主战场。</p>
+<h4 id="命中机制"><a href="#命中机制" class="headerlink" title="命中机制"></a>命中机制</h4><p>模型每轮看到的是一份**”skill 列表”**，里面是各 skill 的 name + description。它就靠这份列表决定”要不要用某个 skill”。</p>
+<pre><code>┌──────────── 上下文里的 skill 列表（有字符预算）─────────────┐
+│ skillA:  &lt;name + description&gt;                            │
+│ skillB:  &lt;name + description&gt;   ← 模型据 description 判断 │
+│ skillC:  &lt;name + description&gt;                            │
+└──────────────────────────────────────────────────────────┘
+</code></pre>
+<p>关键限制（也是优化的发力点）：</p>
+<ul>
+<li>列表有<strong>总字符预算</strong>：约模型上下文窗口的 1%</li>
+<li>单条 description + when_to_use 合计上限 <strong>1536 字符</strong></li>
+<li>预算超了，<strong>从你最少用的 skill 开始砍 description</strong>（name 保留）</li>
+<li>用 <code>/doctor</code> 看列表的上下文成本和大头贡献者；<code>/context</code> 的 Skills 行显示预算后实际大小</li>
+</ul>
+<h4 id="写-description：要”稍微-pushy-一点”"><a href="#写-description：要”稍微-pushy-一点”" class="headerlink" title="写 description：要”稍微 pushy 一点”"></a>写 description：要”稍微 pushy 一点”</h4><p>官方点出一个重要倾向：<strong>Claude 会 undertrigger——该用的时候不用</strong>。所以 description 别写得太谦虚，要主动覆盖各种触发场景：</p>
+<blockquote>
+<p>❌ “How to build a simple fast dashboard to display internal Anthropic data.”</p>
+<p>✅ “How to build a simple fast dashboard to display internal Anthropic data. <strong>Make sure to use this skill whenever the user mentions dashboards, data visualization, internal metrics, or wants to display any kind of company data, even if they don’t explicitly ask for a ‘dashboard.’</strong>“</p>
+</blockquote>
+<p>另一个前提：<strong>模型只对它自己搞不定的任务才查 skill</strong>。简单一步任务即便 description 完全匹配也可能不触发——所以 description 里描述的场景要足够”需要 skill”才有意义。</p>
+<h4 id="调优-checklist（手动排查）"><a href="#调优-checklist（手动排查）" class="headerlink" title="调优 checklist（手动排查）"></a>调优 checklist（手动排查）</h4><p><strong>该触发却没触发：</strong></p>
+<ol>
+<li>description 里有没有用户<strong>自然会说出口</strong>的关键词？（别用你自己才懂的术语）</li>
+<li>确认 skill 出现在”What skills are available?”里</li>
+<li>用 <code>--debug</code> 看 frontmatter 有没有 YAML 解析错误（解析失败会以空元数据加载，<code>/名</code>还能用但没有 description 可匹配）</li>
+<li>实在不行先 <code>/skill-name</code> 手动触发，确认内容没问题再回头调 description</li>
+</ol>
+<p><strong>不该触发却老触发：</strong></p>
+<ol>
+<li>把 description 收窄、加更具体的限定</li>
+<li>只想手动触发 → <code>disable-model-invocation: true</code></li>
+<li>只在特定文件上触发 → 加 <code>paths: **/xxx</code></li>
+</ol>
+<p><strong>description 被截断：</strong></p>
+<ol>
+<li>把<strong>最关键的使用场景放最前面</strong>（1536 字符上限从前往后算）</li>
+<li>低优先级 skill 在 <code>skillOverrides</code> 里设 <code>&quot;name-only&quot;</code>，省下预算给高频 skill</li>
+<li>提高预算：<code>skillListingBudgetFraction</code>（如 <code>0.02</code>）或环境变量 <code>SLASH_COMMAND_TOOL_CHAR_BUDGET</code></li>
+</ol>
+<h4 id="用-skill-creator-自动调优-description（官方流程）"><a href="#用-skill-creator-自动调优-description（官方流程）" class="headerlink" title="用 skill-creator 自动调优 description（官方流程）"></a>用 skill-creator 自动调优 description（官方流程）</h4><p>skill 定稿后，用 skill-creator 的 description 优化循环<strong>自动</strong>调命中率：</p>
+<pre><code> ① 生成 20 条 trigger eval query
+    ├─ should-trigger  8~10 条：覆盖不同说法（正式/口语/不点名 skill）
+    └─ should-not-trigger 8~10 条：near-miss——共享关键词但实际需要别的
+       （&quot;写个斐波那契&quot;这种明显无关的反例是无效的，太简单不测东西）
+    要求：具体、带细节（路径/列名/背景/口语/错别字），别写抽象的
+       │
+ ② 用 HTML 模板给用户过一遍（assets/eval_review.html），
+    用户可改 query、切换 should-trigger、增删条目 → 导出 eval_set.json
+       │
+ ③ 后台跑优化循环：
+    python -m scripts.run_loop \
+      --eval-set &lt;trigger-eval.json&gt; \
+      --skill-path &lt;skill-path&gt; \
+      --model &lt;当前会话模型 id&gt; \   # 要和用户实际体验的模型一致
+      --max-iterations 5 --verbose
+       │
+    机制：60% train / 40% held-out test 划分；
+          每条 query 跑 3 次取稳定触发率；
+          让 Claude 按失败点提议 description 改动；
+          新 description 在 train + test 上都重评；
+          最多 5 轮迭代
+       │
+ ④ 取 best_description —— 按 test 分数选，防过拟合
+    （不是按 train 分数）→ 写回 SKILL.md，给用户看 before/after + 分数
+</code></pre>
+<blockquote>
+<p>注意：这一步依赖 <code>claude -p</code>（CLI），只在 Claude Code 里能跑，Claude.ai 等无 CLI 环境跳过。要等 skill 内容本身改好了再调 description，别两头同时动。</p>
+</blockquote>
+<h4 id="命中优化的闭环"><a href="#命中优化的闭环" class="headerlink" title="命中优化的闭环"></a>命中优化的闭环</h4><pre><code> 准备 20 条 trigger eval（should / should-not-trigger）
+            │
+            ▼
+   run_loop 自动跑 5 轮，按 test 分数选 best_description
+            │
+            ▼
+   命中率仍不达标 / 误触发高 ──► 手动收窄或补关键词，再跑一轮
+</code></pre>
+<blockquote>
+<p>命中和内容是两条独立的线：**description 决定”用不用”，正文决定”用得好不好”**。优化时分开测、分开改，别混在一起。</p>
+</blockquote>
+<hr>
+<h2 id="如何集成到-agent-框架"><a href="#如何集成到-agent-框架" class="headerlink" title="如何集成到 agent 框架"></a>如何集成到 agent 框架</h2><p>前面都在讲”怎么写 skill”，这一节回答另一个问题：<strong>我们自己的 agent 框架，怎么把 skill 装进去？</strong> 面向没做过 agent 的同学，先从最简的 agent 长什么样讲起。</p>
+<h3 id="先认识一个最简-agent：api-→-ReAct-→-loop"><a href="#先认识一个最简-agent：api-→-ReAct-→-loop" class="headerlink" title="先认识一个最简 agent：api → ReAct → loop"></a>先认识一个最简 agent：api → ReAct → loop</h3><p>抛开各种框架，一个能动手干活的 agent，本质就三块东西：</p>
+<pre><code> 用户输入
+    │
+    ▼
+┌─────────────────────────────────────────────┐
+│  agent loop（一个 while 循环）              │
+│                                             │
+│   ┌──────────────────────────────────────┐  │
+│   │  ① 调模型 API（带上系统提示 + 历史） │  │
+│   └──────────────────────────────────────┘  │
+│              │                             │
+│              ▼ 模型要么给最终回答，要么要求调工具
+│   ┌──────────────────────────────────────┐  │
+│   │  ② 执行工具（读文件/跑命令/查接口） │  │
+│   └──────────────────────────────────────┘  │
+│              │                             │
+│              ▼ 把工具结果塞回历史，回到 ①
+│                                             │
+│   直到模型给出最终回答 → 退出循环           │
+└─────────────────────────────────────────────┘
+    │
+    ▼
+ 输出给用户
+</code></pre>
+<ul>
+<li><strong>api</strong>：就是调一次大模型接口（发消息、收回复）</li>
+<li><strong>ReAct</strong>：模型的回复里可以带”工具调用”，agent 执行工具、把结果喂回模型，模型再决定下一步——这个”思考→行动→观察”的循环叫 ReAct</li>
+<li><strong>agent loop</strong>：把上面两步套进一个 <code>while</code> 循环，直到模型说”我答完了”为止</li>
+</ul>
+<p>最小伪代码：</p>
+<pre><code class="python">messages = [system_prompt, user_input]
+
+while True:
+    reply = call_model_api(messages)          # ① 调 API
+    if reply.has_tool_calls:                  # 模型想调工具
+        for call in reply.tool_calls:
+            result = run_tool(call)           # ② 执行工具
+            messages.append(result)           # 把结果塞回历史
+    else:
+        print(reply.text)                     # 模型答完了，退出
+        break
+</code></pre>
+<p>理解了这三块，skill 怎么集成就清楚了——<strong>skill 不是新机制，而是往这个循环里塞东西。</strong></p>
+<h3 id="skill-的注入原理：progressive-disclosure"><a href="#skill-的注入原理：progressive-disclosure" class="headerlink" title="skill 的注入原理：progressive disclosure"></a>skill 的注入原理：progressive disclosure</h3><p>skill 不像 <code>CLAUDE.md</code> 那样一开始全塞进上下文。它用<strong>三级按需加载</strong>，这也是 <a target="_blank" rel="noopener" href="https://agentskills.io/client-implementation/adding-skills-support">agentskills.io</a> 定义的核心原则：</p>
+<table>
+<thead>
+<tr>
+<th align="left">层级</th>
+<th align="left">装的是什么</th>
+<th align="left">何时加载</th>
+<th align="left">成本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">① 目录 Catalog</td>
+<td align="left">各 skill 的 name + description</td>
+<td align="left"><strong>会话开始就常驻</strong></td>
+<td align="left">每条 ~50–100 token</td>
+</tr>
+<tr>
+<td align="left">② 指令 Instructions</td>
+<td align="left">完整 <code>SKILL.md</code> 正文</td>
+<td align="left"><strong>被触发时</strong>才进上下文</td>
+<td align="left">建议 &lt;5000 token</td>
+</tr>
+<tr>
+<td align="left">③ 资源 Resources</td>
+<td align="left">scripts &#x2F; references &#x2F; assets</td>
+<td align="left">正文引用到时<strong>再按需读</strong></td>
+<td align="left">按实际用量</td>
+</tr>
+</tbody></table>
+<p>一句话：<strong>目录先告诉模型”有哪些 skill 可用”，模型判断某个相关了，再去加载它的正文；正文里提到某个参考文件，再按需读那一个。</strong></p>
+<h3 id="把它接进-agent-loop"><a href="#把它接进-agent-loop" class="headerlink" title="把它接进 agent loop"></a>把它接进 agent loop</h3><p>对应到上面三块 agent，skill 的注入发生在<strong>两个时机</strong>：</p>
+<pre><code>┌─ 会话开始（loop 之前）───────────────────────────────┐
+│  ① 扫描 skill 目录，解析每个 SKILL.md 的 frontmatter │
+│  ② 把 [name + description] 拼成 catalog              │
+│  ③ catalog 注入 system_prompt（常驻，很便宜）       │
+└──────────────────────────────────────────────────────┘
+                         │
+                         ▼ 进入 agent loop
+┌─ 循环中（某轮）──────────────────────────────────────┐
+│  模型读 catalog，判断&quot;这个任务该用 skill X&quot;          │
+│      │                                               │
+│      ▼ 两种激活方式                                   │
+│  a) 模型直接用读文件工具读 SKILL.md（最简，要模型能读文件）
+│  b) 模型调一个专用 activate_skill 工具（更可控）      │
+│      │                                               │
+│      ▼ 正文进上下文（tier 2），模型按正文干活         │
+│  正文若引用 references/xxx.md → 模型按需再读（tier 3）│
+└──────────────────────────────────────────────────────┘
+</code></pre>
+<p>接进最小伪代码后是这样：</p>
+<pre><code class="python"># —— 会话开始：注入 tier 1（catalog）——
+skills = scan_skill_dirs()              # 扫描 + 解析 frontmatter
+catalog = build_catalog(skills)        # 只取 name + description
+system_prompt += catalog_block(catalog)  # 拼进 system prompt（常驻）
+
+# —— agent loop ——
+messages = [system_prompt, user_input]
+while True:
+    reply = call_model_api(messages)
+    if reply.has_tool_calls:
+        for call in reply.tool_calls:
+            if call.name == &quot;activate_skill&quot;:   # tier 2：加载正文
+                result = load_skill_body(call.args[&quot;name&quot;])
+            else:                                # 其它工具（读文件等）
+                result = run_tool(call)          # tier 3 也走读文件工具
+            messages.append(result)
+    else:
+        print(reply.text); break
+</code></pre>
+<h3 id="三个工程要点"><a href="#三个工程要点" class="headerlink" title="三个工程要点"></a>三个工程要点</h3><p>集成时最容易踩的三点（不用记细节，知道有这回事即可）：</p>
+<ol>
+<li><p>**catalog 要”省着放”**——它是常驻上下文，几十个 skill 也只占几千 token，因为只放 name+description。这也是为什么 description 写得好不好直接决定命中率。</p>
+</li>
+<li><p><strong>压缩时要保护 skill 正文</strong>——agent 上下文满了会自动裁剪&#x2F;总结旧消息，<strong>skill 正文要豁免裁剪</strong>，否则模型中途丢了规程却不报错，行为悄悄变差。用结构化标签（如 <code>&lt;skill_content&gt;</code> 包住正文）来识别和保护。</p>
+</li>
+<li><p><strong>项目级 skill 要做信任检查</strong>——项目里的 skill 来自仓库，可能是刚 clone 的开源项目。加载前要确认用户已”信任”该项目，避免不可信仓库悄悄往上下文里塞指令。</p>
+</li>
+</ol>
+<blockquote>
+<p>一句话总结集成原理：<strong>agent loop 还是那个 loop，skill 只是会话开始时往 system prompt 里塞一份”目录”，循环中模型按需把正文加载进上下文。</strong> 没有新机制，只是”按需加载”这一招。</p>
+</blockquote>
+<hr>
+<h3 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/skills">Extend Claude with skills（官方文档）</a></li>
+<li><a target="_blank" rel="noopener" href="https://agentskills.io/skill-creation/evaluating-skills">Evaluating skill output quality（agentskills.io）</a></li>
+<li><a target="_blank" rel="noopener" href="https://claude.com/blog/improving-skill-creator-test-measure-and-refine-agent-skills">skill-creator 公告</a></li>
+<li><a target="_blank" rel="noopener" href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices">Skill authoring best practices</a></li>
+</ul>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2026/07/15/2026-07-15-DDComponent-iOS-%E9%A1%B5%E9%9D%A2%E6%8B%86%E5%88%86%E6%A1%86%E6%9E%B6%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E8%B7%B5/" title="DDComponent：iOS 页面拆分框架的设计与实践"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: DDComponent：iOS 页面拆分框架的设计与实践</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_296/" title="支持 visionOS App 播放沉浸视频"><span class="has-text-weight-semibold">下一页: 支持 visionOS App 播放沉浸视频</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2026/07/08/2026-07-08-%E7%AE%80%E5%8D%95%E6%98%93%E6%87%82%E7%9A%84-agent-skill/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>微前端笔记</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="目前很多大型业务随着业务的飞速膨胀，单体结构(monolithic)已经远不能符合当前开发模式了，所以后端有微服务，前端有微前端，客户端有组件化，其主要目标都是一致的，都是为了解决单体结构的问题，但是各端也有各自的一些特色，其中后端的拆分最为复杂，而客户端拆分最难以彻底，而微前端则介于这两者之间。
+
+
+
+一般来说，都是后端先进行的微服务拆分，而组织架构的调整最好是前后端保持一致，才能确保最低的沟通成本，而从康威定律来看，相应的架构也需要进行同样的调整。
+
+同时服务拆分也给我们带来了异构系统的可能性，不仅仅是后端服务的异构实现，甚至前端也可以采用不同的框架进行搭建，这给予了团队不同的技术选型空间。
+
+服务拆分的最大一个好处就是功能发版不再相互依赖了，减少了团队间的沟通成本与增加了迭代速度。
+
+而对于微前端来说.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">微前端笔记</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/micro-frontend"><i class="tag post-item-tag">micro-frontend</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">微前端笔记</h1><time class="has-text-grey" datetime="2021-06-06T12:26:43.000Z">2021-06-06</time><article class="mt-2 post-content"><p>目前很多大型业务随着业务的飞速膨胀，单体结构(monolithic)已经远不能符合当前开发模式了，所以后端有微服务，前端有微前端，客户端有组件化，其主要目标都是一致的，都是为了解决单体结构的问题，但是各端也有各自的一些特色，其中后端的拆分最为复杂，而客户端拆分最难以彻底，而微前端则介于这两者之间。</p>
+<span id="more"></span>
+
+<p><img src="/images/2021/micro_frontend/1.png"></p>
+<p>一般来说，都是后端先进行的微服务拆分，而组织架构的调整最好是前后端保持一致，才能确保最低的沟通成本，而从康威定律来看，相应的架构也需要进行同样的调整。</p>
+<p><img src="/images/2021/micro_frontend/2.png"></p>
+<p>同时服务拆分也给我们带来了异构系统的可能性，不仅仅是后端服务的异构实现，甚至前端也可以采用不同的框架进行搭建，这给予了团队不同的技术选型空间。</p>
+<p><img src="/images/2021/micro_frontend/3.png"></p>
+<p>服务拆分的最大一个好处就是功能发版不再相互依赖了，减少了团队间的沟通成本与增加了迭代速度。</p>
+<p><img src="/images/2021/micro_frontend/4.png"></p>
+<p>而对于微前端来说，比较重要的几个方面就是：</p>
+<ul>
+<li>页面路由</li>
+<li>跨组件通信</li>
+<li>页面组合</li>
+</ul>
+<p><img src="/images/2021/micro_frontend/5.png"></p>
+<p>路由的事情相对比较容易解决，对于多页应用来说，通过配置反向代理即可，只需要定义好各个团队之间的域即可，避免出现冲突等问题。</p>
+<p>通信的问题对前端来说也比较容易解决，通过事件冒泡的形式向上传递事件，接收方可以通过在window上加入监听实现。</p>
+<p><img src="/images/2021/micro_frontend/6.png"></p>
+<p>其中组合的方式较为复杂，有多种形式进行，但是需要保证的是各个团队的职责足够的清晰。</p>
+<p>页面合成可以通过：</p>
+<ul>
+<li>iframe</li>
+<li>ajax</li>
+<li>web component</li>
+</ul>
+<p>从渲染发生的时间可以分为：</p>
+<ul>
+<li>CSR</li>
+<li>SSR</li>
+<li>两者混合渲染</li>
+</ul>
+<p><img src="/images/2021/micro_frontend/7.png"></p>
+<p><img src="/images/2021/micro_frontend/7.1.png"></p>
+<p>可以看到两种渲染方式的明显区别。这种特点在加载时间上也带来了不一样的体验。</p>
+<p><img src="/images/2021/micro_frontend/9.png"></p>
+<p><img src="/images/2021/micro_frontend/10.png"></p>
+<p>下面是技术选型的一个指导。</p>
+<p><img src="/images/2021/micro_frontend/11.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>可以看出来微前端既有一部分微服务在后台拆分思路一致的地方，也有和客户端一样单体页面拆分问题。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2021/12/22/2021-12-22-%E7%BB%99%E9%9D%A2%E8%AF%95%E8%80%85%E7%9A%84%E4%B8%80%E4%BA%9B%E5%BB%BA%E8%AE%AE/" title="给面试者的一些建议"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 给面试者的一些建议</span></a><a class="button is-default" href="/2021/04/03/2021-04-03-wakeup-in-XNU/" title="wakeup in XNU"><span class="has-text-weight-semibold">下一页: wakeup in XNU</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2021/06/06/2021-06-06-%E5%BE%AE%E5%89%8D%E7%AB%AF%E7%AC%94%E8%AE%B0/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

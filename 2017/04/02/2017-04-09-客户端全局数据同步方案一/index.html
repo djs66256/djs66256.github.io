@@ -1,0 +1,183 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>客户端全局数据同步方案(一)</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="很多时候产品们都有一些奇奇怪怪的想法和要求，这里我们就有一个需求，要求我们应用里面所有的用户行为数，比如阅读数、点赞数、评论数和关注、点赞状态等全局同步，一旦有变更要求全局更新显示。
+
+
+准备开始我们考虑了一种方案，创建一个池子，所有同一类型的Model都存放在池子里面，使用时优先在池子里面取，不存在时创建并加入池子。这样我们就能够确保我们应用里面的所有“同一对象”，是真正的同一个对象。
+但是这样做也存在很多问题：
+
+当这个需求提出来开始做的时候我们的应用已经基本成型，很多接口和model并没有统一，如果要采用这种方案必然需要大改。
+这样做势必会导致model的冗余属性。
+接口有些时候放回相同字段，但是意义不一致。
+第三方库的支持。比如YYModel的解析需要修改很多地方才能使用。
+
+所以考虑了以下的方案。.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">客户端全局数据同步方案(一)</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%A1%88"><span class="toc-text">方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%BC%98%E5%8C%96%E7%89%88"><span class="toc-text">方案优化版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5"><i class="tag post-item-tag">数据同步</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">客户端全局数据同步方案(一)</h1><time class="has-text-grey" datetime="2017-04-02T13:14:27.000Z">2017-04-02</time><article class="mt-2 post-content"><p>很多时候产品们都有一些奇奇怪怪的想法和要求，这里我们就有一个需求，要求我们应用里面所有的用户行为数，比如阅读数、点赞数、评论数和关注、点赞状态等全局同步，一旦有变更要求全局更新显示。</p>
+<span id="more"></span>
+
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>开始我们考虑了一种方案，创建一个池子，所有同一类型的Model都存放在池子里面，使用时优先在池子里面取，不存在时创建并加入池子。这样我们就能够确保我们应用里面的所有“同一对象”，是真正的同一个对象。</p>
+<p>但是这样做也存在很多问题：</p>
+<ol>
+<li>当这个需求提出来开始做的时候我们的应用已经基本成型，很多接口和model并没有统一，如果要采用这种方案必然需要大改。</li>
+<li>这样做势必会导致model的冗余属性。</li>
+<li>接口有些时候放回相同字段，但是意义不一致。</li>
+<li>第三方库的支持。比如YYModel的解析需要修改很多地方才能使用。</li>
+</ol>
+<p>所以考虑了以下的方案。</p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>思路保持一致，将需要同步的对象加入全局的池子。但是各自创建各自的对象，在需要全局同步的时候，提交该对应的keyPath，然后更新池子中<code>拥有相同类</code>的成员。在view层，使用KVO监听变化。</p>
+<p>缺点：</p>
+<p>由于根据了类名来作为判断该对象是否属于同一对象，所以继承或者拥有不同类名的“同一对象”并不能被识别为相同的。</p>
+<p>在我们已经比较完善的项目中，要做这样的统一，几乎是不可能的，所以特例化了部分场景，来满足我们当前的需求。</p>
+<h2 id="方案优化版"><a href="#方案优化版" class="headerlink" title="方案优化版"></a>方案优化版</h2><p><img src="/images/2017/data/structure.png" alt="structure"></p>
+<p>我分析了我们应用中需要使用到全局同步的对象，可以分为几种类型（比如动态、评论等），并不会存在特别复杂的类型。而且每种类型必定会存在一个唯一的ID，所以觉得可以通过type和ID来唯一确定是“同一个对象”。</p>
+<p>所以将结构修改为下，所有需要支持全局同步的类都需要实现下面的协议。</p>
+<pre><code class="objc">@protocol MZChannelProtocol &lt;NSObject&gt;
+
+@property (readonly, nonatomic) NSString *id;
+@property (readonly, nonatomic) NSInteger channelType;
+
+@optional
+// 提供一个keyPath转换的方法
+- (NSString *)translateKeyPath:(NSString *)keyPath;
+
+@end
+</code></pre>
+<p>接口设计如下</p>
+<pre><code class="objc">@interface MZChannel : NSObject
+
++ (instancetype)sharedChannel;
+
+// 需要在类创建完之后加入池子，一般在init方法中
+- (void)addObject:(id&lt;MZChannelProtocol&gt;)obj;
+
+- (void)emitType:(NSInteger)type id:(NSString *)id keyPath:(NSString *)keyPath forValue:(id)value;
+
+@end
+</code></pre>
+<p>同时在使用KeyPath的过程中需要判断是否合法，防止某些对象不存在该成员而crash。</p>
+<pre><code class="objc">// 这里使用set方法来判断是否可以同步，所以实际上只要实现了对应的set方法就可以了，并不需要实际的property。
+- (BOOL)canPerformKeyPath:(NSString *)keyPath newKeyPath:(out NSString **)aKeyPath &#123;
+    if ([self conformsToProtocol:@protocol(MZChannelProtocol)] &amp;&amp; keyPath.length &gt; 0) &#123;
+        id&lt;MZChannelProtocol&gt; cself = (id&lt;MZChannelProtocol&gt;)self;
+        if ([cself channelType] &lt;= 0) &#123;
+            return NO;
+        &#125;
+        NSString *selectorStr = [NSString stringWithFormat:@&quot;set%@%@:&quot;, keyPath.firstLetter.uppercaseString, [keyPath substringFromIndex:1]];
+        if ([self respondsToSelector:NSSelectorFromString(selectorStr)]) &#123;
+            return YES;
+        &#125;
+        else if ([cself respondsToSelector:@selector(translateKeyPath:)]) &#123;
+            NSString *transKeyPath = [cself translateKeyPath:keyPath];
+            if (transKeyPath) &#123;
+                if (transKeyPath.length &gt; 0) &#123;
+                    selectorStr = [NSString stringWithFormat:@&quot;set%@%@:&quot;, transKeyPath.firstLetter.uppercaseString, [transKeyPath substringFromIndex:1]];
+                    if ([self respondsToSelector:NSSelectorFromString(selectorStr)]) &#123;
+                        if (aKeyPath) *aKeyPath = selectorStr;
+                        return YES;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    return NO;
+&#125;
+</code></pre>
+<p>池子的实现，把整个池子分为若干桶，每个桶的key为相应的type，桶使用weak类型的hashTable来实现存储。</p>
+<p>这里需要注意的是一些多线程可能导致的问题，所以在更新操作中使用了锁。由于我们应用内“同一对象”和“同类型对象”的数目预估应该存在不超过1000个，所以不需要考虑性能问题，也就可以在主线程中同步数据。</p>
+<pre><code class="objc">@interface MZChannelObject : NSObject
+@property (assign, nonatomic) NSInteger type;
+@property (strong, nonatomic) NSHashTable&lt;id&lt;MZChannelProtocol&gt;&gt; *hashTable;
+@property (strong, nonatomic) NSLock *lock;
+
+- (void)addObject:(id&lt;MZChannelProtocol&gt;)object;
+- (void)emitType:(NSInteger)type id:(NSString *)id keyPath:(NSString *)keyPath forValue:(id)value;
+@end
+
+@implementation MZChannelObject
+- (instancetype)init
+&#123;
+    self = [super init];
+    if (self) &#123;
+        _hashTable = [[NSHashTable alloc] initWithOptions:NSPointerFunctionsWeakMemory capacity:0];
+        _lock = [[NSLock alloc] init];
+    &#125;
+    return self;
+&#125;
+
+- (void)addObject:(id&lt;MZChannelProtocol&gt;)object &#123;
+    [self.lock lock];
+    [_hashTable addObject:object];
+    [self.lock unlock];
+&#125;
+
+- (void)emitType:(NSInteger)type id:(NSString *)id keyPath:(NSString *)keyPath forValue:(id)value &#123;
+    if (type == self.type) &#123;
+        [self.lock lock];
+        for (NSObject&lt;MZChannelProtocol&gt; *obj in _hashTable) &#123;
+            NSString *aKeyPath = nil;
+            if ([obj.id isEqualToString:id] &amp;&amp; [obj canPerformKeyPath:keyPath newKeyPath:&amp;aKeyPath]) &#123;
+                dispatch_block_t updateValue =^() &#123;
+                    if (aKeyPath) &#123;
+                        [obj setValue:value forKey:aKeyPath];
+                    &#125;
+                    else &#123;
+                        [obj setValue:value forKey:keyPath];
+                    &#125;
+                &#125;;
+                if ([NSThread currentThread].isMainThread) &#123;
+                    updateValue();
+                &#125;
+                else &#123;
+                    // 防止KVO刷新页面的时候的子线程操作UI
+                    dispatch_sync(dispatch_get_main_queue(), updateValue);
+                &#125;
+            &#125;
+        &#125;
+        [self.lock unlock];
+    &#125;
+&#125;
+
+@end
+</code></pre>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><pre><code class="objc">@interface MZUser : NSObject &lt;MZChannelProtocol&gt;
+@property (strong, nonatomic) NSString *id;
+@end
+
+@implementation MZUser
+
+- (instancetype)init
+&#123;
+    self = [super init];
+    if (self) &#123;
+        [[MZChannel sharedChannel] addObject:self];
+    &#125;
+    return self;
+&#125;
+
+- (NSInteger)channelType &#123;
+    return MZResourceTypeUser;
+&#125;
+@end
+</code></pre>
+<p>在请求关注或者取消关注的时候触发同步</p>
+<pre><code class="objc">[user emitKeyPath:NSStringFromSelector(@selector(followed)) forValue:@(YES)];
+或者
+[[MZChannel sharedChannel] emitType:MZResourceTypeUser id:user.id keyPath:NSStringFromSelector(@selector(followed)) forValue:@(YES)];
+</code></pre>
+<p>然后使用KVO来观察对象变化</p>
+<pre><code class="objc">[self.KVOController observe:_user keyPath:NSStringFromSelector(@selector(followed)) options:NSKeyValueObservingOptionNew block:^(id  _Nullable observer, MZUser *object, NSDictionary&lt;NSString *,id&gt; * _Nonnull change) &#123;
+            // update UI ...
+        &#125;];
+</code></pre>
+<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>虽然实现了全局同步，但是由于使用了统一的池子，会导致DEBUG困难。</p>
+<p>需要实现人工判断更新的内容。</p>
+<p>KVO不能判断该更新是用户操作引起的，还是由其他对象变更引起的。这里可能涉及到行为动画，但是我们的业务场景不可能一个页面出现两个相同的内容，所以并没有什么影响。</p>
+<p>虽然可以使用KVO来实现同步UI的更新，但并没有做到和MVVM一样的同步更新，还是需要人工处理更新逻辑。</p>
+<p>有一定的代码侵入性，需要继承协议，并且在初始化的时候加入池子。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这里限制了一部分的使用场景，来满足了特定环境下的需求，希望能给其他需要同步数据的场景一个方法。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/04/09/2017-04-09-%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%EF%BC%88%E4%BA%8C%EF%BC%89UI%E7%AF%87/" title="全局数据同步（二）UI篇"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 全局数据同步（二）UI篇</span></a><a class="button is-default" href="/2017/04/01/2017-04-01-%E6%9C%80%E8%BF%91%E4%B8%80%E5%B9%B4%E6%80%BB%E7%BB%93/" title="最近一年总结"><span class="has-text-weight-semibold">下一页: 最近一年总结</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/04/02/2017-04-09-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE%E5%90%8C%E6%AD%A5%E6%96%B9%E6%A1%88%E4%B8%80/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

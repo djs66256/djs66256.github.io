@@ -1,0 +1,66 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>Apple Pay 的新功能</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="探索 apple pay 中的最新改进和新 api。你将探索 apple pay ecommerce 体验有哪些优化 (例如新增的动态支付按钮)，并了解如何充分利用增强后的预授权付款支持。我们将介绍“钱包”中的订单跟踪将迎来哪些全新功能，并了解一些有助于让订单呈现精美外观的建议。我们还将深入了解 financekit 的新背景交付 api，这些 api 让财务管理 app 即使在非活跃状态下也能获取最新数据。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+Apple Pay 新功能：电子商务体验与FinanceKit深度解析Apple Pay作为苹果生态系统的核心支付解决方案，在WWDC上公布了多项重要更新。这些改进覆盖了支付全流程体验、订单管理以及Fi.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Apple Pay 的新功能</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Apple-Pay-%E6%96%B0%E5%8A%9F%E8%83%BD%EF%BC%9A%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1%E4%BD%93%E9%AA%8C%E4%B8%8EFinanceKit%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90"><span class="toc-text">Apple Pay 新功能：电子商务体验与FinanceKit深度解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E4%BD%93%E9%AA%8C%E5%85%A8%E9%9D%A2%E5%8D%87%E7%BA%A7"><span class="toc-text">支付体验全面升级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E8%AE%A2%E5%8D%95%E8%B7%9F%E8%B8%AA%E7%B3%BB%E7%BB%9F"><span class="toc-text">智能订单跟踪系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FinanceKit-API%E7%9A%84%E9%87%8D%E5%A4%A7%E6%89%A9%E5%B1%95"><span class="toc-text">FinanceKit API的重大扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%80%85%E8%B5%84%E6%BA%90%E4%B8%8E%E5%90%8E%E7%BB%AD%E6%AD%A5%E9%AA%A4"><span class="toc-text">开发者资源与后续步骤</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/tvos"><i class="tag post-item-tag">tvos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/watchos"><i class="tag post-item-tag">watchos</i></a><a href="/tags/app-%E6%9C%8D%E5%8A%A1"><i class="tag post-item-tag">app-服务</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Apple Pay 的新功能</h1><time class="has-text-grey" datetime="2025-06-10T13:46:47.000Z">2025-06-10</time><article class="mt-2 post-content"><p>探索 apple pay 中的最新改进和新 api。你将探索 apple pay ecommerce 体验有哪些优化 (例如新增的动态支付按钮)，并了解如何充分利用增强后的预授权付款支持。我们将介绍“钱包”中的订单跟踪将迎来哪些全新功能，并了解一些有助于让订单呈现精美外观的建议。<br>我们还将深入了解 financekit 的新背景交付 api，这些 api 让财务管理 app 即使在非活跃状态下也能获取最新数据。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9873/9873_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/201/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="Apple-Pay-新功能：电子商务体验与FinanceKit深度解析"><a href="#Apple-Pay-新功能：电子商务体验与FinanceKit深度解析" class="headerlink" title="Apple Pay 新功能：电子商务体验与FinanceKit深度解析"></a>Apple Pay 新功能：电子商务体验与FinanceKit深度解析</h1><p>Apple Pay作为苹果生态系统的核心支付解决方案，在WWDC上公布了多项重要更新。这些改进覆盖了支付全流程体验、订单管理以及FinanceKit API的扩展功能，为开发者和商户提供了更强大的工具来优化用户交互与后台数据处理。</p>
+<h2 id="支付体验全面升级"><a href="#支付体验全面升级" class="headerlink" title="支付体验全面升级"></a>支付体验全面升级</h2><p>今年Apple Pay的改进首先体现在支付按钮的动态显示功能上。该系统会根据用户默认支付方式自动调整按钮显示内容，展示卡片图像和相关信息。为实现这一功能，开发者需要在支付请求中提供商户类别代码(Merchant Category Code)和支持的支付网络信息。</p>
+<pre><code class="swift">// 设置商户类别代码示例
+paymentRequest.merchantCategoryCode = .retail
+</code></pre>
+<p>值得注意的是，苹果仍严格保护用户隐私，应用无法直接访问卡片详细信息。SwiftUI和UIKit应用将自动获得新按钮支持，同时开发者也可选择继续使用传统样式。</p>
+<p>预授权支付功能获得了显著增强，新增的统一视图让用户可以集中管理所有预授权交易。商户现在可以通过提供丰富的品牌信息来定制界面体验，这需要从bundle分发端点提供包含特定信息的bundle：</p>
+<pre><code class="swift">// 商户令牌信息架构示例
+&#123;
+  &quot;merchantTokenIdentifier&quot;: &quot;com.example.merchant&quot;,
+  &quot;merchantName&quot;: &quot;Example Store&quot;,
+  &quot;merchantLogoName&quot;: &quot;logo.png&quot;
+&#125;
+</code></pre>
+<h2 id="智能订单跟踪系统"><a href="#智能订单跟踪系统" class="headerlink" title="智能订单跟踪系统"></a>智能订单跟踪系统</h2><p>自iOS 16引入订单跟踪功能以来，今年苹果进一步整合了智能技术实现自动订单检测。钱包应用现在能够安全地扫描邮件中的订单信息，自动创建跟踪条目。</p>
+<p>为确保最佳自动跟踪效果，商户邮件需要包含三个关键要素：</p>
+<ul>
+<li>邮件正文中的商户名称</li>
+<li>每封邮件独有的订单编号</li>
+<li>用于关联承运商信息的跟踪编号</li>
+</ul>
+<p>商户还可以通过Apple Business Connect设置品牌logo和其他详细信息，这些内容将应用于所有相关邮件订单。</p>
+<h2 id="FinanceKit-API的重大扩展"><a href="#FinanceKit-API的重大扩展" class="headerlink" title="FinanceKit API的重大扩展"></a>FinanceKit API的重大扩展</h2><p>FinanceKit API自iOS 17.4发布以来首次迎来重大更新。最引人注目的是新增的后台交付功能，它允许金融类应用在非活跃状态下仍能获取最新数据。</p>
+<p>后台交付扩展需要实现两个核心端点：</p>
+<pre><code class="swift">// 后台交付扩展实现示例
+func didReceiveData(_ data: [BackgroundDataType]) &#123;
+    // 处理数据变更
+&#125;
+
+func willTerminate() &#123;
+    // 清理资源
+&#125;
+</code></pre>
+<p>开发者可以配置三种数据更新频率（每小时、每日、每周），系统会根据实际数据变化情况智能触发扩展。同时，FinanceKit API现已扩展至英国市场，支持Connected Cards功能。</p>
+<h2 id="开发者资源与后续步骤"><a href="#开发者资源与后续步骤" class="headerlink" title="开发者资源与后续步骤"></a>开发者资源与后续步骤</h2><p>苹果为开发者提供了全面的资源支持：</p>
+<ul>
+<li>商户品牌展示：通过Apple Business Connect统一管理</li>
+<li>订单体验优化：注册订单确认邮件地址或集成订单跟踪bundle</li>
+<li>FinanceKit集成：Xcode直接支持后台交付功能开发</li>
+</ul>
+<p>相关技术文档和WWDC视频资源已全面更新，帮助开发者快速掌握这些新功能。</p>
+<p><strong>相关视频</strong><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/202">“钱包”的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/2023">了解FinanceKit</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10114">“钱包”和Apple Pay的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10041">钱包与Apple Pay的新功能</a></p>
+<p><strong>文档</strong><br><a target="_blank" rel="noopener" href="https://developer.apple.com/apple-pay/">Apple Pay</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/apple-pay/">Human Interface Guidelines: Apple Pay</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_208/" title="提升 iPad App 设计"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 提升 iPad App 设计</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_219/" title="了解 Liquid Glass"><span class="has-text-weight-semibold">下一页: 了解 Liquid Glass</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_201/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

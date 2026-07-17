@@ -1,0 +1,119 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>了解 PaperKit</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="了解如何将 paperkit 引入你的 ios、ipados、macos 以及 visionos app。我们将介绍如何将 pencilkit 绘画与标记功能 (如形状和图像) 无缝整合，以及如何自定用户界面。了解向前兼容性的最佳实践，并探索高级自定选项，以便为你的 app 打造真正与众不同的标记体验。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+了解 PaperKit：苹果全系统标注框架解析在今年的 WWDC 上，苹果推出了一个强大的新框架——PaperKit，它为 iOS、iPadOS、macOS 和 visionOS 应用提供了统一的标注体验。本文将详细介绍 PaperKit 的核心功能、集成方法以及自定义选项。
+PaperKit 简介Paper.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">了解 PaperKit</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3-PaperKit%EF%BC%9A%E8%8B%B9%E6%9E%9C%E5%85%A8%E7%B3%BB%E7%BB%9F%E6%A0%87%E6%B3%A8%E6%A1%86%E6%9E%B6%E8%A7%A3%E6%9E%90"><span class="toc-text">了解 PaperKit：苹果全系统标注框架解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PaperKit-%E7%AE%80%E4%BB%8B"><span class="toc-text">PaperKit 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6"><span class="toc-text">核心组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90"><span class="toc-text">快速集成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#iOS-%E5%B9%B3%E5%8F%B0%E9%9B%86%E6%88%90"><span class="toc-text">iOS 平台集成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#macOS-%E5%B9%B3%E5%8F%B0%E9%9B%86%E6%88%90"><span class="toc-text">macOS 平台集成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">高级功能与最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E4%BF%9D%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-text">自动保存机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E5%89%8D%E5%85%BC%E5%AE%B9%E6%80%A7%E5%A4%84%E7%90%86"><span class="toc-text">向前兼容性处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%9F%E8%83%BD%E9%9B%86"><span class="toc-text">自定义功能集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%83%8C%E6%99%AF"><span class="toc-text">自定义背景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/app-%E6%9C%8D%E5%8A%A1"><i class="tag post-item-tag">app-服务</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">了解 PaperKit</h1><time class="has-text-grey" datetime="2025-06-10T13:46:47.000Z">2025-06-10</time><article class="mt-2 post-content"><p>了解如何将 paperkit 引入你的 ios、ipados、macos 以及 visionos app。我们将介绍如何将 pencilkit 绘画与标记功能 (如形状和图像) 无缝整合，以及如何自定用户界面。了解向前兼容性的最佳实践，并探索高级自定选项，以便为你的 app 打造真正与众不同的标记体验。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10006/10006_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/285/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="了解-PaperKit：苹果全系统标注框架解析"><a href="#了解-PaperKit：苹果全系统标注框架解析" class="headerlink" title="了解 PaperKit：苹果全系统标注框架解析"></a>了解 PaperKit：苹果全系统标注框架解析</h1><p>在今年的 WWDC 上，苹果推出了一个强大的新框架——PaperKit，它为 iOS、iPadOS、macOS 和 visionOS 应用提供了统一的标注体验。本文将详细介绍 PaperKit 的核心功能、集成方法以及自定义选项。</p>
+<h2 id="PaperKit-简介"><a href="#PaperKit-简介" class="headerlink" title="PaperKit 简介"></a>PaperKit 简介</h2><p>PaperKit 是支撑苹果全系统标注体验的基础框架，被广泛应用于备忘录、屏幕截图、快速查看和日记等原生应用中。作为一个多功能画布框架，它允许开发者轻松地在应用中添加丰富的标注功能，包括：</p>
+<ul>
+<li>PencilKit 绘画功能</li>
+<li>各种标注元素（形状、图像、文本框等）</li>
+<li>绘画与标注元素的组合交互</li>
+<li>跨平台一致体验（包括最新的 macOS Tahoe）</li>
+</ul>
+<h2 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h2><p>PaperKit 包含三个主要组件：</p>
+<ol>
+<li><strong>PaperMarkupViewController</strong>：交互式创建和展示标注内容的控制器</li>
+<li><strong>PaperMarkup</strong>：数据模型容器，负责保存&#x2F;加载标注数据和渲染</li>
+<li><strong>插入菜单</strong>：<ul>
+<li>iOS&#x2F;iPadOS&#x2F;visionOS：MarkupEditViewController</li>
+<li>macOS：MarkupToolbarViewController（新工具栏）</li>
+</ul>
+</li>
+</ol>
+<h2 id="快速集成"><a href="#快速集成" class="headerlink" title="快速集成"></a>快速集成</h2><h3 id="iOS-平台集成"><a href="#iOS-平台集成" class="headerlink" title="iOS 平台集成"></a>iOS 平台集成</h3><p>在 iOS 应用中集成 PaperKit 只需几个简单步骤：</p>
+<pre><code class="swift">override func viewDidLoad() &#123;
+    super.viewDidLoad()
+    
+    let markupModel = PaperMarkup(bounds: view.bounds)
+    let paperViewController = PaperMarkupViewController(markup: markupModel, supportedFeatureSet: .latest)
+    view.addSubview(paperViewController.view)
+    addChild(paperViewController)
+    paperViewController.didMove(toParent: self)
+    becomeFirstResponder()    
+
+    let toolPicker = PKToolPicker()
+    toolPicker.addObserver(paperViewController)
+    
+    pencilKitResponderState.activeToolPicker = toolPicker
+    pencilKitResponderState.toolPickerVisibility = .visible
+    
+    toolPicker.accessoryItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(plusButtonPressed(_:)))
+&#125;
+</code></pre>
+<h3 id="macOS-平台集成"><a href="#macOS-平台集成" class="headerlink" title="macOS 平台集成"></a>macOS 平台集成</h3><p>macOS 上的集成方式类似，但提供了专门的工具栏选项：</p>
+<pre><code class="swift">override func viewDidLoad() &#123;
+    super.viewDidLoad()
+    
+    let markupModel = PaperMarkup(bounds: view.bounds)
+    let paperViewController = PaperMarkupViewController(markup: markupModel, supportedFeatureSet: .latest)
+    view.addSubview(paperViewController.view)
+    addChild(paperViewController)
+
+    let toolbarViewController = MarkupToolbarViewController(supportedFeatureSet: .latest)
+    toolbarViewController.delegate = paperViewController
+    view.addSubview(toolbarViewController.view)
+    
+    setupLayoutConstraints()
+&#125;
+</code></pre>
+<h2 id="高级功能与最佳实践"><a href="#高级功能与最佳实践" class="headerlink" title="高级功能与最佳实践"></a>高级功能与最佳实践</h2><h3 id="自动保存机制"><a href="#自动保存机制" class="headerlink" title="自动保存机制"></a>自动保存机制</h3><p>PaperKit 提供了方便的代理方法来处理标注内容的自动保存：</p>
+<pre><code class="swift">func paperMarkupViewControllerDidChangeMarkup(_ paperMarkupViewController: PaperMarkupViewController) &#123;
+    let markupModel = paperMarkupViewController.markup
+    Task &#123;
+        let data = try await markupModel.dataRepresentation()
+        try data.write(toFile: paperKitDataURL)
+    &#125;
+&#125;
+</code></pre>
+<h3 id="向前兼容性处理"><a href="#向前兼容性处理" class="headerlink" title="向前兼容性处理"></a>向前兼容性处理</h3><p>对于版本兼容性问题，建议显示预渲染缩略图：</p>
+<pre><code class="swift">func updateThumbnail(_ markupModel: PaperMarkup) async throws &#123;
+    let thumbnailSize = CGSize(width: 200, height: 200)
+    let context = makeCGContext(size: thumbnailSize)
+    context.setFillColor(gray: 1, alpha: 1)
+    context.fill(renderer.format.bounds)            
+    
+    await markupModel.draw(in: context, frame: CGRect(origin: .zero, size: thumbnailSize))
+    
+    thumbnail = context.makeImage()
+&#125;
+</code></pre>
+<h3 id="自定义功能集"><a href="#自定义功能集" class="headerlink" title="自定义功能集"></a>自定义功能集</h3><p>PaperKit 允许开发者通过 FeatureSet 自定义可用的标注功能：</p>
+<pre><code class="swift">var featureSet: FeatureSet = .latest
+
+featureSet.remove(.text)
+featureSet.insert(.stickers)
+
+// HDR 支持
+featureSet.colorMaximumLinearExposure = 4
+toolPicker.colorMaximumLinearExposure = 4
+
+let paperViewController = PaperMarkupViewController(supportedFeatureSet: featureSet)
+</code></pre>
+<h3 id="自定义背景"><a href="#自定义背景" class="headerlink" title="自定义背景"></a>自定义背景</h3><p>开发者可以设置任意 UIView 作为标注背景：</p>
+<pre><code class="swift">let template = UIImage(named: &quot;MyTemplate.jpg&quot;)
+let templateView = UIImageView(image: template)
+paperViewController.contentView = templateView
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>PaperKit 为苹果生态应用提供了一套完整、灵活的标注解决方案。通过简单的集成步骤和丰富的自定义选项，开发者可以轻松地为应用添加专业级的标注功能。无论是简单的笔记应用还是复杂的创意工具，PaperKit 都能满足不同场景的需求。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10214">充分利用 Apple Pencil 的强大功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10107">PencilKit 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2020/10041">SwiftUI 新功能</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/PaperKit">PaperKit</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_280/" title="跟着视频学编程：使用 SwiftUI 和 AttributedString 精心打造富文本体验"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 跟着视频学编程：使用 SwiftUI 和 AttributedString 精心打造富文本体验</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_293/" title="使用 PermissionKit 增强儿童安全保护"><span class="has-text-weight-semibold">下一页: 使用 PermissionKit 增强儿童安全保护</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_285/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

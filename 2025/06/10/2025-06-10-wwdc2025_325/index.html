@@ -1,0 +1,78 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>探索 Apple 托管的 Background Assets</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="本次讲座将以 background assets 为基础，介绍用于为游戏和其他应用程序下载内容素材包的新功能。了解 apple 如何为你托管这些素材包，或如何管理自托管选项。我们将深入探索原生 api 整合及相应的 app store 实现，并为你提供工具来提升 app 的内容交付体验和用户体验。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+Apple 托管的 Background Assets 全面解析引言Apple 在 WWDC 上正式推出 Background Assets 这一全新的资源分发机制，旨在优化应用资源交付体验，特别是针对游戏开发者和其他需要管理大型资源包的场景。这项技术允许开发者将资源与主应用分离，由 Apple 托管这些资源包，从.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">探索 Apple 托管的 Background Assets</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Apple-%E6%89%98%E7%AE%A1%E7%9A%84-Background-Assets-%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90"><span class="toc-text">Apple 托管的 Background Assets 全面解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Background-Assets-%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">Background Assets 新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E4%B8%8E%E7%8E%B0%E7%8A%B6"><span class="toc-text">背景与现状</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8A%BF"><span class="toc-text">核心优势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="toc-text">技术实现细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E5%8C%85%E4%B8%8E%E5%BA%94%E7%94%A8%E6%9E%84%E5%BB%BA%E7%9A%84%E5%8C%B9%E9%85%8D"><span class="toc-text">资源包与应用构建的匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-text">开发流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-text">最佳实践与优化建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">配置注意事项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E4%B8%8E%E5%88%86%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="toc-text">测试与分发流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="toc-text">结论与展望</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/tvos"><i class="tag post-item-tag">tvos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/app-%E6%9C%8D%E5%8A%A1"><i class="tag post-item-tag">app-服务</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">探索 Apple 托管的 Background Assets</h1><time class="has-text-grey" datetime="2025-06-10T13:46:47.000Z">2025-06-10</time><article class="mt-2 post-content"><p>本次讲座将以 background assets 为基础，介绍用于为游戏和其他应用程序下载内容素材包的新功能。了解 apple 如何为你托管这些素材包，或如何管理自托管选项。我们将深入探索原生 api 整合及相应的 app store 实现，并为你提供工具来提升 app 的内容交付体验和用户体验。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9860/9860_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/325/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="Apple-托管的-Background-Assets-全面解析"><a href="#Apple-托管的-Background-Assets-全面解析" class="headerlink" title="Apple 托管的 Background Assets 全面解析"></a>Apple 托管的 Background Assets 全面解析</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Apple 在 WWDC 上正式推出 Background Assets 这一全新的资源分发机制，旨在优化应用资源交付体验，特别是针对游戏开发者和其他需要管理大型资源包的场景。这项技术允许开发者将资源与主应用分离，由 Apple 托管这些资源包，从而提供更流畅的首次启动体验和灵活的更新机制。</p>
+<h2 id="Background-Assets-新特性"><a href="#Background-Assets-新特性" class="headerlink" title="Background Assets 新特性"></a>Background Assets 新特性</h2><h3 id="背景与现状"><a href="#背景与现状" class="headerlink" title="背景与现状"></a>背景与现状</h3><p>传统资源交付方式存在明显局限：主应用包集成方案会导致用户被迫下载全部资源；URLSession 需要开发者自行管理复杂的下载流程；而 On-Demand Resources 即将退役。Background Assets 作为新一代解决方案，提供了系统级的资源管理能力。</p>
+<h3 id="核心优势"><a href="#核心优势" class="headerlink" title="核心优势"></a>核心优势</h3><p>托管式 Background Assets 提供三大关键改进：</p>
+<ol>
+<li><strong>自动管理</strong>：系统处理下载、更新、压缩等流程</li>
+<li><strong>灵活策略</strong>：三种下载策略（必需型、预载型、按需型）满足不同场景</li>
+<li><strong>托管服务</strong>：Apple 提供的 200GB 存储空间，免除自托管负担</li>
+</ol>
+<h2 id="技术实现细节"><a href="#技术实现细节" class="headerlink" title="技术实现细节"></a>技术实现细节</h2><h3 id="资源包与应用构建的匹配"><a href="#资源包与应用构建的匹配" class="headerlink" title="资源包与应用构建的匹配"></a>资源包与应用构建的匹配</h3><p>Apple 托管资源包采用灵活的版本匹配机制：</p>
+<ul>
+<li>资源包版本与应用构建版本解耦</li>
+<li>不同分发渠道（App Store&#x2F;TestFlight）可对应不同资源包版本</li>
+<li>兼容性管理成为关键考虑因素</li>
+</ul>
+<p>版本匹配示例展示了当多个资源包版本并存时，系统如何自动选择正确的版本供不同渠道的用户使用。</p>
+<h3 id="开发流程"><a href="#开发流程" class="headerlink" title="开发流程"></a>开发流程</h3><p>实施托管式 Background Assets 需完成三个主要步骤：</p>
+<ol>
+<li><p><strong>创建资源包</strong></p>
+<ul>
+<li>使用跨平台打包工具（macOS&#x2F;Linux&#x2F;Windows）</li>
+<li>JSON 清单配置资源包属性</li>
+<li>支持文件级和目录级选择</li>
+</ul>
+</li>
+<li><p><strong>API 集成</strong></p>
+<ul>
+<li>通过 AssetPackManager 类管理资源包</li>
+<li>Swift 的 async&#x2F;await 接口简化异步操作</li>
+<li>Objective-C 采用 delegate 模式</li>
+</ul>
+</li>
+<li><p><strong>本地测试</strong></p>
+<ul>
+<li>新 Background Assets 模拟服务器支持</li>
+<li>开发者设置配置测试环境</li>
+</ul>
+</li>
+</ol>
+<h2 id="最佳实践与优化建议"><a href="#最佳实践与优化建议" class="headerlink" title="最佳实践与优化建议"></a>最佳实践与优化建议</h2><h3 id="配置注意事项"><a href="#配置注意事项" class="headerlink" title="配置注意事项"></a>配置注意事项</h3><p>开发者需特别注意：</p>
+<ul>
+<li>应用组配置确保主应用与扩展通信</li>
+<li>Info.plist 关键字段设置（BAAppGroupID、BAHasManagedAssetPacks等）</li>
+<li>资源包版本更新时的向后兼容性</li>
+</ul>
+<h3 id="测试与分发流程"><a href="#测试与分发流程" class="headerlink" title="测试与分发流程"></a>测试与分发流程</h3><p>完整的发布流程包括：</p>
+<ol>
+<li>通过 Transporter 或 API 上传资源包</li>
+<li>在 App Store Connect 创建资源包记录</li>
+<li>测试验证（内部测试→外部测试）</li>
+<li>最终提交至 App Store 审核</li>
+</ol>
+<h2 id="结论与展望"><a href="#结论与展望" class="headerlink" title="结论与展望"></a>结论与展望</h2><p>托管式 Background Assets 代表了 Apple 资源分发技术的重大进步，特别是对游戏和媒体类应用开发者而言。通过将资源管理与分发流程系统化，开发者可以更专注于创造优质内容而非基础设施维护。随着 On-Demand Resources 的逐步退役，迁移至 Background Assets 将成为必要选择。</p>
+<p>开发者可通过提供的打包工具和 API 快速上手，利用 Apple 提供的托管服务和自动化测试工具优化资源交付体验。这项技术的广泛应用有望显著提升用户首次启动应用的满意度，降低因等待下载导致的用户流失。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/324">借助 App Store Connect API 实现开发流程自动化</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/328">App Store Connect 的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10108">Background Assets 的新动向</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/BackgroundAssets/configuring-background-assets">配置 Background Assets 项目</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/help/app-store-connect/reference/maximum-build-file-sizes">最大构建文件大小</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/help/app-store-connect/manage-asset-packs/overview-of-apple-hosted-asset-packs">Apple 托管资源包概述</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_324/" title="借助 App Store Connect API 实现开发流程自动化"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 借助 App Store Connect API 实现开发流程自动化</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_337/" title="SF Symbols 7 的新功能"><span class="has-text-weight-semibold">下一页: SF Symbols 7 的新功能</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_325/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

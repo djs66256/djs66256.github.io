@@ -1,0 +1,196 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>页面组件化设计汇总</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="现在的应用都是越来越大，越来越复杂，更加需要模块的精细化切分，以及支持多人共同合作开发。
+目前大量应用单纯一个页面的业务量级已经非常庞大，这里就来再次从页面级别讨论一下页面组件化。
+
+
+前言我们可以将任何一个页面都视作一个列表，每类元素都可以看做列表中的一个cell。之前，在美学新项目启动的时候，按照页面组件化的思路做了一个组件化拆分方案（DDComponent），在当时的业务场景来说，已经基本足够，但是在不停的使用过程中，也逐渐发现了一些问题，比如
+
+数据源不匹配。这是一个非常常见的问题，异步、没有正确reloadData都是引起这类问题的原因，目前我还没有看见过有哪个开源方案能够彻底解决这个问题的。
+reloadData效率问题。当一个列表足够长的时候，每次reloadData都将会非常消耗性能。
+si.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">页面组件化设计汇总</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%90%E4%B8%8D%E5%8C%B9%E9%85%8D%E9%97%AE%E9%A2%98"><span class="toc-text">数据源不匹配问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-text">场景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0"><span class="toc-text">原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%BF%99%E4%B8%AA%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-text">如何解决这个问题？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%90%E5%88%86%E7%A6%BB%E5%AE%9E%E7%8E%B0"><span class="toc-text">数据源分离实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%91%E5%AE%9A%E6%95%B0%E6%8D%AE%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AFindex"><span class="toc-text">绑定数据，而不是index</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reload-%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98"><span class="toc-text">reload 效率问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%88%E7%8E%87%E8%BF%BD%E8%B8%AA"><span class="toc-text">效率追踪</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%BA%90differ%E5%8D%8F%E8%AE%AE"><span class="toc-text">数据源differ协议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#size%E9%97%AE%E9%A2%98"><span class="toc-text">size问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E8%AE%A1%E7%AE%97"><span class="toc-text">自动计算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%93%E5%AD%98"><span class="toc-text">缓存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#size%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-text">size性能优化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E8%A1%A5%E5%85%85"><span class="toc-text">性能优化补充</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E4%BF%A1%E9%97%AE%E9%A2%98"><span class="toc-text">通信问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%96%B9%E6%A1%88"><span class="toc-text">其他方案</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%9D%E5%85%89%E9%97%AE%E9%A2%98"><span class="toc-text">曝光问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%9D%E5%85%89%E6%A3%80%E6%9F%A5"><span class="toc-text">曝光检查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E6%97%B6%E9%97%B4%E7%82%B9"><span class="toc-text">检查时间点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%88%E7%8E%87"><span class="toc-text">效率</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E5%BC%80%E5%8F%91%E4%B8%8E%E7%BB%84%E4%BB%B6%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="toc-text">并行开发与组件原子性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%94%A8%E6%80%A7"><span class="toc-text">复用性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-text">最后</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E7%BB%84%E4%BB%B6%E5%8C%96"><i class="tag post-item-tag">组件化</i></a><a href="/tags/UICollectionView"><i class="tag post-item-tag">UICollectionView</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">页面组件化设计汇总</h1><time class="has-text-grey" datetime="2019-11-29T17:58:55.000Z">2019-11-30</time><article class="mt-2 post-content"><p>现在的应用都是越来越大，越来越复杂，更加需要模块的精细化切分，以及支持多人共同合作开发。</p>
+<p>目前大量应用单纯一个页面的业务量级已经非常庞大，这里就来再次从页面级别讨论一下页面组件化。</p>
+<span id="more"></span>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们可以将任何一个页面都视作一个列表，每类元素都可以看做列表中的一个cell。之前，在美学新项目启动的时候，按照页面组件化的思路做了一个组件化拆分方案（DDComponent），在当时的业务场景来说，已经基本足够，但是在不停的使用过程中，也逐渐发现了一些问题，比如</p>
+<ol>
+<li>数据源不匹配。这是一个非常常见的问题，异步、没有正确reloadData都是引起这类问题的原因，目前我还没有看见过有哪个开源方案能够彻底解决这个问题的。</li>
+<li>reloadData效率问题。当一个列表足够长的时候，每次reloadData都将会非常消耗性能。</li>
+<li>size计算。在布局和构建列表的时候，最让人麻烦的就是size计算，这会让我们的布局工作量加倍，而系统提供的方法实际效果并不好，虽然有FD的自动计算方案，但依然存在很多问题。</li>
+<li>通信问题。组件间应该是相互独立的，如何解决相互间的通信问题也是一个重点。</li>
+</ol>
+<p>这次重新设计的这套数据驱动系统主要考虑了如下几个目标：</p>
+<ul>
+<li>开发效率。在目前的业务开发过程中，效率永远是第一的，决定业务快速迭代的基础。</li>
+<li>并行开发。在这个多人合作的场景中，如何减少沟通成本也是非常关键的，而从架构层面解决这个问题是最有效的。</li>
+<li>复用。对于一些信息展示类为主的应用，到处存在着复用问题，而以前的复用层面仅仅是view、model，而无法把这个模块的MVC进行复用。</li>
+<li>标准化。提供一套完全标准化的页面组件方案。</li>
+<li>扩展性。能够应对平时的大部分场景以及不同类型布局系统。</li>
+<li>执行效率。从架构的层面考虑性能问题，并为性能优化提供一系列方案，并且可以进行逐步优化。</li>
+</ul>
+<h2 id="数据源不匹配问题"><a href="#数据源不匹配问题" class="headerlink" title="数据源不匹配问题"></a>数据源不匹配问题</h2><p>数据源问题是我们开发列表中遇到的最大的一个问题，也是非常难以解决的问题。</p>
+<h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4><p>当一个列表比较简单的时候，我们很少会有这样的问题。但是随着业务发展，列表内容越来越复杂，那么就非常容易出现这类问题，主要可能表现为以下几个场景：</p>
+<ul>
+<li>cell 为空</li>
+<li>数组越界</li>
+<li>非法调用（类型不匹配）</li>
+</ul>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><p>在我们处理数据的时候，如果在if-else的条件里面遗漏了某种数据，可能会导致该数据返回空cell。这种情况在迭代和重构的时候，由于对现有业务没有透彻的理解，就很容易发生。</p>
+<p>而数组越界、非法调用，往往是异步和时序问题。在我们更新数据源之后，如果没有及时、同步、正确的更新列表，就会发生这样的问题。这类问题一般是偶现的问题，难以排查，也难以修改。而且如果该页面是拆分后的结构，那么每个独立模块内可能是正常的，但是多个模块间相互影响可能就是有问题的。</p>
+<h4 id="如何解决这个问题？"><a href="#如何解决这个问题？" class="headerlink" title="如何解决这个问题？"></a>如何解决这个问题？</h4><p>我们很难去保证每个人的开发素质，也很难去保证多人并行开发过程中的沟通和一致性。所以我们需要从架构层面去解决这个问题。</p>
+<p>解决这个问题的关键在于数据源，我们列表中所展示的数据，和我们正在处理的数据并不能保证一致性，那么最好的解决办法就是保存两份数据源，一份是开发自己维护的，一份是用于页面展示的。</p>
+<p>目前列表所有接口返回的都是位置信息，而不是我们展示的数据，我们需要得到数据就需要从数组中的位置去取，这也无法保证展示的数据源index和真实的数据源index的一致性。</p>
+<p>那么这里需要解决的问题总结为：</p>
+<ul>
+<li>展示数据源和当前数据源的分离</li>
+<li>抹除位置信息，直接通过数据来表示</li>
+</ul>
+<h4 id="数据源分离实现"><a href="#数据源分离实现" class="headerlink" title="数据源分离实现"></a>数据源分离实现</h4><p>其实做数据源分离的思路很简单，系统的很多设计思路也是类似的。在我们提交数据源变化的时候，我们直接创建一个只读的数据源快照，用于展示使用。当我们再次刷新的时候，同样需要生成一个新的快照用于刷新列表。大致的流程如下：</p>
+<pre><code>--&gt; update data ---&gt; original data source --&gt; update data --&gt; original data source --&gt; ...
+                          |                                         |
+                       reload                                     reload
+                          |                                         |
+                          v                                         v
+                      snapshot ---&gt; display data source           snapshot ---&gt; display data source
+                                        |                                           |
+                                        v                                           v
+                                    UICollectionView                            UICollecitonView
+</code></pre>
+<h4 id="绑定数据，而不是index"><a href="#绑定数据，而不是index" class="headerlink" title="绑定数据，而不是index"></a>绑定数据，而不是index</h4><p>我们开发过程中，一直以来都是以index为核心进行布局数据，而没有从数据进行布局列表，这是导致这类问题最根本的思路上的问题，如果我们所有接口都是直接得到相应的数据，我们不需要操作index，那么我们就绝对不会出现越界等问题了。</p>
+<p>那么我们可以把接口设计成这样：</p>
+<pre><code class="objc">- (NSArray *)viewModelsForComponent:(NELayoutEntityComponent *)component;
+- (Class)component:(NELayoutEntityComponent *)component cellClassForViewModel:(id)viewModel;
+- (CGSize)component:(NELayoutEntityComponent *)component sizeForViewModel:(id)viewModel;
+
+- (void)reloadViewModel:(id)viewModel;
+- (void)deselectViewModel:(Type)viewModel animated:(BOOL)animated;
+</code></pre>
+<p>所有行为都必须通过数据来执行，让真实的数据作为模块的核心。那么这里数据就必须具备唯一性这个条件。</p>
+<p>可能你要说，并不是每一个模块都是有这么明确的数据类型来表示，那么这时候可以让该组件自己作为数据来表示。因为这里每一个组件的数据可以认为是每个组件的全局唯一id，只要保证其唯一性即可。</p>
+<h2 id="reload-效率问题"><a href="#reload-效率问题" class="headerlink" title="reload 效率问题"></a>reload 效率问题</h2><p>列表刷新的效率问题主要集中在两个地方：</p>
+<ul>
+<li>刷新导致重新计算布局</li>
+<li>刷新导致大量更新视图数据</li>
+</ul>
+<p>要解决这两个问题，可以增加size缓存、减少计算量以及视图更新的频次。为了减少计算量，这里引入增量系统。</p>
+<p>对应于上面所述，我们将数据作为列表的核心，所以我们可以对数据源进行增量计算，对比得到变化的部分进行更新。而这也是很多系统所采用的方式，比如IGList。</p>
+<p>这里为了一些异步能力考虑，并没有采用IGList这些成熟的开源框架，而是重新设计了更新流程。</p>
+<pre><code>main thread:  new data source -+            +-&gt; force update -&gt; reload collection view
+                               v            ^
+thread1:                       +-&gt; size ----+
+                               |            |
+thread2:                       +-&gt; differ --+
+                                            v
+                                          cancel ---&gt; back to &#39;new data source&#39; state
+</code></pre>
+<p>在触发更新并且重新生成快照之后，会进入两个异步线程，分别进行计算数据源增量和异步size计算（在需要极限优化性能的时候可以采用，在下个章节中讨论）。计算完增量后回到主线程，然后进行列表的更新。在这个过程中间如果触发了新reload，那么直接取消这一次的数据刷新操作，忽略该次结果。</p>
+<p>这样，我们尽可能的减少列表的刷新和数据源的频繁计算，同时也在异步进行数据源增量计算（目前来看这个时间占总刷新时间的比例并不高）。</p>
+<h4 id="效率追踪"><a href="#效率追踪" class="headerlink" title="效率追踪"></a>效率追踪</h4><p>在以前我们写一个大页面的时候，如果出现性能问题，我们需要去查找问题的原因往往靠经验，也就是猜测，然后一个个排查。这样大大降低了我们排查问题的效率和准确性。</p>
+<p>而且以前的问题都是后知的，也就是发生严重影响的时候，才会反过来修改。</p>
+<p>而我们进行组件拆分后，每个类型的组件都是独立的，我们可以在任意我们所需要的地方，比如：</p>
+<ul>
+<li>size计算</li>
+<li>diff耗时</li>
+<li>cell渲染</li>
+</ul>
+<p>进行插桩、统计与分析。那么我们可以在投入生产之前就能得到一手数据，甚至在这些地方加入限制与报警，从而进行精确的优化。</p>
+<h4 id="数据源differ协议"><a href="#数据源differ协议" class="headerlink" title="数据源differ协议"></a>数据源differ协议</h4><p>数据需要能够比对增量，就必须满足一定的规则，这里采用的和IGList一样的协议。但是这样会带来一些问题：</p>
+<ul>
+<li>对每一个数据需要重写diffable协议，增加了开发工作量。</li>
+<li>每一个数据都需要做copy，才能进行对比前后变化，这对工作量和性能都会有一定的影响。</li>
+<li>并不能保证团队所有人都能够正确的理解和设计diffable内容，不良的设计可能直接导致增量系统的未知行为（比如不能保证数据的唯一性）。</li>
+<li>在迭代过程中，数据diffable并不是一成不变的，可能会根据需求来改变其等价的条件。</li>
+<li>在同一个应用中，可能在不同场景中的等价条件是互斥的，这样我们就无法复用该数据模型。</li>
+</ul>
+<p>基于这些问题，我决定完全放弃基于diffable协议去做更新操作，而是基于数据去强制刷新。</p>
+<pre><code class="objc">- (void)reloadDataWithForce:(BOOL)force animated:(BOOL)animated;
+- (void)reloadViewModel:(id)viewModel withForce:(BOOL)force animated:(BOOL)animated;
+</code></pre>
+<p>在很多场景下，我们仅需要更新某个cell的数据，就可以直接采用该能力，而默认我们则采用数据指针这一个唯一值作为参照条件。这样可以让我们减少需要小心维护数据协议的大量工作量。</p>
+<h2 id="size问题"><a href="#size问题" class="headerlink" title="size问题"></a>size问题</h2><p>size计算一直是iOS开发过程中一个非常机械且重复的工作，而且特别容易出bug。</p>
+<ul>
+<li>如果一个cell的布局非常复杂，那么这个计算过程也会显得难以阅读。</li>
+<li>如果经过很长时间的迭代，也会让计算的逻辑变得复杂无比。</li>
+<li>如果cell中有多行文字，那么计算文字既耗时，又会让逻辑变得混乱，同时一旦修改一个字体等属性，很容易遗漏了size计算中的属性。</li>
+<li>如果cell中的元素比较动态，会根据不同数据做不同展示。</li>
+<li>size计算如果由每个人去写，会产生各种各样的写法，甚至隐含了很多的问题（目前为止见过太多这样的问题了）。</li>
+</ul>
+<h4 id="自动计算"><a href="#自动计算" class="headerlink" title="自动计算"></a>自动计算</h4><p>其实cell最终展示的时候，我们是可以确认size的，比如安卓的listView，以及tableView的自动适应size。</p>
+<p>既然我们可以根据cell的数据排版可以知道size，那么我们其实是可以自动计算出size的。这样不仅减少了一定的工作量，而且也避免了很多bug。</p>
+<p>到这里，肯定很多人跳出来说，你这样做性能肯定不好。当然这么做性能可能会变差，但是以目前设备性能和未来的增长速度，大部分场景下性能是过剩的，那么我们为什么不去好好利用这一优势。就像有人说的，未来移动端肯定会被前端所统治一样。</p>
+<p>要做到可以自动计算size，那么布局系统就不能使用手写frame的方式了。目前苹果提供给我们的AutoLayout布局就能很好的完成这个任务。</p>
+<p>另外第三方的flexbox也是非常好的一种布局方式，关于flexbox布局之前我也介绍过，但是官方的YogaKit并不好用，所以我重新设计了一套与JSX、SwiftUI类似思想的方案，同时做了一些优化。这个之后可以专门介绍一下。</p>
+<h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h4><p>size计算另一个非常重要的点就是缓存。我们的列表往往是增量加载的，所以每次的数据和展示并不会发生变化，所以也就没有必要每次都计算一次size。</p>
+<p>目前有一些第三方库可以做到这一点，但是很多都是基于indexPath的，而且需要自己手动进行缓存与查找。而在这里，我们的架构有着天然的优势，那就是我们是完全基于数据的，所以这里可以做到完全自动的缓存能力。只需要开启该能力即可：</p>
+<pre><code class="objc">self.cacheEnable = YES;
+</code></pre>
+<p>当然我们也会有手动清除缓存的接口和能力。</p>
+<h4 id="size性能优化"><a href="#size性能优化" class="headerlink" title="size性能优化"></a>size性能优化</h4><p>当然，我们也不排除一些页面存在性能问题，比如一个页面加载了非常大量的数据，或者页面布局过于复杂，或者数据解析比较耗时等等，都可能导致我们的自动计算耗时增加。</p>
+<p>一种方式是对解析完的数据和布局进行缓存，这样能够非常好的解决刷新与复用的问题。</p>
+<p>如果随着业务迭代，我们发现了性能出现瓶颈，那么我们可以精确的对一类数据进行优化。如下表所示：</p>
+<pre><code>          自动计算  自动计算+缓存  手动计算  手动计算+缓存  异步计算  异步计算+缓存  
+开发效率      &gt;          &gt;         &gt;           &gt;          &gt;         &gt;
+执行效率      &lt;          &lt;         &lt;           &lt;          &lt;         &lt;
+</code></pre>
+<p>但我们一般不推荐一开始就考虑性能问题，我们还是需要以质量和开发效率为主。</p>
+<h4 id="性能优化补充"><a href="#性能优化补充" class="headerlink" title="性能优化补充"></a>性能优化补充</h4><p>一般我们反对一开始就考虑性能优化，因为可能这里根本不会存在性能问题，没有必要浪费大量的时间在这，而且会把简单的东西变复杂了。</p>
+<p>但是从架构上，我们还是需要考虑到需要优化的这种场景与需求，在架构层面我们就需要能够支持一步步的优化与数据验证，这样才能够看到量化的结果和形成闭环。</p>
+<pre><code>开发 --&gt; 迭代 --&gt; 性能报告 ------&gt;  迭代  --&gt; 性能报告
+                    \             |
+                    分析问题 --&gt; 优化性能
+</code></pre>
+<h2 id="通信问题"><a href="#通信问题" class="headerlink" title="通信问题"></a>通信问题</h2><p>一个页面是有关联性的，当我们把一个页面拆分为多个组件的时候，就必然存在组件间通信的问题。</p>
+<p>我这里的解决方案比较简单，做一个局部通知系统的机制，使用消息转发，只要组件实现了协议A，那么该组件就会自动接收到协议A的消息，从而达到了通信的目的。而这个通知系统只作用于当前vc和当前组件树中的组件，不会逃逸到其他地方。</p>
+<p>这里为什么要使用通知这种方案呢？</p>
+<ul>
+<li>消息传递的层次性。我们要通过delegate从组件A上传递消息到组件B上，那么整个链路可能是：<code>组件A</code>-&gt;<code>section A</code>-&gt;<code>viewController</code>-&gt;<code>section B</code>-&gt;<code>组件B</code>，整个链路非常长，而且难以管理。</li>
+<li>消息并不一定是一对一的，存在一对多的情况。比如viewController的appearence事件，可能任意组件都需要知道这个事件。</li>
+</ul>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>开发效率高</li>
+<li>灵活且适用性高</li>
+<li>解决了链路长的问题</li>
+<li>在不同组件组合的场景下，具有更高的兼容性与解耦性</li>
+<li>避免了消息逃逸到其他页面</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>和常见的回调、通知机制不同，需要一定的了解学习</li>
+<li>需要在组件树中的组件才会收到消息，会在某些时候产生一定的误解</li>
+</ul>
+<h4 id="其他方案"><a href="#其他方案" class="headerlink" title="其他方案"></a>其他方案</h4><p>这里并不限制和约束其他的通信方案，比如delegate，notification等。而该方案从总体来说，解耦的优势还是更为突出。</p>
+<h2 id="曝光问题"><a href="#曝光问题" class="headerlink" title="曝光问题"></a>曝光问题</h2><p>对于cell的display事件来说，在某些情况下可能是不准确的：</p>
+<ul>
+<li>reloadData触发复用的时候</li>
+<li>组件移除组件树的时候，或者组件发生替换的时候</li>
+</ul>
+<p>这和CollectionView与拆分组件的机制有关，所以这里设计了一套全新的曝光方案，使用数据，而不是cell作为曝光源，来做到更为精确的曝光。</p>
+<p>下面简单的说明下思路。</p>
+<h4 id="曝光检查"><a href="#曝光检查" class="headerlink" title="曝光检查"></a>曝光检查</h4><p>此次采用的是主动检测方式，在列表发生滚动的时候，会触发一次曝光检查。检查的目的是为了找到：</p>
+<ul>
+<li>哪些数据由<code>不可见</code>-&gt;<code>可见</code></li>
+<li>哪些数据由<code>可见</code>-&gt;<code>不可见</code></li>
+</ul>
+<p>这个可以利用CollectionView的visibleIndexPaths来查找，如果需要更为精确的数据，还可以自己再根据inset再校验一遍。</p>
+<h4 id="检查时间点"><a href="#检查时间点" class="headerlink" title="检查时间点"></a>检查时间点</h4><p>那么那些场景可能会需要检查？</p>
+<ul>
+<li>列表滚动</li>
+<li>reloadData</li>
+<li>viewControllerAppearance</li>
+</ul>
+<p>以及其他根据业务需求可以增加的检查。</p>
+<h4 id="效率"><a href="#效率" class="headerlink" title="效率"></a>效率</h4><p>目前还未发现这种方案的效率问题，一般来说可见的组件也不会有很多，不会产生什么验证的效率问题。</p>
+<h2 id="并行开发与组件原子性"><a href="#并行开发与组件原子性" class="headerlink" title="并行开发与组件原子性"></a>并行开发与组件原子性</h2><p>每个组件我们希望承担的功能尽可能的单一，只负责一类数据与一类视觉展示，这样我们就能保证组件的最小粒度，以及其原子性。</p>
+<p>这样，我们就可以很容易的将一个大型的复杂页面进行拆分，分配给多人开发，而不会产生很大的冲突和依赖。</p>
+<p>同时这也非常有利于我们快速的开发一个功能，以适应市场变化。</p>
+<h2 id="复用性"><a href="#复用性" class="headerlink" title="复用性"></a>复用性</h2><p>虽然组件化的一个很重要的特点是复用性，但是在实际情况下，可复用的组件依然占少数，而想要设计出一个能够比较好复用的组件是相当困难的，对人员的能力要求，以及对组件化的理解都很高。</p>
+<p>所以这里我不想特意去要求高复用性，而更希望将组件做的更小，更简单，粒度更细。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>这是从个人经验上，从最早的DDComponent拆分思想，以及后来出现的IGList的diff思路，经过自身的大量业务实践，最终总结所得，同时兼顾简单、易学的一套方案。</p>
+<p>其实这里可以做的更激进一些，以满足一些比如动态化、DSL的能力，但考虑到受众应该是所有层次的开发，所以不便做的太过复杂。</p>
+<p>由于项目原因，暂不便公开源码。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2020/01/31/2020-01-30-%E5%BC%80%E5%8F%91%E6%A0%87%E5%87%86%E5%8C%96%E6%9D%82%E8%B0%88/" title="开发标准化杂谈"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 开发标准化杂谈</span></a><a class="button is-default" href="/2019/06/01/2019-06-01-%E4%BB%8E%E5%93%8D%E5%BA%94%E9%93%BE%E6%94%B6%E9%9B%86%E6%89%8B%E5%8A%A8%E5%9F%8B%E7%82%B9/" title="从响应链收集手动埋点"><span class="has-text-weight-semibold">下一页: 从响应链收集手动埋点</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2019/11/30/2019-11-30-%E9%A1%B5%E9%9D%A2%E7%BB%84%E4%BB%B6%E5%8C%96%E8%AE%BE%E8%AE%A1%E6%B1%87%E6%80%BB/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

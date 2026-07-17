@@ -1,0 +1,142 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>用于打造沉浸式 App 的 Metal 渲染的新功能</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="探索用于通过 compositor services 打造沉浸式 app 的 metal 渲染的最新改进。了解如何通过添加悬停效果来突出展示 app 的交互式元素，以及如何通过动态渲染质量实现更高保真度的渲染。了解新的 progressive 沉浸样式。探索如何通过将 mac 中的 metal 内容直接渲染至 vision pro，来为 macos app 提供沉浸式体验。
+要充分利用好本次讲座，请先观看 wwdc23 讲座“探索 metal 技术打造沉浸式 app”。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+用于打造沉浸式 App 的 Metal 渲染新功能苹果在 WWDC 上展示了通过 Compositor Services 打造沉浸式应用的 .."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">用于打造沉浸式 App 的 Metal 渲染的新功能</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E4%BA%8E%E6%89%93%E9%80%A0%E6%B2%89%E6%B5%B8%E5%BC%8F-App-%E7%9A%84-Metal-%E6%B8%B2%E6%9F%93%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-text">用于打造沉浸式 App 的 Metal 渲染新功能</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E6%B8%B2%E6%9F%93%E5%BE%AA%E7%8E%AF-API"><span class="toc-text">新渲染循环 API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%82%AC%E5%81%9C%E6%95%88%E6%9E%9C"><span class="toc-text">悬停效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%B8%B2%E6%9F%93%E8%B4%A8%E9%87%8F"><span class="toc-text">动态渲染质量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%90%E8%BF%9B%E5%BC%8F%E6%B2%89%E6%B5%B8"><span class="toc-text">渐进式沉浸</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-text">相关资源</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/%E5%9B%BE%E5%BD%A2%E5%92%8C%E6%B8%B8%E6%88%8F"><i class="tag post-item-tag">图形和游戏</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">用于打造沉浸式 App 的 Metal 渲染的新功能</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>探索用于通过 compositor services 打造沉浸式 app 的 metal 渲染的最新改进。了解如何通过添加悬停效果来突出展示 app 的交互式元素，以及如何通过动态渲染质量实现更高保真度的渲染。了解新的 progressive 沉浸样式。探索如何通过将 mac 中的 metal 内容直接渲染至 vision pro，来为 macos app 提供沉浸式体验。</p>
+<p>要充分利用好本次讲座，请先观看 wwdc23 讲座“探索 metal 技术打造沉浸式 app”。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9895/9895_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/294/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="用于打造沉浸式-App-的-Metal-渲染新功能"><a href="#用于打造沉浸式-App-的-Metal-渲染新功能" class="headerlink" title="用于打造沉浸式 App 的 Metal 渲染新功能"></a>用于打造沉浸式 App 的 Metal 渲染新功能</h1><p>苹果在 WWDC 上展示了通过 Compositor Services 打造沉浸式应用的 Metal 渲染最新改进。这些新功能包括悬停效果、动态渲染质量和渐进式沉浸风格，为开发者提供了更丰富的工具来提升应用交互性和视觉效果。</p>
+<h2 id="新渲染循环-API"><a href="#新渲染循环-API" class="headerlink" title="新渲染循环 API"></a>新渲染循环 API</h2><p>Metal 沉浸式应用的渲染流程始于新的渲染循环 API。开发者需要创建包含合成器层的沉浸空间，该层提供用于渲染循环的层渲染器对象。今年的 Compositor Services 新增了返回数组的 queryDrawables 函数，根据系统上下文，该数组将包含 1 或 2 个 drawables。</p>
+<pre><code class="swift">// 场景渲染循环
+extension Renderer &#123;
+    func renderFrame(with scene: MyScene) &#123;
+        guard let frame = layerRenderer.queryNextFrame() else &#123; return &#125;
+        
+        frame.startUpdate()
+        scene.performFrameIndependentUpdates()
+        frame.endUpdate()
+        
+        let drawables = frame.queryDrawables()
+        guard !drawables.isEmpty else &#123; return &#125;
+        
+        guard let timing = frame.predictTiming() else &#123; return &#125;
+        LayerRenderer.Clock().wait(until: timing.optimalInputTime)
+        frame.startSubmission()
+        scene.render(to: drawable)
+        frame.endSubmission()
+    &#125;
+&#125;
+</code></pre>
+<h2 id="悬停效果"><a href="#悬停效果" class="headerlink" title="悬停效果"></a>悬停效果</h2><p>新的悬停效果功能让用户能直观看到哪些对象可交互。系统会动态高亮用户注视对象，为应用和游戏添加更丰富的交互细节。</p>
+<p>开发者需要在层配置中设置追踪区域格式：</p>
+<pre><code class="swift">// 层配置
+struct MyConfiguration: CompositorLayerConfiguration &#123;
+    func makeConfiguration(capabilities: LayerRenderer.Capabilities,
+                           configuration: inout LayerRenderer.Configuration) &#123;
+        let trackingAreasFormat: MTLPixelFormat = .r8Uint
+        if capabilities.supportedTrackingAreasFormats.contains(trackingAreasFormat) &#123;
+            configuration.trackingAreasFormat = trackingAreasFormat
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>对象渲染时需要处理悬停效果：</p>
+<pre><code class="swift">// 对象渲染函数
+extension MyObject &#123;
+    func render(drawable: Drawable, renderEncoder: MTLRenderCommandEncoder) &#123;
+        var renderValue: LayerRenderer.Drawable.TrackingArea.RenderValue? = nil
+        if self.isInteractive &#123;
+            let trackingArea = drawable.addTrackingArea(identifier: self.identifier)
+            if self.usesHoverEffect &#123;
+                trackingArea.addHoverEffect(.automatic)
+            &#125;
+            renderValue = trackingArea.renderValue
+        &#125;
+        self.draw(with: commandEncoder, trackingAreaRenderValue: renderValue)
+    &#125;
+&#125;
+</code></pre>
+<p>Metal 片段着色器需要同时输出颜色和追踪区域值：</p>
+<pre><code class="metal">// Metal 片段着色器
+struct FragmentOut
+&#123;
+    float4 color [[color(0)]];
+    uint16_t trackingAreaRenderValue [[color(1)]];
+&#125;;
+
+fragment FragmentOut fragmentShader( /* ... */ )
+&#123;
+    return FragmentOut &#123;
+        float4(outColor, 1.0),
+        uniforms.trackingAreaRenderValue
+    &#125;;
+&#125;
+</code></pre>
+<h2 id="动态渲染质量"><a href="#动态渲染质量" class="headerlink" title="动态渲染质量"></a>动态渲染质量</h2><p>动态渲染质量功能允许应用根据场景复杂度调整内容分辨率。开发者可以指定适合应用的最大渲染质量，并根据显示内容类型在运行时调整质量。</p>
+<pre><code class="swift">// 质量常量
+extension MyScene &#123;
+    struct Constants &#123;
+        static let menuRenderQuality: LayerRenderer.RenderQuality = .init(0.8)
+        static let worldRenderQuality: LayerRenderer.RenderQuality = .init(0.6)
+        static var maxRenderQuality: LayerRenderer.RenderQuality &#123; menuRenderQuality &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>层配置中需要设置最大渲染质量：</p>
+<pre><code class="swift">// 层配置
+struct MyConfiguration: CompositorLayerConfiguration &#123;
+    func makeConfiguration(capabilities: LayerRenderer.Capabilities,
+                           configuration: inout LayerRenderer.Configuration) &#123;
+       if configuration.isFoveationEnabled &#123;
+           configuration.maxRenderQuality = MyScene.Constants.maxRenderQuality
+       &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>运行时可以根据场景类型调整渲染质量：</p>
+<pre><code class="swift">// 设置运行时渲染质量
+extension MyScene &#123;
+    var renderQuality: LayerRenderer.RenderQuality &#123;
+        switch type &#123;
+        case .world: Constants.worldRenderQuality
+        case .menu: Constants.menuRenderQuality
+        &#125;
+    &#125;
+&#125;
+
+extension Renderer &#123;
+    func adjustRenderQuality(for scene: MyScene) &#123;
+        guard layerRenderer.configuration.isFoveationEnabled else &#123; return &#125;
+        layerRenderer.renderQuality = scene.renderQuality
+    &#125;
+&#125;
+</code></pre>
+<h2 id="渐进式沉浸"><a href="#渐进式沉浸" class="headerlink" title="渐进式沉浸"></a>渐进式沉浸</h2><p>渐进式沉浸风格允许用户通过旋转 Digital Crown 控制沉浸程度。系统仅渲染当前沉浸级别内的内容，通过门户模板屏蔽外部内容，节省计算资源。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>开发者可以通过以下资源深入了解这些新功能：</p>
+<p>相关视频:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10083/">探索 Metal 技术打造沉浸式 App</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2023/10084/">探索 Metal 4</a></li>
+</ul>
+<p>文档:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/compositorservices/rendering_hover_effects_in_metal_immersive_apps">在 Metal 沉浸式应用中渲染悬停效果</a></li>
+</ul>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_290/" title="借助 SwiftUI 在 visionOS 中设置场景"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 借助 SwiftUI 在 visionOS 中设置场景</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_297/" title="了解 Apple Projected Media Profile"><span class="has-text-weight-semibold">下一页: 了解 Apple Projected Media Profile</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_294/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

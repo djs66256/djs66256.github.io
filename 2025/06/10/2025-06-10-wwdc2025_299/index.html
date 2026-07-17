@@ -1,0 +1,129 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>在你的 App 中提供适龄体验</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="了解如何使用全新的 declared age range api 在你的 app 中提供适龄体验。我们将介绍家长如何允许孩子与 app 共享年龄范围，以确保在保护隐私的情况下提供安全体验。我们还将探索此框架如何帮助你根据用户的年龄来定制你的 app 内容和功能，并展示如何实施年龄限制、理解缓存机制并尊重用户隐私，同时营造更安全、更有趣的体验。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+在你的应用中提供适龄体验：Declared Age Range API 详解引言随着数字世界日益复杂，如何为不同年龄段的用户提供安全、合适的应用体验成为开发者面临的重要课题。在 iOS 26 中，苹果推出了 Declared Age Range API，帮助开发者在保护.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">在你的 App 中提供适龄体验</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%AD%E6%8F%90%E4%BE%9B%E9%80%82%E9%BE%84%E4%BD%93%E9%AA%8C%EF%BC%9ADeclared-Age-Range-API-%E8%AF%A6%E8%A7%A3"><span class="toc-text">在你的应用中提供适龄体验：Declared Age Range API 详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%84%BF%E7%AB%A5%E4%B8%8A%E7%BD%91%E5%AE%89%E5%85%A8%E7%9A%84%E8%83%8C%E6%99%AF"><span class="toc-text">儿童上网安全的背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Declared-Age-Range%E6%A1%86%E6%9E%B6%E8%A7%A3%E6%9E%90"><span class="toc-text">Declared Age Range框架解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%90%E7%A7%81%E4%BC%98%E5%85%88%E8%AE%BE%E8%AE%A1"><span class="toc-text">隐私优先设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B5%E6%B4%BB%E7%9A%84%E5%B9%B4%E9%BE%84%E5%8C%BA%E9%97%B4%E8%AE%BE%E7%BD%AE"><span class="toc-text">灵活的年龄区间设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B6%E9%95%BF%E6%8E%A7%E5%88%B6%E9%80%89%E9%A1%B9"><span class="toc-text">家长控制选项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6"><span class="toc-text">隐私保护机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%A4%BA%E4%BE%8B"><span class="toc-text">代码实现示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%B7%BB%E5%8A%A0%E6%A1%86%E6%9E%B6%E8%83%BD%E5%8A%9B"><span class="toc-text">1. 添加框架能力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%B7%E6%B1%82%E5%B9%B4%E9%BE%84%E8%8C%83%E5%9B%B4"><span class="toc-text">2. 请求年龄范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%A4%84%E7%90%86%E5%93%8D%E5%BA%94%E5%92%8C%E9%94%99%E8%AF%AF"><span class="toc-text">3. 处理响应和错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%A3%80%E6%9F%A5%E5%AE%B6%E9%95%BF%E6%8E%A7%E5%88%B6"><span class="toc-text">4. 检查家长控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%84%BF%E7%AB%A5%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7"><span class="toc-text">其他儿童安全工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-text">相关资源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1"><i class="tag post-item-tag">系统服务</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">在你的 App 中提供适龄体验</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>了解如何使用全新的 declared age range api 在你的 app 中提供适龄体验。我们将介绍家长如何允许孩子与 app 共享年龄范围，以确保在保护隐私的情况下提供安全体验。我们还将探索此框架如何帮助你根据用户的年龄来定制你的 app 内容和功能，并展示如何实施年龄限制、理解缓存机制并尊重用户隐私，同时营造更安全、更有趣的体验。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/10025/10025_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/299/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="在你的应用中提供适龄体验：Declared-Age-Range-API-详解"><a href="#在你的应用中提供适龄体验：Declared-Age-Range-API-详解" class="headerlink" title="在你的应用中提供适龄体验：Declared Age Range API 详解"></a>在你的应用中提供适龄体验：Declared Age Range API 详解</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着数字世界日益复杂，如何为不同年龄段的用户提供安全、合适的应用体验成为开发者面临的重要课题。在 iOS 26 中，苹果推出了 Declared Age Range API，帮助开发者在保护用户隐私的前提下，根据年龄范围定制应用功能和内容。本文将详细介绍这一新框架的工作原理、实现方法以及相关隐私保护机制。</p>
+<h2 id="儿童上网安全的背景"><a href="#儿童上网安全的背景" class="headerlink" title="儿童上网安全的背景"></a>儿童上网安全的背景</h2><p>苹果始终致力于创造既能丰富用户生活又能保障安全的数字产品。2025年2月发布的《帮助保护儿童上网安全》白皮书强调了持续保护儿童免受网络威胁的重要性。2025年3月，苹果推出了简化的儿童设置流程，并在iOS 26中进一步优化：</p>
+<ul>
+<li>儿童账户年龄错误可轻松更正</li>
+<li>App Store全球年龄评级细化至五个类别（4+、9+、13+、16+、18+）</li>
+<li>提供更详细的产品页面信息，帮助家长了解内容适合度</li>
+</ul>
+<p>这些改进为Declared Age Range API的推出奠定了基础。</p>
+<h2 id="Declared-Age-Range框架解析"><a href="#Declared-Age-Range框架解析" class="headerlink" title="Declared Age Range框架解析"></a>Declared Age Range框架解析</h2><p>Declared Age Range框架允许应用在不获取具体生日的前提下，了解用户的年龄区间范围。其核心特性包括：</p>
+<h3 id="隐私优先设计"><a href="#隐私优先设计" class="headerlink" title="隐私优先设计"></a>隐私优先设计</h3><p>API仅返回由两个数字组成的年龄范围区间，而非具体生日。例如：</p>
+<ul>
+<li>14岁用户可以声明”13-15岁”区间</li>
+<li>9岁用户可以分享”12岁或以下”</li>
+<li>42岁用户可以分享”16岁或以上”</li>
+</ul>
+<p>框架针对儿童和青少年设计，设置了地区最高年龄限制（通常为该地区成人年龄）。</p>
+<h3 id="灵活的年龄区间设置"><a href="#灵活的年龄区间设置" class="headerlink" title="灵活的年龄区间设置"></a>灵活的年龄区间设置</h3><p>应用可以根据自身需求：</p>
+<ul>
+<li>指定最多三个不同年龄节点</li>
+<li>产生四个不同区间（每个区间至少持续两年）</li>
+<li>自定义适合应用的年龄划分标准</li>
+</ul>
+<p>例如，照片分享应用可能关注13岁和16岁两个关键年龄节点。</p>
+<h3 id="家长控制选项"><a href="#家长控制选项" class="headerlink" title="家长控制选项"></a>家长控制选项</h3><p>家长可通过多种途径管理孩子的年龄分享设置：</p>
+<ol>
+<li>家庭与设置 &gt; 选择孩子 &gt; Apple账户与密码 &gt; 应用年龄范围</li>
+<li>孩子设备上的Apple账户与设置 &gt; 个人信息 &gt; 应用年龄范围</li>
+</ol>
+<p>API提供三种分享模式：</p>
+<ul>
+<li>“始终分享”：自动返回年龄范围，有更新时显示通知</li>
+<li>“询问首先”：每次请求时显示分享提示</li>
+<li>“从不分享”：始终拒绝请求</li>
+</ul>
+<h2 id="隐私保护机制"><a href="#隐私保护机制" class="headerlink" title="隐私保护机制"></a>隐私保护机制</h2><p>为防止生日信息泄露，框架采取了特殊措施：</p>
+<ol>
+<li>在”询问首先”模式下，默认只在原始响应周年纪念日显示提示</li>
+<li>在”始终分享”模式下，默认只在周年纪念日透露新年龄信息</li>
+</ol>
+<p>例如，孩子年满13岁后，API在周年日前仍会返回”12岁或以下”，直到周年日才会更新。</p>
+<p>用户也可手动清除缓存，在设置中选择特定应用并再次点击”分享年龄范围”，强制下次请求时获得更新后的响应。</p>
+<h2 id="代码实现示例"><a href="#代码实现示例" class="headerlink" title="代码实现示例"></a>代码实现示例</h2><p>以下是在SwiftUI应用中使用Declared Age Range API的完整步骤：</p>
+<h3 id="1-添加框架能力"><a href="#1-添加框架能力" class="headerlink" title="1. 添加框架能力"></a>1. 添加框架能力</h3><p>在项目目标的Signing and Capabilities标签页添加Declared Age Range能力。</p>
+<h3 id="2-请求年龄范围"><a href="#2-请求年龄范围" class="headerlink" title="2. 请求年龄范围"></a>2. 请求年龄范围</h3><pre><code class="swift">import SwiftUI
+import DeclaredAgeRange
+
+struct LandmarkDetail: View &#123;
+    @State var photoSharingEnabled = false
+    @Environment(\.requestAgeRange) var requestAgeRange
+    
+    var body: some View &#123;
+        ScrollView &#123;
+            Button(&quot;Share Photos&quot;) &#123;&#125;
+                .disabled(!photoSharingEnabled)
+        &#125;
+        .task &#123;
+            await requestAgeRangeHelper()
+        &#125;
+    &#125;
+
+    func requestAgeRangeHelper() async &#123;
+        do &#123;
+            let ageRangeResponse = try await requestAgeRange(ageGates: 16)
+            switch ageRangeResponse &#123;
+            case let .sharing(range):
+                if let lowerBound = range.lowerBound, lowerBound &gt;= 16 &#123;
+                    photoSharingEnabled = true
+                &#125;
+                print(range.ageRangeDeclaration)
+            case .declinedSharing:
+                print(&quot;拒绝分享&quot;)
+            &#125;
+        &#125; catch AgeRangeService.Error.invalidRequest &#123;
+            print(&quot;处理无效请求错误&quot;)
+        &#125; catch AgeRangeService.Error.notAvailable &#123;
+            print(&quot;处理不可用错误&quot;)
+        &#125; catch &#123;
+            print(&quot;未处理错误: \(error)&quot;)
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="3-处理响应和错误"><a href="#3-处理响应和错误" class="headerlink" title="3. 处理响应和错误"></a>3. 处理响应和错误</h3><p>API可能返回两种响应：</p>
+<ul>
+<li><code>.sharing(range)</code>：包含年龄区间和声明类型（guardianDeclared或selfDeclared）</li>
+<li><code>.declinedSharing</code>：用户拒绝分享</li>
+</ul>
+<p>错误类型包括：</p>
+<ul>
+<li><code>invalidRequest</code>：请求格式错误</li>
+<li><code>notAvailable</code>：设备配置不支持</li>
+</ul>
+<h3 id="4-检查家长控制"><a href="#4-检查家长控制" class="headerlink" title="4. 检查家长控制"></a>4. 检查家长控制</h3><pre><code class="swift">if range.activeParentalControls.contains(.communicationLimits) &#123;
+    print(&quot;通讯限制已启用&quot;)
+&#125;
+</code></pre>
+<p>API还会返回家长配置的其他控制项信息。</p>
+<h2 id="其他儿童安全工具"><a href="#其他儿童安全工具" class="headerlink" title="其他儿童安全工具"></a>其他儿童安全工具</h2><p>除了Declared Age Range API，开发者还可以利用以下工具增强儿童安全：</p>
+<ul>
+<li>Sensitive Content Analysis API：检测图片视频中的裸露内容</li>
+<li>Screen Time框架：提供设备使用监管功能</li>
+<li>Family Controls：为应用添加家长控制功能</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Declared Age Range API为开发者提供了一种隐私友好的方式，在不获取具体生日的前提下，根据用户年龄范围定制应用体验。通过合理的年龄区间划分、灵活的家长控制选项和严格的隐私保护机制，该框架帮助开发者在保护儿童安全与尊重用户隐私之间取得平衡。开发者应结合应用实际需求，在适当位置添加适龄体验，为用户提供更安全、更有趣的数字产品。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/293">使用 PermissionKit 增强儿童安全保护</a></p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/DeclaredAgeRange">DeclaredAgeRange</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_298/" title="借助 MLX 在 Apple 芯片上探索大语言模型"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 借助 MLX 在 Apple 芯片上探索大语言模型</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_300/" title="使用基于机器学习的视频效果增强你的 App"><span class="has-text-weight-semibold">下一页: 使用基于机器学习的视频效果增强你的 App</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_299/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

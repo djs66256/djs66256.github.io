@@ -1,0 +1,102 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>深入了解 Foundation Models 框架</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="使用 foundation models 框架提升性能。深入了解引导式生成的工作方式，并使用指南、正则表达式和生成方案来获取自定的结构化响应。我们将向你展示如何使用工具调用让模型自动访问外部信息并执行操作，从而实现个性化体验。
+为了充分从这个视频中获益，建议你先观看“了解 foundation models 框架”。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+深入探索 Foundation Models 框架：从基础会话到工具调用Foundation Models 框架为开发者提供了直接在设备端运行大型语言模型的能力，支持 macOS、iPadOS、iOS 和 visionOS 平台。本文将系统介绍该框架的核心功能，包括会话机制、Generable .."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">深入了解 Foundation Models 框架</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E6%8E%A2%E7%B4%A2-Foundation-Models-%E6%A1%86%E6%9E%B6%EF%BC%9A%E4%BB%8E%E5%9F%BA%E7%A1%80%E4%BC%9A%E8%AF%9D%E5%88%B0%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8"><span class="toc-text">深入探索 Foundation Models 框架：从基础会话到工具调用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E4%BC%9A%E8%AF%9D%E6%9C%BA%E5%88%B6"><span class="toc-text">基础会话机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Generable-%E6%8A%80%E6%9C%AF%EF%BC%9A%E8%8E%B7%E5%8F%96%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA"><span class="toc-text">Generable 技术：获取结构化输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%A8%A1%E5%BC%8F%EF%BC%9A%E8%BF%90%E8%A1%8C%E6%97%B6%E5%AE%9A%E4%B9%89%E7%BB%93%E6%9E%84"><span class="toc-text">动态模式：运行时定义结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E8%B0%83%E7%94%A8%EF%BC%9A%E6%89%A9%E5%B1%95%E6%A8%A1%E5%9E%8B%E8%83%BD%E5%8A%9B"><span class="toc-text">工具调用：扩展模型能力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">总结与最佳实践</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E-ai"><i class="tag post-item-tag">机器学习与-ai</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">深入了解 Foundation Models 框架</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>使用 foundation models 框架提升性能。深入了解引导式生成的工作方式，并使用指南、正则表达式和生成方案来获取自定的结构化响应。我们将向你展示如何使用工具调用让模型自动访问外部信息并执行操作，从而实现个性化体验。</p>
+<p>为了充分从这个视频中获益，建议你先观看“了解 foundation models 框架”。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9967/9967_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/301/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="深入探索-Foundation-Models-框架：从基础会话到工具调用"><a href="#深入探索-Foundation-Models-框架：从基础会话到工具调用" class="headerlink" title="深入探索 Foundation Models 框架：从基础会话到工具调用"></a>深入探索 Foundation Models 框架：从基础会话到工具调用</h1><p>Foundation Models 框架为开发者提供了直接在设备端运行大型语言模型的能力，支持 macOS、iPadOS、iOS 和 visionOS 平台。本文将系统介绍该框架的核心功能，包括会话机制、Generable 技术、动态模式以及工具调用。</p>
+<h2 id="基础会话机制"><a href="#基础会话机制" class="headerlink" title="基础会话机制"></a>基础会话机制</h2><p>Foundation Models 框架通过 <code>LanguageModelSession</code> 类提供简洁的会话接口。开发者只需导入框架并创建会话实例，即可开始生成文本内容。</p>
+<pre><code class="swift">import FoundationModels
+
+func respond(userInput: String) async throws -&gt; String &#123;
+  let session = LanguageModelSession(instructions: &quot;&quot;&quot;
+    你是一位像素世界里的友善咖啡师。
+    请回答玩家的问题。
+    &quot;&quot;&quot;
+  )
+  let response = try await session.respond(to: userInput)
+  return response.content
+&#125;
+</code></pre>
+<p>会话具有状态性，每次响应调用都会记录在会话历史中。开发者需要注意上下文窗口限制问题，当超出限制时可选择创建新会话或保留部分历史记录。</p>
+<pre><code class="swift">var session = LanguageModelSession()
+
+do &#123;
+  let answer = try await session.respond(to: prompt)
+  print(answer.content)
+&#125; catch LanguageModelSession.GenerationError.exceededContextWindowSize &#123;
+  session = newSession(previousSession: session)
+&#125;
+</code></pre>
+<h2 id="Generable-技术：获取结构化输出"><a href="#Generable-技术：获取结构化输出" class="headerlink" title="Generable 技术：获取结构化输出"></a>Generable 技术：获取结构化输出</h2><p><code>@Generable</code> 宏是获取结构化输出的关键工具。它允许开发者定义 Swift 结构体或枚举，模型将据此生成符合类型规范的数据。</p>
+<pre><code class="swift">@Generable
+struct NPC &#123;
+  let name: String
+  let coffeeOrder: String
+&#125;
+</code></pre>
+<p>通过 <code>Guide</code> 宏可以进一步约束输出。开发者可以为数值类型指定范围，为数组指定数量，甚至使用正则表达式精确控制字符串格式。</p>
+<pre><code class="swift">@Generable
+struct NPC &#123;
+  @Guide(description: &quot;全名&quot;)
+  let name: String
+  @Guide(.range(1...10))
+  let level: Int
+  @Guide(.count(3))
+  let attributes: [Attribute]
+&#125;
+</code></pre>
+<h2 id="动态模式：运行时定义结构"><a href="#动态模式：运行时定义结构" class="headerlink" title="动态模式：运行时定义结构"></a>动态模式：运行时定义结构</h2><p>对于需要在运行时动态定义结构的情况，Foundation Models 提供了 <code>DynamicGenerationSchema</code>。开发者可以在运行时构建模式，模型将据此生成符合规范的内容。</p>
+<pre><code class="swift">let riddleSchema = DynamicGenerationSchema(
+  name: &quot;Riddle&quot;,
+  properties: [
+    .init(name: &quot;question&quot;, mode: .string),
+    .init(name: &quot;answers&quot;, mode: .array(element: .reference(&quot;Answer&quot;)))
+  ]
+)
+</code></pre>
+<p>动态模式特别适用于用户自定义内容的场景，如游戏关卡编辑器等应用。</p>
+<h2 id="工具调用：扩展模型能力"><a href="#工具调用：扩展模型能力" class="headerlink" title="工具调用：扩展模型能力"></a>工具调用：扩展模型能力</h2><p>工具调用功能使模型能够访问开发者定义的函数，极大地扩展了模型的能力。开发者需要定义符合 <code>Tool</code> 协议的结构体。</p>
+<pre><code class="swift">struct FindContactTool: Tool &#123;
+  let name = &quot;findContact&quot;
+  let description = &quot;从指定年龄段查找联系人。&quot;
+    
+  @Generable
+  struct Arguments &#123;
+    let generation: Generation
+  &#125;
+  
+  func call(arguments: Arguments) async throws -&gt; ToolOutput &#123;
+    // 实现联系人查找逻辑
+    return ToolOutput(contactName)
+  &#125;
+&#125;
+</code></pre>
+<p>工具特别适合访问隐私敏感数据，如通讯录或日历信息。由于 Foundation Models 在设备端运行，这些数据不会离开用户设备。</p>
+<h2 id="总结与最佳实践"><a href="#总结与最佳实践" class="headerlink" title="总结与最佳实践"></a>总结与最佳实践</h2><p>Foundation Models 框架为开发者提供了强大的设备端 AI 能力。以下是一些关键建议：</p>
+<ol>
+<li>对于固定结构的内容，优先使用 <code>@Generable</code> 宏</li>
+<li>需要运行时定义结构时，考虑使用动态模式</li>
+<li>工具调用是实现个性化体验的强大工具</li>
+<li>注意处理上下文窗口限制和语言支持问题</li>
+</ol>
+<p>通过合理组合这些功能，开发者可以在保护用户隐私的同时，创造出丰富多样的 AI 体验。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_300/" title="使用基于机器学习的视频效果增强你的 App"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 使用基于机器学习的视频效果增强你的 App</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_303/" title="为 visionOS 设计悬停交互"><span class="has-text-weight-semibold">下一页: 为 visionOS 设计悬停交互</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_301/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

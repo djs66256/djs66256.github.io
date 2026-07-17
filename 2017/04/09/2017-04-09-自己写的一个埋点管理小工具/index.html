@@ -1,0 +1,161 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>自己写的一个埋点管理小工具</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="前言在很多项目中，埋点数据使用表格来统计的，随着项目的进行，数据量越来越复杂，越来越难以维护。所以很多公司都已经开发了一整套系统，从埋点的录入到代码的输出。由于很多时候一套系统对于一个小项目来说太过于复杂了，所以这里我做了一个轻量级的本地管理客户端。https://github.com/djs66256/lily Star
+
+
+功能简介启动由于我们实现的是一套本地管理的系统，所以我把程序系统和数据分开了，所以启动的时候需要选择对应的数据目录，比如本项目目录下的/demo-data/，以微信为例。关于目录下文件功能格式会在之后说明。
+
+主界面启动之后，我们可以看到我们的埋点数据界面，这里我根据我们的需求把数据分为3类：
+
+事件-数据点
+页面
+具体参数
+
+
+数据点包含所有埋点信息，参数是由参数列表选择，可以查看.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">自己写的一个埋点管理小工具</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E7%AE%80%E4%BB%8B"><span class="toc-text">功能简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-text">启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E7%95%8C%E9%9D%A2"><span class="toc-text">主界面</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E2%80%93%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="toc-text">进阶–配置参数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E7%B1%BB"><span class="toc-text">数据分类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%9E%E7%8E%B0"><span class="toc-text">文件持久化实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%8C%81%E4%B9%85%E5%8C%96%E6%A0%BC%E5%BC%8F"><span class="toc-text">文件持久化格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E8%8A%82%E7%82%B9%E6%A0%BC%E5%BC%8F"><span class="toc-text">目录节点格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%8A%82%E7%82%B9%E6%A0%BC%E5%BC%8F"><span class="toc-text">数据节点格式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%85%A5%E7%BC%96%E8%AF%91%E7%B3%BB%E7%BB%9F"><span class="toc-text">接入编译系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%80%85"><span class="toc-text">开发者</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5"><span class="toc-text">设计理念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">运行环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%BB%A3%E7%A0%81"><span class="toc-text">运行代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%AE%80%E4%BB%8B"><span class="toc-text">代码简介</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TODO"><span class="toc-text">TODO</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#git%E6%8E%A5%E5%85%A5"><span class="toc-text">git接入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E7%B3%BB%E7%BB%9F%E5%AE%8C%E5%96%84"><span class="toc-text">编译系统完善</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E5%8F%AF%E9%85%8D%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">更多可配的数据类型</span></a></li></ol></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E5%9F%8B%E7%82%B9"><i class="tag post-item-tag">埋点</i></a><a href="/tags/%E5%B7%A5%E5%85%B7"><i class="tag post-item-tag">工具</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">自己写的一个埋点管理小工具</h1><time class="has-text-grey" datetime="2017-04-09T09:29:23.000Z">2017-04-09</time><article class="mt-2 post-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在很多项目中，埋点数据使用表格来统计的，随着项目的进行，数据量越来越复杂，越来越难以维护。所以很多公司都已经开发了一整套系统，从埋点的录入到代码的输出。由于很多时候一套系统对于一个小项目来说太过于复杂了，所以这里我做了一个轻量级的本地管理客户端。<a target="_blank" rel="noopener" href="https://github.com/djs66256/lily">https://github.com/djs66256/lily</a> <a class="github-button" target="_blank" rel="noopener" href="https://github.com/djs66256/lily" aria-label="Star djs66256/lily on GitHub">Star</a></p>
+<span id="more"></span>
+
+<h2 id="功能简介"><a href="#功能简介" class="headerlink" title="功能简介"></a>功能简介</h2><h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><p>由于我们实现的是一套本地管理的系统，所以我把程序系统和数据分开了，所以启动的时候需要选择对应的数据目录，比如本项目目录下的<code>/demo-data/</code>，以微信为例。关于目录下文件功能格式会在之后说明。</p>
+<p><img src="/images/2017/lily/init.png" alt="初始化"></p>
+<h4 id="主界面"><a href="#主界面" class="headerlink" title="主界面"></a>主界面</h4><p>启动之后，我们可以看到我们的埋点数据界面，这里我根据我们的需求把数据分为3类：</p>
+<ul>
+<li>事件-数据点</li>
+<li>页面</li>
+<li>具体参数</li>
+</ul>
+<p><img src="/images/2017/lily/stat.png" alt="事件"></p>
+<p>数据点包含所有埋点信息，参数是由参数列表选择，可以查看历史和进行编辑。</p>
+<p><img src="/images/2017/lily/page.png" alt="页面"></p>
+<p>页面包含了我们的所有页面id，因为一个普通的App拥有的页面不会有太多，所以页面的分级可以少一点。</p>
+<p><img src="/images/2017/lily/param.png" alt="参数"></p>
+<p>参数包含了我们埋点过程中所有遇到的参数，考虑到我们项目中所涉及到的参数比较统一，所以就没有进行分类</p>
+<p><img src="/images/2017/lily/history.png" alt="历史"></p>
+<p>每行数据的每次改动都会形成一条记录保存在本地，这样我们就可以追溯历史变更了。这里还把所有参数都列了出来，而不是主页面精简后的了。由于性能问题，这里暂时只显示了最近50条记录。</p>
+<p>以上所有列表的数据项都是动态可配的。在设计之初，考虑到数据内容可能会根据需要动态调整，所以把所有内容都设计为动态可配的了，又为了在磁盘上的数据的可读性，把所有数据都采用文本json保存，这样也兼容了动态的数据，具体实现后面会详细讲解。</p>
+<p><img src="/images/2017/lily/create.png" alt="创建"></p>
+<p>当选择了一个目录后，点击导航栏的创建可以创建一条新的数据，数据格式内容根据<code>根目录</code>属性配置。</p>
+<p><img src="/images/2017/lily/edit.png" alt="编辑"></p>
+<p>点击一行列表后的编辑按钮进入编辑页面，每次保存都会产生一条修改记录。</p>
+<p><img src="/images/2017/lily/edit_param.png" alt="参数"></p>
+<p>可选的参数为在根目录为<code>参数</code>内的所有内容，这样设计的原因是为了未来可能对埋点数据的自动化验证，从而需要一个格式化的参数列表，而不是一段文字描述。</p>
+<p><img src="/images/2017/lily/search.png" alt="搜索"></p>
+<p>为了可以对埋点的整理归类，所以做了简单的搜索功能，可搜索字段也是根据事件目录的配置。</p>
+<p><img src="/images/2017/lily/search_regex.png" alt="搜索-正则"></p>
+<p>所有搜索字段都是使用正则表达式完成，所以如果需要更复杂精确的匹配，这里也可以输入一段正则来匹配。</p>
+<p><img src="/images/2017/lily/build_oc.png" alt="编译"></p>
+<p>点击编译，会把所有事件和页面数据自动生成一份代码，这里是根据需要定制的，所以我只做了iOS的一个样例格式。这里我们从老数据转化过来的时候有重复埋点，所以在转化的逻辑中加入了去重，关于自定义和接入编译系统之后会详细描述。</p>
+<h2 id="进阶–配置参数"><a href="#进阶–配置参数" class="headerlink" title="进阶–配置参数"></a>进阶–配置参数</h2><p>以<code>demo-data</code>数据配置为例。</p>
+<h4 id="数据分类"><a href="#数据分类" class="headerlink" title="数据分类"></a>数据分类</h4><p>在所有的数据中，概念都是节点<code>Node</code>，根据功能分为两类：</p>
+<ul>
+<li>目录节点<code>DirNode</code>，负责分级和归类。</li>
+<li>数据节点<code>StatNode</code>，负责记录每个数据的具体内容。</li>
+</ul>
+<h4 id="文件持久化实现"><a href="#文件持久化实现" class="headerlink" title="文件持久化实现"></a>文件持久化实现</h4><p>所有数据持久化通过json格式保存为文本文件，所以可以直接查看文件内容。</p>
+<p>按照层级结构创建一样的目录层级结构，每个<code>DirNode</code>下面都有一个<code>config.json</code>文件，包含该节点信息。</p>
+<p>在最底层每个<code>StatNode</code>会产生一个目录，目录下会根据历史生成<code>1.json</code>，<code>2.json</code>，<code>3.json</code>名字依次递增的文件，保存每次修改后的数据。这里目录名字使用<code>id</code>来命名是为了解决数据埋点id可能存在重名的问题。</p>
+<p>只能在目录的最底层可以创建数据，这是为了解决展示时候的难以同时展示数据和目录的问题。</p>
+<h4 id="文件持久化格式"><a href="#文件持久化格式" class="headerlink" title="文件持久化格式"></a>文件持久化格式</h4><p>每个文件中都需要具备一些基础属性：</p>
+<ul>
+<li><code>name</code>外部显示的名字，对于目录节点则是目录名字</li>
+<li><code>id</code>要求唯一的id，由于<code>DirNode</code>个数比较少，而且固定，所以没有设计创建的功能，自己修改时需要保证唯一。数据节点则会生成一个MD5来填充。</li>
+<li><code>isDirectory</code>表示是否是<code>DirNode</code></li>
+</ul>
+<h4 id="目录节点格式"><a href="#目录节点格式" class="headerlink" title="目录节点格式"></a>目录节点格式</h4><p>包含一个<code>columns</code>数组，这是一个非常重要的配置，除了基础属性，所有<code>StatNode</code>里的数据项都是根据该字段动态生成。</p>
+<p>这里是一个事件节点例子：</p>
+<pre><code class="json">[
+    &#123;
+      &quot;type&quot;: &quot;text&quot;,			// 字段类型（暂时只支持text和param）
+      &quot;required&quot;: false,		// 是否必填
+
+      &quot;title&quot;: &quot;描述&quot;,			// 展示的列名
+      &quot;key&quot;: &quot;description&quot;,  	// 对应于json中的key值
+      &quot;visible&quot;: true,			// 在主界面是否隐藏
+      &quot;editable&quot;: true,			// 是否可编辑，在编辑和创建界面是否可见
+      &quot;searchable&quot;: true		// 是否可以作为搜索参数，影响搜索界面
+    &#125;,
+    &#123;
+      &quot;type&quot;: &quot;params&quot;,
+      &quot;paramsKey&quot;: &quot;params&quot;,	// 如果是param类型，需要指定`DirNode`的id
+      &quot;required&quot;: false,
+
+      &quot;title&quot;: &quot;参数&quot;,
+      &quot;dataIndex&quot;: &quot;params&quot;,
+      &quot;key&quot;: &quot;params&quot;,
+      &quot;visible&quot;: true,
+      &quot;editable&quot;: true,
+      &quot;searchable&quot;: false
+    &#125;
+]
+</code></pre>
+<p>可以动态增加或者修改数据项，这样会非常灵活而且可以不通过修改代码就配置数据内容。</p>
+<p>节点间的<code>columns</code>是可以被继承的，也就是说子目录的<code>columns</code>必定包含父目录的所有数据内容。可惜目前的使用场景并没有这个要求。</p>
+<p>所有其他目录的配置都是类似的。</p>
+<h4 id="数据节点格式"><a href="#数据节点格式" class="headerlink" title="数据节点格式"></a>数据节点格式</h4><p>同样看一个例子</p>
+<pre><code class="json">&#123;
+    &quot;name&quot;: &quot;点赞&quot;,
+    &quot;statId&quot;: &quot;onPraise&quot;,
+    &quot;description&quot;: &quot;包括3D touch页面&quot;,
+    &quot;version_iOS&quot;: &quot;1.0&quot;,
+    &quot;version_Android&quot;: &quot;1.1&quot;,
+    &quot;createTime&quot;: &quot;2017-04-03T12:22:38.372Z&quot;,
+    &quot;params&quot;: [
+        &#123;
+            &quot;name&quot;: &quot;用户ID&quot;,
+            &quot;description&quot;: &quot;&quot;,
+            &quot;createTime&quot;: &quot;2017-04-03T11:59:13.467Z&quot;,
+            &quot;isDirectory&quot;: false,
+            &quot;id&quot;: &quot;814db1c837ac436ebb569d3554b51fb1&quot;,
+            &quot;paramId&quot;: &quot;userId&quot;
+        &#125;,
+        &#123;
+            &quot;name&quot;: &quot;朋友圈状态&quot;,
+            &quot;createTime&quot;: &quot;2017-04-03T12:14:06.676Z&quot;,
+            &quot;isDirectory&quot;: false,
+            &quot;id&quot;: &quot;866982e498224b15aa4602f2893f7995&quot;,
+            &quot;paramId&quot;: &quot;timelineId&quot;
+        &#125;
+    ],
+    &quot;isDirectory&quot;: false,
+    &quot;id&quot;: &quot;9b538d5bee1c40ed979e5a38143a9829&quot;
+&#125;
+</code></pre>
+<p>所有数据都是根据上述配置生成，其中param比较特殊，是把选择的数据节点直接拷贝了一份，这样做的原因是怕其他地方修改或者删除了导致数据不一致的问题，这样做更符合埋点这个需求。</p>
+<h2 id="接入编译系统"><a href="#接入编译系统" class="headerlink" title="接入编译系统"></a>接入编译系统</h2><p>目前编译系统还是做在了代码中，由于系统本身是有NodeJS实现的，所以要动态配置编译系统还是非常简单的。</p>
+<p>编译系统比较开放，这样可以开放更多的功能，但同时也引入了数据风险，之后需要改进下，让编译系统可以动态接入，并且屏蔽内部数据和编译系统的直接联系。</p>
+<p>目前代码放在<code>/script</code>目录下。</p>
+<h2 id="开发者"><a href="#开发者" class="headerlink" title="开发者"></a>开发者</h2><p>这里对整个系统的代码逻辑进行说明。</p>
+<h4 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h4><p><img src="/images/2017/lily/design.png" alt="设计"></p>
+<p>最基本的功能，需要能够在团队内共享数据，其中最方便的就是利用git系统了，所以在每次修改数据的时候除了本地持久化以外，会自动同步git上的数据文件，这也是为什么要数据分离的一个原因。</p>
+<p>如果能够接上埋点系统，那么可以通过该系统去分析结果，这个工作量可能会比较大，是一个设想。</p>
+<p>如果能够接上自动化测试或者设备，就能够验证埋点数据是否正确，这个的工作量也可能会比较大。</p>
+<p>目前完成了最基础的管理埋点和生成代码功能。</p>
+<h4 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h4><p>nodejs</p>
+<p>Mac可以通过<code>brew install nodejs</code>来安装</p>
+<p>需要electron和webpack</p>
+<pre><code>npm install -g electron webpack
+</code></pre>
+<h4 id="运行代码"><a href="#运行代码" class="headerlink" title="运行代码"></a>运行代码</h4><p>首先<code>npm install</code></p>
+<p>然后需要链接本地库</p>
+<pre><code>cd dd-stat
+npm link
+cd ../stat
+npm link dd-stat
+</code></pre>
+<p>最后</p>
+<pre><code>npm run dev	#开启webpack -w
+npm run app	#启动应用
+</code></pre>
+<h4 id="代码简介"><a href="#代码简介" class="headerlink" title="代码简介"></a>代码简介</h4><p><code>dd-stat</code>是系统的数据层，包含了数据结构和持久化。</p>
+<p><code>stat</code>是界面层，为了实现简单，目前所有逻辑都是在渲染层做的，因为我们的数据量按照我们的需求是不太可能达到如此大的数目，是不太可能出现性能问题的。</p>
+<p><code>stat</code>依赖支付宝的<code>ant design</code>框架来搭建，最初是用<code>redux</code>来组织(<code>/lib</code>)，后来发现太过于复杂，应用本身就是个简单的场景，所以后来改为<code>react-router</code>来组织(<code>/lib2</code>)。</p>
+<p><code>/script</code>是数据编译的代码，是导出编译后代码或者导出其他格式的一个出口，可以根据需要扩展。</p>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><h4 id="git接入"><a href="#git接入" class="headerlink" title="git接入"></a>git接入</h4><p>最初的想法是让程序来自动同步<code>git</code>，因为应用的使用场景比较简单，不太可能出现多人同时编辑同一个数据的问题，所以让程序来自动同步数据是最好的，由于时间问题，暂时没有加入。</p>
+<h4 id="编译系统完善"><a href="#编译系统完善" class="headerlink" title="编译系统完善"></a>编译系统完善</h4><p>现在编译系统是和应用代码捆绑在一起的，最好能够脱离代码，并且可以动态配置编译模板。</p>
+<h4 id="更多可配的数据类型"><a href="#更多可配的数据类型" class="headerlink" title="更多可配的数据类型"></a>更多可配的数据类型</h4><p>增加对bool，枚举单选，枚举多选，时间等的支持，项目暂时还没有这样的需求。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/04/10/2017-04-10-%E8%81%8A%E8%81%8A%E7%A7%BB%E5%8A%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84git%E5%B7%A5%E4%BD%9C%E6%B5%81/" title="聊聊移动客户端开发中的git工作流"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 聊聊移动客户端开发中的git工作流</span></a><a class="button is-default" href="/2017/04/09/2017-04-09-%E7%BE%8E%E5%AD%A6%E7%9A%84%E8%A1%A8%E7%8E%B0%E5%B1%82%E7%BB%84%E4%BB%B6%E5%8C%96%E4%B9%8B%E8%B7%AF/" title="美学的表现层组件化之路"><span class="has-text-weight-semibold">下一页: 美学的表现层组件化之路</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/04/09/2017-04-09-%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9F%8B%E7%82%B9%E7%AE%A1%E7%90%86%E5%B0%8F%E5%B7%A5%E5%85%B7/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

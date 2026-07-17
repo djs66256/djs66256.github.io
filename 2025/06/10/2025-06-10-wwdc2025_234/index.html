@@ -1,0 +1,96 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>借助 NetworkExtension 优化网络流量过滤和隧道</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="了解 networkextension 框架中提供的 api，这些 api 让你的 app 能够灵活地扩展系统的核心网络功能 — 例如实现网络内容过滤器、创建和管理 vpn 配置等。在 ios、ipados 和 macos 26 中，你现在可以构建更为强大的内容过滤器，让它根据整个 url (而不仅是主机名) 来做出流量决策，同时确保隐私和安全丝毫不受影响。我们将首先简要介绍 networkextension 框架的一些主要用例，包括网络中继和 vpn。然后，我们将深入探讨这一全新的 url 过滤器 api 及其关键组件，包括 private information retrieval、privacy pass 等。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163..."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">借助 NetworkExtension 优化网络流量过滤和隧道</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-NetworkExtension-%E4%BC%98%E5%8C%96%E7%BD%91%E7%BB%9C%E6%B5%81%E9%87%8F%E8%BF%87%E6%BB%A4%E4%B8%8E%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF"><span class="toc-text">利用 NetworkExtension 优化网络流量过滤与隧道技术</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NetworkExtension-%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B"><span class="toc-text">NetworkExtension 框架简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="toc-text">主要功能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E8%B5%84%E6%BA%90%E8%AE%BF%E9%97%AE%E6%8A%80%E6%9C%AF"><span class="toc-text">远程资源访问技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%BB%A7"><span class="toc-text">网络中继</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-IP-%E7%9A%84-VPN"><span class="toc-text">基于 IP 的 VPN</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E8%BF%87%E6%BB%A4%E6%8A%80%E6%9C%AF"><span class="toc-text">内容过滤技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS-26-%E5%85%A8%E6%96%B0-URL-%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">iOS 26 全新 URL 过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9A%90%E7%A7%81%E4%BF%9D%E6%8A%A4%E8%AE%BE%E8%AE%A1"><span class="toc-text">隐私保护设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E5%9B%9B%E5%A4%A7%E6%94%AF%E6%9F%B1"><span class="toc-text">技术实现四大支柱</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-text">实现步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3%E8%B5%84%E6%BA%90"><span class="toc-text">文档资源</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/tvos"><i class="tag post-item-tag">tvos</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/watchos"><i class="tag post-item-tag">watchos</i></a><a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1"><i class="tag post-item-tag">系统服务</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">借助 NetworkExtension 优化网络流量过滤和隧道</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>了解 networkextension 框架中提供的 api，这些 api 让你的 app 能够灵活地扩展系统的核心网络功能 — 例如实现网络内容过滤器、创建和管理 vpn 配置等。在 ios、ipados 和 macos 26 中，你现在可以构建更为强大的内容过滤器，让它根据整个 url (而不仅是主机名) 来做出流量决策，同时确保隐私和安全丝毫不受影响。我们将首先简要介绍 networkextension 框架的一些主要用例，包括网络中继和 vpn。然后，我们将深入探讨这一全新的 url 过滤器 api 及其关键组件，包括 private information retrieval、privacy pass 等。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9924/9924_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/234/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="利用-NetworkExtension-优化网络流量过滤与隧道技术"><a href="#利用-NetworkExtension-优化网络流量过滤与隧道技术" class="headerlink" title="利用 NetworkExtension 优化网络流量过滤与隧道技术"></a>利用 NetworkExtension 优化网络流量过滤与隧道技术</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>NetworkExtension 框架为开发者提供了一系列强大的 API，用于扩展和定制 Apple 平台的核心网络功能。在 iOS、iPadOS 和 macOS 26 中，该框架引入了全新的 URL 过滤器 API，使得开发者能够基于完整 URL 而不仅仅是主机名来进行流量过滤决策，同时确保了用户的隐私和安全。</p>
+<h2 id="NetworkExtension-框架简介"><a href="#NetworkExtension-框架简介" class="headerlink" title="NetworkExtension 框架简介"></a>NetworkExtension 框架简介</h2><p>NetworkExtension 是一个功能丰富的框架，允许开发者构建能够扩展和定制 Apple 平台网络能力的应用。该框架与整个网络堆栈紧密集成，包括 Network 框架、CFNetwork、WebKit 和 Sockets API，同时也与系统级组件如路由、流量策略和各类系统管理深度整合。</p>
+<h3 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h3><p>NetworkExtension 框架支持多种网络定制方式：</p>
+<ul>
+<li><strong>Wi-Fi 管理和热点 API</strong>（仅 iOS）：允许应用配置 Wi-Fi 设置并与 Wi-Fi 热点交互</li>
+<li><strong>本地推送 API</strong>：适用于无法访问 Apple 推送通知服务的网络环境</li>
+<li><strong>DNS 配置和代理 API</strong>：用于构建保护 DNS 流量免受攻击的安全应用</li>
+<li><strong>透明代理 API</strong>（仅 macOS）：可将特定网站流量重定向至云端安全服务</li>
+<li><strong>远程资源安全访问</strong>：通过隧道技术保护网络流量</li>
+<li><strong>内容过滤</strong>：实现对网络流量的监控和过滤</li>
+</ul>
+<h2 id="远程资源访问技术"><a href="#远程资源访问技术" class="headerlink" title="远程资源访问技术"></a>远程资源访问技术</h2><p>NetworkExtension 提供了两种主要的方法来实现安全的远程资源访问：</p>
+<h3 id="网络中继"><a href="#网络中继" class="headerlink" title="网络中继"></a>网络中继</h3><p>网络中继适合需要隧道传输 TCP 或 UDP 流量以访问特定应用的场景。MASQUE 协议提供了安全代理且性能优化，平台内置支持无需额外扩展。</p>
+<h3 id="基于-IP-的-VPN"><a href="#基于-IP-的-VPN" class="headerlink" title="基于 IP 的 VPN"></a>基于 IP 的 VPN</h3><p>IP VPN 适合企业将公司网络扩展至远程员工，或高安全要求的组织需要将所有管理设备流量通过企业网络传输。</p>
+<p>开发者可以通过以下方式创建 IP VPN 隧道：</p>
+<ul>
+<li>使用 NEVPNManager API 内置协议（IKEv2&#x2F;IPsec）</li>
+<li>使用 NEPacketTunnelProvider 实现自定义隧道协议</li>
+</ul>
+<p><strong>重要注意事项</strong>：</p>
+<ul>
+<li>NetworkExtension 是构建 VPN 应用的唯一官方支持 API</li>
+<li>禁止使用 Packet Filter 或直接修改 Mac 路由表</li>
+<li>NEPacketTunnelProvider 仅应用于 IP 层流量隧道传输</li>
+</ul>
+<h2 id="内容过滤技术"><a href="#内容过滤技术" class="headerlink" title="内容过滤技术"></a>内容过滤技术</h2><p>NetworkExtension 的内容过滤 API 允许开发者检查设备流量进行监控或过滤决策。传统的内容过滤器存在以下局限：</p>
+<ul>
+<li>只能基于流量级信息（如主机和端口）做决策</li>
+<li>HTTPS 加密导致无法获取 URL 详细内容</li>
+<li>无法精准过滤特定资源</li>
+</ul>
+<h2 id="iOS-26-全新-URL-过滤器"><a href="#iOS-26-全新-URL-过滤器" class="headerlink" title="iOS 26 全新 URL 过滤器"></a>iOS 26 全新 URL 过滤器</h2><p>iOS 26 引入了全新的 URL 过滤器功能，允许基于完整 URL 进行内容过滤决策。该技术具有以下特点：</p>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li>家长控制应用屏蔽有害网站</li>
+<li>学校应用限制社交媒体&#x2F;赌博等内容</li>
+<li>企业屏蔽与工作无关的内容</li>
+</ul>
+<h3 id="隐私保护设计"><a href="#隐私保护设计" class="headerlink" title="隐私保护设计"></a>隐私保护设计</h3><ul>
+<li>采用最先进加密技术</li>
+<li>URL 敏感信息不会泄露给应用</li>
+<li>后端服务器查询完全匿名化</li>
+<li>Apple 和服务器都无法获取内容与身份信息</li>
+</ul>
+<h3 id="技术实现四大支柱"><a href="#技术实现四大支柱" class="headerlink" title="技术实现四大支柱"></a>技术实现四大支柱</h3><ol>
+<li><strong>Bloom 过滤器</strong>：快速预过滤（可能假阳性但无假阴性）</li>
+<li>**私有信息检索 (PIR)**：使用同态加密实现加密查询</li>
+<li>**隐私通行证 (Privacy Pass)**：匿名认证机制</li>
+<li>**无感 HTTP 中继 (Oblivious HTTP Relay)**：隐藏客户端 IP 地址</li>
+</ol>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>开发者可以通过以下步骤实现 URL 过滤器：</p>
+<ol>
+<li><strong>设置 PIR 服务器</strong></li>
+<li><strong>构建 Bloom 过滤器</strong></li>
+<li><strong>构建 URL 过滤应用</strong></li>
+<li><strong>构建应用扩展</strong></li>
+</ol>
+<p>示例代码：</p>
+<pre><code class="swift">let manager = NEURLFilterManager.shared
+try await manager.loadFromPreferences()
+try manager.setConfiguration(
+    pirServerURL: URL(string:&quot;https://pir.example.com&quot;)!,
+    pirPrivacyPassIssuerURL: URL(string:&quot;https://privacypass.example.com&quot;)!,
+    pirAuthenticationToken: &quot;1234&quot;,
+    controlProviderBundleIdentifier: &quot;com.example.myURLFilter.extension&quot;)
+manager.prefilterFetchInterval = 86400 // 每日更新
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>NetworkExtension 框架为开发者提供了强大的工具，使其能够：</p>
+<ul>
+<li>使用网络中继安全访问 TCP&#x2F;UDP 流量</li>
+<li>构建完整的 VPN 解决方案</li>
+<li>通过 URL 过滤 API 创建强大的内容过滤器</li>
+</ul>
+<p>开发者可以立即查看相关示例和文档开始开发工作。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/246">将隐私保护融入开发流程</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2019/714">适用于现代 Mac 的网络扩展</a></p>
+<h2 id="文档资源"><a href="#文档资源" class="headerlink" title="文档资源"></a>文档资源</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/filtering-traffic-by-url">按 URL 过滤流量</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/NEHotspotManager">NEHotspotManager</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension">Network Extension</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/NEURLFilterManager">NEURLFilterManager</a><br><a target="_blank" rel="noopener" href="https://swiftpackageindex.com/apple/pir-service-example/main/documentation/pirservice">PIRService</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Technotes/tn3120-expected-use-cases-for-network-extension-packet-tunnel-providers">TN3120：网络扩展包隧道提供商的预期用例</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Technotes/tn3165-packet-filter-is-not-api">TN3165：包过滤器不是 API</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/NetworkExtension/NEURLFilter/verdict(for:)">verdict(for:)</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_229/" title="让所有人都能更方便地使用你的 Mac App"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 让所有人都能更方便地使用你的 Mac App</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_237/" title="空间网页的新功能"><span class="has-text-weight-semibold">下一页: 空间网页的新功能</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_234/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

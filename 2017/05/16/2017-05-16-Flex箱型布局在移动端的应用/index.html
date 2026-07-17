@@ -1,0 +1,61 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>Flex箱型布局在移动端的应用</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="在平时开发过程中，用的最多的布局方式当然就是苹果自带的AutoLayout，但是使用的过程中也发现AutoLayout自身也有很多的问题。在我们的项目中，由于展现逻辑比较灵活，视觉每期的变化比较大，在使用过程中，很大一部分时间都在调整视觉中，所以想引入一个更简单的布局方式，这就是大名鼎鼎的Flex，也叫箱型布局。
+
+
+首先来看看我们在AutoLayout中遇到的几个问题AutoLayout自身的API简直反人类，所以大家使用过程中往往会引入第三方库（Masonry, PureLayout)。Masonry看上去更加直观，但是不太符合OC的编码习惯，PureLayout更符合OC的规范，使用起来也稍复杂点。两者都有很多的使用者。虽然第三方库简化了API，但并没有简化场景。
+另一个AutoLayout令人诟病的.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Flex箱型布局在移动端的应用</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A6%96%E5%85%88%E6%9D%A5%E7%9C%8B%E7%9C%8B%E6%88%91%E4%BB%AC%E5%9C%A8AutoLayout%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="toc-text">首先来看看我们在AutoLayout中遇到的几个问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E4%B8%80%E6%AC%A1%E6%AC%A1%E7%9A%84UI%E4%BF%AE%E6%94%B9%E4%B8%AD%EF%BC%8C%E6%88%91%E7%BB%88%E4%BA%8E%E5%8F%97%E4%B8%8D%E4%BA%86%E4%BA%86"><span class="toc-text">在一次次的UI修改中，我终于受不了了</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AF%94AutoLayout%E5%A5%BD%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-text">比AutoLayout好的地方</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E9%99%B7"><span class="toc-text">缺陷</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E4%BD%BF%E7%94%A8Flex%E7%9A%84%E9%A1%B9%E7%9B%AE%EF%BC%8C%E6%88%96%E8%80%85%E7%B1%BB%E4%BC%BC%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-text">目前使用Flex的项目，或者类似的功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#YogaKit"><span class="toc-text">YogaKit</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E7%9A%84%E8%80%83%E8%99%91"><span class="toc-text">更多的考虑</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/flex"><i class="tag post-item-tag">flex</i></a><a href="/tags/layout"><i class="tag post-item-tag">layout</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Flex箱型布局在移动端的应用</h1><time class="has-text-grey" datetime="2017-05-16T15:27:01.000Z">2017-05-16</time><article class="mt-2 post-content"><p>在平时开发过程中，用的最多的布局方式当然就是苹果自带的AutoLayout，但是使用的过程中也发现AutoLayout自身也有很多的问题。在我们的项目中，由于展现逻辑比较灵活，视觉每期的变化比较大，在使用过程中，很大一部分时间都在调整视觉中，所以想引入一个更简单的布局方式，这就是大名鼎鼎的Flex，也叫箱型布局。</p>
+<span id="more"></span>
+
+<h4 id="首先来看看我们在AutoLayout中遇到的几个问题"><a href="#首先来看看我们在AutoLayout中遇到的几个问题" class="headerlink" title="首先来看看我们在AutoLayout中遇到的几个问题"></a>首先来看看我们在AutoLayout中遇到的几个问题</h4><p>AutoLayout自身的API简直反人类，所以大家使用过程中往往会引入第三方库（Masonry, PureLayout)。Masonry看上去更加直观，但是不太符合OC的编码习惯，PureLayout更符合OC的规范，使用起来也稍复杂点。两者都有很多的使用者。虽然第三方库简化了API，但并没有简化场景。</p>
+<p>另一个AutoLayout令人诟病的问题，就是当视图增加的时候，计算复杂度成倍上升。AutoLayout依靠解线性方程组，所以越多的视图性能下降非常大。</p>
+<p>在使用场景上，举几个例子。</p>
+<pre><code>|---- View1 ----|
+|---- View2 ----|
+|---- View3 ----|
+</code></pre>
+<p>如果要排上图3个View的时候，AutoLayout必须指定相互间的依赖。</p>
+<p>如果仅仅如此还好解决，那么现在告诉你，View1可能是个<code>1行或者2行</code>的Label，那么如何平均分配之间的大小和间隔呢？</p>
+<p>如果这样还是容易解决，那么再告诉你，View2可能是个<code>没有内容的视图</code>，当没有视图的时候1和3之间要保持之前的间距，这时候，不可能简单的解决了，必须修改依赖，一种方式是删除所有的AutoLayout，重新布局一遍，另外一种是保存AutoLayout实例，修改单个属性。无论如何，都不能避免修改依赖。</p>
+<p>如果说到这里你都觉得轻松解决，那么下面这种呢</p>
+<pre><code>|       |---- View1 ----|         |         |
+| Image |---- View2 ----| Action1 | Action1 |
+|       |---- View3 ----|         |         |
+</code></pre>
+<p>这是标准的TableViewCell样式，但是如果说View和Action都是动态的，可能会被隐藏，但隐藏的时候不能空着一块，垂直的需要居中，水平的需要拉伸。这时候就彻底的蛋疼了，恰好我们的项目中就有很多类似的场景，由此我们很多时间都浪费在调整UI上，又容易漏掉场景导致一些视觉bug。</p>
+<h4 id="在一次次的UI修改中，我终于受不了了"><a href="#在一次次的UI修改中，我终于受不了了" class="headerlink" title="在一次次的UI修改中，我终于受不了了"></a>在一次次的UI修改中，我终于受不了了</h4><p>在视觉排版这个从印刷术发明就存在的问题，到现在计算机领域，最成熟最靠谱的当然是Web技术，从互联网出现，到现在的响应式界面，web经历了历史的历练，从而产生了一套稳定靠谱的布局方式，而最新的就是不久前被加入标准的Flex布局（也可以称为Box布局）。</p>
+<p>关于布局使用，有很多有名的介绍文章，我作为一个半吊子人士，就不做详细介绍了。简单来说，就是把每个视图都看作一个箱子，拥有内边距外边距，然后根据一定顺序排布下去，相互间不会产生依赖，当某个视图的属性<code>display: none</code>，自动忽略该视图。</p>
+<h4 id="比AutoLayout好的地方"><a href="#比AutoLayout好的地方" class="headerlink" title="比AutoLayout好的地方"></a>比AutoLayout好的地方</h4><p>首先，Flex计算简单，不会因为视图的增加性能急剧下降。</p>
+<p>同时也可以方便的解决上述的几种场景，可以动态的根据视图来排版，而不需要相对的去设置，同时拉伸和挤压也很好控制(flex-grow, flex-shrink)。</p>
+<p>甚至可以解决部分需要UITableView或者UICollectionView才比较好解决的问题。举个例子，微信九宫格图片，如果不是用UICollectionView来做，那么可能你需要保存9个实例，然后在layoutSubview里面做各种判断，计算frame，那简直是太恐怖了！看到这样的代码谁还有兴趣读下去吗。而使用UICollectionView则可以很好的解决布局问题，还能复用，但是很多场景下并不会产生复用，而使用UICollectionView又会新引入很多层视图层级和一些不需要的功能，虽然很好解决了问题，但并不是特别简单。那么这时候Flex布局的优势就特别明显了，只要<code>flex-wrap</code>属性就可以搞定一切。</p>
+<p>总的来说，使用简单，学习成本低，性能也很不错，兼容性也高，这也是很多人为什么会嘲笑苹果自己搞了一套复杂无比的布局系统。</p>
+<h4 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h4><p>Flex布局最大的缺陷就是视图层级的增加，每个箱子都是一个视图，看web的代码可以发现无数的<code>div</code>，单纯的为了实现一套布局。不过对于移动端来说，一个视图不会拥有太多的元素，可以说这个问题没有那么的严重。</p>
+<p>我也在考虑是否可以创建一层virtual view，可以用来代替view作为箱型容器，或者把布局系统移除view作为容器这一web上的逻辑，分离布局和view。无论怎么样这两种方案都会增加复杂度。</p>
+<p>同时，由于原生并不提供Flex支持，所以需要自己引入Flex库，并且需要在<code>layoutSubview</code>或者<code>viewDidLayoutSubview</code>中，手动触发计算。关于这个问题，可能自己创建系列Flex根控件比较好。</p>
+<h4 id="目前使用Flex的项目，或者类似的功能"><a href="#目前使用Flex的项目，或者类似的功能" class="headerlink" title="目前使用Flex的项目，或者类似的功能"></a>目前使用Flex的项目，或者类似的功能</h4><p>现在最有名的方案是Facebook的Yoga，遗憾的是iOS端的YogaKit正处于开发阶段，可能不是那么的稳定。</p>
+<p>正在使用Yoga的开源项目也有很多，有名的有<code>AsyncDisplayKit</code>, <code>React Native</code>, <code>weex</code>。所以从目前使用场景来看是没有什么问题的。</p>
+<p>比较相似的功能其实早有方案，比如Android的LinearLayout和iOS的UIStackView，可以说这两者都是阉割版的Flex。</p>
+<h4 id="YogaKit"><a href="#YogaKit" class="headerlink" title="YogaKit"></a>YogaKit</h4><p>我们来看下YogaKit的一些API。不要问我为什么是swift，老外现在都在玩swift。</p>
+<pre><code>root.configureLayout &#123; (layout) in
+    layout.isEnabled = true
+    layout.width = YGValue(containerSize.width)
+    layout.height = YGValue(containerSize.height)
+    layout.alignItems = .center
+    layout.justifyContent = .center
+&#125;
+</code></pre>
+<p>如果是swift，将会非常简单，枚举的一半都被省略了，但是OC可能会稍微麻烦一点。API也是几乎参考的Masonry，重要的是，再也不会出现依赖了！！！感觉棒棒的。</p>
+<p>同时Yoga不是完全的实现了Flex的功能，他是为移动端、客户端专门定制的布局系统，所以也有部分Flex没有的功能，也有部分Flex属性没有效果。</p>
+<p>同时Yoga非常的精简，核心代码只有3000多行的c语言，引入成本也非常的低，所以决定在下一期实战型的使用下，来解决一直遗留的问题。</p>
+<h4 id="更多的考虑"><a href="#更多的考虑" class="headerlink" title="更多的考虑"></a>更多的考虑</h4><p>在项目的过程中，作为程序员，都希望代码能够复用，提高稳定性。然而现实是残酷的，其他人并不会替你思考这些问题，所以就有很多场景，明明看着一模一样，但是某几个字体就是不一样，大小就是差那么几个像素。那么要处理这种问题，一般有两种方案。</p>
+<p>1，继承，基类写基本成员，子类来写布局和属性。这样会导致很多子类，不熟悉的人会很疑惑这些东西都在哪里用的。</p>
+<p>2，增加style属性，使用style来重写布局和属性，这样可能会随着类型的增多switch-case也增加。</p>
+<p>同样，这里web也给了我们一个很好的思路。内容-样式分离，我们可以做一套类似于css的系统，使用class来设置布局样式，这样布局样式也可以复用了！</p>
+<p>当然这个思路有部分人已经做好了开源库，css样式直接应用到控件。但是感觉没有那么完美，所以以后可以考虑下如何更好的把样式布局给统一到外部。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/05/20/2017-05-20-%E5%85%B3%E4%BA%8E%E6%9E%B6%E6%9E%84%E5%B8%88%E7%9A%84%E6%9D%82%E8%B0%88/" title="关于架构师的杂谈"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 关于架构师的杂谈</span></a><a class="button is-default" href="/2017/04/24/2017-04-24-%E5%87%A0%E7%A7%8D%E5%9C%86%E8%A7%92%E5%A4%84%E7%90%86%E5%9C%A8%E5%88%97%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" title="几种圆角处理在列表中的性能测试"><span class="has-text-weight-semibold">下一页: 几种圆角处理在列表中的性能测试</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/05/16/2017-05-16-Flex%E7%AE%B1%E5%9E%8B%E5%B8%83%E5%B1%80%E5%9C%A8%E7%A7%BB%E5%8A%A8%E7%AB%AF%E7%9A%84%E5%BA%94%E7%94%A8/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

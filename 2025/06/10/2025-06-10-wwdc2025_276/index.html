@@ -1,0 +1,86 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>BNNS Graph 的新功能</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="借助 bnns graph builder api，开发者现在可以使用熟悉的 swift 语言来编写操作图，从而生成预处理和后处理例程以及小型机器学习模型。bnns 可在执行前先编译图形，并支持那些具有实时性和延迟敏感性的应用场景，例如音频处理。在本次讲座中，我们将重温去年的比特失真器示例，通过移除对单独 python 文件的依赖性来简化 swift 组件，并转而完全用 swift 实现音频效果。此外，bnns graph builder api 还适用于在将图像数据传递到机器学习模型之前对数据进行预处理。本次讲座还将演示如何裁剪一张带有 alpha 通道的图像中的透明像素。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+BNNS Graph 新功能：用.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">BNNS Graph 的新功能</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#BNNS-Graph-%E6%96%B0%E5%8A%9F%E8%83%BD%EF%BC%9A%E7%94%A8-Swift-%E6%9E%84%E5%BB%BA%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%A4%84%E7%90%86%E5%9B%BE"><span class="toc-text">BNNS Graph 新功能：用 Swift 构建高性能机器学习处理图</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E8%83%8C%E6%99%AF%E4%B8%8E%E6%A6%82%E8%BF%B0"><span class="toc-text">技术背景与概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BNNSGraph-%E7%9A%84%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8A%BF"><span class="toc-text">BNNSGraph 的核心优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BNNS-Graph-Builder-API-%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-text">BNNS Graph Builder API 工作流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0-API-%E7%9A%84%E6%8A%80%E6%9C%AF%E4%BA%AE%E7%82%B9"><span class="toc-text">新 API 的技术亮点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%BA%E7%B1%BB%E5%9E%8B-Swift-%E6%8E%A5%E5%8F%A3"><span class="toc-text">强类型 Swift 接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%B0%E5%AF%8C%E7%9A%84%E6%93%8D%E4%BD%9C%E6%94%AF%E6%8C%81"><span class="toc-text">丰富的操作支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E6%95%88%E7%9A%84%E5%88%87%E7%89%87%E6%93%8D%E4%BD%9C"><span class="toc-text">高效的切片操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text">实际应用案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-text">图像预处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%90%8E%E5%A4%84%E7%90%86"><span class="toc-text">模型后处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E9%A2%91%E5%A4%84%E7%90%86%E5%8D%87%E7%BA%A7"><span class="toc-text">音频处理升级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%B8%8E%E9%80%82%E7%94%A8%E6%80%A7"><span class="toc-text">性能与适用性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90"><span class="toc-text">学习资源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E-ai"><i class="tag post-item-tag">机器学习与-ai</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">BNNS Graph 的新功能</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>借助 bnns graph builder api，开发者现在可以使用熟悉的 swift 语言来编写操作图，从而生成预处理和后处理例程以及小型机器学习模型。bnns 可在执行前先编译图形，并支持那些具有实时性和延迟敏感性的应用场景，例如音频处理。在本次讲座中，我们将重温去年的比特失真器示例，通过移除对单独 python 文件的依赖性来简化 swift 组件，并转而完全用 swift 实现音频效果。此外，bnns graph builder api 还适用于在将图像数据传递到机器学习模型之前对数据进行预处理。本次讲座还将演示如何裁剪一张带有 alpha 通道的图像中的透明像素。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9977/9977_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/276/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="BNNS-Graph-新功能：用-Swift-构建高性能机器学习处理图"><a href="#BNNS-Graph-新功能：用-Swift-构建高性能机器学习处理图" class="headerlink" title="BNNS Graph 新功能：用 Swift 构建高性能机器学习处理图"></a>BNNS Graph 新功能：用 Swift 构建高性能机器学习处理图</h1><p>在 WWDC 演讲中，Apple 的向量与数值计算组工程师 Simon Gladman 介绍了 BNNS Graph 的最新功能——BNNS Graph Builder API，这项技术让开发者能够使用 Swift 语言创建高效的机器学习预处理&#x2F;后处理图和小型模型。</p>
+<h2 id="技术背景与概述"><a href="#技术背景与概述" class="headerlink" title="技术背景与概述"></a>技术背景与概述</h2><p>BNNS（Basic Neural Network Subroutines）是 Apple 提供的高性能机器学习库，特别适合需要实时处理和低延迟的应用场景，如音频处理和图像分析。在去年的 WWDC 中，Apple 推出了 BNNSGraph API，它能够将整个模型作为一个图对象处理，带来显著的性能优化和能效提升。</p>
+<p>今年新增的 BNNS Graph Builder API 进一步简化了开发流程，开发者现在可以直接使用 Swift 语言编写操作图，无需依赖外部工具或文件。</p>
+<h2 id="BNNSGraph-的核心优势"><a href="#BNNSGraph-的核心优势" class="headerlink" title="BNNSGraph 的核心优势"></a>BNNSGraph 的核心优势</h2><p>BNNSGraph 的主要优势在于其对模型整体的优化能力，包括：</p>
+<ul>
+<li>数学变换优化（如操作重排序）</li>
+<li>层融合（将多个操作合并为单操作）</li>
+<li>内存优化（消除不必要的复制和共享内存）</li>
+<li>权重重新打包（改善缓存局部性）</li>
+</ul>
+<p>与传统方法相比，开发者不再需要手动编写每一层的代码，只需描述整个计算图即可获得这些优化好处。</p>
+<h2 id="BNNS-Graph-Builder-API-工作流"><a href="#BNNS-Graph-Builder-API-工作流" class="headerlink" title="BNNS Graph Builder API 工作流"></a>BNNS Graph Builder API 工作流</h2><p>新的 Builder API 提供了更加直接的工作流程：</p>
+<ol>
+<li>使用 Swift 编写操作图</li>
+<li>通过单次函数调用创建执行上下文</li>
+<li>重复使用优化后的上下文进行推理</li>
+</ol>
+<p>这种方法消除了中间步骤，特别适合小型模型和预处理&#x2F;后处理操作图的创建。</p>
+<h2 id="新-API-的技术亮点"><a href="#新-API-的技术亮点" class="headerlink" title="新 API 的技术亮点"></a>新 API 的技术亮点</h2><h3 id="强类型-Swift-接口"><a href="#强类型-Swift-接口" class="headerlink" title="强类型 Swift 接口"></a>强类型 Swift 接口</h3><pre><code class="swift">let x: BNNSNDArrayDescriptor = ...
+let y: BNNSNDArrayDescriptor = ...
+let product = x * y
+let mean = product.mean()
+</code></pre>
+<p>这种强类型系统带来多项优势：</p>
+<ul>
+<li>编译时类型检查</li>
+<li>Xcode 自动补全</li>
+<li>运行时错误减少</li>
+<li>中间张量属性可查询</li>
+</ul>
+<h3 id="丰富的操作支持"><a href="#丰富的操作支持" class="headerlink" title="丰富的操作支持"></a>丰富的操作支持</h3><p>BNNS Graph Builder 支持广泛的操作类型：</p>
+<ul>
+<li>数学运算（矩阵乘法、卷积等）</li>
+<li>归约操作</li>
+<li>数据重组操作（填充、重塑、转置）</li>
+<li>算术和逻辑运算符</li>
+</ul>
+<h3 id="高效的切片操作"><a href="#高效的切片操作" class="headerlink" title="高效的切片操作"></a>高效的切片操作</h3><pre><code class="swift">let centerCrop = SliceRange(from: 240, upTo: 880)
+let croppedImage = image[centerCrop, centerCrop]
+</code></pre>
+<p>切片操作通过引用而非复制来实现，大大提高了内存效率。</p>
+<h2 id="实际应用案例"><a href="#实际应用案例" class="headerlink" title="实际应用案例"></a>实际应用案例</h2><h3 id="图像预处理"><a href="#图像预处理" class="headerlink" title="图像预处理"></a>图像预处理</h3><p>开发者可以通过简单的 Swift 代码实现复杂的预处理：</p>
+<pre><code class="swift">let grayscale = input.mean(axis: -1) // 转换为灰度
+let threshold = grayscale &gt; meanValue // 阈值处理
+let binary = threshold.to(.float16) // 转换为二进制输出
+</code></pre>
+<h3 id="模型后处理"><a href="#模型后处理" class="headerlink" title="模型后处理"></a>模型后处理</h3><pre><code class="swift">let softmaxOutput = modelOutput.softmax()
+let (topValues, topIndices) = softmaxOutput.topK(5)
+return (topValues.array(), topIndices.array())
+</code></pre>
+<h3 id="音频处理升级"><a href="#音频处理升级" class="headerlink" title="音频处理升级"></a>音频处理升级</h3><p>去年的 Bitcrusher 音频效果示例现在可以完全用 Swift 实现，无需依赖 PyTorch 或 CoreML 中间文件。</p>
+<h2 id="性能与适用性"><a href="#性能与适用性" class="headerlink" title="性能与适用性"></a>性能与适用性</h2><p>BNNS Graph Builder 特别适合：</p>
+<ul>
+<li>实时音频处理（如 Logic Pro 插件）</li>
+<li>延迟敏感型应用</li>
+<li>需要高能效的场景</li>
+<li>小型机器学习模型</li>
+</ul>
+<p>开发者还可以通过简单的类型别名切换（如 FP16 和 FP32）来优化性能，在演示案例中，FP16 版本表现出显著的性能优势。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>BNNS Graph Builder API 代表了 Apple 在机器学习基础设施上的重要进步，它让开发者能够使用熟悉的 Swift 语言创建高效的计算图，同时享受编译时检查和运行时优化的双重好处。这项技术特别适合需要实时处理和低延迟的应用场景，为开发者提供了强大的新工具来构建高性能的机器学习功能。</p>
+<h2 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h2><p>对于希望深入了解 BNNS Graph 的开发者，Apple 提供了以下资源：</p>
+<h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/360">探索 Apple 平台上的机器学习和 AI 框架</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10211">在 CPU 上助力实现实时 ML 推理</a></p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Accelerate/bnns-library">BNNS</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/Accelerate/vImage/PixelBuffer">vImage.PixelBuffer</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_275/" title="探索 App Intents 中的最新改进"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 探索 App Intents 中的最新改进</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_277/" title="借助 SpeechAnalyzer 将先进的语音转文本功能引入 App"><span class="has-text-weight-semibold">下一页: 借助 SpeechAnalyzer 将先进的语音转文本功能引入 App</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_276/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

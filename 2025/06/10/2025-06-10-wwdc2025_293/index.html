@@ -1,0 +1,135 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>使用 PermissionKit 增强儿童安全保护</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="了解 permissionkit 如何帮助你的 app 增强儿童通信安全。我们将向你展示如何使用这一全新框架来创建适龄通信体验，并利用“家人共享”请求获得家长批准。你将了解如何构建与“信息”无缝整合的权限请求、处理家长答复，并为儿童用户量身定制 ui。为了充分从这个讲座中获益，我们建议你先观看 wwdc25 讲座“在你的 app 中提供适龄体验”视频。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+使用 PermissionKit 强化儿童安全保护引言在数字时代，儿童网络安全成为家长和开发者共同关注的焦点。苹果在 iOS、iPadOS 和 macOS 26 系统中推出的 PermissionKit 框架，为开发者提供了一套完整的解决方案，让应用能够更好地.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">使用 PermissionKit 增强儿童安全保护</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-PermissionKit-%E5%BC%BA%E5%8C%96%E5%84%BF%E7%AB%A5%E5%AE%89%E5%85%A8%E4%BF%9D%E6%8A%A4"><span class="toc-text">使用 PermissionKit 强化儿童安全保护</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PermissionKit-%E6%A6%82%E8%BF%B0"><span class="toc-text">PermissionKit 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6"><span class="toc-text">前提条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E5%84%BF%E7%AB%A5%E5%AE%9A%E5%88%B6%E5%AE%89%E5%85%A8%E7%95%8C%E9%9D%A2"><span class="toc-text">为儿童定制安全界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E6%9D%83%E9%99%90%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B"><span class="toc-text">构建权限请求流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-text">创建基本问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%83%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%86%B3%E7%AD%96%E4%BF%A1%E6%81%AF"><span class="toc-text">添加元数据增强决策信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E4%B8%8D%E5%90%8C%E6%A1%86%E6%9E%B6%E4%B8%AD%E5%8F%91%E8%B5%B7%E8%AF%B7%E6%B1%82"><span class="toc-text">在不同框架中发起请求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%AE%B6%E9%95%BF%E5%8F%8D%E9%A6%88"><span class="toc-text">处理家长反馈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-text">完整工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%84%BF%E7%AB%A5%E4%BF%9D%E6%8A%A4%E6%96%B9%E6%A1%88"><span class="toc-text">其他儿童保护方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/ipados"><i class="tag post-item-tag">ipados</i></a><a href="/tags/macos"><i class="tag post-item-tag">macos</i></a><a href="/tags/app-%E6%9C%8D%E5%8A%A1"><i class="tag post-item-tag">app-服务</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">使用 PermissionKit 增强儿童安全保护</h1><time class="has-text-grey" datetime="2025-06-10T13:46:47.000Z">2025-06-10</time><article class="mt-2 post-content"><p>了解 permissionkit 如何帮助你的 app 增强儿童通信安全。我们将向你展示如何使用这一全新框架来创建适龄通信体验，并利用“家人共享”请求获得家长批准。你将了解如何构建与“信息”无缝整合的权限请求、处理家长答复，并为儿童用户量身定制 ui。为了充分从这个讲座中获益，我们建议你先观看 wwdc25 讲座“在你的 app 中提供适龄体验”视频。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9997/9997_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/293/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="使用-PermissionKit-强化儿童安全保护"><a href="#使用-PermissionKit-强化儿童安全保护" class="headerlink" title="使用 PermissionKit 强化儿童安全保护"></a>使用 PermissionKit 强化儿童安全保护</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在数字时代，儿童网络安全成为家长和开发者共同关注的焦点。苹果在 iOS、iPadOS 和 macOS 26 系统中推出的 PermissionKit 框架，为开发者提供了一套完整的解决方案，让应用能够更好地保护儿童通信安全。本文将详细介绍 PermissionKit 的核心功能、技术实现方式以及最佳实践。</p>
+<h2 id="PermissionKit-概述"><a href="#PermissionKit-概述" class="headerlink" title="PermissionKit 概述"></a>PermissionKit 概述</h2><p>PermissionKit 是苹果最新推出的框架，旨在为请求者与权限管理者之间创造快速、一致且一流的权限体验。该框架特别适合用于儿童与父母间的通信权限管理，通过”信息”应用作为沟通桥梁，让儿童能够安全地向家长申请与新联系人的交流权限。</p>
+<h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><p>使用 PermissionKit 前需注意以下几点：</p>
+<ul>
+<li>用户必须加入”家人共享”群组</li>
+<li>家长或监护人需为儿童启用”通信限制”功能</li>
+<li>应用需具备判断用户年龄或年龄段的能力</li>
+</ul>
+<h2 id="为儿童定制安全界面"><a href="#为儿童定制安全界面" class="headerlink" title="为儿童定制安全界面"></a>为儿童定制安全界面</h2><p>对于儿童用户，应用应谨慎展示未知联系人的内容。通过 <code>CommunicationLimits</code> 单例的 <code>knownHandles(in:)</code> 方法，可以高效查询系统已知的联系人：</p>
+<pre><code class="swift">import PermissionKit
+
+let knownHandles = await CommunicationLimits.current.knownHandles(in: conversation.participants)
+
+if knownHandles.isSuperset(of: conversation.participants) &#123;
+    // 显示内容
+&#125; else &#123;
+    // 隐藏内容
+&#125;
+</code></pre>
+<p>该方法对输入的句柄集合执行优化查询，返回系统已知的子集，开发者无需重复构建已有数据。</p>
+<h2 id="构建权限请求流程"><a href="#构建权限请求流程" class="headerlink" title="构建权限请求流程"></a>构建权限请求流程</h2><p>PermissionKit 使用”问题”抽象层封装权限请求的细节。开发者需要构建 <code>PermissionQuestion</code> 对象，包含通信主题和相关信息。</p>
+<h3 id="创建基本问题"><a href="#创建基本问题" class="headerlink" title="创建基本问题"></a>创建基本问题</h3><pre><code class="swift">import PermissionKit
+
+var question = PermissionQuestion(handles: [
+    CommunicationHandle(value: &quot;dragonslayer42&quot;, kind: .custom),
+    CommunicationHandle(value: &quot;progamer67&quot;, kind: .custom)
+])
+</code></pre>
+<h3 id="添加元数据增强决策信息"><a href="#添加元数据增强决策信息" class="headerlink" title="添加元数据增强决策信息"></a>添加元数据增强决策信息</h3><p>为帮助家长做出更明智的决定，可以为问题添加更多元数据：</p>
+<pre><code class="swift">import PermissionKit
+
+let people = [
+    PersonInformation(
+        handle: CommunicationHandle(value: &quot;dragonslayer42&quot;, kind: .custom),
+        nameComponents: nameComponents,
+        avatarImage: profilePic
+    ),
+    PersonInformation(
+        handle: CommunicationHandle(value: &quot;progamer67&quot;, kind: .custom)
+    )
+]
+
+var topic = CommunicationTopic(personInformation: people)
+topic.actions = [.message]
+
+var question = PermissionQuestion(communicationTopic: topic)
+</code></pre>
+<h3 id="在不同框架中发起请求"><a href="#在不同框架中发起请求" class="headerlink" title="在不同框架中发起请求"></a>在不同框架中发起请求</h3><p>在 SwiftUI 中使用 <code>CommunicationLimitsButton</code>：</p>
+<pre><code class="swift">import PermissionKit
+import SwiftUI
+
+struct ContentView: View &#123;
+    let question: PermissionQuestion&lt;CommunicationTopic&gt;
+
+    var body: some View &#123;
+        // ...
+        CommunicationLimitsButton(question: question) &#123;
+            Label(&quot;请求权限&quot;, systemImage: &quot;paperplane&quot;)
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>在 UIKit 中：</p>
+<pre><code class="swift">import PermissionKit
+import UIKit
+
+try await CommunicationLimits.current.ask(question, in: viewController)
+</code></pre>
+<p>在 AppKit 中：</p>
+<pre><code class="swift">import PermissionKit
+import AppKit
+
+try await CommunicationLimits.current.ask(question, in: window)
+</code></pre>
+<h2 id="处理家长反馈"><a href="#处理家长反馈" class="headerlink" title="处理家长反馈"></a>处理家长反馈</h2><p>家长在”信息”中做出回应后，应用需要在后台处理这些反馈：</p>
+<pre><code class="swift">import PermissionKit
+import SwiftUI
+
+struct ChatsView: View &#123;
+    @State var isShowingResponseAlert = false
+
+    var body: some View &#123;
+        List &#123;
+           // ...
+        &#125;
+        .task &#123;
+            let updates = CommunicationLimits.current.updates
+            for await update in updates &#123;
+                // 收到反馈！
+                self.isShowingResponseAlert = true
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="完整工作流程"><a href="#完整工作流程" class="headerlink" title="完整工作流程"></a>完整工作流程</h2><ol>
+<li>儿童在应用中尝试与未知联系人通信</li>
+<li>应用隐藏敏感内容并显示权限请求按钮</li>
+<li>儿童发起请求，系统生成”信息”对话</li>
+<li>家长在”信息”中查看请求详情并做出决策</li>
+<li>决策结果自动同步回应用，更新儿童界面</li>
+</ol>
+<h2 id="其他儿童保护方案"><a href="#其他儿童保护方案" class="headerlink" title="其他儿童保护方案"></a>其他儿童保护方案</h2><p>除 PermissionKit 外，苹果还提供多种儿童保护技术：</p>
+<ul>
+<li>Sensitive Content Analysis API：检测视频通话中的裸露内容</li>
+<li>Declared Age Range API：获取用户年龄段信息</li>
+<li>Screen Time 框架：家长监管工具</li>
+<li>Family Controls 框架：应用级家长控制</li>
+</ul>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>PermissionKit 为开发者提供了一套完整的儿童通信安全解决方案，通过系统级集成简化了复杂的权限管理流程。开发者只需遵循框架提供的API，就能轻松构建符合儿童安全标准的通信功能。随着数字安全意识的提升，集成此类保护机制将成为儿童友好型应用的必备功能。</p>
+<h2 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/299">在你的 App 中提供适龄体验</a></p>
+<h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/DeclaredAgeRange">DeclaredAgeRange</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/PermissionKit">PermissionKit</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_285/" title="了解 PaperKit"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 了解 PaperKit</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_291/" title="SwiftData：深入了解继承和架构迁移"><span class="has-text-weight-semibold">下一页: SwiftData：深入了解继承和架构迁移</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_293/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

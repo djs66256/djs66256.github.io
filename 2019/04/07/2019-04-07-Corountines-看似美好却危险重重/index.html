@@ -1,0 +1,193 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>Corountines 看似美好却危险重重</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="协程Coroutines这个概念在5、6年前就已经比较热门了，而且也涌现了一波以该目标的第三方库，但是这个概念并没有被广泛的应用，这里来看看Coroutines给我们带来的便利和危险吧。
+
+
+简介关于Coroutines、Generator的介绍有大量优秀文章和wiki的介绍，这里不做赘述。
+协程出现的时间非常早，在一批语言（C#，Go，ES7）从语言本身开始支持这种特性而再一次受到关注。同时也有一大批C&amp;#x2F;C++类库的出现，来实现协程的特性，比如PCL, fiber, coroutine，以及支持Coroutine的网络库asio。甚至有人提议C++标准组织增加关键字来支持【N3858】【N3985】。
+化异步为同步Coroutine主要想解决的问题是异步回调问题，这个问题自从多线程开始就是另大家.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">Corountines 看似美好却危险重重</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%96%E5%BC%82%E6%AD%A5%E4%B8%BA%E5%90%8C%E6%AD%A5"><span class="toc-text">化异步为同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="toc-text">C语言实现上下文切换</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#setjmp-longjmp"><span class="toc-text">setjmp&#x2F;longjmp</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#ucontext"><span class="toc-text">ucontext</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#signal"><span class="toc-text">signal</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B1%E9%99%A9"><span class="toc-text">危险</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88"><span class="toc-text">栈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stackful"><span class="toc-text">stackful</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="toc-text">多线程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/coobjc"><i class="tag post-item-tag">coobjc</i></a><a href="/tags/coroutines"><i class="tag post-item-tag">coroutines</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">Corountines 看似美好却危险重重</h1><time class="has-text-grey" datetime="2019-04-06T17:11:27.000Z">2019-04-07</time><article class="mt-2 post-content"><p>协程Coroutines这个概念在5、6年前就已经比较热门了，而且也涌现了一波以该目标的第三方库，但是这个概念并没有被广泛的应用，这里来看看Coroutines给我们带来的便利和危险吧。</p>
+<span id="more"></span>
+
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>关于Coroutines、Generator的介绍有大量优秀文章和wiki的介绍，这里不做赘述。</p>
+<p>协程出现的时间非常早，在一批语言（C#，Go，ES7）从语言本身开始支持这种特性而再一次受到关注。同时也有一大批C&#x2F;C++类库的出现，来实现协程的特性，比如PCL, fiber, coroutine，以及支持Coroutine的网络库asio。甚至有人提议C++标准组织增加关键字来支持【<a target="_blank" rel="noopener" href="https://isocpp.org/files/papers/N3858.pdf">N3858</a>】【<a target="_blank" rel="noopener" href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3985.pdf">N3985</a>】。</p>
+<h2 id="化异步为同步"><a href="#化异步为同步" class="headerlink" title="化异步为同步"></a>化异步为同步</h2><p>Coroutine主要想解决的问题是异步回调问题，这个问题自从多线程开始就是另大家头疼的问题，我们使用过很多方法，都无法很好的解决这个问题。比如Callback和Promise，都存在着一些瑕疵。</p>
+<pre><code class="js">// Callback
+fs.readFile(&#39;a.txt&#39;, function (error, data) &#123;
+  fs.readFile(&#39;b.txt&#39;, function (error, data) &#123;
+    ...
+  &#125;)
+&#125;)
+</code></pre>
+<pre><code class="js">// Promise
+Promise.all([
+  fs.readFile(&#39;a.txt&#39;), 
+  fs.readFile(&#39;b.txt&#39;)])
+  .then(function () &#123;
+    ...
+  &#125;)
+</code></pre>
+<p>对我们来说同步执行的逻辑是最简单的，也是最清晰的，我们将很多同步功能放到异步执行往往是为了解决阻塞问题，所以我们是完全可以将异步的功能写成同步的。</p>
+<pre><code class="js">await fs.readFile(&#39;a.txt&#39;)
+await fs.readFile(&#39;b.txt&#39;)
+</code></pre>
+<p>这里我们可以用关键字<code>await</code>来表示这个方法是一个异步过程。有很多语言天生自带这一类特性，但是C系列语言并不具备这个关键字，下面来看看如何实现这个功能。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>这里盗C++论文一张图来说明一下我们需要实现协程的流程：</p>
+<pre><code class="js">async foo() &#123;
+  await bar()
+&#125;
+</code></pre>
+<p><img src="/images/2019/coroutines/coroutine-c.png"></p>
+<p>我们需要在<code>await</code>的时候，将代码执行能力转交给<code>bar</code>，然后在<code>bar</code>异步回调的时候，将执行权限交还给<code>foo</code>，这需要一种上下文切换的能力，从CPU层面来说上下文就是寄存器，那么我们要实现上下文切换的功能也就非常简单了。</p>
+<p>个人比较熟悉arm架构，所以这里简单说明下coobjc的<code>setcontext</code>和<code>getcontext</code>。对汇编不熟悉的人可以跳到<a href="#C%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2">C语言实现上下文切换</a>。</p>
+<pre><code class="armasm">_coroutine_getcontext:
+    stp    x18,x19, [x0, #0x090]
+    stp    x20,x21, [x0, #0x0A0]
+    stp    x22,x23, [x0, #0x0B0]
+    stp    x24,x25, [x0, #0x0C0]
+    stp    x26,x27, [x0, #0x0D0]
+    str    x28, [x0, #0x0E0];
+    stp    x29, x30, [x0, #0x0E8];  // fp, lr
+    mov    x9,      sp
+    str    x9,      [x0, #0x0F8]
+    str    x30,     [x0, #0x100]    // store return address as pc
+    stp    d8, d9,  [x0, #0x150]
+    stp    d10,d11, [x0, #0x160]
+    stp    d12,d13, [x0, #0x170]
+    stp    d14,d15, [x0, #0x180]
+    mov    x0, #0                   
+    ret
+</code></pre>
+<pre><code class="armasm">_coroutine_setcontext:
+    ldp    x18,x19, [x0, #0x090]
+    ldp    x20,x21, [x0, #0x0A0]
+    ldp    x22,x23, [x0, #0x0B0]
+    ldp    x24,x25, [x0, #0x0C0]
+    ldp    x26,x27, [x0, #0x0D0]
+    ldp    x28,x29, [x0, #0x0E0]
+    ldr    x30,     [x0, #0x100]  // restore pc into lr
+    ldr    x1,      [x0, #0x0F8]
+    mov    sp,x1                  // restore sp
+    ldp    d8, d9,  [x0, #0x150]
+    ldp    d10,d11, [x0, #0x160]
+    ldp    d12,d13, [x0, #0x170]
+    ldp    d14,d15, [x0, #0x180]
+    ldp    x0, x1,  [x0, #0x000]  // restore x0,x1
+    ret    x30
+</code></pre>
+<p>arm64中寄存器分为两类：普通寄存器和向量寄存器（也可以称为浮点寄存器）。根据C++ abi文档，各种寄存器的功能如下：</p>
+<table>
+<thead>
+<tr>
+<th>registers</th>
+<th>role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SP</td>
+<td>stack pointer</td>
+</tr>
+<tr>
+<td>r30</td>
+<td>LR</td>
+</tr>
+<tr>
+<td>r29</td>
+<td>FP</td>
+</tr>
+<tr>
+<td>r0-r7</td>
+<td>参数寄存器</td>
+</tr>
+<tr>
+<td>r8</td>
+<td>IR</td>
+</tr>
+<tr>
+<td>r9-r15</td>
+<td>临时寄存器</td>
+</tr>
+<tr>
+<td>r16&#x2F;r17</td>
+<td>PLT(目前我也不了解)</td>
+</tr>
+<tr>
+<td>r18</td>
+<td>平台寄存器&#x2F;临时寄存器</td>
+</tr>
+<tr>
+<td>r19-r28</td>
+<td>Callee寄存器，必要时由被调用者保存</td>
+</tr>
+<tr>
+<td>v0-v7</td>
+<td>参数寄存器</td>
+</tr>
+<tr>
+<td>v8-v15</td>
+<td>Callee寄存器，必要时由被调用者保存</td>
+</tr>
+<tr>
+<td>v16-v31</td>
+<td>其他</td>
+</tr>
+</tbody></table>
+<p>由此，我们可以知道必须缓存的寄存器是哪些了。</p>
+<h4 id="C语言实现上下文切换"><a href="#C语言实现上下文切换" class="headerlink" title="C语言实现上下文切换"></a>C语言实现上下文切换</h4><p>当然系统其实也给我们提供了相似的功能，原理其实都是一样的，下面介绍一下几种系统提供的方式，详细信息可以参考相关文档：</p>
+<h6 id="setjmp-longjmp"><a href="#setjmp-longjmp" class="headerlink" title="setjmp&#x2F;longjmp"></a>setjmp&#x2F;longjmp</h6><p>这种方式非常的容易理解，唯一的缺点就是返回值类型是int，所以在32位系统上我们可以返回上下文指针，而64位系统就不能这么做了。</p>
+<h6 id="ucontext"><a href="#ucontext" class="headerlink" title="ucontext"></a>ucontext</h6><p>目前苹果已经不支持了。</p>
+<h6 id="signal"><a href="#signal" class="headerlink" title="signal"></a>signal</h6><p>信号也是通过类似方式实现的。</p>
+<h2 id="危险"><a href="#危险" class="headerlink" title="危险"></a>危险</h2><p>具体实现细节还是需要自己去研究，这里说明一下其中带来的几个问题。</p>
+<h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h4><p>在我们的功能特性中，在执行async函数时，是需要直接返回的。由于C语言调用栈的结构，在函数返回时，是需要销毁栈的，所以我们必然不能在当前栈上运行我们的async函数，不然等异步返回的时候，函数栈帧已经被回滚（unwind）。所以在我们第一次（当前上下文的首次）启动一个async函数的时候，必须要为该函数申请一个不会被立刻销毁的栈，也就是malloc一块内存作为栈使用。目前像coobjc默认是64k的大小，对于性能要求比较关键的地方就需要好好考虑了。当然，按目前来说，一定的性能损耗给我们开发带来便捷还是可以接受的。</p>
+<p>但是，上下文的切换可能让我们debug陷入一个无尽的深渊。大家在开发多线程的时候，都感觉比较难以调试，因为线程之间是独立的。而我们一旦切换了上下文，同时重新创建调用栈，也就意味着我们丢失了起点，有点像一个独立的线程，是无法找到调用地点的，除非我们在创建新栈的时候，将旧的栈全部拷贝，但这明显是不现实的，比较现实的可能是拷贝若干附近的栈帧数据。总之，c系语言的协程，debug将是一个比较困难的场景。</p>
+<p>而coobjc在会库内部产生很多的栈帧，也增加了调试的复杂度。如果能够在切换上下文的时候将栈回滚，则会减少很多干扰调试的调用信息。</p>
+<h4 id="stackful"><a href="#stackful" class="headerlink" title="stackful"></a>stackful</h4><p>目前来看C系的协程基本上都是stackful的，也就是可以在其他函数内部触发：</p>
+<pre><code class="js">function some_function() &#123;
+  yield &quot;OK&quot;;
+&#125;
+
+function async_call() &#123;
+  // stackless 则必须在该函数栈帧内触发yield，比如javascript
+  some_function();
+&#125;
+
+function do() &#123;
+  await async_call();
+&#125;
+</code></pre>
+<p>在语言本身并没有相关的特性的时候，我们很难检查目前方法是否支持协程，特别是整个链路比较长的时候，更加难以知道。一些规范也只是较弱的约定，依然无法保证在一个复杂的应用中是否会出现一些遗漏的问题。</p>
+<p>如果我们只允许其中的<code>async/await</code>与<code>promise</code>特性，则会将影响面控制在一定范围内，应该会好一些。实际上我们依然无法规避这种问题。</p>
+<h4 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h4><p>个人认为这是我们应用协程最大的挑战，这里的问题往往已经颠覆了我们的平常认知，这里可以看一个例子：</p>
+<pre><code class="js">// on Thread 1
+await do_something1()
+// on Thread 2
+await do_something2()
+// on Thread 3
+</code></pre>
+<p>我们无法预知在await函数之后会在哪个线程！这给多线程开发带来了非常大的挑战，因为这里几乎必然会发生竞争问题！</p>
+<p>虽然在一个过程中，我们的调用是有顺序的，是不会产生什么问题，但是我们的场景往往不会只触发一次那么简单。我们需要在每个await调用上思考多线程问题，这个反而给我们的开发带来了更大的麻烦。</p>
+<p>当然我们可以约定，回调必须发生在主线程等，但是约定始终是约定，无法作为强制性的禁止，完全依赖个人的开发能力。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>可以看到，协程作为C系语言的扩展，依然存在巨大的缺陷，C++标准组委会到目前为止，也依然没有将其作为一个特性。协程的目的是为了化异步为同步，简化我们的开发和理解，但在真实的多线程环境中，反而对开发者的要求更高了，已经脱离了初衷。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>Glibc</p>
+<p>armasm_user_guide</p>
+<p>IHI0055C_beta_aapcs64</p>
+<p><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_57_0/libs/coroutine/doc/html/index.html">https://www.boost.org/doc/libs/1_57_0/libs/coroutine/doc/html/index.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Setjmp.h">https://en.wikipedia.org/wiki/Setjmp.h</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Setcontext">https://en.wikipedia.org/wiki/Setcontext</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Iterator">https://en.wikipedia.org/wiki/Iterator</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Continuation">https://en.wikipedia.org/wiki/Continuation</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Coroutine">https://en.wikipedia.org/wiki/Coroutine</a></p>
+<p><a target="_blank" rel="noopener" href="http://libdill.org/tutorial-basics.html">C Generator</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.codeproject.com/KB/cpp/cpp_generators.aspx">C++ Generator</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_67_0/libs/fiber/doc/html/index.html">Boost fiber</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_54_0/doc/html/boost_asio/overview/core/spawn.html">C++ stackful coroutines</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.boost.org/doc/libs/1_69_0/libs/coroutine/doc/html/index.html">C++ Coroutine</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/jamboree/co2">A C++ await&#x2F;yield emulation library for stackless coroutine</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.varunramesh.net/posts/stackless-vs-stackful-coroutines/">Stackless vs. Stackful Coroutines</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3985.pdf">n3985</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2019/05/30/2019-05-30-%E6%B5%81%E7%A8%8B%E7%8A%B6%E6%80%81%E6%9C%BA%E6%9E%B6%E6%9E%84/" title="流程状态机架构"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 流程状态机架构</span></a><a class="button is-default" href="/2019/02/03/2019-02-03-C-%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E4%B8%80%E6%8E%A2/" title="C++虚函数表一探"><span class="has-text-weight-semibold">下一页: C++虚函数表一探</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2019/04/07/2019-04-07-Corountines-%E7%9C%8B%E4%BC%BC%E7%BE%8E%E5%A5%BD%E5%8D%B4%E5%8D%B1%E9%99%A9%E9%87%8D%E9%87%8D/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

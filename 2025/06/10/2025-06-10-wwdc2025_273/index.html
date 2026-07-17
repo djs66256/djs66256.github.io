@@ -1,0 +1,65 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>了解 SwiftUI 空间布局</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="探索使用 swiftui 开发空间体验的新工具。了解 visionos 上 3d swiftui 视图的基本知识，借助深度对齐功能来自定现有布局，并使用修饰符在空间中旋转和放置视图。探索如何使用空间容器在同一 3d 空间中对齐视图，打造更沉浸、更引人入胜的 app。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+探索 SwiftUI 空间布局：构建沉浸式3D体验的新工具在visionOS平台上，SwiftUI为开发者提供了一套全新的3D布局工具，让构建空间体验变得更加简单高效。本文将详细介绍这些新工具的功能和应用场景。
+3D视图基础visionOS平台上的SwiftUI视图具备真正的三维特性。布局系统不仅计算视图的宽度、高度和X&amp;#x2F;Y位置，还会计.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">了解 SwiftUI 空间布局</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2-SwiftUI-%E7%A9%BA%E9%97%B4%E5%B8%83%E5%B1%80%EF%BC%9A%E6%9E%84%E5%BB%BA%E6%B2%89%E6%B5%B8%E5%BC%8F3D%E4%BD%93%E9%AA%8C%E7%9A%84%E6%96%B0%E5%B7%A5%E5%85%B7"><span class="toc-text">探索 SwiftUI 空间布局：构建沉浸式3D体验的新工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3D%E8%A7%86%E5%9B%BE%E5%9F%BA%E7%A1%80"><span class="toc-text">3D视图基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%AF%B9%E9%BD%90%E5%AE%9A%E5%88%B6"><span class="toc-text">深度对齐定制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%E5%B8%83%E5%B1%80%E6%8A%80%E6%9C%AF"><span class="toc-text">旋转布局技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E5%AE%B9%E5%99%A8%E5%B7%A5%E5%85%B7"><span class="toc-text">空间容器工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">调试与可视化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E5%BC%80%E5%8F%91%E7%AD%96%E7%95%A5"><span class="toc-text">混合开发策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%B5%84%E6%BA%90"><span class="toc-text">相关资源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></li></ol></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/visionos"><i class="tag post-item-tag">visionos</i></a><a href="/tags/%E8%AE%BE%E8%AE%A1"><i class="tag post-item-tag">设计</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">了解 SwiftUI 空间布局</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>探索使用 swiftui 开发空间体验的新工具。了解 visionos 上 3d swiftui 视图的基本知识，借助深度对齐功能来自定现有布局，并使用修饰符在空间中旋转和放置视图。探索如何使用空间容器在同一 3d 空间中对齐视图，打造更沉浸、更引人入胜的 app。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9989/9989_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/273/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="探索-SwiftUI-空间布局：构建沉浸式3D体验的新工具"><a href="#探索-SwiftUI-空间布局：构建沉浸式3D体验的新工具" class="headerlink" title="探索 SwiftUI 空间布局：构建沉浸式3D体验的新工具"></a>探索 SwiftUI 空间布局：构建沉浸式3D体验的新工具</h1><p>在visionOS平台上，SwiftUI为开发者提供了一套全新的3D布局工具，让构建空间体验变得更加简单高效。本文将详细介绍这些新工具的功能和应用场景。</p>
+<h2 id="3D视图基础"><a href="#3D视图基础" class="headerlink" title="3D视图基础"></a>3D视图基础</h2><p>visionOS平台上的SwiftUI视图具备真正的三维特性。布局系统不仅计算视图的宽度、高度和X&#x2F;Y位置，还会计算深度维度(Z轴)。视图可分为两类：</p>
+<ul>
+<li>深度为零的平面视图：如Image、Color和Text等传统2D元素</li>
+<li>具有实际深度的3D视图：如Model3D、RealityView和GeometryReader3D等</li>
+</ul>
+<p>开发者可以使用<code>scaledToFit3D</code>修饰符保持模型比例同时适应可用空间。值得注意的是，窗口内容和体积在深度提议上存在差异：</p>
+<ul>
+<li>窗口内容接收固定的根深度提议，超出深度的内容可能被裁剪</li>
+<li>体积提议则允许宽度、高度和深度调整</li>
+</ul>
+<h2 id="深度对齐定制"><a href="#深度对齐定制" class="headerlink" title="深度对齐定制"></a>深度对齐定制</h2><p>visionOS 26引入了自定义深度对齐功能。通过定义符合<code>DepthAlignmentID</code>协议的新结构体，开发者可以创建个性化的对齐方式。例如：</p>
+<pre><code class="swift">struct DepthPodiumAlignment: DepthAlignmentID &#123;
+    static func defaultValue(in dimensions: ViewDimensions) -&gt; Double &#123;
+        dimensions[.bottom]
+    &#125;
+&#125;
+</code></pre>
+<p>这种机制让开发者能够灵活控制视图在深度维度上的排列方式，比如让特定元素(如”最喜欢的机器人”)更加突出。</p>
+<h2 id="旋转布局技术"><a href="#旋转布局技术" class="headerlink" title="旋转布局技术"></a>旋转布局技术</h2><p>SwiftUI提供了两种不同的旋转机制：</p>
+<ol>
+<li><code>rotation3DEffect</code>修饰符：仅影响视觉呈现，不改变布局框架</li>
+<li><code>rotation3DLayout</code>修饰符：真正修改视图在3D空间中的布局框架</li>
+</ol>
+<p>开发者可以利用这些工具构建复杂的3D布局，如机器人旋转木马效果。实现步骤包括：</p>
+<ol>
+<li>使用<code>RadialLayout</code>圆型排列元素</li>
+<li>应用<code>rotation3DLayout</code>使元素水平展示</li>
+</ol>
+<h2 id="空间容器工具"><a href="#空间容器工具" class="headerlink" title="空间容器工具"></a>空间容器工具</h2><p>SwiftUI引入了两类新型3D布局容器：</p>
+<ol>
+<li><code>SpatialContainer</code>：允许多个视图共享相同的3D空间</li>
+<li><code>spatialOverlay</code>：在同一个3D空间上叠加单个视图</li>
+</ol>
+<p>这些工具特别适合创建沉浸式效果，如实现选中机器人的视觉反馈环，确保其与机器人底部完美对齐。</p>
+<h2 id="调试与可视化"><a href="#调试与可视化" class="headerlink" title="调试与可视化"></a>调试与可视化</h2><p>为帮助开发者理解3D布局，文中介绍了<code>debugBorder3D</code>修饰符的实现方法，该工具为视图添加可视边框，清晰展示其3D框架边界。</p>
+<h2 id="混合开发策略"><a href="#混合开发策略" class="headerlink" title="混合开发策略"></a>混合开发策略</h2><p>虽然SwiftUI在3D布局方面能力强大，但某些复杂场景(如物理模拟)仍需结合RealityKit使用。Apple鼓励开发者在同一应用中灵活搭配这两个框架，充分发挥各自优势。</p>
+<h2 id="相关资源"><a href="#相关资源" class="headerlink" title="相关资源"></a>相关资源</h2><p>开发者可通过以下资源进一步学习：</p>
+<h3 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/274">搭配使用更出色：SwiftUI 和 RealityKit</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10056">使用 SwiftUI 构建自定布局</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2019/237">利用 SwiftUI 构建自定视图</a>  </p>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p><a target="_blank" rel="noopener" href="https://developer.apple.com/design/human-interface-guidelines/designing-for-visionos">Human Interface Guidelines: Designing for visionOS</a>  </p>
+<p>SwiftUI的空间布局工具为visionOS应用开发开辟了新的可能性，开发者现在可以用熟悉的声明式语法创建丰富的3D体验。随着这些技术的成熟，期待看到更多创新应用的诞生。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_270/" title="跟着视频学编程：使用 Swift 并发机制提升 App 性能"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 跟着视频学编程：使用 Swift 并发机制提升 App 性能</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_272/" title="使用 Vision 框架读取文档"><span class="has-text-weight-semibold">下一页: 使用 Vision 框架读取文档</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_273/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

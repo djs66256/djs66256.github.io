@@ -1,0 +1,284 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>深入理解内存分配</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="相信大家在学习C语言的时候，malloc是最早遇到的几个方法之一，这里就来深入的了解下，macOS&amp;#x2F;iOS中用户空间的内存分配。
+
+
+引言首先，我们来看几个有意思的例子，以下几个在x86_64或者ARM64中的运行情况。
+char *str = malloc(32);
+free(str);
+str[0] = &amp;#39;a&amp;#39;;
+
+char *str = malloc(32);
+free(str);
+str[12] = &amp;#39;a&amp;#39;;
+
+char *str = malloc(32);
+free(str);
+str[18] = &amp;#39;a&amp;#39;;
+
+这里先说一下结果，之后再来分析为什么，看看你有没有猜对。
+这里均不会在str[x] = &amp;#39;a&amp;#39;;这一行崩溃，而可能在.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">深入理解内存分配</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E5%86%85%E5%AD%98%E7%94%B3%E8%AF%B7"><span class="toc-text">内核内存申请</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E5%86%85%E5%AD%98%E7%94%B3%E8%AF%B7"><span class="toc-text">用户态内存申请</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E5%86%85%E5%AD%98%E9%94%80%E6%AF%81"><span class="toc-text">用户态内存销毁</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#tcmalloc"><span class="toc-text">tcmalloc</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-text">多线程安全问题</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%80%9D%E8%80%83"><span class="toc-text">思考</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%BC%98%E5%8C%96"><span class="toc-text">内存分配优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2%E7%B3%BB%E7%BB%9F%E9%BB%98%E8%AE%A4%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E6%96%B9%E5%BC%8F"><span class="toc-text">替换系统默认内存分配方式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#define"><span class="toc-text">define</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#alias"><span class="toc-text">alias</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%A6%E5%8F%B7%E8%A6%86%E7%9B%96"><span class="toc-text">符号覆盖</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#mac%E4%B8%8A%E5%8F%AF%E8%A1%8C"><span class="toc-text">mac上可行</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%BA%93%E7%AC%A6%E5%8F%B7%E9%93%BE%E6%8E%A5%E6%9B%BF%E6%8D%A2"><span class="toc-text">动态库符号链接替换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#malloc-zone"><span class="toc-text">malloc_zone</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%86%85%E5%86%85%E5%AD%98%E4%BD%BF%E7%94%A8%E5%88%86%E6%9E%90"><span class="toc-text">应用内内存使用分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-text">线程安全</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#malloc%E6%AD%BB%E5%BE%AA%E7%8E%AF"><span class="toc-text">malloc死循环</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%AF%8F%E4%B8%80%E4%B8%AA%E5%86%85%E5%AD%98%E7%94%B3%E8%AF%B7%E6%95%B0%E6%8D%AE"><span class="toc-text">获取每一个内存申请数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#logger"><span class="toc-text">logger</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-text">启动</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1%E7%BB%93%E6%9E%9C"><span class="toc-text">统计结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E5%A4%87iPhone-7%E3%80%82%E5%9C%A8%E6%AD%A4%E6%9C%9F%E9%97%B4%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A812898%E6%AC%A1%E3%80%82"><span class="toc-text">设备iPhone 7。在此期间系统调用12898次。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2default-zone"><span class="toc-text">替换default_zone</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-text">最后</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/malloc"><i class="tag post-item-tag">malloc</i></a><a href="/tags/malloc_zone"><i class="tag post-item-tag">malloc_zone</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">深入理解内存分配</h1><time class="has-text-grey" datetime="2018-04-04T13:04:19.000Z">2018-04-04</time><article class="mt-2 post-content"><p>相信大家在学习C语言的时候，malloc是最早遇到的几个方法之一，这里就来深入的了解下，macOS&#x2F;iOS中用户空间的内存分配。</p>
+<span id="more"></span>
+
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>首先，我们来看几个有意思的例子，以下几个在x86_64或者ARM64中的运行情况。</p>
+<pre><code class="c">char *str = malloc(32);
+free(str);
+str[0] = &#39;a&#39;;
+</code></pre>
+<pre><code class="c">char *str = malloc(32);
+free(str);
+str[12] = &#39;a&#39;;
+</code></pre>
+<pre><code class="c">char *str = malloc(32);
+free(str);
+str[18] = &#39;a&#39;;
+</code></pre>
+<p>这里先说一下结果，之后再来分析为什么，看看你有没有猜对。</p>
+<p>这里均不会在<code>str[x] = &#39;a&#39;;</code>这一行崩溃，而可能在下次内存分配的时候崩溃。</p>
+<p>第一个会报<code>malloc: *** error for object 0x60000003cfa0: Invalid pointer dequeued from free list</code>。</p>
+<p>第二个会触发<code>BAD_ACCESS</code>的错误。</p>
+<p>第三个运行一切正常，不会崩溃。</p>
+<h2 id="内核内存申请"><a href="#内核内存申请" class="headerlink" title="内核内存申请"></a>内核内存申请</h2><p><code>malloc</code>方法并不止提供了向内核申请内存（syscall）的功能，它还提供了一整套用户态的内存管理。比如linux-2.3之后使用的<code>ptmalloc</code>，FreeBSD使用的<code>jemalloc</code>，以及macOS&#x2F;iOS使用的<code>malloc_zone</code>及<code>libmalloc</code>。</p>
+<p>向内核申请内存，触发系统调用，比较通用的接口有<code>sbrk</code>和<code>mmap</code>。在mac上，<code>sbrk</code>已经被废弃，而所有内存申请的内核调用最终都会转到</p>
+<pre><code class="c">kern_return_t mach_vm_allocate
+(
+    vm_map_t target,
+    mach_vm_address_t *address,
+    mach_vm_size_t size,
+    int flags
+);
+</code></pre>
+<p>这个内核方法，我们可以通过<code>vm_allocate</code>去间接的调用它。</p>
+<p>有人建议使用系统自带的<code>malloc</code>来构建自己的内存管理程序，这样就不用考虑不同平台的差异性；也有人认为在别人的管理系统上创建，不能达到更好的性能。这些还是具体情况具体分析吧，后面会简单介绍下如何构建自己的内存管理系统。</p>
+<p>回到内核内存，内核内存都是按页管理的，你不可能向内核申请1byte的内存，所有的内存申请都需要经过<code>round</code>，否则会导致申请内存失败，其定义如下：</p>
+<pre><code class="c">extern	vm_size_t	vm_page_size;
+
+//	These macros assume vm_page_size is a power-of-2.
+#define trunc_page(x)	((x) &amp; (~(vm_page_size - 1)))
+#define round_page(x)	trunc_page((x) + (vm_page_size - 1))
+</code></pre>
+<h2 id="用户态内存申请"><a href="#用户态内存申请" class="headerlink" title="用户态内存申请"></a>用户态内存申请</h2><p>用户态的内存管理方案实在太多了，这里主要说一下大家都比较通用的部分，以及<code>libmalloc</code>的实现。</p>
+<p>由于系统提供的内存，最少是一页，那么程序如果申请小块内存，特别像Objc这种含有大量小内存的情况，我们总不可能为一个指针分配一页内存吧。</p>
+<p>这里几乎所有的内存分配库都采用了相同的做法，即将内存分为不同大小来管理，某些地方称为<code>size class</code>，某些地方称为<code>chunk</code>，而mac中就是<code>malloc_zone</code>了。</p>
+<p>mac中的<code>malloc_zone</code>大致分为以下几种：</p>
+<ol>
+<li>nano zone. &lt;256</li>
+<li>tiny zone. &lt;同nano</li>
+<li>small zone. &lt;1024 bytes (64-bit), &lt;512 bytes (32-bit)</li>
+<li>large zone.</li>
+</ol>
+<p>申请不同大小的内存将会被派分到对应的zone，而各自的zone会采取不同的策略，比如nano, tiny, small是在内存页链表中寻找到一块拥有足够空闲空间的页，在这个页中分配该大小的内存；而large则是直接分配多个内存页，销毁的逻辑也完全不一样。</p>
+<p>这里看到nano和tiny是重合的，他们之间有什么区别呢？这个问题放到下面多线程中去详细描述。</p>
+<p>为什么需要将内存分配做这样的切分呢。由于我们平时使用到的内存大部分为小内存（这个在之后我会给一个统计结果），特别像是Objc这种语言，由于所有对象存在都是heap中的，所以基本都是以小指针对象，可能会导致大量小内存的申请和销毁，那么作为一个较为通用的内存分配器，那么肯定要考虑到优化小指针的分配效率。</p>
+<p>这里再看一下Google的<code>tcmalloc</code>的划分策略。</p>
+<pre><code>The size-classes are spaced so that small sizes are separated by 8 bytes, larger sizes by 16 bytes, even larger sizes by 32 bytes, and so forth.
+</code></pre>
+<p>可以看到它对size-class的划分更为细致，而且它会在运行时根据具体情况具体可能会调整这个粒度，同时不会在同一页中分配任意size-class的内存，这样做是为了避免碎片。更高细粒度的划分会让程序在划分的时候更为简单，从而增加了效率，但这样也会增加缓冲内存的大小，个人觉得正是这个原因导致<code>tcmalloc</code>并没有考虑移动设备。</p>
+<h2 id="用户态内存销毁"><a href="#用户态内存销毁" class="headerlink" title="用户态内存销毁"></a>用户态内存销毁</h2><p>以上说明了内存申请的方式，现在来看看如何销毁内存的。</p>
+<p>如果是大块内存(large zone)，那么视系统有没有指定内存页的缓存，否则就直接归还给系统。</p>
+<p>那么如果是小内存（nano除外），在调用<code>free</code>之后</p>
+<ol>
+<li>会先根据配置情况是否需要将内存重置为<code>0x55</code>，正常情况下不会执行这一步。</li>
+<li>由于最小内存为<code>2 * sizeof(void *)</code>，所以会将第一个指针位置更新成为一个token。</li>
+<li>合并旁边的空闲内存。</li>
+<li>将第二个指针位置更新为下一个空闲内存的地址或者NULL。</li>
+<li>将当前空闲内存加入<code>free-list</code>缓存，当下次申请新内存的时候，会优先在缓存中寻找是否有适合的空闲内存段，没有才会向系统申请新的内存页。</li>
+</ol>
+<p>这里和我们的理解上有些偏差了，<code>free</code>并没有第一时间把我们的内存还给系统，也就是说<code>free</code>之后的内存其实还是在用户空间的，我们有可能还是可以任意读写该段内存的。这也就是引言中的例子。</p>
+<p>但是如果我们修改了小内存的第一个指针位置，会导致我们的token失效，结果在复用该<code>free-list</code>中的缓存时候，会去校验当前缓存的token，导致<code>Invalid pointer dequeued from free list</code>错误。就如下所示：</p>
+<pre><code class="c">typedef struct chained_block_s &#123;
+    uintptr_t			double_free_guard;
+    struct chained_block_s	*next;
+&#125; *chained_block_t;
+</code></pre>
+<pre><code class="c">void free(nanozone_t *nanozone, void *ptr) &#123;
+  // ...
+  ((chained_block_t)ptr)-&gt;double_free_guard = (0xBADDC0DEDEADBEADULL ^ nanozone-&gt;cookie);
+  // ...
+&#125;
+</code></pre>
+<p>而如果我们修改的是第二个指针位置的数据，则会导致该指针非<code>NULL</code>，导致查询下一个空闲内存块的时候内存访问错误。</p>
+<p>而如果我们去修改其他位置的数据，则不会有任何问题。</p>
+<p>这里我们看到，一些非常奇怪的崩溃，有可能是由于这种写入释放后指针引起的。</p>
+<h6 id="tcmalloc"><a href="#tcmalloc" class="headerlink" title="tcmalloc"></a>tcmalloc</h6><p>可以看到上面的<code>free</code>过程中，是会有空闲内存的合并问题，这些当然也就会产生内存碎片。</p>
+<pre><code>|    64     | 64 |    |
+|   null    | 64 |    |
+| 48 | null | 64 |    v
+</code></pre>
+<p>如上图所示，中间的16byte可能就无法进行新的利用，好在我们的objc对象几乎都是几个指针的大小，加之malloc也会进行一次round，所以利用率还不错。</p>
+<p>那么<code>tcmalloc</code>是怎么来进行优化的呢？由于<code>tcmalloc</code>在设计之初就不存在一个chunk中存在多个size-class的情况，所以一旦<code>free</code>，只需要将其丢进<code>free-list</code>中就可以了，在需要的时候再进行<code>GC</code>，将多余的空闲内存出让给别人或者还给系统。这样就避免了合并的性能开销。</p>
+<h2 id="多线程安全问题"><a href="#多线程安全问题" class="headerlink" title="多线程安全问题"></a>多线程安全问题</h2><p>现在的应用都是多线程的，按照我们上面所述的，均没有涉及到线程安全问题，那么最简单的方法就是对所有内存申请及销毁进行加锁。但是锁是一种相对比较耗资源的东西，普通锁可能会涉及到系统调用，spinlock又可能会导致优先级反转等问题，那么大家都是怎么解决这个问题的呢？</p>
+<p><code>libmalloc</code>的解决方式比较传统，也就是加锁，但是在<code>nano malloc</code>中会有特别的优化。</p>
+<ol>
+<li>每个CPU都会分配一个属于自己的分配器，也就是说每个CPU都有属于自己的内存缓存。</li>
+<li>内存划分和<code>tcmalloc</code>类似，一个slot（size-class）中只有一种大小的对象，这样就不存在内存合并的问题了。</li>
+<li>在修改<code>free-list</code>的时候采用的是原子操作，而不是传统意义的锁。</li>
+<li>只在需要扩展堆，也就是增长空闲内存的时候，才使用真正的锁。</li>
+<li>64位系统才开始支持，因为需要指针长度达到64位。</li>
+<li>所有的指针均有相同的开头，比如<code>x86_64</code>上一定是<code>0x00006nnnnnnnnnnn</code>，<code>arm</code>上这个值会不一样。</li>
+<li>所有的slot（size-class）最大容量均为<code>0x20000</code>大小，而里面存在的对象个数会不一样。</li>
+<li>当申请对象个数超过对应slot的最大个数的时候（<code>slot_exhausted</code>），会<code>fall through</code>进入<code>scalable zone</code>进行申请。</li>
+</ol>
+<p>造成以上几个魔法数字的原因是nona分配器使用指针储存了部分<code>free-list</code>的信息：</p>
+<pre><code class="c">struct nano_blk_addr_s &#123;
+    uint64_t
+    nano_offset:NANO_OFFSET_BITS,		// locates the block
+    nano_slot:NANO_SLOT_BITS,		// bucket of homogenous quanta-multiple blocks
+    nano_band:NANO_BAND_BITS,
+    nano_mag_index:NANO_MAG_BITS,		// the core that allocated this block
+    nano_signature:NANO_SIGNATURE_BITS;	// the address range devoted to us.
+&#125;;
+// 这个是指针，也是该内存对象的信息
+typedef union  &#123;
+    uint64_t			addr;
+    struct nano_blk_addr_s	fields;
+&#125; nano_blk_addr_t;
+</code></pre>
+<p>可以说<code>nano_malloc_zone</code>是专门为了OC而优化的。</p>
+<p>而<code>tcmalloc</code>和部分其他分配器(<code>jemalloc</code>)，则是采取每一个<strong>线程</strong>上都独立拥有一个分配器，那么在该线程上进行<code>free-list</code>的操作时（申请内存的时候从缓存读取，及释放内存的时候直接加到缓存），就实现了无锁。当然，增长缓存以及<code>GC</code>等需要和其他线程交互的时候，还是需要锁的。这么做也会减少空闲内存的利用率。</p>
+<h6 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h6><p>之前看到过如何解决一些主线程大量释放对象的问题，为了<code>优化</code>释放所消耗的时间，将所有释放工作都放到子线程中，这是否真的是一种好的方案呢？</p>
+<h2 id="内存分配优化"><a href="#内存分配优化" class="headerlink" title="内存分配优化"></a>内存分配优化</h2><p>根据我们上面的分析，可以看到这些分配器都是通用型分配器，它考虑了各种长度大小的性能，但是没有考虑过一些对象的生命周期等。</p>
+<p>在一些特殊的场景和应用中，比如音乐、视频、人工智能、游戏等，可能会出现大量特定长度的对象，也可能会出现一些常驻内存，而这些对象会导致通用内存分配器的性能降低，以及重复利用率降低。</p>
+<p>如果我们要做到极致性能的内存管理，那么我们就需要进行分析应用的内存分配情况，以及性能。然后根据需要自定义内存管理模块，并与通用管理进行对比。</p>
+<h2 id="替换系统默认内存分配方式"><a href="#替换系统默认内存分配方式" class="headerlink" title="替换系统默认内存分配方式"></a>替换系统默认内存分配方式</h2><p>替换默认malloc的方法很多，如果是使用的C++，替换new的方式也比较常见，鉴于默认new都是基于malloc实现的，这里只看替换malloc的方法。</p>
+<h5 id="define"><a href="#define" class="headerlink" title="define"></a>define</h5><pre><code class="c">#define malloc(size) my_malloc(size)
+</code></pre>
+<p>这种方法很傻瓜，只能替换可以被宏替换的地方，在部分场景替换还是很方便。</p>
+<h5 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h5><pre><code class="c">void my_malloc () &#123; /* Do something. */; &#125;
+void malloc () __attribute__ ((alias (&quot;my_malloc&quot;)));
+</code></pre>
+<p>利用编译器进行符号的替换，这样可以替换本身以及静态库中的malloc。得益于MachO文件的二级命名空间，并不会替换动态库中的方法。</p>
+<h5 id="符号覆盖"><a href="#符号覆盖" class="headerlink" title="符号覆盖"></a>符号覆盖</h5><pre><code class="c">void *malloc(size) &#123; 
+  dlsym(RTLD_NEXT, &quot;malloc&quot;);
+&#125;
+</code></pre>
+<p>在项目内可以直接定义新的malloc方法，链接器会将自身和静态库的malloc链接到自己的方法，如果需要调用原本的方法，可以使用<code>dlsym(RTLD_NEXT, &quot;malloc&quot;)</code>。同样无法替换动态库的malloc。</p>
+<h5 id="mac上可行"><a href="#mac上可行" class="headerlink" title="mac上可行"></a>mac上可行</h5><pre><code class="c">__attribute__ ((section(&quot;__DATA, __interpose&quot;)))
+</code></pre>
+<p>iOS上被禁用的特性。</p>
+<h5 id="动态库符号链接替换"><a href="#动态库符号链接替换" class="headerlink" title="动态库符号链接替换"></a>动态库符号链接替换</h5><p><code>fish_hook</code>提供了一种修改动态库符号链接的方法，前提是替换的被替换的对象需要在动态库中，也是只能替换映射到自身的malloc，无法替换动态库的方法。</p>
+<p>但是这种方式比较灵活，可以根据情况动态的打开关闭。</p>
+<h5 id="malloc-zone"><a href="#malloc-zone" class="headerlink" title="malloc_zone"></a>malloc_zone</h5><p>影响面最大的就是替换<code>malloc_default_zone</code>了，这样动态库的malloc也会使用新的内存管理。</p>
+<p>系统并没有公开方法给我们替换default_zone的方法，其实私有方法也没有替换的方法，这里就用到了一个技巧，<code>malloc_zone_unregister</code>的时候，会将unregister_zone和zone列表最后一个zone交换来填补zone数组，所以就可以用以下方式来替换。</p>
+<pre><code class="c">malloc_zone_register(my_zone);
+malloc_zone_t *default_zone = malloc_default_zone()
+malloc_zone_unregister(default_zone);
+malloc_zone_register(default_zone);
+</code></pre>
+<p>替换完以后必须把unregister的注册回去，不然可能会导致某些对象释放时找不到对应的zone。</p>
+<p>同时这些方法之间无法保证线程安全，由于内部的锁并未公开，所以这里需要在程序运行之前，也就是main函数开始时，或是更早进行替换。</p>
+<p>这样我们就得到了一个完全属于自己的内存管理方案。</p>
+<h2 id="应用内内存使用分析"><a href="#应用内内存使用分析" class="headerlink" title="应用内内存使用分析"></a>应用内内存使用分析</h2><p>在进行替换之前，我们需要去分析当前内存使用状况，以及性能状态，从而才可以得知我们替换的内存管理方案有效。</p>
+<p>为了做这个脚手架，也耗费了我相当长的时间。这里来看看如何去实现收集内存使用状况。这里就不能使用<code>task_info</code>，<code>host_statistics</code>和<code>sysctl</code>这样粗略的统计方法了。</p>
+<p>由于性能以及Objc对象无法完全摆脱<code>malloc_zone</code>（会导致统计的死循环），所以这里使用C++来实现统计分析。</p>
+<h5 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h5><p>首先，需要考虑到的是线程安全，这里可以使用锁来简单的解决这个问题，但是这样同时也会大大影响性能，甚至可能会影响统计结果，所以这里采用<code>ThreadLocal</code>的方案。</p>
+<p>每一个线程都有自己独立统计数据存放池，这样在新增数据等操作的时候就不需要加锁了，也尽量避免对性能有太大的影响。</p>
+<h6 id="malloc死循环"><a href="#malloc死循环" class="headerlink" title="malloc死循环"></a>malloc死循环</h6><p>我们统计malloc，在生成统计数据的时候依然可能会调用到malloc，这样我们就可能形成了一个死循环，那么我们需要解决这种循环有两种方法。</p>
+<ol>
+<li>在统计过程中修改标志位，统计结束重置该标志位，在这之间的malloc不进入统计。如果上面选择使用的是锁，那么这里也要加锁，如果上面选择的是<code>ThreadLocal</code>，那么这里每个线程也需要一个独立的标志。</li>
+<li>修改内存申请方式，不用malloc，使用系统底层实现<code>vm_allocate</code>。</li>
+</ol>
+<p>这里，我选用第2中方案，为此需要C++的<code>Allocator</code>：</p>
+<pre><code class="c++">template &lt;class _Tp&gt;
+class VMAllocator : public std::allocator&lt;_Tp&gt; &#123;
+public:
+    typedef typename std::allocator&lt;_Tp&gt;::pointer pointer;
+    typedef typename std::allocator&lt;_Tp&gt;::size_type size_type;
+    
+    pointer allocate(size_type __n, std::allocator&lt;void&gt;::const_pointer = 0)
+    &#123;
+        size_type n = round_page(__n * sizeof(_Tp));
+        vm_address_t addr;
+        kern_return_t rt = vm_allocate(mach_task_self(), &amp;addr, n, VM_FLAGS_ANYWHERE);
+        if (rt != KERN_SUCCESS) &#123;
+            throw std::bad_alloc();
+        &#125;
+        vm_protect(mach_task_self(), addr, n, true, VM_PROT_READ|VM_PROT_WRITE);
+        return reinterpret_cast&lt;pointer&gt;(addr);
+    &#125;
+    void deallocate(pointer __p, size_type __n) noexcept
+    &#123;
+        size_type n = round_page(__n);
+        kern_return_t rt = vm_deallocate(mach_task_self(), reinterpret_cast&lt;vm_address_t&gt;(__p), n);
+        if (rt != KERN_SUCCESS) &#123;
+            
+        &#125;
+    &#125;
+&#125;;
+</code></pre>
+<h5 id="获取每一个内存申请数据"><a href="#获取每一个内存申请数据" class="headerlink" title="获取每一个内存申请数据"></a>获取每一个内存申请数据</h5><p>那么我们如何去获取这样详细的统计数据呢？只能去hook malloc的方法了，这里我们需要去hook <code>malloc_zone-&gt;malloc</code>的方法。</p>
+<p>我们如何才能获得malloc_zone的真正对象呢，其实这些对象都是有全局的名字的。</p>
+<pre><code class="c">extern &quot;C&quot; malloc_zone_t **malloc_zones;
+extern &quot;C&quot; int32_t malloc_num_zones;
+</code></pre>
+<p>其中<code>malloc_zones[0]</code>就是<code>default_zone</code>。</p>
+<p>由于malloc_zone是readonly状态，我们需要先修改权限才能继续hook。同时由上面所说的，这些都是非线程安全的操作，所以需要在启动的时候就完成，并且运行过程中不能修改。</p>
+<pre><code class="c++">mprotect(orig_zone_ptr_, sizeof(malloc_zone_t), PROT_READ|PROT_WRITE);
+orig_zone_ptr_-&gt;malloc = Wrap::malloc;
+mprotect(orig_zone_ptr_, sizeof(malloc_zone_t), PROT_READ);
+</code></pre>
+<h5 id="logger"><a href="#logger" class="headerlink" title="logger"></a>logger</h5><p>其实系统也开放了两个钩子对象，分别给我们统计系统调用和malloc调用的情况：</p>
+<pre><code class="c">// For logging VM allocation and deallocation, arg1 here
+// is the mach_port_name_t of the target task in which the
+// alloc or dealloc is occurring. For example, for mmap()
+// that would be mach_task_self(), but for a cross-task-capable
+// call such as mach_vm_map(), it is the target task.
+
+typedef void (malloc_logger_t)(uint32_t type, uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, uintptr_t result, uint32_t num_hot_frames_to_skip);
+
+extern malloc_logger_t *__syscall_logger;
+</code></pre>
+<pre><code class="c">// We set malloc_logger to NULL to disable logging, if we encounter errors
+// during file writing
+typedef void(malloc_logger_t)(uint32_t type,
+        uintptr_t arg1,
+        uintptr_t arg2,
+        uintptr_t arg3,
+        uintptr_t result,
+        uint32_t num_hot_frames_to_skip);
+extern malloc_logger_t *malloc_logger;
+</code></pre>
+<p>由于这里我们不需要统计malloc的数据（我们更关心OC对象），但是我们还是希望了解系统调用发生的次数（系统调用是一种比较慢的操作）。</p>
+<h5 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h5><p>这里我做了一个不完整的工具放在<a target="_blank" rel="noopener" href="https://github.com/djs66256/DDMallocDetector">github</a>，欢迎大家进行补充。只需要将动态库导入，并在程序开始的时候配置就可以了。</p>
+<p><img src="/images/2018/malloc/projects.png"></p>
+<p><img src="/images/2018/malloc/framework.png"></p>
+<pre><code class="c">#import &lt;MallocDetector/MallocDetector.h&gt;
+
+int main(int argc, char * argv[]) &#123;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^&#123;
+        malloc_detector_show_inspector();
+    &#125;);
+    malloc_detector_attach_zone(true);
+    malloc_detector_start();
+    
+    @autoreleasepool &#123;
+            return UIApplicationMain(argc, argv, NSStringFromClass([Application class]), NSStringFromClass([AppDelegate class]));
+    &#125;
+&#125;
+</code></pre>
+<h2 id="统计结果"><a href="#统计结果" class="headerlink" title="统计结果"></a>统计结果</h2><p>下面就来看看我在我们app里面统计得到的结果。</p>
+<h3 id="设备iPhone-7。在此期间系统调用12898次。"><a href="#设备iPhone-7。在此期间系统调用12898次。" class="headerlink" title="设备iPhone 7。在此期间系统调用12898次。"></a>设备iPhone 7。在此期间系统调用12898次。</h3><p>这里是内存申请大小之和按照时间顺序的情况，其中size作log2处理。</p>
+<p><img src="/images/2018/malloc/phone/alloc_main.PNG" style="zoom:30%" />  <img src="/images/2018/malloc/phone/alloc_ui.PNG" style="zoom:30%" />  <img src="/images/2018/malloc/phone/alloc_net.PNG" style="zoom:30%" /></p>
+<p>可以看到主线程都比较平稳，而ui线程则是和用户行为相关，网络更是和网络请求密切相关。</p>
+<p>下面是内存size-class的分布，这里粒度比较低（2^n)，个数(&#x2F;1000)</p>
+<img src="/images/2018/malloc/phone/size_all.PNG" style="zoom:30%" />
+<img src="/images/2018/malloc/phone/size_main.PNG" style="zoom:30%" />  <img src="/images/2018/malloc/phone/size_ui.PNG" style="zoom:30%" />  <img src="/images/2018/malloc/phone/size_net.PNG" style="zoom:30%" />
+
+<p>可以看出来，我们对于<code>256 bytes</code>以下的对象占有绝对的比例，其中<code>32 - 64 bytes</code>最多。每个线程的分布也不一致，说明特定的业务场景会拥有不同的内存需求。</p>
+<p>下面是不同大小耗费时间的分布，时间的单位为<code>time_t</code>。</p>
+<img src="/images/2018/malloc/phone/time_all.PNG" style="zoom:30%" />
+
+<p>可以看出来256 bytes一下的时间消耗具有优势。</p>
+<p>以上统计结果可能并不能代表所有，统计的样本也不够多，但也能代表部分真实状况。</p>
+<h2 id="替换default-zone"><a href="#替换default-zone" class="headerlink" title="替换default_zone"></a>替换default_zone</h2><p>本来想替换为<code>tcmalloc</code>，但是它没有支持iOS系统，所以这里转而替换为<code>jemalloc</code>，由于时间有限，我也没有成功移植到arm上，所以这里看看模拟器的情况：</p>
+<p>其中左边为苹果默认的分配器，右边为<code>jemalloc</code>。</p>
+<p><img src="/images/2018/malloc/simulator/size_main_apple.png" style="zoom:30%" />  <img src="/images/2018/malloc/simulator/size_main_je.png" style="zoom:30%" /><br><img src="/images/2018/malloc/simulator/time_all_apple.png" style="zoom:30%" />  <img src="/images/2018/malloc/simulator/time_all_je.png" style="zoom:30%" /></p>
+<p>在内存分布相近的情况，<code>jemalloc</code>看似略微好于苹果默认分配器，但这种差距似乎很小，可能在误差之内。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>在移动应用中，内存的管理似乎并没有起到非常重要的地位，也不可能出现服务器那样的长时间运行，所以目前没有人做过这方面的优化处理。但是从这些点可以了解内存分配的一些情况，给我们一些不同的视角，具体情况下可以做一些特殊的优化。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2018/04/12/2018-04-12-%E8%B5%84%E6%BA%90%E7%AB%9E%E4%BA%89%E4%B8%8E%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B/" title="资源竞争与死锁检测"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 资源竞争与死锁检测</span></a><a class="button is-default" href="/2018/03/29/2018-03-29-%E5%86%85%E5%AD%98%E6%A0%85%E6%A0%8F%E9%97%AE%E9%A2%98%E7%AE%80%E8%BF%B0/" title="原子性内存栅栏问题简述"><span class="has-text-weight-semibold">下一页: 原子性内存栅栏问题简述</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2018/04/04/2018-04-04-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

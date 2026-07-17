@@ -1,0 +1,311 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>运行时获取函数调用栈</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="在之前做debug工具的时候，就有一个想法，在页面产生卡顿的时候，如果能够获取主线程的函数调用栈就好了，就可以分析出哪里出现了性能瓶颈。由于当时对这部分内容还不是很了解，就没有继续下去，现在重新来实践一次。
+
+
+原理上篇说到的C方法的参数调用时，描述了C函数调用的大致流程，我们也知道通过BL跳转的函数调用会将返回地址存在LR寄存器中，如果还有后续的函数调用，则会把LR存入栈帧进行保存。
+还是拿出我们的栈帧分布图：
+
+FP当前位置储存的是上一个FP所在的地址，也就是FP = &amp;amp;FP0，而LR被储存在FP的下一个，由于栈是向上增长的，所以LR = *(FP + 1)。也就是说我们如果能拿到当前的FP就可以依次获得所有的二进制中的调用顺序：
+while(fp) &amp;#123;
+  pc = *(fp + 1.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">运行时获取函数调用栈</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MachO"><span class="toc-text">MachO</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#header"><span class="toc-text">header</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#load-commands"><span class="toc-text">load_commands</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%AE%B5"><span class="toc-text">数据段</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-text">函数调用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#LR%E6%9F%A5%E6%89%BE%E7%AC%A6%E5%8F%B7"><span class="toc-text">LR查找符号</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%8E%B7%E5%BE%97%E7%BA%BF%E7%A8%8B%E5%BD%93%E5%89%8D%E7%8A%B6%E6%80%81"><span class="toc-text">获得线程当前状态</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E8%B0%83%E7%94%A8%E6%A0%88"><span class="toc-text">遍历调用栈</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E7%AC%A6%E5%8F%B7"><span class="toc-text">查找符号</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AE%9A%E4%BD%8D%E7%AC%A6%E5%8F%B7"><span class="toc-text">定位符号</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-text">结论</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-text">最后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E8%B0%83%E7%94%A8%E6%A0%88"><i class="tag post-item-tag">调用栈</i></a><a href="/tags/%E5%8D%A1%E9%A1%BF%E5%88%86%E6%9E%90"><i class="tag post-item-tag">卡顿分析</i></a><a href="/tags/crash"><i class="tag post-item-tag">crash</i></a><a href="/tags/stack"><i class="tag post-item-tag">stack</i></a><a href="/tags/KSCrash"><i class="tag post-item-tag">KSCrash</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">运行时获取函数调用栈</h1><time class="has-text-grey" datetime="2018-01-20T18:02:57.000Z">2018-01-21</time><article class="mt-2 post-content"><p>在之前做debug工具的时候，就有一个想法，在页面产生卡顿的时候，如果能够获取主线程的函数调用栈就好了，就可以分析出哪里出现了性能瓶颈。由于当时对这部分内容还不是很了解，就没有继续下去，现在重新来实践一次。</p>
+<span id="more"></span>
+
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>上篇说到的C方法的参数调用时，描述了C函数调用的大致流程，我们也知道通过<code>BL</code>跳转的函数调用会将返回地址存在<code>LR</code>寄存器中，如果还有后续的函数调用，则会把<code>LR</code>存入栈帧进行保存。</p>
+<p>还是拿出我们的栈帧分布图：</p>
+<p><img src="/images/2018/asm/stack_frame.png"></p>
+<p><code>FP</code>当前位置储存的是上一个<code>FP</code>所在的地址，也就是<code>FP = &amp;FP0</code>，而<code>LR</code>被储存在<code>FP</code>的下一个，由于栈是向上增长的，所以<code>LR = *(FP + 1)</code>。也就是说我们如果能拿到当前的<code>FP</code>就可以依次获得所有的二进制中的调用顺序：</p>
+<pre><code>while(fp) &#123;
+  pc = *(fp + 1);
+  fp = *fp;
+&#125;
+</code></pre>
+<p>以上就是我们此次遍历调用栈的最重要的思路，如果你了解汇编，这一部分应该很简单。</p>
+<h3 id="MachO"><a href="#MachO" class="headerlink" title="MachO"></a>MachO</h3><p>MachO是MAC和iOS的可执行文件格式，包括动态库静态库。想要从调用地址获得方法名称，就必须要了解MachO的基本结构，这次我们不需要了解每个字段和数值都代表什么，只需要关心特定的几个字段。（苹果官方有关MachO的文档特别少，我们能够获得的相关文档 MachORuntime 也是非常的古老，甚至现在在官网上已经搜不到了，所以MachO是比较难以理解的一部分。）</p>
+<p>关于MachO内容查看和解析，官方有几个命令行工具：</p>
+<ul>
+<li>The file-type displaying tool, &#x2F;usr&#x2F;bin&#x2F;file, shows the type of a file. For multi-architecture files, it shows the type of each of the images that make up the archive.</li>
+<li>The object-file displaying tool, &#x2F;usr&#x2F;bin&#x2F;otool, lists the contents of specific sections and segments within a Mach-O file. It includes symbolic disassemblers for each supported architecture and it knows how to format the contents of many common section types.</li>
+<li>The page-analysis tool, &#x2F;usr&#x2F;bin&#x2F;pagestuff, displays information on each logical page that compose the image, including the names of the sections and symbols contained in each page. This tool doesn’t work on binaries containing images for more than one architecture.</li>
+<li>The symbol table display tool, &#x2F;usr&#x2F;bin&#x2F;nm, allows you to view the contents of an object file’s symbol table.</li>
+</ul>
+<p>这里我们使用GUI工具<code>MachOView</code>来说明，使用上更加简单方便。</p>
+<p>一个MachO大致分为三部分：</p>
+<ul>
+<li>Header</li>
+<li>Load Commands</li>
+<li>数据段</li>
+</ul>
+<p><img src="/images/2018/macho/macho-300x550.png"></p>
+<h5 id="header"><a href="#header" class="headerlink" title="header"></a>header</h5><p>Header中保存了CPU架构，load commands的个数等信息，这次我们都在ARM64的基础上进行分析：</p>
+<pre><code class="c">struct mach_header_64 &#123;
+    uint32_t	magic;		/* mach magic number identifier */
+    cpu_type_t	cputype;	/* cpu specifier */
+    cpu_subtype_t	cpusubtype;	/* machine specifier */
+    uint32_t	filetype;	/* type of file */
+    uint32_t	ncmds;		/* number of load commands */
+    uint32_t	sizeofcmds;	/* the size of all the load commands */
+    uint32_t	flags;		/* flags */
+    uint32_t	reserved;	/* reserved */
+&#125;;
+</code></pre>
+<h5 id="load-commands"><a href="#load-commands" class="headerlink" title="load_commands"></a>load_commands</h5><p>紧接着Header的就是load command了，这里存着一些加载信息，动态库，main函数和数据段等一些信息。所有的结构前两位都是一样的：</p>
+<pre><code class="c">struct load_command &#123;
+    uint32_t cmd;		/* type of load command */
+    uint32_t cmdsize;	/* total size of command in bytes */
+&#125;;
+</code></pre>
+<p>这次我们会遇到的有segment, symbol table相关的load commands。这里我们先不说明每个字段的作用，之后在使用过程中再来说明。</p>
+<pre><code class="c">struct segment_command_64 &#123; /* for 64-bit architectures */
+    uint32_t	cmd;		/* LC_SEGMENT_64 */
+    uint32_t	cmdsize;	/* includes sizeof section_64 structs */
+    char		segname[16];	/* segment name */
+    uint64_t	vmaddr;		/* memory address of this segment */
+    uint64_t	vmsize;		/* memory size of this segment */
+    uint64_t	fileoff;	/* file offset of this segment */
+    uint64_t	filesize;	/* amount to map from the file */
+    vm_prot_t	maxprot;	/* maximum VM protection */
+    vm_prot_t	initprot;	/* initial VM protection */
+    uint32_t	nsects;		/* number of sections in segment */
+    uint32_t	flags;		/* flags */
+&#125;;
+
+struct symtab_command &#123;
+    uint32_t	cmd;		/* LC_SYMTAB */
+    uint32_t	cmdsize;	/* sizeof(struct symtab_command) */
+    uint32_t	symoff;		/* symbol table offset */
+    uint32_t	nsyms;		/* number of symbol table entries */
+    uint32_t	stroff;		/* string table offset */
+    uint32_t	strsize;	/* string table size in bytes */
+&#125;;
+</code></pre>
+<p><img src="/images/2018/macho/load_commands-270x400.png"></p>
+<h5 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h5><p>数据段包括了很多内容，也是最复杂的部分，大致包含了 TEXT可执行代码，DATA数据段，符号表，字符表等内容，这里我们需要了解的是<code>Section(_TEXT,__text)</code>和<code>Symbol Table</code>。</p>
+<p>其中TEXT段就是我们的代码执行部分，可以直接进行反汇编。比如下面就是从微信SDK中获取的一段反汇编代码：</p>
+<pre><code class="armasm">-[AppCommunicateData MakeCommand:]:
+0000000000001e94         stp        x29, x30, [sp, #-0x10]!
+0000000000001e98         mov        x29, sp
+0000000000001e9c         adrp       x8, #0x4000
+0000000000001ea0         ldr        x1, [x8, #0x998]
+0000000000001ea4         bl         _objc_msgSend
+0000000000001ea8         orr        w0, wzr, #0x1
+0000000000001eac         ldp        x29, x30, [sp]!, #0x10
+0000000000001eb0         ret
+</code></pre>
+<p>而符号表就是保存了我们代码中全部的公开符号，包括动态链接的符号。比如下面就是一个解析后的符号表内容：</p>
+<p><img src="/images/2018/macho/symbol_table-600x100.png"></p>
+<p>这里我们简单的介绍了一下MachO和本次所需要了解的内容，由于MachO是一个非常庞大而且复杂的结构，这里就不再深入了。接下来我们来简单看看一个函数的动态调用过程，来理解如何通过符号（也就是函数名称），来获取执行的地址（也就是下一个PC的位置）。</p>
+<h3 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h3><p>我们以上面<code>+[ObjcException test]</code>来进行说明。</p>
+<p>首先我们从load_command中获取到符号表的位置。</p>
+<p>然后在符号表中查找，得到上图的结构，其中value字段代表着在该文件中的偏移量<code>0x1AF0</code>。</p>
+<p>我们找到在<code>(__TEXT,__text)</code>段中的这一行：</p>
+<p><img src="/images/2018/macho/text_func.png"></p>
+<p>那么，要实现开头所说的符号查找，也就是该过程的一个逆过程，也就打通了道路。</p>
+<h5 id="LR查找符号"><a href="#LR查找符号" class="headerlink" title="LR查找符号"></a>LR查找符号</h5><p>我们从堆栈中获取的<code>LR</code>值并不是该函数的起始位置，也就是符号表中所记录的位置，而是函数返回地址，我们再来看看微信SDK的这一段代码：</p>
+<pre><code class="armasm">-[AppCommunicateData MakeCommand:]:
+0000000000001e94         stp        x29, x30, [sp, #-0x10]!
+0000000000001e98         mov        x29, sp
+0000000000001e9c         adrp       x8, #0x4000
+0000000000001ea0         ldr        x1, [x8, #0x998]
+0000000000001ea4         bl         _objc_msgSend
+0000000000001ea8         orr        w0, wzr, #0x1
+0000000000001eac         ldp        x29, x30, [sp]!, #0x10
+0000000000001eb0         ret
+</code></pre>
+<p>这里<code>bl _objc_msgSend</code>，<code>LR</code>所记录的应该是<code>0000000000001ea8</code>，而不是开头的<code>0000000000001e94</code>，那么我们要怎么定位该符号呢？</p>
+<p>我们知道，在执行代码区域，每个符号之间是连续的，而且符号会全部保存在符号表中，那么我们可以遍历符号表，查找到小于<code>LR</code>位置，并且距离<code>LR</code>最近的一个符号，那么我们就可以认为我们的函数跳转发生在该函数内部。</p>
+<p>这样就找到了我们所需要的符号名称了。</p>
+<p>下面就从实现角度来说明。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>这里我们用纯C&#x2F;C++来实现这部分，使用lambda来让代码更容易理解。这里的实现并不是完美的，只是作为说明整个流程。</p>
+<h5 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h5><p>在获取调用栈之前，我们最好将对应线程暂停：</p>
+<pre><code class="c++">pthread_t thread;
+pthread_create(&amp;thread, nullptr, [](void *p) &#123;
+    thread_suspend(main_thread);
+    // generate symbols of (main_thread);
+    thread_resume(main_thread);
+    
+    void *ptr = nullptr;
+    return ptr;
+&#125;, nullptr);
+</code></pre>
+<h5 id="获得线程当前状态"><a href="#获得线程当前状态" class="headerlink" title="获得线程当前状态"></a>获得线程当前状态</h5><p>MachO提供了获取暂停线程上下文环境的接口<code>thread_get_state</code></p>
+<pre><code class="c++">#if defined(__x86_64__)
+    _STRUCT_MCONTEXT ctx;
+    mach_msg_type_number_t count = x86_THREAD_STATE64_COUNT;
+    thread_get_state(thread, x86_THREAD_STATE64, (thread_state_t)&amp;ctx.__ss, &amp;count);
+    
+    uint64_t pc = ctx.__ss.__rip;
+    uint64_t sp = ctx.__ss.__rsp;
+    uint64_t fp = ctx.__ss.__rbp;
+#elif defined(__arm64__)
+    _STRUCT_MCONTEXT ctx;
+    mach_msg_type_number_t count = ARM_THREAD_STATE64_COUNT;
+    thread_get_state(thread, ARM_THREAD_STATE64, (thread_state_t)&amp;ctx.__ss, &amp;count);
+    
+    uint64_t pc = ctx.__ss.__pc;
+    uint64_t sp = ctx.__ss.__sp;
+    uint64_t fp = ctx.__ss.__fp;
+#endif
+</code></pre>
+<p>可以看到不同架构的获取方式是完全不一样的，这是由于不同平台底层实现的不同所导致的，但是对于C语言层面上来说，都是一致的，都有最基本的几个概念<code>PC</code>, <code>SP</code>, <code>FP</code>, <code>LR</code>。</p>
+<h5 id="遍历调用栈"><a href="#遍历调用栈" class="headerlink" title="遍历调用栈"></a>遍历调用栈</h5><p>依照我们开头所说的方法来遍历:</p>
+<pre><code class="c++">do &#123;
+    // print symbol of (pc);
+    pc = *((uint64_t *)fp + 1);
+    fp = *((uint64_t *)fp);
+&#125; while (fp);
+</code></pre>
+<h5 id="查找符号"><a href="#查找符号" class="headerlink" title="查找符号"></a>查找符号</h5><p>一般来说，我们一个应用内会有多个动态库，也就是会有多个MachO被映射到内存空间，所以我们不是简单的查找某个Image就可以了，而是要遍历所有已载入的Images。</p>
+<pre><code class="c++">uint64_t count = _dyld_image_count();
+for (uint32_t i = 0; i &lt; count; i++) &#123;
+    const struct mach_header *header = _dyld_get_image_header(i);
+    const char *name = _dyld_get_image_name(i);
+    uint64_t slide = _dyld_get_image_vmaddr_slide(i);
+&#125;
+</code></pre>
+<p>这里我们就能够拿到各自的mach_header了，计算其相对于image的地址时，需要进行矫正：</p>
+<pre><code class="c">uint64_t pcSlide = pc - slide;
+</code></pre>
+<p>在查找符号前，我们定义一个快捷的函数，来遍历load commands，因为之后会多次查找load commands：</p>
+<pre><code class="c++14">void enumerateSegment(const mach_header *header, std::function&lt;bool(struct load_command *)&gt; func) &#123;
+    // 这里我们只考虑64位应用。第一个command从header的下一位开始
+    struct load_command *baseCommand = (struct load_command *)((struct mach_header_64 *)header + 1);
+    if (baseCommand == nullptr) return;
+    
+    struct load_command *command = baseCommand;
+    for (int i = 0; i &lt; header-&gt;ncmds; i++) &#123;
+        if (func(command)) &#123;
+            return;
+        &#125;
+        
+        command = (struct load_command *)((uintptr_t)command + command-&gt;cmdsize);
+    &#125;
+&#125;
+</code></pre>
+<p>回到上面，首先我们需要遍历segment，来确定当前pc是否落在这个image的区域内。由于一个程序空间内，虚拟地址都是唯一的，动态库也会被映射到一段唯一的地址段，所以如果pc不在当前的地址段内，就可以确定不属于该MachO的方法。</p>
+<pre><code class="c++">bool found = false;
+enumerateSegment(header, [&amp;](struct load_command *command) &#123;
+    if (command-&gt;cmd == LC_SEGMENT_64) &#123;
+        const struct segment_command_64 *segCmd = (struct segment_command_64 *)command;
+        uintptr_t start = segCmd-&gt;vmaddr;
+        uintptr_t end = segCmd-&gt;vmaddr + segCmd-&gt;vmsize;
+        
+        if (pcSlide &gt;= start &amp;&amp; pcSlide &lt; end) &#123;
+            std::cout &lt;&lt; segCmd-&gt;segname &lt;&lt; std::endl;
+            found = true;
+            
+            return true;
+        &#125;
+    &#125;
+    return false;
+&#125;);
+if (!found) continue;
+</code></pre>
+<h5 id="定位符号"><a href="#定位符号" class="headerlink" title="定位符号"></a>定位符号</h5><p>我们需要遍历符号表，首先要从load_command中定位到符号表的位置，而<code>symtab_command</code>并没有给我们一个绝对的位置信息，只有一个<code>stroff</code>和<code>symoff</code>，也就是字符串表偏移量和符号表偏移量，所以我们还需要找出其真正的内存地址。而我们可以从<code>LC_SEGMENT(__LINKEDIT)</code>段中获取到绝对位置<code>vmaddr</code>和偏移量<code>fileoff</code>，所以就可以得到：</p>
+<pre><code class="c">uint64_t baseaddr = segCmd-&gt;vmaddr - segCmd-&gt;fileoff;
+// 符号表
+nlist_64 *nlist = (nlist_64 *)(baseaddr + slide + symCmd-&gt;symoff);
+// 字符串表
+uint64_t strTable = baseaddr + slide + symCmd-&gt;stroff;
+</code></pre>
+<p>这里我们就可以按照上面的想法，在nlist中找到最符合的符号字符串了。综合起来如下：</p>
+<pre><code class="c++">enumerateSegment(header, [&amp;](struct load_command *command) &#123;
+    if (command-&gt;cmd == LC_SYMTAB) &#123;
+        struct symtab_command *symCmd = (struct symtab_command *)command;
+        
+        uint64_t baseaddr = 0;
+        enumerateSegment(header, [&amp;](struct load_command *command) &#123;
+            if (command-&gt;cmd == LC_SEGMENT_64) &#123;
+                struct segment_command_64 *segCmd = (struct segment_command_64 *)command;
+                if (strcmp(segCmd-&gt;segname, SEG_LINKEDIT) == 0) &#123;
+                    baseaddr = segCmd-&gt;vmaddr - segCmd-&gt;fileoff;
+                    return true;
+                &#125;
+            &#125;
+            return false;
+        &#125;);
+        
+        if (baseaddr == 0) return false;
+        
+        nlist_64 *nlist = (nlist_64 *)(baseaddr + slide + symCmd-&gt;symoff);
+        uint64_t strTable = baseaddr + slide + symCmd-&gt;stroff;
+        
+        uint64_t offset = UINT64_MAX;
+        int best = -1;
+        for (int k = 0; k &lt; symCmd-&gt;nsyms; k++) &#123;
+            nlist_64 &amp;sym = nlist[k];
+            uint64_t d = pcSlide - sym.n_value;
+            if (offset &gt;= d) &#123;
+                offset = d;
+                best = k;
+            &#125;
+        &#125;
+        if (best &gt;= 0) &#123;
+            nlist_64 &amp;sym = nlist[best];
+            std::cout &lt;&lt; &quot;SYMBOL: &quot; &lt;&lt; (char *)(strTable + sym.n_un.n_strx) &lt;&lt; std::endl;
+        &#125;
+        
+        return true;
+    &#125;
+    return false;
+&#125;);
+</code></pre>
+<h5 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h5><p>我们再模拟器上实验，最后的结果来说是完全符合预期的，除了有部分系统符号不能打出来。这里整理一部分结果：</p>
+<pre><code>Found: cfunction.app/cfunction
+SYMBOL: -[ViewController viewDidLoad]
+
+Found: UIKit.framework/UIKit
+SYMBOL: -[UIViewController loadViewIfRequired]
+
+Found: UIKit.framework/UIKit
+SYMBOL: -[UIViewController view]
+
+Found: UIKit.framework/UIKit
+SYMBOL: -[UIWindow addRootViewControllerViewIfPossible]
+
+Found: Frameworks/UIKit.framework/UIKit
+SYMBOL: -[UIWindow _setHidden:forced:]
+
+Found: /UIKit.framework/UIKit
+SYMBOL: -[UIWindow makeKeyAndVisible]
+
+......
+
+Found: CoreFoundation.framework/CoreFoundation
+SYMBOL: ___CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__
+
+Found: CoreFoundation.framework/CoreFoundation
+SYMBOL: ___CFRunLoopDoSource0
+
+Found: CoreFoundation.framework/CoreFoundation
+SYMBOL: ___CFRunLoopDoSources0
+
+Found: CoreFoundation.framework/CoreFoundation
+SYMBOL: ___CFRunLoopRun
+
+Found: CoreFoundation.framework/CoreFoundation
+SYMBOL: _CFRunLoopRunSpecific
+
+Found: GraphicsServices.framework/GraphicsServices
+
+Found: UIKit.framework/UIKit
+SYMBOL: _UIApplicationMain
+
+Found: cfunction.app/cfunction
+SYMBOL: _main
+</code></pre>
+<p>和xcode所展示的调用关系：</p>
+<p><img src="/images/2018/macho/calls.png"></p>
+<p>以上是在模拟器的环境下，那么在真机上是什么表现呢？很遗憾，在真机上，很多私有API的符号都被去掉了，只能显示<code>&lt;redacted&gt;</code>，但是部分公开的API和自己的符号均能被打印。所以还是能帮助我们对问题的分析。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>MachO还是一个非常庞大的知识点，而且官方资料也特别少，和很多业务层代码不同，这些内容对开发能力的影响可能不大，毕竟平时业务层的东西很少需要这些东西。但是这些东西有时候能够产生一些新奇的想法和不同的思路。下面简单说几个相关的内容。</p>
+<p>C方法的method swizziling，Facebook的<code>fishhook</code>。</p>
+<p><code>__attribute__(section(&quot;__DATA,custom&quot;))</code>，自定义全局对象，React就是采用这种方式自动采集方法列表的。这个思路可以简化很多编码方式，但是可移植性会降低。</p>
+<p>C方法的动态调用，我们可以运行时去调用指定的C方法。这个方式危险程度较高，但却是很多高级语言的基础。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/kstenerud/KSCrash">KSCrash</a><br>MachORuntime</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2018/03/04/2018-03-04-C%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8A%A8%E6%80%81%E8%B0%83%E7%94%A8/" title="C语言的动态调用"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: C语言的动态调用</span></a><a class="button is-default" href="/2018/01/11/2018-01-11-C%E6%96%B9%E6%B3%95%E7%9A%84%E8%B0%83%E7%94%A8%E5%8F%82%E6%95%B0%E4%B8%8EARM%E6%B1%87%E7%BC%96/" title="C方法的调用参数与ARM汇编"><span class="has-text-weight-semibold">下一页: C方法的调用参数与ARM汇编</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2018/01/21/2018-01-21-%E8%BF%90%E8%A1%8C%E6%97%B6%E8%8E%B7%E5%8F%96%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%A0%88/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

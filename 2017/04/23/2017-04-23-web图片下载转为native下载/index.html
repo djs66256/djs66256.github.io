@@ -1,0 +1,126 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>web图片下载转为native下载</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="早期版本的网易新闻每次点开新闻图片，都会重新去下载新的图片，而在某个版本开始，可以发现点开的时候并不会重新加载了，只有在保存的时候会下载高清图片，那么他是怎么做到的呢。
+平时，我们网页基本都是自己负责自己的内容加载。但是有时候却希望能够拿到网页内的图片资源，此时我们不得不自己再去加载一遍，不仅仅浪费流量，而且影响用户体验。
+
+
+由客户端帮助web下载图片，这样我们就可以让web和本地共用缓存，并且可以自定义缓存了。那么如何做到这样的效果呢？这里提供两种不同的思路来解决这种问题，分别对UIWebView和WKWebView下的运行情况进行分析。Github
+URLProtocol我们知道URLProtocol可以截获请求，那么我们是否可以直接截获所有URL，然后根据path来判断是否是图片，是否需要自定义下载.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">web图片下载转为native下载</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#URLProtocol"><span class="toc-text">URLProtocol</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FileURL"><span class="toc-text">FileURL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E8%BE%83"><span class="toc-text">比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">适用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BADOM"><span class="toc-text">动态创建DOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-text">最后</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/webView"><i class="tag post-item-tag">webView</i></a><a href="/tags/image"><i class="tag post-item-tag">image</i></a><a href="/tags/download"><i class="tag post-item-tag">download</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">web图片下载转为native下载</h1><time class="has-text-grey" datetime="2017-04-23T15:30:03.000Z">2017-04-23</time><article class="mt-2 post-content"><p>早期版本的网易新闻每次点开新闻图片，都会重新去下载新的图片，而在某个版本开始，可以发现点开的时候并不会重新加载了，只有在保存的时候会下载高清图片，那么他是怎么做到的呢。</p>
+<p>平时，我们网页基本都是自己负责自己的内容加载。但是有时候却希望能够拿到网页内的图片资源，此时我们不得不自己再去加载一遍，不仅仅浪费流量，而且影响用户体验。</p>
+<span id="more"></span>
+
+<p>由客户端帮助web下载图片，这样我们就可以让web和本地共用缓存，并且可以自定义缓存了。那么如何做到这样的效果呢？这里提供两种不同的思路来解决这种问题，分别对<code>UIWebView</code>和<code>WKWebView</code>下的运行情况进行分析。<a target="_blank" rel="noopener" href="https://github.com/djs66256/web-image-test">Github</a></p>
+<h2 id="URLProtocol"><a href="#URLProtocol" class="headerlink" title="URLProtocol"></a>URLProtocol</h2><p>我们知道URLProtocol可以截获请求，那么我们是否可以直接截获所有URL，然后根据path来判断是否是图片，是否需要自定义下载。</p>
+<p>根据demo试验来看，UIWebView可以完美的实现该方案，但是WKWebView却不能被截获，原因是WKWebView拥有自己的URLSession，虽然可以用黑科技获取URLSession并加入代理，但是不能通过苹果审核。</p>
+<h2 id="FileURL"><a href="#FileURL" class="headerlink" title="FileURL"></a>FileURL</h2><p>另一种方式是使用本地文件，这种方式更加符合规范而且更加安全。不过WKWebView支持本地资源的接口是在iOS 9.0才引入的，而且需要指定目录，所以需要先把所有资源拷贝到该目录下。</p>
+<p>根据demo的试验来看，UIWebView和WKWebView都完美的支持了。</p>
+<h2 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h2><p>现在来比较下这几种方案。</p>
+<ol>
+<li>URLProtocol能够在不改变网页内容的情况下直接对内容进行替换，但是不能支持WKWebView，而且全局的Protocol可能会带来某些隐患。</li>
+<li>FileURL能够灵活的定制化下载方式，而且能够支持WKWebView，但是需要将img标签的http链接替换为file链接。</li>
+</ol>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><p>URLProtocol比较通用，普遍适用于各种网页。</p>
+<p>FileURL更加偏向于定制化，这里来详细看看定制化的场景。</p>
+<p>比如网易新闻的新闻内容格式大概是这样的：</p>
+<pre><code class="html">&lt;p&gt;正文正文正文&lt;/p&gt;
+&lt;img src=&quot;http://www.163.com/logo.png&quot; /&gt;
+</code></pre>
+<p>很多情况下，为了优化网络以及渲染，都需要类似的简化html，并且把css，js代码打包到App或者单独下载。那么其实我们有很多情况下是拥有一定固定格式的html代码段。而部分活动等特殊的网页我们一般也不会需要客户端下载资源来优化性能。那么有了这个前提，FileURL的适用面其实还是很广的。</p>
+<h2 id="动态创建DOM"><a href="#动态创建DOM" class="headerlink" title="动态创建DOM"></a>动态创建DOM</h2><p>那么怎么样处理比较合适呢？我们以WKWebView来看，难道我们要首先用拼装好一个网页，然后保存为一个文件进行载入吗？</p>
+<p>当然不需要这么笨重的解决方案，这样做不仅影响了性能，而且特别不灵活，一旦内容需要变更就会特别麻烦。</p>
+<p>目前前端技术有两个热门的概念，虚拟DOM和响应式，那么我们也可以利用类似的原理。下面是一个简单的实现。</p>
+<pre><code class="javascript">// 在Web端：
+var imageList = []
+
+// 创建一个空的节点，用来占位和展示进度条
+function appendImage(url) &#123;
+    let dom = document.createElement(&#39;div&#39;)
+    dom.style.padding = &#39;20px 10px&#39;
+
+    let img = document.createElement(&#39;img&#39;)
+
+    let p = document.createElement(&#39;p&#39;)
+    p.innerText = &#39;0%&#39;
+
+    dom.appendChild(p)
+    dom.appendChild(img)
+
+    document.body.appendChild(dom)
+    imageList.push(&#123;url, dom&#125;)
+&#125;
+
+function findDomByUrl(url) &#123;
+    let obj = imageList.find(i =&gt; i.url == url)
+    return obj &amp;&amp; obj.dom
+&#125;
+
+function updateText(url, text) &#123;
+    // console.log(`update text at &lt;$&#123;url&#125;&gt; with &quot;$&#123;text&#125;&quot;`)
+    let dom = findDomByUrl(url)
+    if (dom) &#123;
+        dom.firstChild.innerText = text
+    &#125;
+&#125;
+
+// 更新进度条
+function updateProgress(url, progress) &#123;
+    updateText(url, progress)
+&#125;
+
+// 更新错误状态
+function updateError(url, error) &#123;
+    updateText(url, error);
+&#125;
+
+// 图片下载完成后，更新图片资源
+function updateImage(url, fileUrl) &#123;
+    // console.log(`update image url at &lt;$&#123;url&#125;&gt; with &quot;$&#123;fileUrl&#125;&quot;`)
+    let dom = findDomByUrl(url)
+    if (dom) &#123;
+        dom.lastChild.src = fileUrl
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="objc">// 客户端
+// 初始化
+[self.WKWebView evaluateJavaScript:[NSString stringWithFormat:@&quot;appendImage(&#39;%@&#39;)&quot;, url] completionHandler:^(id _Nullable ret, NSError * _Nullable error) &#123;
+&#125;];
+
+// 这里为了测试伪造一个进度功能
+__block NSInteger progress = 0;
+if ([url hasPrefix:@&quot;http&quot;]) [NSTimer scheduledTimerWithTimeInterval:0.1 repeats:YES block:^(NSTimer * timer) &#123;
+    progress += 5;
+    [self.WKWebView evaluateJavaScript:[NSString stringWithFormat:@&quot;updateProgress(&#39;%@&#39;, &#39;%zd&#39;)&quot;, url, progress] completionHandler:^(id _Nullable ret, NSError * _Nullable error) &#123;
+
+    &#125;];
+    if (progress &gt;= 100) &#123;
+        [timer invalidate];
+    &#125;
+&#125;];
+// 下载图片
+[[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:url] completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) &#123;
+    if (error) &#123;
+        // 错误态
+        [self.WKWebView evaluateJavaScript:[NSString stringWithFormat:@&quot;updateError(&#39;%@&#39;, &#39;%@&#39;)&quot;, url, error.localizedDescription] completionHandler:^(id _Nullable ret, NSError * _Nullable error) &#123;
+
+        &#125;];
+    &#125;
+    else &#123;
+        // 保存图片并且更新界面
+        NSURL * fileUrl = [self.cacheUrl URLByAppendingPathComponent:url.lastPathComponent];
+        [data writeToURL:fileUrl atomically:YES];
+        [self.WKWebView evaluateJavaScript:[NSString stringWithFormat:@&quot;updateImage(&#39;%@&#39;, &#39;%@&#39;)&quot;, url, fileUrl.absoluteString] completionHandler:^(id ret, NSError * error) &#123;
+
+        &#125;];
+    &#125;
+&#125;] resume];
+</code></pre>
+<p>这样我们就可以动态的更新界面了，而且我们拥有自己创建的dom信息，那么我们可以做更多的事情:)</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>这里讨论了两种把图片转为客户端下载的方式，如果要说如果这么做相当于客户端来编写网页了，还不如直接写原生的呢。但是这样做比原生更加灵活，可以应用不同模板，不同样式，就可以改变外观了。而且具体使用时也不一定需要这么死板的去创建dom，之后我会尝试下不同的方案来简化双方的FileURL实现。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/04/24/2017-04-24-%E5%87%A0%E7%A7%8D%E5%9C%86%E8%A7%92%E5%A4%84%E7%90%86%E5%9C%A8%E5%88%97%E8%A1%A8%E4%B8%AD%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" title="几种圆角处理在列表中的性能测试"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 几种圆角处理在列表中的性能测试</span></a><a class="button is-default" href="/2017/04/17/2017-04-18-%E7%96%AF%E7%8B%82%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" title="疯狂日志系统"><span class="has-text-weight-semibold">下一页: 疯狂日志系统</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/04/23/2017-04-23-web%E5%9B%BE%E7%89%87%E4%B8%8B%E8%BD%BD%E8%BD%AC%E4%B8%BAnative%E4%B8%8B%E8%BD%BD/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

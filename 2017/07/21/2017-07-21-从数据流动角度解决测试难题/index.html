@@ -1,0 +1,154 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>从数据流动角度解决测试难题</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="上篇讲述了增强逻辑功能测试而改进MVC为MVP，但是这样做可能还不够彻底，现在来讨论另一个纯粹从测试角度设计的框架。
+
+
+首先我们来明确一下，测试中最核心的东西是什么。当然是数据，我们永远是围绕着数据来的，那么之前一些架构的问题是什么。无论哪个框架，数据的流通都是双向的，当数据流通成为单向了会怎么样呢？
+in data ==&amp;gt; Module ==&amp;gt; out data
+
+这样我们伪造数据进行测试就会非常方便了。按照这个思想就有了数据单向流通的架构。
+数据单向流通的实现这个概念最早是在web中提出的，应用在React里，官方的方案是Redux。现在swift也提出了一种实现ReSwift。
+我在之前写React的时候使用过这种方案，从开发角度来说，这种方案会大大增加开发难度，代码量也会大量增加，而且.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">从数据流动角度解决测试难题</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%95%E5%90%91%E6%B5%81%E9%80%9A%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">数据单向流通的实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redux-ReSwift-%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">(Redux&#x2F;ReSwift)框架介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#State"><span class="toc-text">State</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Action"><span class="toc-text">Action</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#View"><span class="toc-text">View</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reducer"><span class="toc-text">Reducer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92"><span class="toc-text">数据传递</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E5%92%8C%E6%B5%8B%E8%AF%95%E6%80%A7"><span class="toc-text">模块化和测试性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94"><span class="toc-text">对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-text">最后</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/%E6%9E%B6%E6%9E%84"><i class="tag post-item-tag">架构</i></a><a href="/tags/ReSwift"><i class="tag post-item-tag">ReSwift</i></a><a href="/tags/Redux"><i class="tag post-item-tag">Redux</i></a><a href="/tags/%E6%B5%8B%E8%AF%95"><i class="tag post-item-tag">测试</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">从数据流动角度解决测试难题</h1><time class="has-text-grey" datetime="2017-07-21T15:36:20.000Z">2017-07-21</time><article class="mt-2 post-content"><p>上篇讲述了增强逻辑功能测试而改进MVC为MVP，但是这样做可能还不够彻底，现在来讨论另一个纯粹从测试角度设计的框架。</p>
+<span id="more"></span>
+
+<p>首先我们来明确一下，测试中最核心的东西是什么。当然是数据，我们永远是围绕着数据来的，那么之前一些架构的问题是什么。无论哪个框架，数据的流通都是双向的，当数据流通成为单向了会怎么样呢？</p>
+<pre><code>in data ==&gt; Module ==&gt; out data
+</code></pre>
+<p>这样我们伪造数据进行测试就会非常方便了。按照这个思想就有了数据单向流通的架构。</p>
+<h2 id="数据单向流通的实现"><a href="#数据单向流通的实现" class="headerlink" title="数据单向流通的实现"></a>数据单向流通的实现</h2><p>这个概念最早是在web中提出的，应用在React里，官方的方案是<code>Redux</code>。现在swift也提出了一种实现<code>ReSwift</code>。</p>
+<p>我在之前写React的时候使用过这种方案，从开发角度来说，这种方案会大大增加开发难度，代码量也会大量增加，而且开发思路也需要从以前的思考方式转换过来。但是如果我们把这个思路转换过来，其实对整个流程是更加简化和分离的。</p>
+<p>从测试角度看，我觉得无疑是我知道的最可测的一种框架，甚至可以测试部分视图的逻辑。</p>
+<p>那么总的来说，很难说这种结构的好坏，就算不考虑增加的开发时间，也是一种难以给以一种评价的方案。</p>
+<h2 id="Redux-ReSwift-框架介绍"><a href="#Redux-ReSwift-框架介绍" class="headerlink" title="(Redux&#x2F;ReSwift)框架介绍"></a>(Redux&#x2F;ReSwift)框架介绍</h2><p>方案的几个核心是：</p>
+<ul>
+<li>数据的单向流通</li>
+<li>每个视图都可以看做一个状态机</li>
+<li>pure function</li>
+</ul>
+<p>关于pure function，我就不做太多介绍了，简单的说，就是同一输入必定会有相同的输出，是非常容易测试的一种函数。</p>
+<p>首先，我们来看一下官方的架构图。</p>
+<p><img src="/images/2017/reswift/reswift_detail.png"></p>
+<p>可以看到，数据流动方向都是朝一个方向进行的。那么下面从每个模块来介绍下，还是以star button为例子。</p>
+<h3 id="State"><a href="#State" class="headerlink" title="State"></a>State</h3><p>视图状态机，也是所有会更新界面数据保存的地方，可以认为相当于ViewModel。</p>
+<p>首先我们star会有以下几种视觉样式</p>
+<pre><code class="swift">enum StarButtonState &#123;
+    case star
+    case staring
+    case unstar
+    case unstaring
+&#125;
+</code></pre>
+<p>所以State可以定义为</p>
+<pre><code class="swift">struct StarState: StateType &#123;
+    var state: StarButtonState
+    var starCount
+&#125;
+</code></pre>
+<h3 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h3><p>首先我们定义几种状态机转换的Action类型</p>
+<pre><code class="swift">struct StarAction: Action &#123; &#125;
+struct StaringAction: Action &#123; &#125;
+struct UnstarAction: Action &#123; &#125;
+struct UnstaringAction: Action &#123; &#125;
+</code></pre>
+<p>以及相应的功能以及状态变更，这里异步请求采用延迟来代表。</p>
+<pre><code class="swift">func star(id: String) -&gt; Store&lt;StarState&gt;.ActionCreator &#123;
+    return &#123; state, store in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) &#123;
+            store.dispatch(StarAction())
+        &#125;
+        return StaringAction()
+    &#125;
+&#125;
+func unstar(id: String) -&gt; Store&lt;StarState&gt;.ActionCreator &#123;
+    return &#123; state, store in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) &#123;
+            store.dispatch(UnstarAction())
+        &#125;
+        return UnstaringAction()
+    &#125;
+&#125;
+</code></pre>
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><p>视图层其实很简单，只需要根据State的不同来更新就可以了。注意的是，更新都是无状态的，和上一个状态无关，所以view层是个无状态层。</p>
+<pre><code class="swift">class StarButton: UIButton, StoreSubscriber &#123;
+
+    let store = Store&lt;StarState&gt;(reducer: starReducer, state: nil)
+
+    override init(frame: CGRect) &#123;
+        super.init(frame: frame)
+
+        self.store.subscribe(self)
+    &#125;
+
+    func newState(state: StarState) &#123;
+        // update UI
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Reducer"><a href="#Reducer" class="headerlink" title="Reducer"></a>Reducer</h3><p>状态转换器，唯一可以更新State的地方。</p>
+<pre><code class="swift">func starReducer(action: Action, state: StarState?) -&gt; StarState &#123;
+    var state = state ?? StarState(state: .star, starCount: 0)
+
+    switch action &#123;
+    case _ as StarAction:
+        state.state = .star
+        state.starCount += 1
+
+    case _ as StaringAction:
+        state.state = .staring
+
+    case _ as UnstarAction:
+        state.state = .unstar
+        state.starCount -= 1
+
+    case _ as UnstaringAction:
+        state.state = .unstaring
+
+    default:
+        break
+    &#125;
+
+    return state
+&#125;
+</code></pre>
+<h3 id="数据传递"><a href="#数据传递" class="headerlink" title="数据传递"></a>数据传递</h3><p>那么最重要的就是数据如何传递的了。首先要明确的是每个模块能够修改的，或者说是传递的，只能是下个模块。</p>
+<p>比如，用户star button触发了一个事件：</p>
+<pre><code class="swift">func onButton(sender: StarButton) &#123;
+    if (store.state.state == .unstar) &#123;
+        store.dispatch(star(id: id))
+    &#125;
+    else if (store.state.state == .star) &#123;
+        store.dispatch(unstar(id: id))
+    &#125;
+&#125;
+</code></pre>
+<p>此时会创建Action，也就是将view事件转换为Action。然后会传递到store中，store会调用Reducer进行处理。Reducer更新state之后又会触发store的subscribe事件，回到view的<code>func newState(state: StarState)</code>。</p>
+<pre><code>View (User Event)
+==(create)==&gt; ActionCreator/Action
+==(dispatch)==&gt; Store &lt;--(Update State)--&gt; Reducer
+                  \==(subscribe)==&gt; View (newState)
+</code></pre>
+<p>大概的一个流程就是这样了。</p>
+<p>接下来说说这样做的模块化的优势。</p>
+<h2 id="模块化和测试性"><a href="#模块化和测试性" class="headerlink" title="模块化和测试性"></a>模块化和测试性</h2><p>首先，我们需要有函数式编程的概念，函数也是一等公民，所以<code>ActionCreator</code>和<code>Reducer</code>都是独立的模块。</p>
+<p>作为使用者，我们在不需要像MVC一样知道这些api所代表的操作功能，相对应的，我们需要去了解一个模块的动作（Action），比如以上例子就是</p>
+<pre><code class="swift">func star(id: String)
+func unstar(id: String)
+</code></pre>
+<p>这样的划分比MVC要友好的多，真正的把逻辑功能从原本的C中分离开。需要触发这个行为也非常简单<code>store.dispatch(star(id: id))</code>。相比MVP，行为更加的独立，每个行为之间完全没有联系，也不会产生干扰影响。同时因为每个行为的独立性，可复用程度也就越高。</p>
+<p>Reducer则代表了view层的更新，也可以非常明确的知道每个状态的变更发生了什么。相比其他模式，将界面更新完全交给view或者Controller，Reducer是最明确也是最清晰的。同时Reducer也是独立的，可以替换的。</p>
+<p>对于UIkit层面我们无法单元测试，所以测试的主要部分是<code>Action</code>和<code>Reducer</code>。这两个模块可以说都是<code>pure function</code>或者在某些条件下是<code>pure function</code>的，所以测试也非常的简单。</p>
+<h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><p>和这个模式比较像的有状态机模式和Reactive。</p>
+<p>状态机模式也是实现对应功能，以及对应状态，然后通过子类化的方式去实现Reducer的功能。</p>
+<p>Reactive则比较像ActionCreator，只是Reactive返回的是信号量。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>从上面可以看出这是一套非常优秀的模块划分方案，但同时也会大大增加代码量，而且需要改变以前的思维模式。而对于目前国内的现状来看，很难有这么多时间和精力让整个项目都使用这种模式。</p>
+<p>但是这种模式的特点也非常的明显，在处理比较复杂的交互行为，并且存在较多的视图状态的时候，会是一种比较好的方案。比如视频播放界面。</p>
+<p>所以个人认为，在一些简单的场景下并不需要使用该方案，但是在一些复杂的交互页面，而且又非常想要引入单元测试的场景，可以酌情考虑下这种方案。这种方案要求人们的思维方式的改变，需要有一定的函数式编程的概念。</p>
+<p>虽然不一定会直接使用ReSwift，但是这种思想有很多值得借鉴的地方，利用这种思想做出类似的效果，以便达到可以容易进行白盒测试的目的。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>以上虽然说不会全部使用该方案，但也可以部分使用。比如独立的小模块，亦或是app层面的一些东西。下次可以讨论下app层面如何来利用单向数据流来简化流程。</p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2017/07/22/2017-07-22-Aspect%E5%AE%9E%E7%8E%B0%E4%B8%8E%E5%BA%94%E7%94%A8/" title="Aspect实现与应用"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: Aspect实现与应用</span></a><a class="button is-default" href="/2017/07/14/2017-07-14-%E6%8D%A2%E4%B8%AA%E8%A7%92%E5%BA%A6%E6%9D%A5%E7%9C%8BMVC%E4%B8%8EMVP/" title="换个角度来看MVC与MVP"><span class="has-text-weight-semibold">下一页: 换个角度来看MVC与MVP</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2017/07/21/2017-07-21-%E4%BB%8E%E6%95%B0%E6%8D%AE%E6%B5%81%E5%8A%A8%E8%A7%92%E5%BA%A6%E8%A7%A3%E5%86%B3%E6%B5%8B%E8%AF%95%E9%9A%BE%E9%A2%98/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

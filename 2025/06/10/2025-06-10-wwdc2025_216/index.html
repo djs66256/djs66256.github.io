@@ -1,0 +1,121 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>针对 CarPlay 车载优化你的 App</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="了解如何将实时活动和小组件引入 carplay 车载和 carplay 车载 ultra，以便用户查看活动进度并一目了然地掌握相关信息。探索所有 carplay 车载 app 均可使用的新增模板选项，并了解导航类 app 如何提供逐向导航元数据，以便显示在车载仪表盘或 hud 上。
+
+
+视频地址
+
+此文章由AI生成，可能存在错误，如有问题，请联系djs66256@163.com
+
+为 CarPlay 车载优化你的应用：iOS 26 新功能详解随着 iOS 26 的发布，苹果为 CarPlay 车载系统带来了一系列创新功能，使开发者能够为用户提供更加安全、便捷的车载体验。本文将详细介绍这些新功能及其实现方式。
+核心功能概述iOS 26 为 CarPlay 引入了三大关键改进：
+
+小组件支持 - 让驾驶者快速获.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">针对 CarPlay 车载优化你的 App</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA-CarPlay-%E8%BD%A6%E8%BD%BD%E4%BC%98%E5%8C%96%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8%EF%BC%9AiOS-26-%E6%96%B0%E5%8A%9F%E8%83%BD%E8%AF%A6%E8%A7%A3"><span class="toc-text">为 CarPlay 车载优化你的应用：iOS 26 新功能详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0"><span class="toc-text">核心功能概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%84%E4%BB%B6%E9%9B%86%E6%88%90"><span class="toc-text">小组件集成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E8%A6%81%E7%82%B9"><span class="toc-text">技术实现要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">设计最佳实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%97%B6%E6%B4%BB%E5%8A%A8%E6%94%AF%E6%8C%81"><span class="toc-text">实时活动支持</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E8%A7%84%E6%A0%BC"><span class="toc-text">技术规格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%BB%BA%E8%AE%AE"><span class="toc-text">实现建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CarPlay%E6%A1%86%E6%9E%B6%E5%A2%9E%E5%BC%BA"><span class="toc-text">CarPlay框架增强</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E6%A8%A1%E6%9D%BF%E5%8D%87%E7%BA%A7"><span class="toc-text">列表模板升级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E9%A2%91%E5%BA%94%E7%94%A8%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="toc-text">音频应用新功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E8%88%AA%E5%BA%94%E7%94%A8%E6%94%B9%E8%BF%9B"><span class="toc-text">导航应用改进</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-text">性能优化建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E8%A7%86%E9%A2%91"><span class="toc-text">相关视频</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E6%A1%A3"><span class="toc-text">文档</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/wwdc2025"><i class="tag post-item-tag">wwdc2025</i></a><a href="/tags/ios"><i class="tag post-item-tag">ios</i></a><a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1"><i class="tag post-item-tag">系统服务</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">针对 CarPlay 车载优化你的 App</h1><time class="has-text-grey" datetime="2025-06-10T13:46:48.000Z">2025-06-10</time><article class="mt-2 post-content"><p>了解如何将实时活动和小组件引入 carplay 车载和 carplay 车载 ultra，以便用户查看活动进度并一目了然地掌握相关信息。探索所有 carplay 车载 app 均可使用的新增模板选项，并了解导航类 app 如何提供逐向导航元数据，以便显示在车载仪表盘或 hud 上。</p>
+<span id="more"></span>
+
+<p><img src="https://devimages-cdn.apple.com/wwdc-services/images/3055294D-836B-4513-B7B0-0BC5666246B0/9903/9903_wide_250x141_2x.jpg" alt="视频封面"><br><a target="_blank" rel="noopener" href="https://developer.apple.com/cn/videos/play/wwdc2025/216/">视频地址</a></p>
+<blockquote>
+<p>此文章由AI生成，可能存在错误，如有问题，请联系<a href="djs66256@163.com">djs66256@163.com</a></p>
+</blockquote>
+<h1 id="为-CarPlay-车载优化你的应用：iOS-26-新功能详解"><a href="#为-CarPlay-车载优化你的应用：iOS-26-新功能详解" class="headerlink" title="为 CarPlay 车载优化你的应用：iOS 26 新功能详解"></a>为 CarPlay 车载优化你的应用：iOS 26 新功能详解</h1><p>随着 iOS 26 的发布，苹果为 CarPlay 车载系统带来了一系列创新功能，使开发者能够为用户提供更加安全、便捷的车载体验。本文将详细介绍这些新功能及其实现方式。</p>
+<h2 id="核心功能概述"><a href="#核心功能概述" class="headerlink" title="核心功能概述"></a>核心功能概述</h2><p>iOS 26 为 CarPlay 引入了三大关键改进：</p>
+<ol>
+<li>小组件支持 - 让驾驶者快速获取关键信息</li>
+<li>实时活动 - 显示重要进度和状态更新</li>
+<li>导航元数据 - 在仪表盘和HUD上显示转向信息</li>
+</ol>
+<p>这些功能不仅适用于专门开发的CarPlay应用，也支持仅提供小组件或实时活动的iPhone应用。</p>
+<h2 id="小组件集成"><a href="#小组件集成" class="headerlink" title="小组件集成"></a>小组件集成</h2><p>CarPlay现在支持显示iPhone应用的小组件，即使该应用没有专门的CarPlay版本。驾驶者可以在CarPlay仪表盘左侧查看这些小组件。</p>
+<h3 id="技术实现要点"><a href="#技术实现要点" class="headerlink" title="技术实现要点"></a>技术实现要点</h3><p>开发者为CarPlay添加小组件支持非常简单，只需满足以下条件：</p>
+<ul>
+<li>支持systemSmall小组件家族</li>
+<li>遵循CarPlay特定的设计规范</li>
+</ul>
+<p>对于不适合CarPlay的小组件（如游戏类或需要复杂交互的），可以使用disfavoredLocations修饰符将其标记为”非优选”：</p>
+<pre><code class="swift">WidgetConfiguration()
+    .disfavoredLocations([.carPlay], for: [.systemSmall])
+</code></pre>
+<h3 id="设计最佳实践"><a href="#设计最佳实践" class="headerlink" title="设计最佳实践"></a>设计最佳实践</h3><ol>
+<li>内容简洁直观 - 避免高密度文本和与驾驶无关的信息</li>
+<li>自动适应布局 - widgetContentMargins会根据CarPlay需求自动调整</li>
+<li>使用系统字体和颜色 - 确保文本可读性</li>
+<li>可选背景移除 - 通过containerBackgroundRemovable修饰符实现</li>
+</ol>
+<h2 id="实时活动支持"><a href="#实时活动支持" class="headerlink" title="实时活动支持"></a>实时活动支持</h2><p>iOS 26将iPhone的实时活动功能扩展到了CarPlay。当iPhone上开启支持的实时活动时，它会自动出现在CarPlay仪表盘。</p>
+<h3 id="技术规格"><a href="#技术规格" class="headerlink" title="技术规格"></a>技术规格</h3><ol>
+<li>显示尺寸 - CarPlay使用activity family small尺寸类</li>
+<li>交互限制 - CarPlay中的实时活动不支持交互</li>
+<li>通知机制 - 当仪表盘不可见时，会在屏幕底部显示通知提醒</li>
+</ol>
+<h3 id="实现建议"><a href="#实现建议" class="headerlink" title="实现建议"></a>实现建议</h3><ol>
+<li>只传达关键状态信息</li>
+<li>优先实现activity family small尺寸</li>
+<li>无需考虑交互功能</li>
+</ol>
+<p>开发者可以使用macOS的CarPlay模拟器应用进行测试，无需实际车辆。</p>
+<h2 id="CarPlay框架增强"><a href="#CarPlay框架增强" class="headerlink" title="CarPlay框架增强"></a>CarPlay框架增强</h2><p>CarPlay框架为各类车载应用提供了优化的UI模板。iOS 26带来了多项改进：</p>
+<h3 id="列表模板升级"><a href="#列表模板升级" class="headerlink" title="列表模板升级"></a>列表模板升级</h3><ol>
+<li>CPListImageRowItem新增自定义选项</li>
+<li>支持禁用单个行元素</li>
+<li>允许多行显示</li>
+<li>引入pinned元素API用于显示重要元素</li>
+</ol>
+<pre><code class="swift">var headerGridButtons: [CPGridButton]?
+
+class CPGridButton
+init(titleVariants: [String],
+     image: UIImage,
+     handler: ((CPGridButton) -&gt; Void)?)
+</code></pre>
+<h3 id="音频应用新功能"><a href="#音频应用新功能" class="headerlink" title="音频应用新功能"></a>音频应用新功能</h3><p>体育赛事音频应用现在可以使用专门的”正在播放”模板变体：</p>
+<pre><code class="swift">let clock = CPNowPlayingSportsClock(elapsedTime: time, paused: false)
+
+let status = CPNowPlayingSportsEventStatus(
+    eventStatusText: [&quot;1st&quot;],
+    eventStatusImage: UIImage(named: &quot;Semifinals&quot;),
+    eventClock: clock
+)
+
+let sports = CPNowPlayingModeSports(
+    leftTeam: getLeftTeam(),
+    rightTeam: getRightTeam(),
+    eventStatus: status,
+    backgroundArtwork: getBackgroundArtwork()
+)
+
+CPNowPlayingTemplate.sharedTemplate.nowPlayingMode = sports
+</code></pre>
+<h3 id="导航应用改进"><a href="#导航应用改进" class="headerlink" title="导航应用改进"></a>导航应用改进</h3><ol>
+<li>按钮自动获得Liquid Glass外观</li>
+<li>支持多点触控交互</li>
+<li>仪表盘地图显示</li>
+<li>转向导航元数据支持</li>
+</ol>
+<p>转向导航元数据允许在车辆仪表盘或HUD上显示导航信息：</p>
+<pre><code class="swift">func mapTemplateShouldProvideNavigationMetadata(_ mapTemplate: CPMapTemplate) -&gt; Bool &#123;
+    true
+&#125;
+
+cpNavigationSession.add(maneuvers)
+cpNavigationSession.add(laneGuidance)
+
+cpNavigationSession.pauseTrip(for: .rerouting, description: &quot;重新规划路线&quot;)
+cpNavigationSession.resumeTrip(updatedRouteInformation: cpRouteInformation)
+</code></pre>
+<h2 id="性能优化建议"><a href="#性能优化建议" class="headerlink" title="性能优化建议"></a>性能优化建议</h2><ol>
+<li>观察设备温度级别，适当降低渲染细节</li>
+<li>利用CADisplayLink的自动帧率调整</li>
+<li>主屏幕和仪表盘地图可采用不同显示模式</li>
+<li>预先提供转向信息优化性能</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>iOS 26为CarPlay带来了显著的增强，使开发者能够创建更丰富、更智能的车载体验。通过小组件、实时活动和导航元数据等新功能，应用可以在不分散驾驶注意力的情况下，提供更多有价值的信息和服务。</p>
+<p>开发者应充分利用这些新功能，同时遵循苹果的设计规范和性能建议，确保为用户提供安全、流畅的车载体验。</p>
+<h1 id="相关视频"><a href="#相关视频" class="headerlink" title="相关视频"></a>相关视频</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/278">小组件的新功能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2025/308">通过 Instruments 优化 CPU 性能</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10111">了解新一代 CarPlay 车载架构</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2024/10112">了解新一代 CarPlay 车载设计系统</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2022/10016">利用 CarPlay 车载让您的 App 一日千里</a></p>
+<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/WidgetKit/adding-standby-and-carplay-support-to-your-widget">Adding StandBy and CarPlay support to your widget</a></p>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_215/" title="通过 Apple Games App 吸引玩家"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 通过 Apple Games App 吸引玩家</span></a><a class="button is-default" href="/2025/06/10/2025-06-10-wwdc2025_224/" title="针对辅助功能标签评估你的 App"><span class="has-text-weight-semibold">下一页: 针对辅助功能标签评估你的 App</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2025/06/10/2025-06-10-wwdc2025_216/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>

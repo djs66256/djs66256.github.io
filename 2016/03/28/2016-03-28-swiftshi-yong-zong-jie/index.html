@@ -1,0 +1,55 @@
+<!DOCTYPE html><html class="appearance-auto"><head><meta charset="UTF-8"><title>swift使用小结</title><meta name="description" content="无悔的人生"><meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, initial-scale=1"><!-- Google Analytics --><!-- End Google Analytics -->
+<!-- Baidu Analytics --><script>var _hmt = _hmt || [];
+(function() {
+var hm = document.createElement("script");
+hm.src = "//hm.baidu.com/hm.js?" + 'd75fe53e2fff778b91995ef2cf821fcd';
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(hm, s);
+})();</script><!-- End Baidu Analytics --><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/style/common/bulma.css"><link rel="stylesheet" href="/style/base.css"><link rel="stylesheet" href="/style/common/helper.css"><script src="/js/common.js"></script><link rel="stylesheet" href="/style/post.css"><link rel="stylesheet" href="/style/themes/highlight-theme-light.css"><link rel="stylesheet" href="/style/common/jquery.fancybox.min.css"><script src="/js/highlight.pack.js"></script><meta name="description" content="目前为止swift已经到2.0版本了，使用swift来开发移动端项目已经成熟，现在很多的开源项目已经放弃Objective-C，转向swift，所以我也使用swift来做了一个新的小项目。现在来谈谈使用swift的感受。
+
+
+语法swift不仅仅比OC更加的简洁，而且更加的容易看懂，同时在错误的控制上更加严谨，可以说是一门非常优秀的强类型面向对象语言。同时也比较类似Python，拥有脚本语言的部分特性。
+同时api和OC几乎完全一样，这样也减少了很多学习的成本，当然一些新的思想还是要重新学习。
+swift和OC混编也非常的简单，只要没有使用一些特殊方法的类库都可以无缝混编。(比如JSONObject这个类库使用了动态获取属性名，导致不能判断swift的属性)
+新特性这里稍微列几个，如果你了解一些其他语言，那.."><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="苍耳的技术博客" type="application/atom+xml">
+</head><body class="is-flex is-flex-direction-column"><header class="header-widget is-flex-shrink-0 is-hidden-mobile"><div class="container is-fullhd is-flex is-justify-content-space-between is-align-items-center is-full-height"><section class="is-hidden-mobile is-flex-shrink-0"><h2><a href="/">苍耳's blog</a></h2></section><h3 class="is-hidden-mobile is-family-serif is-full-height is-flex is-align-items-center is-flex-shrink-0"><div class="is-full-height" id="postTopic"><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">swift使用小结</p><p class="is-full-height is-flex-shrink-0 is-flex is-align-items-center is-justify-content-center">点击返回顶部</p></div></h3><aside class="is-flex-shrink-0"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></aside></div></header><header class="is-flex header-widget is-flex-shrink-0 is-align-items-center is-justify-content-center is-hidden-tablet"><h3 class="is-inline-block"><a href="/">首页</a></h3><h3 class="is-inline-block"><a href="/about">关于</a></h3><h3 class="is-inline-block"><a href="/archives">归档</a></h3></header><main><main class="container is-max-widescreen content section post-page pt-4 px-4"><div class="columns is-flex-desktop is-justify-content-center is-flex-direction-row-reverse"><div class="column is-3 is-hidden-mobile"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">新特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A9%BA%E5%88%A4%E6%96%AD"><span class="toc-text">空判断</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%BA%E7%B1%BB%E5%9E%8B"><span class="toc-text">强类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B"><span class="toc-text">泛型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD"><span class="toc-text">操作符重载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#enum"><span class="toc-text">enum</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AD%E5%8C%85"><span class="toc-text">闭包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#defer-guard"><span class="toc-text">defer &amp; guard</span></a></li></ol></div><div class="column is-9"><header class="my-4"><a href="/tags/swift"><i class="tag post-item-tag">swift</i></a></header><h1 class="mt-0 mb-1 is-family-serif" id="postTitle">swift使用小结</h1><time class="has-text-grey" datetime="2016-03-28T11:13:17.000Z">2016-03-28</time><article class="mt-2 post-content"><p>目前为止swift已经到2.0版本了，使用swift来开发移动端项目已经成熟，现在很多的开源项目已经放弃Objective-C，转向swift，所以我也使用swift来做了一个新的小项目。现在来谈谈使用swift的感受。</p>
+<span id="more"></span>
+
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>swift不仅仅比OC更加的简洁，而且更加的容易看懂，同时在错误的控制上更加严谨，可以说是一门非常优秀的强类型面向对象语言。同时也比较类似Python，拥有脚本语言的部分特性。</p>
+<p>同时api和OC几乎完全一样，这样也减少了很多学习的成本，当然一些新的思想还是要重新学习。</p>
+<p>swift和OC混编也非常的简单，只要没有使用一些特殊方法的类库都可以无缝混编。(比如JSONObject这个类库使用了动态获取属性名，导致不能判断swift的属性)</p>
+<h3 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h3><p>这里稍微列几个，如果你了解一些其他语言，那么你会感到非常的亲切。</p>
+<h4 id="空判断"><a href="#空判断" class="headerlink" title="空判断"></a>空判断</h4><p>swift里面对象的类型可以分为<code>Object</code>和<code>Optional&lt;Object&gt;</code>两种类型，这样可以明确知道对象是否可以为空，同时使用<code>?</code>来处理Optional类型的调用，这样我们就不需要经常的使用if和断言了。</p>
+<h4 id="强类型"><a href="#强类型" class="headerlink" title="强类型"></a>强类型</h4><p>swift强制类型比OC更加的严格，类型判断用<code>is</code>，类型转换使用<code>as</code>。</p>
+<h4 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h4><p>也算是强类型的一部分，这样我们终于不用猜测Array和Dictionary里面存的对象是什么类型的了。</p>
+<h4 id="操作符重载"><a href="#操作符重载" class="headerlink" title="操作符重载"></a>操作符重载</h4><p>从某些特定的角度看，这是一个非常有用的特性，但过度使用也会让代码更加难以理解。String终于支持<code>+</code>的操作了，终于告别OC里面让人奔溃的字符串连接。</p>
+<h4 id="enum"><a href="#enum" class="headerlink" title="enum"></a>enum</h4><p>swift允许枚举类型的对象“携带”其他的数据，这在某些情境下是非常便利的一个特性，但也让人一下子难以理解。</p>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>相对应于OC里面的block，闭包更加的简洁与好用，有些时候不仅可以使用简化的闭包，甚至简单到省略了<code>()</code>和参数。</p>
+<pre><code class="swift">exe &#123;
+    show($0)
+&#125;
+
+exe() &#123;
+    show($0)
+&#125;
+
+exe(&#123;
+    show($0)
+&#125;)
+
+exe(&#123; a in
+    show(a)
+&#125;)
+
+exe(&#123; (a:String)-&gt;Void in
+    show(a)
+&#125;)
+</code></pre>
+<p>以上的表述都是完全一样的。</p>
+<h3 id="defer-guard"><a href="#defer-guard" class="headerlink" title="defer &amp; guard"></a>defer &amp; guard</h3><p>算是一个锦上添花的东西吧，<code>defer</code>是函数返回前的调用，<code>guard</code>和<code>if</code>的作用是相同的，仅仅作为语义区分吧。</p>
+<pre><code class="swift">let x = open(&quot;file&quot;)
+defer &#123;
+    close(x)
+&#125;
+</code></pre>
+</article><section class="jump-container is-flex is-justify-content-space-between my-6"><!-- em is empty placeholder--><a class="button is-default" href="/2016/03/28/2016-03-28-yi-ge-zi-yu-zi-le-de-xiao-xiang-mu/" title="一个自娱自乐的小项目"><i class="iconfont icon-prev mr-2 has-text-grey"></i><span class="has-text-weight-semibold">上一页: 一个自娱自乐的小项目</span></a><a class="button is-default" href="/2014/08/03/2014-08-03-2013%E5%AD%A6%E5%B9%B4%E6%80%BB%E7%BB%93%E4%B9%8B%E5%B7%A5%E5%85%B7%E7%AF%87/" title="2013学年总结之工具篇"><span class="has-text-weight-semibold">下一页: 2013学年总结之工具篇</span><i class="iconfont icon-next ml-2 has-text-grey"></i></a></section><div id="disqus_thread"></div><article class="mt-6 comment-container" id="disqus"><script>var disqus_config = function () {this.page.url = 'https://djs66256.github.io//2016/03/28/2016-03-28-swiftshi-yong-zong-jie/';this.page.identifier = 'djs66256';};</script><script>(function() {var d = document, s = d.createElement('script');s.src = 'https://djs66256.disqus.com/embed.js';s.setAttribute('data-timestamp', +new Date());(d.head || d.body).appendChild(s);})();</script><script id="dsq-count-scr" src="//blog-pubgj2togw.disqus.com/count.js" async></script></article></div></div></main></main><footer class="is-flex is-flex-direction-column is-align-items-center is-flex-shrink-0 is-family-serif"><section class="sns-container"><a title="twitter" target="_blank" rel="noopener nofollow" href="//twitter.com//"><i class="iconfont icon-twitter"></i></a><!-- Github--><a title="github" target="_blank" rel="noopener nofollow" href="//github.com/djs66256"><i class="iconfont icon-github"></i></a><!-- Ins--><a title="instagram" target="_blank" rel="noopener nofollow" href="//www.instagram.com//"><i class="iconfont icon-ins"></i></a><!-- RSS--><!-- 知乎--><!-- 领英--><!-- 脸书--><a title="facebook" target="_blank" rel="noopener nofollow" href="//www.facebook.com//"><i class="iconfont icon-tian7_facebook"></i></a></section><p><span>Copyright ©</span><span> 苍耳 2026</span></p><div class="is-flex is-justify-content-center is-flex-wrap-wrap"><p>Powered by Hexo &verbar;&nbsp;</p><p class="is-flex is-justify-content-center"><a title="Hexo theme author" target="_blank" rel="noopener" href="//github.com/haojen">Theme by Haojen&nbsp;</a></p><div style="margin-top: 2px"><a class="github-button" title="github-button" target="_blank" rel="noopener" href="https://github.com/haojen/hexo-theme-Claudia" data-color-scheme="no-preference: light; light: light; dark: dark;" data-show-count="true"></a></div></div><div><span>苍耳的技术博客</span></div></footer><script async defer src="https://buttons.github.io/buttons.js"></script><script src="/js/jquery-3.6.1.min.js"></script><script src="/js/jquery-fancybox.min.js"></script><script src="/js/img_zoom.js"></script><script src="/js/post.js"></script></body></html>
